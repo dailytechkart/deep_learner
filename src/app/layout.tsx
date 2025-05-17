@@ -1,34 +1,25 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import StyledComponentsRegistry from './StyledComponentsRegistry';
-import { AuthProvider } from './context/AuthContext';
-import ThemeWrapper from './components/ThemeWrapper';
+import { Inter } from 'next/font/google';
+import { Providers } from './providers';
+import StyledComponentsRegistry from './lib/registry';
+import './globals.css';
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-});
+const inter = Inter({ subsets: ['latin'] });
 
-export const metadata: Metadata = {
-  title: "JavaScript Learning Platform",
-  description: "Learn JavaScript with interactive examples and practice problems",
+export const metadata = {
+  title: 'Deep Learner',
+  description: 'Learn deep learning concepts through interactive lessons and practice',
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className} suppressHydrationWarning>
         <StyledComponentsRegistry>
-          <ThemeWrapper>
-            <AuthProvider>
-              {children}
-            </AuthProvider>
-          </ThemeWrapper>
+          <Providers>{children}</Providers>
         </StyledComponentsRegistry>
       </body>
     </html>

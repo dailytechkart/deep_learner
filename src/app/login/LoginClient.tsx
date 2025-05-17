@@ -1,17 +1,6 @@
-import { requireGuest } from '@/lib/auth';
-
-export default async function SignUpPage() {
-  // This will redirect if user is already logged in
-  await requireGuest();
-
-  return (
-    <SignUpClient />
-  );
-}
-
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 import {
@@ -22,48 +11,51 @@ import {
   ErrorMessage,
   SocialButtonGroup,
   SocialButton,
-  AuthLink
 } from '../components/StyledComponents';
 
-function SignUpClient() {
+export default function LoginClient() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { user, signInWithGoogle, signInWithGithub } = useAuth();
-  const [error, setError] = React.useState('');
-  const [isLoading, setIsLoading] = React.useState(false);
+  const { user, signInWithGoogle, signInWithGithub, loading } = useAuth();
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Debug user state
   useEffect(() => {
-    if (user) {
+    if (user && isMounted) {
       console.log('User state:', {
         uid: user.uid,
         email: user.email,
         displayName: user.displayName,
         photoURL: user.photoURL,
-        emailVerified: user.emailVerified
+        emailVerified: user.emailVerified,
       });
     }
-  }, [user]);
+  }, [user, isMounted]);
 
-  // Handle redirection when auth state changes
   useEffect(() => {
-    const handleAuthStateChange = async () => {
-      if (user) {
-        try {
-          const returnTo = searchParams.get('from') || '/dashboard';
-          // Use replace to prevent back button from returning to signup
-          await router.replace(returnTo);
-        } catch (error) {
-          console.error('Navigation error:', error);
-        }
-      }
-    };
+    let timeout: NodeJS.Timeout;
 
-    handleAuthStateChange();
-  }, [user, router, searchParams]);
+    if (user && isMounted && !loading) {
+      const returnTo = searchParams.get('from') || '/dashboard';
+      console.log('Redirecting to:', returnTo);
 
-  const handleSocialSignUp = async (provider: 'google' | 'github') => {
+      // Debounce the redirect slightly
+      timeout = setTimeout(() => {
+        router.push(returnTo);
+      }, 300); // 300ms debounce
+    }
+
+    return () => clearTimeout(timeout);
+  }, [user, router, searchParams, isMounted, loading]);
+
+  const handleSocialLogin = async (provider: 'google' | 'github') => {
     try {
       setError('');
       setIsLoading(true);
@@ -74,11 +66,24 @@ function SignUpClient() {
         await signInWithGithub();
       }
     } catch (err) {
-      console.error(`${provider} signup error:`, err);
-      setError(`Failed to sign up with ${provider}. Please try again.`);
+      console.error(`${provider} login error:`, err);
+      setError(`Failed to login with ${provider}. Please try again.`);
+      setIsLoading(false);
+    } finally {
       setIsLoading(false);
     }
   };
+
+  // If not mounted yet or still loading auth state, show loading state
+  if (!isMounted || loading) {
+    return (
+      <AuthContainer>
+        <AuthCard>
+          <AuthTitle>Loading...</AuthTitle>
+        </AuthCard>
+      </AuthContainer>
+    );
+  }
 
   // If user is already logged in, show loading state
   if (user) {
@@ -94,23 +99,23 @@ function SignUpClient() {
   return (
     <AuthContainer>
       <AuthCard>
-        <AuthTitle>Create Your Account</AuthTitle>
+        <AuthTitle>Welcome to Deep Learner</AuthTitle>
         <AuthForm>
           {error && <ErrorMessage>{error}</ErrorMessage>}
 
           <SocialButtonGroup>
             <SocialButton
               type="button"
-              onClick={() => handleSocialSignUp('google')}
+              onClick={() => handleSocialLogin('google')}
               disabled={isLoading}
-              style={{ 
-                background: '#fff', 
-                color: '#333', 
+              style={{
+                background: '#fff',
+                color: '#333',
                 border: '1px solid #ddd',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '0.5rem'
+                gap: '0.5rem',
               }}
             >
               <svg width="20" height="20" viewBox="0 0 24 24">
@@ -131,33 +136,34 @@ function SignUpClient() {
                   d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                 />
               </svg>
-              {isLoading ? 'Signing up...' : 'Sign up with Google'}
+              {isLoading ? 'Signing in...' : 'Continue with Google'}
             </SocialButton>
             <SocialButton
               type="button"
-              onClick={() => handleSocialSignUp('github')}
+              onClick={() => handleSocialLogin('github')}
               disabled={isLoading}
-              style={{ 
-                background: '#333', 
+              style={{
+                background: '#333',
                 color: '#fff',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '0.5rem'
+                gap: '0.5rem',
               }}
             >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
               </svg>
-              {isLoading ? 'Signing up...' : 'Sign up with GitHub'}
+              {isLoading ? 'Signing in...' : 'Continue with GitHub'}
             </SocialButton>
           </SocialButtonGroup>
-
-          <AuthLink href="/login" style={{ marginTop: '1rem', textAlign: 'center' }}>
-            Already have an account? Sign in
-          </AuthLink>
         </AuthForm>
       </AuthCard>
     </AuthContainer>
   );
-} 
+}

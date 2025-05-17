@@ -1,12 +1,20 @@
-'use client';
+import { requireAuth } from '@/lib/auth';
+import AuthenticatedLayout from '../components/AuthenticatedLayout';
+import ThemeWrapper from '../components/ThemeWrapper';
 
-import React from 'react';
-import ProtectedRoute from '../components/ProtectedRoute';
-
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <ProtectedRoute>{children}</ProtectedRoute>;
+  // This will redirect if user is not logged in
+  await requireAuth();
+
+  return (
+    <ThemeWrapper>
+      <AuthenticatedLayout>
+        {children}
+      </AuthenticatedLayout>
+    </ThemeWrapper>
+  );
 } 

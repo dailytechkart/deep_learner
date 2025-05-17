@@ -1,212 +1,154 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ThemeProvider } from 'styled-components';
 import { useAuth } from '../context/AuthContext';
-import { lightTheme, darkTheme } from '../theme';
 import {
-  DashboardContainer,
-  Header,
-  HeaderContent,
-  HeaderLeft,
-  QuickActions,
-  ActionButton,
-  CategoryList,
-  CategoryButton,
-  CategoryIcon,
-  Logo,
-  SearchContainer,
-  SearchInput,
-  SearchIcon,
-  ThemeToggle,
   PageContainer,
-  Sidebar,
-  SidebarHeader,
-  SidebarActions,
-  FilterButton,
-  SidebarTitle,
-  TopicCount,
   TopicTitle,
-  UserInfo,
-  UserName,
   TopicMeta,
   MetaItem,
-  TopicContent,
   Section,
   SectionHeader,
   SectionTitle,
   SectionActions,
-  ProblemStatement,
   QuizContainer,
   QuizHeader,
   QuizQuestion,
   QuizProgress,
   QuizOptions,
-  MainContent
+  MainContent,
+  WelcomeCard,
+  ProgressBar,
+  TopicCard,
+  TopicCardGrid,
+  TopicCardHeader,
+  TopicCardContent,
+  TopicCardFooter,
+  TopicCardStats,
+  TopicCardAction,
+  ActionButton
 } from '../components/StyledComponents';
+import Sidebar from '../components/Sidebar';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedFilter, setSelectedFilter] = useState('all');
 
+  const featuredTopics = [
+    {
+      id: 1,
+      title: 'HTML & CSS Fundamentals',
+      description: 'Learn the building blocks of web development',
+      progress: 75,
+      duration: '4 hours',
+      level: 'Beginner',
+      category: 'frontend'
+    },
+    {
+      id: 2,
+      title: 'JavaScript Essentials',
+      description: 'Master modern JavaScript and ES6+ features',
+      progress: 30,
+      duration: '6 hours',
+      level: 'Intermediate',
+      category: 'frontend'
+    },
+    {
+      id: 3,
+      title: 'React Development',
+      description: 'Build modern web applications with React',
+      progress: 0,
+      duration: '5 hours',
+      level: 'Advanced',
+      category: 'frontend'
+    }
+  ];
+
   return (
-    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-      <DashboardContainer>
-        <Header>
-          <HeaderContent>
-            <HeaderLeft>
-              <Logo>Deep Learner</Logo>
-              <SearchContainer>
-                <SearchInput
-                  type="text"
-                  placeholder="Search topics..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-                <SearchIcon>🔍</SearchIcon>
-              </SearchContainer>
-            </HeaderLeft>
-            <QuickActions>
-              <ActionButton>
-                <span>📚</span>
-                My Courses
-              </ActionButton>
-              <ActionButton>
-                <span>🎯</span>
-                Progress
-              </ActionButton>
-              <ThemeToggle onClick={() => setIsDarkMode(!isDarkMode)}>
-                {isDarkMode ? '☀️' : '🌙'}
-              </ThemeToggle>
-            </QuickActions>
-          </HeaderContent>
-        </Header>
+    <PageContainer>
+      <Sidebar
+        selectedCategory={selectedCategory}
+        selectedFilter={selectedFilter}
+        onCategoryChange={setSelectedCategory}
+        onFilterChange={setSelectedFilter}
+      />
 
-        <PageContainer>
-          <Sidebar>
-            <SidebarHeader>
-              <SidebarTitle>Categories</SidebarTitle>
-              <SidebarActions>
-                <FilterButton
-                  active={selectedFilter === 'all'}
-                  onClick={() => setSelectedFilter('all')}
-                >
-                  All
-                </FilterButton>
-                <FilterButton
-                  active={selectedFilter === 'in-progress'}
-                  onClick={() => setSelectedFilter('in-progress')}
-                >
-                  In Progress
-                </FilterButton>
-                <FilterButton
-                  active={selectedFilter === 'completed'}
-                  onClick={() => setSelectedFilter('completed')}
-                >
-                  Completed
-                </FilterButton>
-              </SidebarActions>
-            </SidebarHeader>
-            <CategoryList>
-              <CategoryButton
-                active={selectedCategory === 'all'}
-                onClick={() => setSelectedCategory('all')}
-              >
-                <CategoryIcon>📚</CategoryIcon>
-                All Topics
-              </CategoryButton>
-              <CategoryButton
-                active={selectedCategory === 'ml'}
-                onClick={() => setSelectedCategory('ml')}
-              >
-                <CategoryIcon>🤖</CategoryIcon>
-                Machine Learning
-              </CategoryButton>
-              <CategoryButton
-                active={selectedCategory === 'dl'}
-                onClick={() => setSelectedCategory('dl')}
-              >
-                <CategoryIcon>🧠</CategoryIcon>
-                Deep Learning
-              </CategoryButton>
-              <CategoryButton
-                active={selectedCategory === 'nlp'}
-                onClick={() => setSelectedCategory('nlp')}
-              >
-                <CategoryIcon>💬</CategoryIcon>
-                NLP
-              </CategoryButton>
-            </CategoryList>
-          </Sidebar>
+      <MainContent>
+        <WelcomeCard>
+          <TopicTitle>Welcome back, {user?.displayName || 'Learner'}!</TopicTitle>
+          <TopicMeta>
+            <MetaItem>
+              <span>📚</span>
+              <span>12 Topics</span>
+            </MetaItem>
+            <MetaItem>
+              <span>⏱️</span>
+              <span>24 Hours of Content</span>
+            </MetaItem>
+            <MetaItem>
+              <span>🎯</span>
+              <span>8 Quizzes</span>
+            </MetaItem>
+          </TopicMeta>
+        </WelcomeCard>
 
-          <MainContent>
-            <TopicTitle>Welcome back, {user?.name || 'Learner'}!</TopicTitle>
-            <UserInfo>
-              <UserName>{user?.email}</UserName>
-            </UserInfo>
-            <TopicMeta>
-              <MetaItem>
-                <span>📚</span>
-                <span>12 Topics</span>
-              </MetaItem>
-              <MetaItem>
-                <span>⏱️</span>
-                <span>24 Hours of Content</span>
-              </MetaItem>
-              <MetaItem>
-                <span>🎯</span>
-                <span>8 Quizzes</span>
-              </MetaItem>
-            </TopicMeta>
+        <Section>
+          <SectionHeader>
+            <SectionTitle>Continue Learning</SectionTitle>
+            <SectionActions>
+              <ActionButton>View All</ActionButton>
+            </SectionActions>
+          </SectionHeader>
+          <TopicCardGrid>
+            {featuredTopics.map(topic => (
+              <TopicCard key={topic.id}>
+                <TopicCardHeader>
+                  <span>{topic.category === 'frontend' ? '🌐' : '💻'}</span>
+                  <span>{topic.level}</span>
+                </TopicCardHeader>
+                <TopicCardContent>
+                  <h3>{topic.title}</h3>
+                  <p>{topic.description}</p>
+                </TopicCardContent>
+                <TopicCardFooter>
+                  <TopicCardStats>
+                    <span>⏱️ {topic.duration}</span>
+                    <ProgressBar progress={topic.progress}>
+                      <div />
+                    </ProgressBar>
+                    <span>{topic.progress}% Complete</span>
+                  </TopicCardStats>
+                  <TopicCardAction>
+                    {topic.progress === 0 ? 'Start' : 'Continue'}
+                  </TopicCardAction>
+                </TopicCardFooter>
+              </TopicCard>
+            ))}
+          </TopicCardGrid>
+        </Section>
 
-            <TopicContent>
-              <p>
-                Continue your learning journey with our comprehensive curriculum
-                designed to take you from beginner to expert in AI and machine learning.
-              </p>
-            </TopicContent>
-
-            <Section>
-              <SectionHeader>
-                <SectionTitle>Featured Topics</SectionTitle>
-                <SectionActions>
-                  <ActionButton>View All</ActionButton>
-                </SectionActions>
-              </SectionHeader>
-              <ProblemStatement>
-                <p>
-                  Explore our curated collection of topics designed to take you from
-                  beginner to expert in AI and machine learning.
-                </p>
-              </ProblemStatement>
-            </Section>
-
-            <Section>
-              <SectionHeader>
-                <SectionTitle>Quick Quiz</SectionTitle>
-                <SectionActions>
-                  <ActionButton>More Quizzes</ActionButton>
-                </SectionActions>
-              </SectionHeader>
-              <QuizContainer>
-                <QuizHeader>
-                  <QuizQuestion>
-                    What is the primary difference between machine learning and deep learning?
-                  </QuizQuestion>
-                  <QuizProgress>1/5 Questions</QuizProgress>
-                </QuizHeader>
-                <QuizOptions>
-                  {/* Quiz options will go here */}
-                </QuizOptions>
-              </QuizContainer>
-            </Section>
-          </MainContent>
-        </PageContainer>
-      </DashboardContainer>
-    </ThemeProvider>
+        <Section>
+          <SectionHeader>
+            <SectionTitle>Quick Quiz</SectionTitle>
+            <SectionActions>
+              <ActionButton>More Quizzes</ActionButton>
+            </SectionActions>
+          </SectionHeader>
+          <QuizContainer>
+            <QuizHeader>
+              <QuizQuestion>
+                What is the primary difference between HTML and CSS?
+              </QuizQuestion>
+              <QuizProgress>1/5 Questions</QuizProgress>
+            </QuizHeader>
+            <QuizOptions>
+              {/* Quiz options will go here */}
+            </QuizOptions>
+          </QuizContainer>
+        </Section>
+      </MainContent>
+    </PageContainer>
   );
 };
 
