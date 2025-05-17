@@ -3,38 +3,47 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
+import Image from 'next/image';
 import {
   AuthContainer,
   AuthCard,
   AuthTitle,
-  AuthForm,
-  FormGroup,
-  FormLabel,
-  FormInput,
-  SubmitButton,
-  AuthLink,
+  SocialButtonGroup,
+  SocialButton,
+  Divider,
+  DividerText,
   ErrorMessage
 } from '../components/StyledComponents';
 
-const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+export default function Login() {
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const { signInWithGoogle, signInWithGithub } = useAuth();
   const router = useRouter();
-  const { signIn } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-
+  const handleGoogleSignIn = async () => {
     try {
-      await signIn(email, password);
+      setError(null);
+      setLoading(true);
+      await signInWithGoogle();
       router.push('/dashboard');
     } catch (err) {
-      setError('Failed to sign in. Please check your credentials.');
-      console.error(err);
+      console.error('Google sign-in error:', err);
+      setError(err instanceof Error ? err.message : 'Failed to sign in with Google');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGithubSignIn = async () => {
+    try {
+      setError(null);
+      setLoading(true);
+      await signInWithGithub();
+      router.push('/dashboard');
+    } catch (err) {
+      console.error('GitHub sign-in error:', err);
+      setError(err instanceof Error ? err.message : 'Failed to sign in with GitHub');
     } finally {
       setLoading(false);
     }
@@ -44,40 +53,36 @@ const Login: React.FC = () => {
     <AuthContainer>
       <AuthCard>
         <AuthTitle>Welcome Back</AuthTitle>
-        <AuthForm onSubmit={handleSubmit}>
-          <FormGroup>
-            <FormLabel htmlFor="email">Email</FormLabel>
-            <FormInput
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="Enter your email"
+        <SocialButtonGroup>
+          <SocialButton
+            provider="google"
+            onClick={handleGoogleSignIn}
+            disabled={loading}
+          >
+            <Image
+              src="/google-icon.svg"
+              alt="Google"
+              width={24}
+              height={24}
             />
-          </FormGroup>
-          <FormGroup>
-            <FormLabel htmlFor="password">Password</FormLabel>
-            <FormInput
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Enter your password"
+            {loading ? 'Signing in...' : 'Continue with Google'}
+          </SocialButton>
+          <SocialButton
+            provider="github"
+            onClick={handleGithubSignIn}
+            disabled={loading}
+          >
+            <Image
+              src="/github-icon.svg"
+              alt="GitHub"
+              width={24}
+              height={24}
             />
-          </FormGroup>
-          {error && <ErrorMessage>{error}</ErrorMessage>}
-          <SubmitButton type="submit" disabled={loading}>
-            {loading ? 'Signing in...' : 'Sign In'}
-          </SubmitButton>
-        </AuthForm>
-        <AuthLink href="/signup">
-          Don't have an account? Sign up
-        </AuthLink>
+            {loading ? 'Signing in...' : 'Continue with GitHub'}
+          </SocialButton>
+        </SocialButtonGroup>
+        {error && <ErrorMessage>{error}</ErrorMessage>}
       </AuthCard>
     </AuthContainer>
   );
-};
-
-export default Login; 
+} 

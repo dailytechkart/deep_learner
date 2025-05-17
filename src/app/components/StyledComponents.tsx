@@ -762,4 +762,71 @@ export const ErrorMessage = styled.div`
   color: ${props => props.theme.colors.error};
   font-size: 0.9rem;
   text-align: center;
+`;
+
+export const SocialButtonGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+`;
+
+export const SocialButton = styled.button<{ provider: 'google' | 'github' }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: 8px;
+  background: ${props => props.theme.colors.background};
+  color: ${props => props.theme.colors.text};
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+
+  &:hover {
+    background: ${props => props.theme.colors.background}dd;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px ${props => props.theme.colors.border}40;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+`;
+
+export const Divider = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 1.5rem 0;
+  color: ${props => props.theme.colors.text}60;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: ${props => props.theme.colors.border};
+  }
+`;
+
+export const DividerText = styled.span`
+  padding: 0 1rem;
+  font-size: 0.9rem;
 `; 
