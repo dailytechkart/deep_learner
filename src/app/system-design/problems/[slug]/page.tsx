@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, Suspense, useMemo } from 'react';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
-import { FaComments, FaList, FaClock, FaCommentDots, FaClipboardList, FaBolt, FaSearch, FaLayerGroup, FaFilter, FaTimes, FaBuilding } from 'react-icons/fa';
+import { FaComments, FaList, FaClock, FaCommentDots, FaClipboardList, FaBolt, FaSearch, FaLayerGroup, FaFilter, FaTimes, FaBuilding, FaCode, FaDatabase, FaCogs, FaServer, FaNetworkWired, FaChartLine } from 'react-icons/fa';
 
 const problemsList = [
   {
@@ -709,6 +709,211 @@ const InfoTag = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
+const DesignSection = styled.div`
+  margin: 2.5em 0;
+  padding: 2em;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+  border-radius: 12px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 1.5em;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: ${({ theme }) => theme.colors.text};
+    font-size: 1.8em;
+    font-weight: 600;
+
+    svg {
+      color: ${({ theme }) => theme.colors.primary};
+      font-size: 1.2em;
+    }
+  }
+`;
+
+const DesignGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+`;
+
+const DesignCard = styled.div`
+  background: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 8px;
+  padding: 20px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  h3 {
+    font-size: 1.2em;
+    font-weight: 600;
+    margin: 0 0 16px 0;
+    color: ${({ theme }) => theme.colors.text};
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    svg {
+      color: ${({ theme }) => theme.colors.primary};
+      font-size: 1.1em;
+    }
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.5em;
+  }
+
+  li {
+    margin-bottom: 12px;
+    color: ${({ theme }) => theme.colors.text};
+    font-size: 0.95em;
+    line-height: 1.6;
+  }
+`;
+
+const DiagramContainer = styled.div`
+  margin: 32px 0;
+  padding: 24px;
+  background: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+`;
+
+const DiagramBox = styled.div`
+  background: white;
+  padding: 24px;
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre;
+  overflow-x: auto;
+  color: #333;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  margin: 16px 0;
+`;
+
+const DiagramTitle = styled.h3`
+  font-size: 1.3em;
+  font-weight: 600;
+  margin: 0 0 20px 0;
+  color: ${({ theme }) => theme.colors.text};
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  svg {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+const DiagramDescription = styled.div`
+  margin: 16px 0;
+  padding: 16px;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+  border-radius: 8px;
+  font-size: 0.95em;
+  line-height: 1.6;
+  color: ${({ theme }) => theme.colors.textSecondary};
+`;
+
+const SystemArchitectureDiagram = () => (
+  <DiagramBox>
+    {`
+    [Client Apps]     [Client Apps]
+         ↓                ↓
+    [Load Balancer] ← → [Load Balancer]
+         ↓                ↓
+    [App Server 1]   [App Server 2]
+         ↓                ↓
+    ┌─────────────────────────────┐
+    │        [Cache Layer]        │
+    └─────────────────────────────┘
+         ↓                ↓
+    ┌─────────────────────────────┐
+    │         [Database]          │
+    └─────────────────────────────┘
+         ↓                ↓
+    ┌─────────────────────────────┐
+    │      [Message Queue]        │
+    └─────────────────────────────┘
+                ↓
+    ┌─────────────────────────────┐
+    │      [Worker Process]       │
+    └─────────────────────────────┘
+    `}
+  </DiagramBox>
+);
+
+const DataFlowDiagram = () => (
+  <DiagramBox>
+    {`
+    [Client] → [API Gateway] → [Service Layer]
+                     ↓
+    [Cache] ← → [Service Layer] → [Database]
+                     ↓
+    [Message Queue] → [Worker] → [Database]
+    `}
+  </DiagramBox>
+);
+
+const ComponentDesignDiagram = () => (
+  <DiagramBox>
+    {`
+    +----------------+     +----------------+
+    |    Client      |     |    Service     |
+    +----------------+     +----------------+
+    | +sendRequest() | --> | +processRequest()|
+    | +handleResponse|     | +validateData()  |
+    +----------------+     | +handleError()   |
+                           +----------------+
+                                  ↓
+    +----------------+     +----------------+
+    |   Database     |     |     Cache      |
+    +----------------+     +----------------+
+    | +query()       |     | +get()         |
+    | +transaction() |     | +set()         |
+    | +index()       |     | +invalidate()  |
+    +----------------+     +----------------+
+    `}
+  </DiagramBox>
+);
+
+const DataModelDiagram = () => (
+  <DiagramBox>
+    {`
+    +--------+       +---------+       +--------+
+    |  User  |       | Message |       | Group  |
+    +--------+       +---------+       +--------+
+    | id     |       | id      |       | id     |
+    | name   |       | content |       | name   |
+    | email  |       | user_id |       | desc   |
+    +--------+       | group_id|       +--------+
+         ↓           +---------+           ↓
+         |                ↓                |
+         |           +----------+          |
+         +---------->| Reaction |<---------+
+                     +----------+
+                     | id       |
+                     | type     |
+                     | user_id  |
+                     +----------+
+    `}
+  </DiagramBox>
+);
+
 function DynamicMDX({ slug }: { slug: string }) {
   const MDXComponent = dynamic(() => import(`./${slug}.mdx`), {
     loading: () => <div>Loading...</div>,
@@ -730,17 +935,30 @@ const MDXContent = styled.div`
   h2 {
     font-size: 1.8em;
     font-weight: 600;
-    margin: 1.6em 0 0.8em;
+    margin: 2em 0 1em;
     color: ${({ theme }) => theme.colors.text};
     font-family: "GT Alpina", "Georgia", "Cambria", "Times New Roman", "Times", serif;
     letter-spacing: -0.016em;
     line-height: 1.3;
+    position: relative;
+    padding-bottom: 0.5em;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: ${({ theme }) => theme.colors.primary};
+      border-radius: 2px;
+    }
   }
 
   h3 {
     font-size: 1.4em;
     font-weight: 600;
-    margin: 1.4em 0 0.6em;
+    margin: 1.8em 0 1em;
     color: ${({ theme }) => theme.colors.text};
     font-family: "GT Alpina", "Georgia", "Cambria", "Times New Roman", "Times", serif;
     letter-spacing: -0.016em;
@@ -749,25 +967,26 @@ const MDXContent = styled.div`
 
   p {
     font-size: 1.1em;
-    line-height: 1.7;
+    line-height: 1.8;
     letter-spacing: -0.003em;
-    margin-bottom: 1.5em;
+    margin-bottom: 1.8em;
     color: ${({ theme }) => theme.colors.text};
     max-width: 65ch;
   }
 
   ul, ol {
     font-size: 1.1em;
-    line-height: 1.7;
+    line-height: 1.8;
     letter-spacing: -0.003em;
-    margin: 1.5em 0;
-    padding-left: 2em;
+    margin: 1.8em 0;
+    padding-left: 2.2em;
     max-width: 65ch;
   }
 
   li {
-    margin-bottom: 0.8em;
+    margin-bottom: 1em;
     position: relative;
+    color: ${({ theme }) => theme.colors.text};
   }
 
   li::marker {
@@ -781,15 +1000,17 @@ const MDXContent = styled.div`
     padding: 0.2em 0.4em;
     border-radius: 4px;
     color: ${({ theme }) => theme.colors.primary};
+    border: 1px solid ${({ theme }) => theme.colors.border};
   }
 
   pre {
     background: ${({ theme }) => theme.colors.backgroundAlt};
-    padding: 1.2em;
+    padding: 1.4em;
     border-radius: 8px;
     overflow-x: auto;
-    margin: 1.5em 0;
+    margin: 1.8em 0;
     border: 1px solid ${({ theme }) => theme.colors.border};
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 
   pre code {
@@ -797,30 +1018,33 @@ const MDXContent = styled.div`
     padding: 0;
     font-size: 0.9em;
     color: ${({ theme }) => theme.colors.text};
+    border: none;
   }
 
   blockquote {
     border-left: 3px solid ${({ theme }) => theme.colors.primary};
-    padding: 0.8em 1.2em;
-    margin: 1.5em 0;
+    padding: 1em 1.4em;
+    margin: 1.8em 0;
     color: ${({ theme }) => theme.colors.textSecondary};
     font-style: italic;
     background: ${({ theme }) => theme.colors.backgroundAlt};
     border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 
   table {
     width: 100%;
     border-collapse: collapse;
-    margin: 1.5em 0;
+    margin: 1.8em 0;
     font-size: 0.95em;
     border: 1px solid ${({ theme }) => theme.colors.border};
     border-radius: 8px;
     overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 
   th, td {
-    padding: 0.8em 1em;
+    padding: 1em 1.2em;
     border: 1px solid ${({ theme }) => theme.colors.border};
     text-align: left;
   }
@@ -843,25 +1067,27 @@ const MDXContent = styled.div`
     max-width: 100%;
     height: auto;
     border-radius: 8px;
-    margin: 1.5em 0;
+    margin: 1.8em 0;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 
   a {
     color: ${({ theme }) => theme.colors.primary};
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
     border-bottom: 1px solid transparent;
+    padding-bottom: 1px;
 
     &:hover {
       border-bottom-color: ${({ theme }) => theme.colors.primary};
+      color: ${({ theme }) => theme.colors.primary}dd;
     }
   }
 
   hr {
     border: none;
     border-top: 1px solid ${({ theme }) => theme.colors.border};
-    margin: 2em 0;
+    margin: 2.5em 0;
   }
 
   strong {
@@ -872,6 +1098,47 @@ const MDXContent = styled.div`
   em {
     font-style: italic;
     color: ${({ theme }) => theme.colors.textSecondary};
+  }
+
+  section {
+    margin: 2.5em 0;
+    padding: 1.5em;
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    border-radius: 12px;
+    border: 1px solid ${({ theme }) => theme.colors.border};
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    h2 {
+      margin-top: 0;
+    }
+  }
+
+  ul li, ol li {
+    position: relative;
+    padding-left: 0.5em;
+  }
+
+  ul li::before {
+    content: '•';
+    color: ${({ theme }) => theme.colors.primary};
+    font-weight: bold;
+    position: absolute;
+    left: -1em;
+  }
+
+  pre {
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: ${({ theme }) => theme.colors.primary};
+      border-radius: 4px 4px 0 0;
+    }
   }
 `;
 
@@ -1095,6 +1362,144 @@ export default function ProblemPage() {
               <DynamicMDX slug={selectedProblem.slug} />
             </MDXContent>
           </Suspense>
+
+          <DesignSection>
+            <h2>
+              <FaBolt />
+              High-Level Design (HLD)
+            </h2>
+            
+            <DiagramContainer>
+              <DiagramTitle>
+                <FaServer />
+                System Architecture
+              </DiagramTitle>
+              <SystemArchitectureDiagram />
+              <DiagramDescription>
+                The system architecture shows the main components and their interactions. The load balancer distributes traffic across multiple application servers, which interact with the cache layer, database, and message queue. Worker processes handle asynchronous tasks and background jobs.
+              </DiagramDescription>
+            </DiagramContainer>
+
+            <DiagramContainer>
+              <DiagramTitle>
+                <FaNetworkWired />
+                Data Flow
+              </DiagramTitle>
+              <DataFlowDiagram />
+              <DiagramDescription>
+                This diagram illustrates the data flow through the system. Requests from clients go through the API Gateway, which routes them to appropriate services. Services interact with cache and database layers, while asynchronous operations are handled through the message queue system.
+              </DiagramDescription>
+            </DiagramContainer>
+
+            <DesignGrid>
+              <DesignCard>
+                <h3>
+                  <FaBuilding />
+                  System Components
+                </h3>
+                <ul>
+                  <li>Client Applications</li>
+                  <li>Load Balancer</li>
+                  <li>Application Servers</li>
+                  <li>Database Servers</li>
+                  <li>Cache Layer</li>
+                  <li>Message Queue</li>
+                </ul>
+              </DesignCard>
+              <DesignCard>
+                <h3>
+                  <FaComments />
+                  Communication Flow
+                </h3>
+                <ul>
+                  <li>Client-Server Communication</li>
+                  <li>Inter-service Communication</li>
+                  <li>Data Flow Patterns</li>
+                  <li>Error Handling</li>
+                </ul>
+              </DesignCard>
+              <DesignCard>
+                <h3>
+                  <FaChartLine />
+                  Performance Considerations
+                </h3>
+                <ul>
+                  <li>Scalability Strategy</li>
+                  <li>Load Distribution</li>
+                  <li>Response Time Optimization</li>
+                  <li>Resource Utilization</li>
+                </ul>
+              </DesignCard>
+            </DesignGrid>
+          </DesignSection>
+
+          <DesignSection>
+            <h2>
+              <FaBolt />
+              Low-Level Design (LLD)
+            </h2>
+
+            <DiagramContainer>
+              <DiagramTitle>
+                <FaCode />
+                Component Design
+              </DiagramTitle>
+              <ComponentDesignDiagram />
+              <DiagramDescription>
+                The component design shows the main classes and their relationships. The Client class handles user interactions, while the Service class processes requests and manages business logic. The Database and Cache classes handle data persistence and caching respectively.
+              </DiagramDescription>
+            </DiagramContainer>
+
+            <DiagramContainer>
+              <DiagramTitle>
+                <FaDatabase />
+                Data Model
+              </DiagramTitle>
+              <DataModelDiagram />
+              <DiagramDescription>
+                The data model shows the relationships between different entities in the system. Users can send messages and join groups, while messages can have reactions. Each entity has its own attributes and relationships with other entities.
+              </DiagramDescription>
+            </DiagramContainer>
+
+            <DesignGrid>
+              <DesignCard>
+                <h3>
+                  <FaCode />
+                  Implementation Details
+                </h3>
+                <ul>
+                  <li>API Endpoints</li>
+                  <li>Business Logic</li>
+                  <li>Error Handling</li>
+                  <li>Security Measures</li>
+                </ul>
+              </DesignCard>
+              <DesignCard>
+                <h3>
+                  <FaDatabase />
+                  Database Schema
+                </h3>
+                <ul>
+                  <li>Table Structures</li>
+                  <li>Relationships</li>
+                  <li>Indexing Strategy</li>
+                  <li>Query Optimization</li>
+                </ul>
+              </DesignCard>
+              <DesignCard>
+                <h3>
+                  <FaCogs />
+                  Technical Specifications
+                </h3>
+                <ul>
+                  <li>API Documentation</li>
+                  <li>Service Contracts</li>
+                  <li>Data Validation</li>
+                  <li>Error Codes</li>
+                </ul>
+              </DesignCard>
+            </DesignGrid>
+          </DesignSection>
         </ContentCard>
       </MainPanel>
       <RightPanel>
