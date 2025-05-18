@@ -1198,14 +1198,45 @@ export const FeaturesSection = styled.section`
 `;
 
 export const Card = styled.div`
-  background-color: ${props => props.theme.colors.background};
+  background: ${props => props.theme.colors.background};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  padding: ${props => props.theme.spacing.lg};
+`;
+
+export const CardHeader = styled.div`
+  margin-bottom: ${props => props.theme.spacing.md};
+`;
+
+export const CardTitle = styled.h3`
+  font-size: ${props => props.theme.typography.h4};
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  color: ${props => props.theme.colors.text};
+  margin: 0;
+`;
+
+export const CardContent = styled.div`
+  color: ${props => props.theme.colors.textSecondary};
+`;
+
+export const Button = styled.button`
+  background: ${props => props.theme.colors.primary};
+  color: white;
+  border: none;
   border-radius: ${props => props.theme.borderRadius.md};
-  padding: ${props => props.theme.spacing.md};
-  box-shadow: ${props => props.theme.shadows.sm};
-  transition: ${props => props.theme.transitions.default};
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.lg};
+  font-size: ${props => props.theme.typography.fontSize.md};
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  cursor: pointer;
+  transition: all 0.2s ease;
 
   &:hover {
-    box-shadow: ${props => props.theme.shadows.md};
+    background: ${props => props.theme.colors.primaryDark};
+  }
+
+  &:disabled {
+    background: ${props => props.theme.colors.textSecondary};
+    cursor: not-allowed;
   }
 `;
 
@@ -1578,6 +1609,53 @@ export const StatValue = styled.div`
   color: ${props => props.theme.colors.text};
 `;
 
+export const ProfileContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: ${props => props.theme.spacing.xl};
+`;
+
+export const ProfileCard = styled.div`
+  background: ${props => props.theme.colors.background};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  padding: ${props => props.theme.spacing.xl};
+  position: relative;
+`;
+
+export const ProfileHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: ${props => props.theme.spacing.xl};
+`;
+
+export const ProfileAvatar = styled.img`
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid ${props => props.theme.colors.primary};
+  margin-bottom: ${props => props.theme.spacing.md};
+`;
+
+export const ProfileName = styled.h1`
+  font-size: ${props => props.theme.typography.h2};
+  font-weight: ${props => props.theme.typography.fontWeight.bold};
+  color: ${props => props.theme.colors.text};
+  margin-bottom: ${props => props.theme.spacing.xs};
+`;
+
+export const ProfileEmail = styled.div`
+  color: ${props => props.theme.colors.textSecondary};
+  font-size: ${props => props.theme.typography.fontSize.md};
+`;
+
+export const ProfileSection = styled.div`
+  margin-bottom: ${props => props.theme.spacing.xl};
+`;
+
 export type Theme = {
   colors: {
     primary: string;
@@ -1594,6 +1672,7 @@ export type Theme = {
     hover: string;
     card: string;
     cardHover: string;
+    cardBackground: string;
     success: string;
     error: string;
     warning: string;
@@ -1678,6 +1757,7 @@ export const lightTheme = {
     hover: '#F5F5F5',
     card: '#FFFFFF',
     cardHover: '#FAFAFA',
+    cardBackground: '#FFFFFF',
     success: '#34C759',
     error: '#FF3B30',
     warning: '#FF9500',
@@ -1741,6 +1821,7 @@ export const darkTheme = {
     hover: '#2C2C2E',
     card: '#1C1C1E',
     cardHover: '#2C2C2E',
+    cardBackground: '#1C1C1E',
     success: '#30D158',
     error: '#FF453A',
     warning: '#FF9F0A',
