@@ -99,7 +99,7 @@ export default function LoginClient() {
   return (
     <AuthContainer>
       <AuthCard>
-        <AuthTitle>Welcome to Deep Learner</AuthTitle>
+        <AuthTitle>Welcome to FrontendPro Academy</AuthTitle>
         <AuthForm>
           {error && <ErrorMessage>{error}</ErrorMessage>}
 

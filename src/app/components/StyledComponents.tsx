@@ -1,5 +1,60 @@
-import styled from 'styled-components';
+"use client";
+import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 import Image from 'next/image';
+import { useTheme } from '../context/ThemeContext';
+
+const spacing = {
+  xs: '0.25rem',
+  sm: '0.5rem',
+  md: '1rem',
+  lg: '1.5rem',
+  xl: '2rem',
+  '2xl': '2.5rem',
+  '3xl': '3rem',
+  '4xl': '4rem',
+  '5xl': '5rem',
+  '6xl': '6rem',
+};
+
+const breakpoints = {
+  mobile: '640px',
+  tablet: '768px',
+  desktop: '1024px',
+};
+
+export const typography = {
+  h1: '2.5rem',
+  h2: '2rem',
+  h3: '1.75rem',
+  h4: '1.5rem',
+  h5: '1.25rem',
+  h6: '1rem',
+  body1: { fontSize: '1rem', fontWeight: 400 },
+  body2: { fontSize: '0.875rem', fontWeight: 400 },
+  caption: { fontSize: '0.75rem', fontWeight: 400 },
+  fontSize: {
+    xs: '0.75rem',
+    sm: '0.875rem',
+    md: '1rem',
+    lg: '1.125rem',
+    xl: '1.25rem',
+    '2xl': '1.5rem',
+    '3xl': '1.875rem',
+    '4xl': '2.25rem'
+  },
+  fontWeight: {
+    normal: 400,
+    medium: 500,
+    semibold: 600,
+    bold: 700
+  }
+};
+
+const fonts = {
+  body: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+  heading: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+  code: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
+};
 
 export const DashboardContainer = styled.div`
   display: flex;
@@ -7,6 +62,10 @@ export const DashboardContainer = styled.div`
   min-height: 100vh;
   background-color: ${props => props.theme.colors.background};
   position: relative;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    flex-direction: column;
+  }
 `;
 
 export const Header = styled.header`
@@ -20,6 +79,13 @@ export const Header = styled.header`
   height: 64px;
   display: flex;
   align-items: center;
+  backdrop-filter: blur(8px);
+  background-color: ${props => props.theme.colors.background}dd;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    flex-direction: column;
+    gap: ${props => props.theme.spacing.sm};
+  }
 `;
 
 export const HeaderContent = styled.div`
@@ -31,6 +97,11 @@ export const HeaderContent = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: ${props => props.theme.spacing.xl};
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: ${props => props.theme.spacing.md};
+    gap: ${props => props.theme.spacing.md};
+  }
 `;
 
 export const HeaderLeft = styled.div`
@@ -38,39 +109,45 @@ export const HeaderLeft = styled.div`
   align-items: center;
   gap: 3rem;
   flex: 1;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    gap: ${props => props.theme.spacing.md};
+  }
 `;
 
 export const QuickActions = styled.div`
   display: flex;
   align-items: center;
   gap: ${props => props.theme.spacing.md};
-  margin-left: auto;
 
-  @media (max-width: 768px) {
-    display: none;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    gap: ${props => props.theme.spacing.sm};
   }
 `;
 
-export const ActionButton = styled.button<{ primary?: boolean }>`
-  background: ${props => props.primary ? props.theme.colors.primary : 'transparent'};
-  color: ${props => props.primary ? 'white' : props.theme.colors.text};
-  border: 1px solid ${props => props.primary ? props.theme.colors.primary : props.theme.colors.border};
-  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.lg};
-  border-radius: ${props => props.theme.borderRadius.md};
-  font-weight: 500;
-  cursor: pointer;
+export const ActionButton = styled.a<{ primary?: boolean; fullWidth?: boolean }>`
   display: flex;
   align-items: center;
-  gap: ${props => props.theme.spacing.sm};
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: ${props => props.theme.borderRadius.md};
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
   transition: all 0.2s ease;
+  background: ${props => props.primary ? props.theme.colors.primary : 'transparent'};
+  color: ${props => props.primary ? '#fff' : props.theme.colors.text};
+  border: 1px solid ${props => props.primary ? props.theme.colors.primary : props.theme.colors.border};
+  width: ${props => props.fullWidth ? '100%' : 'auto'};
 
   &:hover {
     background: ${props => props.primary ? props.theme.colors.primaryDark : props.theme.colors.backgroundAlt};
-    transform: translateY(-1px);
   }
 
-  &:active {
-    transform: translateY(0);
+  .action-label {
+    @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+      display: none;
+    }
   }
 `;
 
@@ -128,61 +205,60 @@ export const CategoryIcon = styled.span`
   font-size: 1.1rem;
 `;
 
-export const Logo = styled.h1`
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: ${props => props.theme.colors.primary};
-  margin: 0;
+export const Logo = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: ${props => props.theme.colors.text};
+  cursor: pointer;
   white-space: nowrap;
-  
-  &::before {
-    content: '🎓';
-    font-size: 1.8rem;
+
+  .logo-icon {
+    font-size: 1.5rem;
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 1.1rem;
+    
+    .logo-icon {
+      font-size: 1.3rem;
+    }
   }
 `;
 
-export const SearchContainer = styled.div<{ isFocused?: boolean }>`
+export const SearchContainer = styled.div<{ $isFocused: boolean }>`
   position: relative;
-  width: 300px;
-  transition: all 0.2s ease;
+  flex: 1;
+  max-width: 400px;
 
-  @media (max-width: 1024px) {
-    width: 200px;
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: ${props => props.$isFocused ? 'block' : 'none'};
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    padding: ${props => props.theme.spacing.md};
+    background: ${props => props.theme.colors.background};
+    border-bottom: 1px solid ${props => props.theme.colors.border};
+    z-index: 1001;
+    max-width: none;
   }
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-
-  ${props => props.isFocused && `
-    width: 400px;
-    @media (max-width: 1024px) {
-      width: 300px;
-    }
-  `}
 `;
 
 export const SearchInput = styled.input`
   width: 100%;
-  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
   border: 1px solid ${props => props.theme.colors.border};
-  border-radius: 20px;
+  border-radius: ${props => props.theme.borderRadius.md};
   background: ${props => props.theme.colors.background};
   color: ${props => props.theme.colors.text};
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
+  font-size: 0.875rem;
 
   &:focus {
     outline: none;
     border-color: ${props => props.theme.colors.primary};
-    box-shadow: 0 0 0 3px ${props => props.theme.colors.primary}15;
-  }
-
-  &::placeholder {
-    color: ${props => props.theme.colors.secondary};
   }
 `;
 
@@ -226,28 +302,43 @@ export const PageContainer = styled.div`
   margin-top: 64px;
   background: ${props => props.theme.colors.background};
   position: relative;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    flex-direction: column;
+  }
 `;
 
-export const Sidebar = styled.div`
-  width: 320px;
-  border-right: 1px solid ${props => props.theme.colors.border};
-  padding: ${props => props.theme.spacing.xl};
-  overflow-y: auto;
-  height: calc(100vh - 64px);
-  position: fixed;
-  top: 64px;
-  left: 0;
+export const Sidebar = styled.aside`
+  width: 280px;
+  height: 100vh;
   background: ${props => props.theme.colors.background};
+  border-right: 1px solid ${props => props.theme.colors.border};
   display: flex;
   flex-direction: column;
-  gap: ${props => props.theme.spacing.xl};
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  overflow-y: auto;
+  transition: all 0.3s ease;
 
-  @media (max-width: 1024px) {
-    width: 280px;
+  &::-webkit-scrollbar {
+    width: 6px;
   }
 
-  @media (max-width: 768px) {
-    display: none;
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${props => props.theme.colors.border};
+    border-radius: 3px;
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid ${props => props.theme.colors.border};
   }
 `;
 
@@ -255,995 +346,108 @@ export const SidebarHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
-`;
-
-export const SidebarActions = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-`;
-
-export const FilterButton = styled.button<{ active: boolean }>`
-  background: ${props => props.active ? props.theme.colors.primary : 'transparent'};
-  color: ${props => props.active ? '#FFFFFF' : props.theme.colors.text};
-  border: 1px solid ${props => props.active ? props.theme.colors.primary : props.theme.colors.border};
-  padding: 0.5rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-
-  &:hover {
-    background: ${props => props.active ? props.theme.colors.primary : props.theme.colors.background};
-    border-color: ${props => props.theme.colors.primary};
-    transform: translateY(-1px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
+  margin-bottom: ${props => props.theme.spacing.md};
 `;
 
 export const SidebarTitle = styled.h2`
-  font-size: 1.2rem;
-  color: ${props => props.theme.colors.text};
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  &::before {
-    content: '📚';
-    font-size: 1.4rem;
-  }
-`;
-
-export const TopicCount = styled.span`
-  font-size: 0.9rem;
-  color: ${props => props.theme.colors.text}80;
-  background: ${props => props.theme.colors.background};
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  border: 1px solid ${props => props.theme.colors.border};
-`;
-
-export const TopicTitle = styled.h1`
-  font-size: 2.5rem;
-  color: ${props => props.theme.colors.text};
-  margin-bottom: 1rem;
-  line-height: 1.2;
-  font-weight: 700;
-`;
-
-export const UserInfo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-`;
-
-export const UserName = styled.span`
-  font-weight: 500;
-  font-size: 0.9rem;
-  max-width: 150px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-export const TopicMeta = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  color: ${props => props.theme.colors.text}80;
-  font-size: 0.9rem;
-`;
-
-export const MetaItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-`;
-
-export const TopicContent = styled.div`
-  color: ${props => props.theme.colors.text};
-  line-height: 1.8;
-  margin-bottom: 2rem;
-  font-size: 1.1rem;
-
-  p {
-    margin-bottom: 1.5rem;
-  }
-
-  ul, ol {
-    margin: 1rem 0;
-    padding-left: 1.5rem;
-  }
-
-  li {
-    margin-bottom: 0.75rem;
-  }
-
-  code {
-    background: ${props => props.theme.colors.codeBackground};
-    padding: 0.2rem 0.4rem;
-    border-radius: 4px;
-    font-size: 0.9em;
-    color: ${props => props.theme.colors.codeText};
-    border: 1px solid ${props => props.theme.colors.border};
-  }
-
-  pre {
-    margin: 1.5rem 0;
-    border-radius: 8px;
-    overflow: hidden;
-    background: ${props => props.theme.colors.codeBackground};
-    border: 1px solid ${props => props.theme.colors.border};
-    padding: 1rem;
-    
-    code {
-      background: transparent;
-      border: none;
-      padding: 0;
-      font-size: 0.95em;
-      line-height: 1.6;
-    }
-  }
-`;
-
-export const Section = styled.section`
-  margin-bottom: ${props => props.theme.spacing.xl};
-  background: ${props => props.theme.colors.background};
-  border: 1px solid ${props => props.theme.colors.border};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  padding: ${props => props.theme.spacing.xl};
-  box-shadow: ${props => props.theme.shadows.sm};
-
-  @media (max-width: 768px) {
-    padding: ${props => props.theme.spacing.lg};
-    margin-bottom: ${props => props.theme.spacing.lg};
-  }
-`;
-
-export const SectionHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: ${props => props.theme.spacing.xl};
-  flex-wrap: wrap;
-  gap: ${props => props.theme.spacing.md};
-
-  @media (max-width: 768px) {
-    margin-bottom: ${props => props.theme.spacing.lg};
-  }
-`;
-
-export const SectionTitle = styled.h2`
-  font-size: 1.5rem;
-  color: ${props => props.theme.colors.text};
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin: 0;
-
-  &::before {
-    content: '📝';
-    font-size: 1.8rem;
-  }
-`;
-
-export const SectionActions = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-`;
-
-export const ProblemStatement = styled.div`
-  background: ${props => props.theme.colors.problemBackground};
-  border: 1px solid ${props => props.theme.colors.border};
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  color: ${props => props.theme.colors.text};
-  font-size: 1.1rem;
-  line-height: 1.6;
-  position: relative;
-
-  &::before {
-    content: '💡';
-    position: absolute;
-    top: -0.75rem;
-    left: 1rem;
-    background: ${props => props.theme.colors.background};
-    padding: 0 0.5rem;
-    font-size: 1.2rem;
-  }
-`;
-
-export const QuizContainer = styled.div`
-  background: ${props => props.theme.colors.background};
-  border: 1px solid ${props => props.theme.colors.border};
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-`;
-
-export const QuizHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.5rem;
-`;
-
-export const QuizQuestion = styled.h3`
-  font-size: 1.3rem;
-  color: ${props => props.theme.colors.text};
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-
-  &::before {
-    content: '❓';
-    font-size: 1.5rem;
-  }
-`;
-
-export const QuizProgress = styled.div`
-  font-size: 0.9rem;
-  color: ${props => props.theme.colors.text}80;
-`;
-
-export const QuizOptions = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-`;
-
-export const MainContent = styled.main`
-  flex: 1;
-  padding: ${props => props.theme.spacing.xl};
-  margin-left: 320px;
-  background: ${props => props.theme.colors.background};
-  min-height: calc(100vh - 64px);
-
-  @media (max-width: 1024px) {
-    margin-left: 280px;
-  }
-
-  @media (max-width: 768px) {
-    margin-left: 0;
-    padding: ${props => props.theme.spacing.lg};
-  }
-`;
-
-export const LandingContainer = styled.div`
-  min-height: 100vh;
-  background: ${props => props.theme.colors.background};
-`;
-
-export const Navbar = styled.nav`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 2rem;
-  background: ${props => props.theme.colors.background};
-  border-bottom: 1px solid ${props => props.theme.colors.border};
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-`;
-
-export const NavLogo = styled.h1`
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: ${props => props.theme.colors.primary};
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  
-  &::before {
-    content: '🎓';
-    font-size: 2rem;
-  }
-`;
-
-export const NavActions = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-`;
-
-export const AuthButtons = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-`;
-
-export const LoginButton = styled.a`
-  color: ${props => props.theme.colors.text};
-  text-decoration: none;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  transition: all 0.2s ease;
-
-  &:hover {
-    color: ${props => props.theme.colors.primary};
-  }
-`;
-
-export const SignupButton = styled.a`
-  background: ${props => props.theme.colors.primary};
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-  padding: 0.75rem 1.5rem;
-  border-radius: 20px;
-  transition: all 0.2s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px ${props => props.theme.colors.primary}40;
-  }
-`;
-
-export const HeroSection = styled.section`
-  padding: 8rem 2rem 4rem;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  background: ${props => props.theme.colors.background};
-`;
-
-export const BackgroundPattern = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at 50% 50%, ${props => props.theme.colors.primary}10 0%, transparent 50%);
-  z-index: 0;
-`;
-
-export const HeroTitle = styled.h1`
-  font-size: 3.5rem;
-  font-weight: 800;
-  color: ${props => props.theme.colors.text};
-  margin-bottom: 1.5rem;
-  position: relative;
-  z-index: 1;
-  line-height: 1.2;
-
-  @media (max-width: 768px) {
-    font-size: 2.5rem;
-  }
-`;
-
-export const HeroSubtitle = styled.h2`
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: ${props => props.theme.colors.text}80;
-  margin-bottom: 2rem;
-  position: relative;
-  z-index: 1;
-
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
-  }
-`;
-
-export const HeroDescription = styled.p`
-  font-size: 1.2rem;
-  color: ${props => props.theme.colors.text}80;
-  max-width: 800px;
-  margin: 0 auto 3rem;
-  line-height: 1.6;
-  position: relative;
-  z-index: 1;
-
-  @media (max-width: 768px) {
-    font-size: 1.1rem;
-  }
-`;
-
-export const CTAButton = styled.a`
-  display: inline-block;
-  background: ${props => props.theme.colors.primary};
-  color: white;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1.2rem;
-  padding: 1rem 2.5rem;
-  border-radius: 30px;
-  transition: all 0.3s ease;
-  position: relative;
-  z-index: 1;
-
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px ${props => props.theme.colors.primary}40;
-  }
-`;
-
-export const FeaturesSection = styled.section`
-  padding: 4rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-`;
-
-export const FeatureCard = styled.div`
-  background: ${props => props.theme.colors.background};
-  border: 1px solid ${props => props.theme.colors.border};
-  border-radius: 16px;
-  padding: 2rem;
-  text-align: center;
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 24px ${props => props.theme.colors.border};
-  }
-`;
-
-export const FeatureIcon = styled.div`
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
-`;
-
-export const FeatureTitle = styled.h3`
-  font-size: 1.5rem;
+  font-size: ${props => props.theme.typography.h3};
   font-weight: 600;
   color: ${props => props.theme.colors.text};
-  margin-bottom: 1rem;
+  margin: 0;
 `;
 
-export const FeatureDescription = styled.p`
-  color: ${props => props.theme.colors.text}80;
-  line-height: 1.6;
-  font-size: 1.1rem;
+export const SidebarSearch = styled.div`
+  position: relative;
+  margin-bottom: ${props => props.theme.spacing.md};
 `;
 
-export const AuthContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 2rem;
-  background: ${props => props.theme.colors.background};
-`;
-
-export const AuthCard = styled.div`
+export const SidebarSearchInput = styled.input`
   width: 100%;
-  max-width: 400px;
-  padding: 2.5rem;
-  background: ${props => props.theme.colors.background};
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+  padding-right: 40px;
   border: 1px solid ${props => props.theme.colors.border};
-  border-radius: 16px;
-  box-shadow: 0 4px 24px ${props => props.theme.colors.border}40;
-`;
-
-export const AuthTitle = styled.h1`
-  font-size: 2rem;
-  font-weight: 700;
-  color: ${props => props.theme.colors.text};
-  margin-bottom: 2rem;
-  text-align: center;
-`;
-
-export const AuthForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-`;
-
-export const FormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-`;
-
-export const FormLabel = styled.label`
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: ${props => props.theme.colors.text};
-`;
-
-export const FormInput = styled.input`
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid ${props => props.theme.colors.border};
-  border-radius: 8px;
+  border-radius: ${props => props.theme.borderRadius.md};
   background: ${props => props.theme.colors.background};
   color: ${props => props.theme.colors.text};
-  font-size: 1rem;
+  font-size: ${props => props.theme.typography.fontSize.sm};
   transition: all 0.2s ease;
 
   &:focus {
     outline: none;
     border-color: ${props => props.theme.colors.primary};
-    box-shadow: 0 0 0 3px ${props => props.theme.colors.primary}15;
+    box-shadow: 0 0 0 2px ${props => props.theme.colors.primary}20;
   }
 
   &::placeholder {
-    color: ${props => props.theme.colors.text}60;
+    color: ${props => props.theme.colors.textSecondary};
   }
 `;
 
-export const SubmitButton = styled.button`
-  width: 100%;
-  padding: 0.75rem;
-  background: ${props => props.theme.colors.primary};
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px ${props => props.theme.colors.primary}40;
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  &:disabled {
-    background: ${props => props.theme.colors.border};
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-  }
-`;
-
-export const AuthLink = styled.a`
-  display: block;
-  text-align: center;
-  margin-top: 1.5rem;
-  color: ${props => props.theme.colors.text}80;
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition: color 0.2s ease;
-
-  &:hover {
-    color: ${props => props.theme.colors.primary};
-  }
-`;
-
-export const ErrorMessage = styled.div`
-  padding: 0.75rem;
-  background: ${props => props.theme.colors.error}15;
-  border: 1px solid ${props => props.theme.colors.error};
-  border-radius: 8px;
-  color: ${props => props.theme.colors.error};
-  font-size: 0.9rem;
-  text-align: center;
-`;
-
-export const SocialButtonGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${props => props.theme.spacing.sm};
-  margin-bottom: ${props => props.theme.spacing.lg};
-`;
-
-export const SocialButton = styled.button`
+export const SidebarSearchIcon = styled.div`
+  position: absolute;
+  right: ${props => props.theme.spacing.sm};
+  top: 50%;
+  transform: translateY(-50%);
+  color: ${props => props.theme.colors.textSecondary};
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.lg};
-  border: none;
-  border-radius: ${props => props.theme.borderRadius};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    opacity: 0.9;
-  }
-
-  &:active {
-    transform: translateY(1px);
-  }
+  width: 24px;
+  height: 24px;
 `;
 
-export const Divider = styled.div`
-  display: flex;
-  align-items: center;
-  text-align: center;
-  margin: ${props => props.theme.spacing.lg} 0;
-
-  &::before,
-  &::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid ${props => props.theme.colors.border};
-  }
-`;
-
-export const DividerText = styled.span`
-  padding: 0 ${props => props.theme.spacing.md};
-  color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-`;
-
-export const UserMenuContainer = styled.div`
-  position: relative;
-  display: inline-block;
-`;
-
-export const UserButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 1rem;
+export const SidebarProgress = styled.div`
   background: ${props => props.theme.colors.background};
-  border: 1px solid ${props => props.theme.colors.border};
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: ${props => props.theme.colors.text};
-
-  &:hover {
-    border-color: ${props => props.theme.colors.primary};
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-`;
-
-export const UserAvatar = styled.img`
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid ${props => props.theme.colors.primary};
-`;
-
-export const DropdownMenu = styled.div`
-  position: absolute;
-  top: calc(100% + 0.5rem);
-  right: 0;
-  min-width: 220px;
-  background: ${props => props.theme.colors.background};
-  border: 1px solid ${props => props.theme.colors.border};
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  overflow: hidden;
-  animation: slideDown 0.2s ease;
-
-  @keyframes slideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-`;
-
-export const MenuItem = styled.button`
-  width: 100%;
-  padding: 0.75rem 1rem;
-  text-align: left;
-  background: transparent;
-  border: none;
-  color: ${props => props.theme.colors.text};
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-
-  &::before {
-    font-size: 1.1rem;
-  }
-
-  &:hover {
-    background: ${props => props.theme.colors.background}dd;
-  }
-
-  &[data-icon="profile"]::before {
-    content: '👤';
-  }
-
-  &[data-icon="settings"]::before {
-    content: '⚙️';
-  }
-
-  &[data-icon="logout"]::before {
-    content: '🚪';
-  }
-`;
-
-export const MenuDivider = styled.div`
-  height: 1px;
-  background: ${props => props.theme.colors.border};
-  margin: 0.5rem 0;
-`;
-
-export const ProfileContainer = styled.div`
-  padding: ${props => props.theme.spacing.xl};
-  max-width: 1200px;
-  margin: 0 auto;
-`;
-
-export const ProfileCard = styled.div`
-  background: ${props => props.theme.colors.sidebar};
   border-radius: ${props => props.theme.borderRadius.lg};
-  box-shadow: ${props => props.theme.shadows.md};
-  overflow: hidden;
-`;
-
-export const ProfileHeader = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: ${props => props.theme.spacing.xl};
-  background: ${props => props.theme.colors.primary};
-  color: white;
-  text-align: center;
-`;
-
-export const ProfileAvatar = styled(Image)`
-  border-radius: 50%;
-  border: 4px solid white;
+  padding: ${props => props.theme.spacing.md};
   margin-bottom: ${props => props.theme.spacing.md};
 `;
 
-export const ProfileName = styled.h1`
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: ${props => props.theme.spacing.xs};
-`;
-
-export const ProfileEmail = styled.p`
-  font-size: 1rem;
-  opacity: 0.9;
-`;
-
-export const ProfileSection = styled.section`
-  padding: ${props => props.theme.spacing.xl};
-  border-bottom: 1px solid ${props => props.theme.colors.border};
-
-  &:last-child {
-    border-bottom: none;
-  }
-`;
-
-export const SectionContent = styled.div`
-  color: ${props => props.theme.colors.secondary};
-  line-height: 1.6;
-
-  p {
-    margin-bottom: ${props => props.theme.spacing.sm};
-  }
-`;
-
-export const ProfileLink = styled.a`
-  color: ${props => props.theme.colors.text};
-  text-decoration: none;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  &::before {
-    content: '👤';
-    font-size: 1.1rem;
-  }
-
-  &:hover {
-    color: ${props => props.theme.colors.primary};
-    background: ${props => props.theme.colors.background};
-  }
-`;
-
-export const HeaderRight = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-`;
-
-export const DashboardLink = styled.a`
-  color: ${props => props.theme.colors.text};
-  text-decoration: none;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  &::before {
-    content: '📊';
-    font-size: 1.1rem;
-  }
-
-  &:hover {
-    color: ${props => props.theme.colors.primary};
-    background: ${props => props.theme.colors.background};
-  }
-`;
-
-export const WelcomeCard = styled.div`
-  background: ${props => props.theme.colors.background};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  padding: ${props => props.theme.spacing.xl};
-  margin-bottom: ${props => props.theme.spacing.xl};
-  box-shadow: ${props => props.theme.shadows.sm};
-  border: 1px solid ${props => props.theme.colors.border};
-
-  @media (max-width: 768px) {
-    padding: ${props => props.theme.spacing.lg};
-    margin-bottom: ${props => props.theme.spacing.lg};
-  }
-`;
-
-export const ProgressBar = styled.div<{ progress: number }>`
-  width: 100%;
-  height: 6px;
+export const SidebarProgressBar = styled.div<{ progress: number }>`
+  height: 8px;
   background: ${props => props.theme.colors.border};
-  border-radius: 3px;
+  border-radius: 4px;
   overflow: hidden;
-  margin: ${props => props.theme.spacing.sm} 0;
+  margin-bottom: ${props => props.theme.spacing.sm};
 
-  div {
-    width: ${props => props.progress}%;
+  &::after {
+    content: '';
+    display: block;
     height: 100%;
+    width: ${props => props.progress}%;
     background: ${props => props.theme.colors.primary};
+    border-radius: 4px;
     transition: width 0.3s ease;
   }
 `;
 
-export const TopicCardGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: ${props => props.theme.spacing.lg};
-  margin-top: ${props => props.theme.spacing.lg};
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: ${props => props.theme.spacing.md};
-  }
-`;
-
-export const TopicCard = styled.div`
-  background: ${props => props.theme.colors.background};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  border: 1px solid ${props => props.theme.colors.border};
-  overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${props => props.theme.shadows.md};
-  }
-`;
-
-export const TopicCardHeader = styled.div`
+export const SidebarProgressText = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: ${props => props.theme.spacing.lg};
-  background: ${props => props.theme.colors.backgroundAlt};
-  border-bottom: 1px solid ${props => props.theme.colors.border};
-
-  span {
-    font-size: ${props => props.theme.fontSizes.lg};
-    color: ${props => props.theme.colors.textSecondary};
-  }
+  align-items: baseline;
+  gap: ${props => props.theme.spacing.xs};
 `;
 
-export const TopicCardContent = styled.div`
-  padding: ${props => props.theme.spacing.lg};
-
-  h3 {
-    margin: 0 0 ${props => props.theme.spacing.sm};
-    color: ${props => props.theme.colors.text};
-    font-size: ${props => props.theme.fontSizes.lg};
-  }
-
-  p {
-    margin: 0;
-    color: ${props => props.theme.colors.textSecondary};
-    font-size: ${props => props.theme.fontSizes.sm};
-    line-height: 1.5;
-  }
+export const SidebarProgressValue = styled.span`
+  font-size: ${props => props.theme.typography.h4};
+  font-weight: 600;
+  color: ${props => props.theme.colors.primary};
 `;
 
-export const TopicCardFooter = styled.div`
-  padding: ${props => props.theme.spacing.lg};
-  border-top: 1px solid ${props => props.theme.colors.border};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-export const TopicCardStats = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${props => props.theme.spacing.sm};
-  flex: 1;
-
-  span {
-    color: ${props => props.theme.colors.textSecondary};
-    font-size: ${props => props.theme.fontSizes.sm};
-  }
-`;
-
-export const TopicCardAction = styled.button`
-  background: ${props => props.theme.colors.primary};
-  color: white;
-  border: none;
-  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.lg};
-  border-radius: ${props => props.theme.borderRadius.md};
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-
-  &:hover {
-    background: ${props => props.theme.colors.primaryDark};
-  }
-`;
-
-export const SidebarSection = styled.div`
-  padding: ${props => props.theme.spacing.lg};
-  display: flex;
-  flex-direction: column;
-  gap: ${props => props.theme.spacing.md};
-`;
-
-export const SidebarSectionTitle = styled.h3`
-  font-size: ${props => props.theme.fontSizes.sm};
+export const SidebarProgressLabel = styled.span`
+  font-size: ${props => props.theme.typography.fontSize.sm};
   color: ${props => props.theme.colors.textSecondary};
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin: 0;
 `;
 
 export const SidebarStats = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${props => props.theme.spacing.sm};
-`;
-
-export const SidebarStatItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing.sm};
-  padding: ${props => props.theme.spacing.sm};
-  background: ${props => props.theme.colors.backgroundAlt};
-  border-radius: ${props => props.theme.borderRadius.md};
+  padding: ${props => props.theme.spacing.md};
+  background: ${props => props.theme.colors.background};
   border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.md};
 
-  span {
+  span:first-child {
     font-size: 1.2rem;
   }
 
@@ -1253,56 +457,93 @@ export const SidebarStatItem = styled.div`
     gap: 2px;
 
     strong {
+      font-size: ${props => props.theme.typography.fontSize.md};
       color: ${props => props.theme.colors.text};
-      font-size: ${props => props.theme.fontSizes.sm};
     }
 
     span {
+      font-size: ${props => props.theme.typography.fontSize.xs};
       color: ${props => props.theme.colors.textSecondary};
-      font-size: ${props => props.theme.fontSizes.xs};
     }
   }
+`;
+
+export const SidebarStatItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.sm};
+  padding: ${props => props.theme.spacing.sm};
+  background: ${props => props.theme.colors.background};
+  border-radius: ${props => props.theme.borderRadius.md};
+`;
+
+export const SidebarQuickActions = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: ${props => props.theme.spacing.sm};
+`;
+
+export const SidebarQuickActionButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.sm};
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+  background: ${props => props.theme.colors.background};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.md};
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSize.md};
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${props => props.theme.colors.backgroundAlt};
+    border-color: ${props => props.theme.colors.primary};
+  }
+
+  span {
+    font-size: 1.2rem;
+  }
+`;
+
+export const SidebarFilterGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing.sm};
+`;
+
+export const SidebarFilterLabel = styled.label`
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  color: ${props => props.theme.colors.textSecondary};
+  margin-bottom: ${props => props.theme.spacing.xs};
+`;
+
+export const SidebarCategoryGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing.xs};
+`;
+
+export const SidebarCategoryHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: ${props => props.theme.spacing.sm};
+`;
+
+export const SidebarCategoryCount = styled.span`
+  font-size: ${props => props.theme.typography.fontSize.xs};
+  color: ${props => props.theme.colors.textSecondary};
+  background: ${props => props.theme.colors.background};
+  padding: 2px 8px;
+  border-radius: ${props => props.theme.borderRadius.sm};
+  border: 1px solid ${props => props.theme.colors.border};
 `;
 
 export const SidebarDivider = styled.div`
   height: 1px;
   background: ${props => props.theme.colors.border};
   margin: ${props => props.theme.spacing.xs} 0;
-`;
-
-export const SidebarSearch = styled.div`
-  position: relative;
-  width: 100%;
-`;
-
-export const SidebarSearchInput = styled.input`
-  width: 100%;
-  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.lg} ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
-  border: 1px solid ${props => props.theme.colors.border};
-  border-radius: ${props => props.theme.borderRadius.md};
-  background: ${props => props.theme.colors.background};
-  color: ${props => props.theme.colors.text};
-  font-size: ${props => props.theme.fontSizes.sm};
-  transition: all 0.2s ease;
-
-  &:focus {
-    outline: none;
-    border-color: ${props => props.theme.colors.primary};
-    box-shadow: 0 0 0 3px ${props => props.theme.colors.primary}15;
-  }
-
-  &::placeholder {
-    color: ${props => props.theme.colors.textSecondary};
-  }
-`;
-
-export const SidebarSearchIcon = styled.span`
-  position: absolute;
-  right: ${props => props.theme.spacing.md};
-  top: 50%;
-  transform: translateY(-50%);
-  color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.fontSizes.sm};
 `;
 
 export const SidebarFooter = styled.div`
@@ -1316,11 +557,23 @@ export const SidebarFooterText = styled.div`
   align-items: center;
   gap: ${props => props.theme.spacing.sm};
   color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.fontSizes.sm};
+  font-size: ${props => props.theme.typography.fontSize.xs};
 
   span {
     font-size: 1.2rem;
   }
+`;
+
+export const SidebarSection = styled.div`
+  padding: ${props => props.theme.spacing.lg};
+`;
+
+export const SidebarSectionTitle = styled.h3`
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  color: ${props => props.theme.colors.textSecondary};
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
 `;
 
 export const NavLinks = styled.nav`
@@ -1470,6 +723,43 @@ export const RoadmapDescription = styled.p`
   margin: 0;
 `;
 
+export const TopicCard = styled.div`
+  background: ${props => props.theme.colors.background};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  overflow: hidden;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${props => props.theme.shadows.md};
+  }
+`;
+
+export const TopicCardHeader = styled.div`
+  padding: ${props => props.theme.spacing.lg};
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  background: ${props => props.theme.colors.backgroundAlt};
+`;
+
+export const TopicCardContent = styled.div`
+  padding: ${props => props.theme.spacing.lg};
+`;
+
+export const TopicCardFooter = styled.div`
+  padding: ${props => props.theme.spacing.lg};
+  border-top: 1px solid ${props => props.theme.colors.border};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const TopicCardStats = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing.sm};
+`;
+
 export const InterviewSection = styled.div`
   margin-top: ${props => props.theme.spacing.lg};
 `;
@@ -1505,36 +795,60 @@ export const MobileMenuButton = styled.button`
   display: none;
   background: none;
   border: none;
+  padding: 0.5rem;
+  cursor: pointer;
   color: ${props => props.theme.colors.text};
   font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.5rem;
-  margin-left: 1rem;
+  z-index: 1001;
 
-  @media (max-width: 1024px) {
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     display: block;
   }
 `;
 
-export const MobileMenu = styled.div`
-  display: none;
+export const MobileSidebar = styled.div<{ $isOpen: boolean }>`
   position: fixed;
-  top: 64px;
+  top: 0;
   left: 0;
-  right: 0;
-  background: ${props => props.theme.colors.sidebar};
-  border-bottom: 1px solid ${props => props.theme.colors.border};
+  bottom: 0;
+  width: 280px;
+  background: ${props => props.theme.colors.background};
+  border-right: 1px solid ${props => props.theme.colors.border};
+  z-index: 1000;
+  transform: translateX(${props => props.$isOpen ? '0' : '-100%'});
+  transition: transform 0.3s ease;
   padding: 1rem;
+  display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  z-index: 999;
-
-  @media (max-width: 1024px) {
-    display: flex;
-  }
+  gap: 1rem;
+  overflow-y: auto;
 `;
 
-export const MobileNavLink = styled.a`
+export const MobileSidebarHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  margin-bottom: 1rem;
+`;
+
+export const MobileSidebarClose = styled.button`
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: ${props => props.theme.colors.text};
+  font-size: 1.5rem;
+`;
+
+export const MobileSidebarNav = styled.nav`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+export const MobileSidebarLink = styled.a`
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -1543,6 +857,7 @@ export const MobileNavLink = styled.a`
   text-decoration: none;
   border-radius: ${props => props.theme.borderRadius.md};
   transition: all 0.2s ease;
+  font-size: 0.95rem;
 
   &:hover {
     background: ${props => props.theme.colors.backgroundAlt};
@@ -1552,6 +867,28 @@ export const MobileNavLink = styled.a`
   .nav-icon {
     font-size: 1.2rem;
   }
+`;
+
+export const MobileSidebarActions = styled.div`
+  margin-top: auto;
+  padding: 1rem;
+  border-top: 1px solid ${props => props.theme.colors.border};
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+`;
+
+export const MobileSidebarOverlay = styled.div<{ $isOpen: boolean }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: ${props => props.$isOpen ? 1 : 0};
+  visibility: ${props => props.$isOpen ? 'visible' : 'hidden'};
+  transition: all 0.3s ease;
 `;
 
 export const NavItem = styled.div`
@@ -1626,6 +963,11 @@ export const LandingHeader = styled.header`
   align-items: center;
   backdrop-filter: blur(8px);
   background-color: ${props => props.theme.colors.background}dd;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    height: auto;
+    min-height: 64px;
+  }
 `;
 
 export const LandingNavLinks = styled.nav`
@@ -1634,7 +976,7 @@ export const LandingNavLinks = styled.nav`
   gap: 2rem;
   margin-left: 3rem;
 
-  @media (max-width: 768px) {
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     display: none;
   }
 `;
@@ -1674,34 +1016,83 @@ export const LandingActions = styled.div`
   gap: 1rem;
   margin-left: auto;
 
-  @media (max-width: 768px) {
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     display: none;
   }
 `;
 
 export const StatsSection = styled.section`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
-  padding: 4rem 2rem;
-  background: ${props => props.theme.colors.backgroundAlt};
-  margin-top: -2rem;
-  position: relative;
-  z-index: 1;
-  border-radius: 0 0 2rem 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  padding: ${props => props.theme.spacing.xl};
+  background: ${props => props.theme.colors.background};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  border: 1px solid ${props => props.theme.colors.border};
+  margin-bottom: ${props => props.theme.spacing.xl};
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: ${props => props.theme.spacing.lg};
+    margin-bottom: ${props => props.theme.spacing.lg};
+  }
+`;
+
+export const Title = styled.h1`
+  font-size: 2rem;
+  color: ${props => props.theme.colors.text};
+  margin-bottom: 1rem;
+  font-weight: 700;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1.75rem;
+  }
+`;
+
+export const Description = styled.p`
+  font-size: 1.1rem;
+  color: ${props => props.theme.colors.textSecondary};
+  line-height: 1.6;
+  margin-bottom: 2rem;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1rem;
+  }
+`;
+
+export const Content = styled.div`
+  color: ${props => props.theme.colors.text};
+  line-height: 1.8;
+  font-size: 1.1rem;
+
+  p {
+    margin-bottom: 1.5rem;
+  }
+
+  ul, ol {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+  }
+
+  li {
+    margin-bottom: 0.75rem;
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1rem;
+  }
 `;
 
 export const StatCard = styled.div`
-  text-align: center;
-  padding: 1.5rem;
-  background: ${props => props.theme.colors.background};
-  border-radius: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease;
+  background-color: ${props => props.theme.colors.background};
+  border-radius: ${props => props.theme.borderRadius.md};
+  padding: ${props => props.theme.spacing.md};
+  box-shadow: ${props => props.theme.shadows.sm};
+  transition: ${props => props.theme.transitions.default};
 
   &:hover {
-    transform: translateY(-5px);
+    transform: translateY(-2px);
+    box-shadow: ${props => props.theme.shadows.md};
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: ${props => props.theme.spacing.md};
   }
 `;
 
@@ -1709,52 +1100,67 @@ export const StatNumber = styled.div`
   font-size: 2.5rem;
   font-weight: 700;
   color: ${props => props.theme.colors.primary};
-  margin-bottom: 0.5rem;
+  margin-bottom: ${props => props.theme.spacing.sm};
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 2rem;
+  }
 `;
 
 export const StatLabel = styled.div`
   font-size: 1rem;
   color: ${props => props.theme.colors.textSecondary};
+  font-weight: 500;
 `;
 
 export const TestimonialsSection = styled.section`
-  padding: 4rem 2rem;
+  padding: ${props => props.theme.spacing.xl} 0;
   background: ${props => props.theme.colors.background};
+  border-top: 1px solid ${props => props.theme.colors.border};
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  margin: ${props => props.theme.spacing.xl} 0;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: ${props => props.theme.spacing.lg} 0;
+    margin: ${props => props.theme.spacing.lg} 0;
+  }
 `;
 
 export const TestimonialCard = styled.div`
   background: ${props => props.theme.colors.background};
   border: 1px solid ${props => props.theme.colors.border};
-  border-radius: 1rem;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: ${props => props.theme.borderRadius.lg};
+  padding: ${props => props.theme.spacing.xl};
+  margin: ${props => props.theme.spacing.md};
+  transition: all 0.3s ease;
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    box-shadow: ${props => props.theme.shadows.md};
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: ${props => props.theme.spacing.lg};
+    margin: ${props => props.theme.spacing.sm};
   }
 `;
 
 export const TestimonialContent = styled.p`
   font-size: 1.1rem;
-  line-height: 1.6;
   color: ${props => props.theme.colors.text};
-  margin: 0;
-  flex: 1;
+  line-height: 1.6;
+  margin-bottom: ${props => props.theme.spacing.lg};
+  font-style: italic;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1rem;
+  }
 `;
 
 export const TestimonialAuthor = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
-`;
-
-export const TestimonialRole = styled.div`
-  font-size: 0.9rem;
-  color: ${props => props.theme.colors.textSecondary};
+  gap: ${props => props.theme.spacing.md};
 `;
 
 export const TestimonialAvatar = styled.img`
@@ -1762,4 +1168,655 @@ export const TestimonialAvatar = styled.img`
   height: 48px;
   border-radius: 50%;
   object-fit: cover;
-`; 
+  border: 2px solid ${props => props.theme.colors.primary};
+`;
+
+export const TestimonialRole = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  strong {
+    color: ${props => props.theme.colors.text};
+    font-size: 1rem;
+  }
+
+  span {
+    color: ${props => props.theme.colors.textSecondary};
+    font-size: 0.9rem;
+  }
+`;
+
+export const LandingContainer = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: ${props => props.theme.spacing.xl};
+`;
+
+export const FeaturesSection = styled.section`
+  padding: ${props => props.theme.spacing.xl} 0;
+`;
+
+export const Card = styled.div`
+  background-color: ${props => props.theme.colors.background};
+  border-radius: ${props => props.theme.borderRadius.md};
+  padding: ${props => props.theme.spacing.md};
+  box-shadow: ${props => props.theme.shadows.sm};
+  transition: ${props => props.theme.transitions.default};
+
+  &:hover {
+    box-shadow: ${props => props.theme.shadows.md};
+  }
+`;
+
+export const FeatureCard = styled(Card)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: ${props => props.theme.spacing.md};
+`;
+
+export const FeatureIcon = styled.div`
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: ${props => props.theme.colors.primary};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+`;
+
+export const FeatureTitle = styled.h3`
+  font-size: ${props => props.theme.typography.fontSize.lg};
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  color: ${props => props.theme.colors.text};
+`;
+
+export const FeatureDescription = styled.p`
+  font-size: ${props => props.theme.typography.fontSize.md};
+  color: ${props => props.theme.colors.textSecondary};
+  line-height: 1.6;
+`;
+
+export const Section = styled.section`
+  padding: ${props => props.theme.spacing.xl} 0;
+`;
+
+export const SectionHeader = styled.div`
+  text-align: center;
+  margin-bottom: ${props => props.theme.spacing.xl};
+`;
+
+export const SectionTitle = styled.h2`
+  font-size: ${props => props.theme.typography.fontSize.xl};
+  font-weight: ${props => props.theme.typography.fontWeight.bold};
+  color: ${props => props.theme.colors.text};
+  margin-bottom: ${props => props.theme.spacing.md};
+`;
+
+export const SectionActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.md};
+  margin-top: ${props => props.theme.spacing.md};
+`;
+
+export const SectionContent = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+`;
+
+export const HeaderRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.md};
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    gap: ${props => props.theme.spacing.sm};
+  }
+`;
+
+export const UserMenuContainer = styled.div`
+  position: relative;
+`;
+
+export const UserButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.sm};
+  padding: ${props => props.theme.spacing.sm};
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  border-radius: ${props => props.theme.borderRadius.md};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${props => props.theme.colors.backgroundAlt};
+  }
+`;
+
+export const UserAvatar = styled.img`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+
+export const DropdownMenu = styled.div`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: ${props => props.theme.spacing.sm};
+  background: ${props => props.theme.colors.background};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.md};
+  box-shadow: ${props => props.theme.shadows.md};
+  min-width: 200px;
+  z-index: 1000;
+  animation: slideDown 0.2s ease;
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`;
+
+export const MenuItem = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.sm};
+  width: 100%;
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${props => props.theme.colors.backgroundAlt};
+  }
+
+  &[data-icon]::before {
+    content: attr(data-icon);
+    font-size: 1.2rem;
+  }
+`;
+
+export const MenuDivider = styled.div`
+  height: 1px;
+  background: ${props => props.theme.colors.border};
+  margin: ${props => props.theme.spacing.xs} 0;
+`;
+
+export const SidebarActions = styled.div`
+  display: flex;
+  gap: ${props => props.theme.spacing.sm};
+  margin-bottom: ${props => props.theme.spacing.md};
+`;
+
+export const FilterButton = styled.button<{ active: boolean }>`
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+  border-radius: ${props => props.theme.borderRadius.md};
+  border: 1px solid ${props => props.active ? props.theme.colors.primary : props.theme.colors.border};
+  background: ${props => props.active ? props.theme.colors.primary : 'transparent'};
+  color: ${props => props.active ? '#FFFFFF' : props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${props => props.active ? props.theme.colors.primary : props.theme.colors.backgroundAlt};
+    border-color: ${props => props.theme.colors.primary};
+  }
+`;
+
+export const ProgressBar = styled.div<{ progress: number }>`
+  width: 100%;
+  height: 8px;
+  background: ${props => props.theme.colors.backgroundAlt};
+  border-radius: 9999px;
+  overflow: hidden;
+  margin: ${props => props.theme.spacing.sm} 0;
+
+  > div {
+    width: ${props => props.progress}%;
+    height: 100%;
+    background: ${props => props.theme.colors.primary};
+    border-radius: 9999px;
+    transition: width 0.3s ease;
+  }
+`;
+
+export const TopicTitle = styled.h1`
+  font-size: ${props => props.theme.typography.h2};
+  font-weight: ${props => props.theme.typography.fontWeight.bold};
+  color: ${props => props.theme.colors.text};
+  margin-bottom: ${props => props.theme.spacing.md};
+`;
+
+export const TopicMeta = styled.div`
+  display: flex;
+  gap: ${props => props.theme.spacing.md};
+  margin-bottom: ${props => props.theme.spacing.lg};
+`;
+
+export const MetaItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.sm};
+  color: ${props => props.theme.colors.textSecondary};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+`;
+
+export const QuizContainer = styled.div`
+  background: ${props => props.theme.colors.background};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  padding: ${props => props.theme.spacing.lg};
+`;
+
+export const QuizHeader = styled.div`
+  margin-bottom: ${props => props.theme.spacing.lg};
+`;
+
+export const QuizQuestion = styled.h3`
+  font-size: ${props => props.theme.typography.h4};
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  color: ${props => props.theme.colors.text};
+  margin-bottom: ${props => props.theme.spacing.sm};
+`;
+
+export const QuizProgress = styled.div`
+  color: ${props => props.theme.colors.textSecondary};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+`;
+
+export const QuizOptions = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing.md};
+`;
+
+export const MainContent = styled.main`
+  flex: 1;
+  padding: ${props => props.theme.spacing.xl};
+  margin-left: 280px;
+  min-height: 100vh;
+  background: ${props => props.theme.colors.background};
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    margin-left: 0;
+    padding: ${props => props.theme.spacing.md};
+  }
+`;
+
+export const WelcomeCard = styled.div`
+  background: ${props => props.theme.colors.background};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  padding: ${props => props.theme.spacing.xl};
+  margin-bottom: ${props => props.theme.spacing.xl};
+`;
+
+export const TopicCardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: ${props => props.theme.spacing.lg};
+`;
+
+export const TopicCardAction = styled.button`
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+  background: ${props => props.theme.colors.primary};
+  color: white;
+  border: none;
+  border-radius: ${props => props.theme.borderRadius.md};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${props => props.theme.colors.primaryDark};
+  }
+`;
+
+export const AuthContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: ${props => props.theme.spacing.md};
+  background-color: ${props => props.theme.colors.background};
+`;
+
+export const AuthCard = styled.div<{ theme: Theme }>`
+  width: 100%;
+  max-width: 400px;
+  padding: ${props => props.theme.spacing.xl};
+  background-color: ${props => props.theme.colors.card};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  box-shadow: ${props => props.theme.shadows.md};
+`;
+
+export const AuthTitle = styled.h1`
+  font-size: ${props => props.theme.typography.h2};
+  font-weight: ${props => props.theme.typography.fontWeight.bold};
+  color: ${props => props.theme.colors.text};
+  text-align: center;
+  margin-bottom: ${props => props.theme.spacing.xl};
+`;
+
+export const AuthForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing.md};
+`;
+
+export const ErrorMessage = styled.div`
+  padding: ${props => props.theme.spacing.md};
+  background-color: ${props => props.theme.colors.error}15;
+  color: ${props => props.theme.colors.error};
+  border-radius: ${props => props.theme.borderRadius.md};
+  font-size: ${props => props.theme.fontSizes.sm};
+`;
+
+export const SocialButtonGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing.md};
+`;
+
+export const SocialButton = styled.button`
+  width: 100%;
+  padding: ${props => props.theme.spacing.md};
+  border-radius: ${props => props.theme.borderRadius.md};
+  font-size: ${props => props.theme.fontSizes.md};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  outline: none;
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: ${props => props.theme.shadows.sm};
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+`;
+
+export const StatTitle = styled.div`
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  color: ${props => props.theme.colors.textSecondary};
+  margin-bottom: ${props => props.theme.spacing.xs};
+`;
+
+export const StatValue = styled.div`
+  font-size: ${props => props.theme.typography.h3};
+  font-weight: ${props => props.theme.typography.fontWeight.bold};
+  color: ${props => props.theme.colors.text};
+`;
+
+export type Theme = {
+  colors: {
+    primary: string;
+    primaryDark: string;
+    secondary: string;
+    background: string;
+    backgroundAlt: string;
+    sidebar: string;
+    text: string;
+    textSecondary: string;
+    codeBackground: string;
+    border: string;
+    borderLight: string;
+    hover: string;
+    card: string;
+    cardHover: string;
+    success: string;
+    error: string;
+    warning: string;
+    info: string;
+    codeText: string;
+    codeComment: string;
+    codeKeyword: string;
+    codeString: string;
+    codeNumber: string;
+    codeFunction: string;
+    codeVariable: string;
+    codeOperator: string;
+    practiceBackground: string;
+    problemBackground: string;
+    solutionBackground: string;
+  };
+  shadows: {
+    sm: string;
+    md: string;
+    lg: string;
+  };
+  transitions: {
+    default: string;
+    fast: string;
+    slow: string;
+  };
+  borderRadius: {
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+    full: string;
+  };
+  spacing: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+    '2xl': string;
+    '3xl': string;
+    '4xl': string;
+    '5xl': string;
+    '6xl': string;
+  };
+  breakpoints: {
+    mobile: string;
+    tablet: string;
+    desktop: string;
+  };
+  typography: typeof typography;
+  fonts: {
+    body: string;
+    heading: string;
+    code: string;
+  };
+  fontSizes: {
+    xs: string;
+    sm: string;
+    md: string;
+    lg: string;
+    xl: string;
+    '2xl': string;
+    '3xl': string;
+    '4xl': string;
+  };
+};
+
+export const lightTheme = {
+  colors: {
+    primary: '#007AFF',
+    primaryDark: '#0051a8',
+    secondary: '#5856D6',
+    background: '#FFFFFF',
+    backgroundAlt: '#F2F2F7',
+    sidebar: '#F8F9FA',
+    text: '#000000',
+    textSecondary: '#8E8E93',
+    codeBackground: '#F8F9FA',
+    border: '#C6C6C8',
+    borderLight: '#E2E8F0',
+    hover: '#F5F5F5',
+    card: '#FFFFFF',
+    cardHover: '#FAFAFA',
+    success: '#34C759',
+    error: '#FF3B30',
+    warning: '#FF9500',
+    info: '#5856D6',
+    codeText: '#24292E',
+    codeComment: '#6A737D',
+    codeKeyword: '#D73A49',
+    codeString: '#032F62',
+    codeNumber: '#005CC5',
+    codeFunction: '#6F42C1',
+    codeVariable: '#E36209',
+    codeOperator: '#D73A49',
+    practiceBackground: '#F8F9FA',
+    problemBackground: '#FFFFFF',
+    solutionBackground: '#F8F9FA',
+  },
+  fonts,
+  typography,
+  spacing,
+  breakpoints,
+  fontSizes: {
+    xs: '0.75rem',
+    sm: '0.875rem',
+    md: '1rem',
+    lg: '1.125rem',
+    xl: '1.25rem',
+    '2xl': '1.5rem',
+    '3xl': '1.875rem',
+    '4xl': '2.25rem',
+  },
+  borderRadius: {
+    sm: '4px',
+    md: '8px',
+    lg: '12px',
+    xl: '16px',
+    full: '9999px'
+  },
+  shadows: {
+    sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+    md: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+  },
+  transitions: {
+    default: 'all 0.2s ease-in-out',
+  }
+};
+
+export const darkTheme = {
+  colors: {
+    primary: '#0A84FF',
+    primaryDark: '#0064D1',
+    secondary: '#5E5CE6',
+    background: '#000000',
+    backgroundAlt: '#1C1C1E',
+    sidebar: '#1C1C1E',
+    text: '#FFFFFF',
+    textSecondary: '#8E8E93',
+    codeBackground: '#1C1C1E',
+    border: '#38383A',
+    borderLight: '#2C2C2E',
+    hover: '#2C2C2E',
+    card: '#1C1C1E',
+    cardHover: '#2C2C2E',
+    success: '#30D158',
+    error: '#FF453A',
+    warning: '#FF9F0A',
+    info: '#5E5CE6',
+    codeText: '#FFFFFF',
+    codeComment: '#8E8E93',
+    codeKeyword: '#FF453A',
+    codeString: '#30D158',
+    codeNumber: '#FF9F0A',
+    codeFunction: '#5E5CE6',
+    codeVariable: '#FF453A',
+    codeOperator: '#FF453A',
+    practiceBackground: '#1C1C1E',
+    problemBackground: '#000000',
+    solutionBackground: '#1C1C1E',
+  },
+  fonts,
+  typography,
+  spacing,
+  breakpoints,
+  fontSizes: {
+    xs: '0.75rem',
+    sm: '0.875rem',
+    md: '1rem',
+    lg: '1.125rem',
+    xl: '1.25rem',
+    '2xl': '1.5rem',
+    '3xl': '1.875rem',
+    '4xl': '2.25rem',
+  },
+  borderRadius: {
+    sm: '4px',
+    md: '8px',
+    lg: '12px',
+    xl: '16px',
+    full: '9999px'
+  },
+  shadows: {
+    sm: '0 1px 2px 0 rgba(255, 255, 255, 0.05)',
+    md: '0 4px 6px -1px rgba(255, 255, 255, 0.1)',
+    lg: '0 10px 15px -3px rgba(255, 255, 255, 0.1)',
+  },
+  transitions: {
+    default: 'all 0.2s ease-in-out',
+  }
+};
+
+// Create a GlobalStyle component
+export const GlobalStyle = createGlobalStyle`
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: ${props => props.theme.fonts.body};
+    color: ${props => props.theme.colors.text};
+    background: ${props => props.theme.colors.background};
+  }
+`;
+
+// Create a ThemeProvider wrapper component
+export const ThemeProviderWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isDarkMode } = useTheme();
+  const theme = isDarkMode ? darkTheme : lightTheme;
+
+  return (
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      {children}
+    </ThemeProvider>
+  );
+};
+
+// Add proper TypeScript types for styled components
+declare module 'styled-components' {
+  export interface DefaultTheme extends Theme {}
+}

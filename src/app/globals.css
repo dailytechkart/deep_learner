@@ -1,4 +1,10 @@
 /* Reset and base styles */
+:root {
+  --primary-color: #F59E0B;
+  --primary-dark: #D97706;
+  --primary-light: #FCD34D;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  Sidebar as StyledSidebar,
+  Sidebar,
   SidebarHeader,
   SidebarActions,
   FilterButton,
@@ -19,9 +19,24 @@ import {
   SidebarSearchInput,
   SidebarSearchIcon,
   SidebarFooter,
-  SidebarFooterText
+  SidebarFooterText,
+  Logo,
+  SidebarProgress,
+  SidebarProgressBar,
+  SidebarProgressText,
+  SidebarProgressValue,
+  SidebarProgressLabel,
+  SidebarFilterGroup,
+  SidebarFilterLabel,
+  SidebarCategoryGroup,
+  SidebarCategoryHeader,
+  SidebarCategoryCount,
+  SidebarQuickActions,
+  SidebarQuickActionButton
 } from './StyledComponents';
 import Loader from './Loader';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 interface SidebarProps {
   selectedCategory: string;
@@ -30,77 +45,54 @@ interface SidebarProps {
   onFilterChange: (filter: string) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({
+const SidebarComponent: React.FC<SidebarProps> = ({
   selectedCategory,
   selectedFilter,
   onCategoryChange,
   onFilterChange
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
+  const pathname = usePathname();
+
+  // Mock data - replace with actual data from your API
+  const stats = [
+    { icon: '📚', value: '12', label: 'Topics Completed' },
+    { icon: '⏱️', value: '24h', label: 'Time Spent' },
+    { icon: '🎯', value: '85%', label: 'Success Rate' }
+  ];
 
   const categories = [
-    { id: 'all', name: 'All Topics', icon: '📚', count: 12 },
-    { id: 'ml', name: 'Machine Learning', icon: '🤖', count: 4 },
-    { id: 'dl', name: 'Deep Learning', icon: '🧠', count: 3 },
-    { id: 'nlp', name: 'NLP', icon: '💬', count: 2 },
-    { id: 'cv', name: 'Computer Vision', icon: '👁️', count: 2 },
-    { id: 'rl', name: 'Reinforcement Learning', icon: '🎮', count: 1 }
+    { id: 'frontend', name: 'Frontend Development', icon: '🌐', count: 15 },
+    { id: 'backend', name: 'Backend Development', icon: '⚙️', count: 12 },
+    { id: 'database', name: 'Database', icon: '🗄️', count: 8 },
+    { id: 'devops', name: 'DevOps', icon: '🚀', count: 10 },
+    { id: 'system-design', name: 'System Design', icon: '🏗️', count: 6 }
   ];
-
-  const stats = [
-    { label: 'In Progress', value: '4', icon: '⏳' },
-    { label: 'Completed', value: '3', icon: '✅' },
-    { label: 'Total Hours', value: '24', icon: '⏱️' }
-  ];
-
-  // Simulate loading data
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  // Simulate search delay
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsSearching(false);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [searchQuery]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
     setIsSearching(true);
+    // Simulate search delay
+    setTimeout(() => setIsSearching(false), 500);
   };
 
   const filteredCategories = categories.filter(category =>
     category.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  if (isLoading) {
-    return (
-      <StyledSidebar>
-        <SidebarSection>
-          <Loader variant="shimmer" size="lg" />
-        </SidebarSection>
-        <SidebarDivider />
-        <SidebarSection>
-          <Loader variant="shimmer" size="md" />
-          <Loader variant="shimmer" size="md" />
-          <Loader variant="shimmer" size="md" />
-        </SidebarSection>
-      </StyledSidebar>
-    );
-  }
+  const isActive = (path: string) => pathname === path;
 
   return (
-    <StyledSidebar>
+    <Sidebar>
       <SidebarSection>
         <SidebarHeader>
-          <SidebarTitle>Learning Dashboard</SidebarTitle>
+          <Link href="/" passHref>
+            <Logo>
+              <span className="logo-icon">🎓</span>
+              Deep Learner
+            </Logo>
+          </Link>
         </SidebarHeader>
         <SidebarSearch>
           <SidebarSearchInput
@@ -108,6 +100,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             placeholder="Search categories..."
             value={searchQuery}
             onChange={handleSearch}
+            aria-label="Search categories"
           />
           <SidebarSearchIcon>
             {isSearching ? <Loader variant="spinner" size="sm" /> : '🔍'}
@@ -119,6 +112,13 @@ const Sidebar: React.FC<SidebarProps> = ({
 
       <SidebarSection>
         <SidebarSectionTitle>Your Progress</SidebarSectionTitle>
+        <SidebarProgress>
+          <SidebarProgressBar progress={75} />
+          <SidebarProgressText>
+            <SidebarProgressValue>75%</SidebarProgressValue>
+            <SidebarProgressLabel>Overall Completion</SidebarProgressLabel>
+          </SidebarProgressText>
+        </SidebarProgress>
         <SidebarStats>
           {stats.map((stat, index) => (
             <SidebarStatItem key={index}>
@@ -135,34 +135,60 @@ const Sidebar: React.FC<SidebarProps> = ({
       <SidebarDivider />
 
       <SidebarSection>
-        <SidebarSectionTitle>Filter Topics</SidebarSectionTitle>
-        <SidebarActions>
-          <FilterButton
-            active={selectedFilter === 'all'}
-            onClick={() => onFilterChange('all')}
-          >
-            All
-          </FilterButton>
-          <FilterButton
-            active={selectedFilter === 'in-progress'}
-            onClick={() => onFilterChange('in-progress')}
-          >
-            In Progress
-          </FilterButton>
-          <FilterButton
-            active={selectedFilter === 'completed'}
-            onClick={() => onFilterChange('completed')}
-          >
-            Completed
-          </FilterButton>
-        </SidebarActions>
+        <SidebarSectionTitle>Quick Actions</SidebarSectionTitle>
+        <SidebarQuickActions>
+          <SidebarQuickActionButton onClick={() => onFilterChange('in-progress')}>
+            <span>▶️</span>
+            Continue Learning
+          </SidebarQuickActionButton>
+          <SidebarQuickActionButton onClick={() => onFilterChange('completed')}>
+            <span>📝</span>
+            Review Completed
+          </SidebarQuickActionButton>
+          <SidebarQuickActionButton onClick={() => onFilterChange('bookmarked')}>
+            <span>🔖</span>
+            Bookmarked Topics
+          </SidebarQuickActionButton>
+        </SidebarQuickActions>
       </SidebarSection>
 
       <SidebarDivider />
 
       <SidebarSection>
-        <SidebarSectionTitle>Categories</SidebarSectionTitle>
-        <CategoryList>
+        <SidebarSectionTitle>Filter Topics</SidebarSectionTitle>
+        <SidebarFilterGroup>
+          <SidebarFilterLabel>Status</SidebarFilterLabel>
+          <SidebarActions>
+            <FilterButton
+              active={selectedFilter === 'all'}
+              onClick={() => onFilterChange('all')}
+            >
+              All
+            </FilterButton>
+            <FilterButton
+              active={selectedFilter === 'in-progress'}
+              onClick={() => onFilterChange('in-progress')}
+            >
+              In Progress
+            </FilterButton>
+            <FilterButton
+              active={selectedFilter === 'completed'}
+              onClick={() => onFilterChange('completed')}
+            >
+              Completed
+            </FilterButton>
+          </SidebarActions>
+        </SidebarFilterGroup>
+      </SidebarSection>
+
+      <SidebarDivider />
+
+      <SidebarSection>
+        <SidebarCategoryHeader>
+          <SidebarSectionTitle>Categories</SidebarSectionTitle>
+          <SidebarCategoryCount>{categories.length} Total</SidebarCategoryCount>
+        </SidebarCategoryHeader>
+        <SidebarCategoryGroup>
           {isSearching ? (
             <Loader variant="pulse" size="md" />
           ) : (
@@ -178,17 +204,17 @@ const Sidebar: React.FC<SidebarProps> = ({
               </CategoryButton>
             ))
           )}
-        </CategoryList>
+        </SidebarCategoryGroup>
       </SidebarSection>
 
       <SidebarFooter>
         <SidebarFooterText>
           <span>🎓</span>
-          Deep Learner
+          FrontendPro Academy
         </SidebarFooterText>
       </SidebarFooter>
-    </StyledSidebar>
+    </Sidebar>
   );
 };
 
-export default Sidebar; 
+export default SidebarComponent; 

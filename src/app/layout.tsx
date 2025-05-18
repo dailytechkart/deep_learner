@@ -1,13 +1,13 @@
+import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Providers } from './providers';
-import StyledComponentsRegistry from './lib/registry';
 import './globals.css';
+import ClientLayoutWrapper from './components/ClientLayoutWrapper';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export const metadata = {
-  title: 'Deep Learner',
-  description: 'Learn deep learning concepts through interactive lessons and practice',
+export const metadata: Metadata = {
+  title: 'FrontendPro Academy - Master Modern Web Development',
+  description: 'Learn frontend development with hands-on projects, real-world examples, and expert guidance. Master HTML, CSS, JavaScript, React, and more.',
 };
 
 export default function RootLayout({
@@ -16,11 +16,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.className} suppressHydrationWarning>
-        <StyledComponentsRegistry>
-          <Providers>{children}</Providers>
-        </StyledComponentsRegistry>
+    <html lang="en">
+      <body className={inter.className}>
+        <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
       </body>
     </html>
   );
