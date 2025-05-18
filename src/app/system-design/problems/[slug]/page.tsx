@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, Suspense, useMemo } from 'react';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
-import { FaComments, FaList, FaClock, FaCommentDots, FaClipboardList, FaBolt, FaSearch, FaLayerGroup, FaFilter, FaTimes } from 'react-icons/fa';
+import { FaComments, FaList, FaClock, FaCommentDots, FaClipboardList, FaBolt, FaSearch, FaLayerGroup, FaFilter, FaTimes, FaBuilding } from 'react-icons/fa';
 
 const problemsList = [
   {
@@ -105,9 +105,8 @@ const Layout = styled.div`
 `;
 
 const LeftPanel = styled.nav<{ isOpen?: boolean }>`
-  width: 340px;
-  min-width: 220px;
-  max-width: 400px;
+  width: 320px;
+  min-width: 280px;
   background: ${({ theme }) => theme.colors.backgroundAlt};
   border-right: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
@@ -116,7 +115,7 @@ const LeftPanel = styled.nav<{ isOpen?: boolean }>`
   position: relative;
   margin-top: 80px;
   transition: all 0.3s ease;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
 
   @media (max-width: 768px) {
     position: fixed;
@@ -125,16 +124,36 @@ const LeftPanel = styled.nav<{ isOpen?: boolean }>`
   }
 `;
 
+const RightPanel = styled.aside`
+  width: 300px;
+  min-width: 250px;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+  border-left: 1px solid ${({ theme }) => theme.colors.border};
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: relative;
+  margin-top: 80px;
+  transition: all 0.3s ease;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  overflow-y: auto;
+
+  @media (max-width: 1200px) {
+    display: none;
+  }
+`;
+
 const PanelHeader = styled.div`
   position: sticky;
   top: 0;
   z-index: 2;
   background: ${({ theme }) => theme.colors.backgroundAlt};
-  padding: 28px 32px 18px 32px;
-  font-size: 1.18em;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.textSecondary};
-  letter-spacing: 0.5px;
+  padding: 24px 28px 16px 28px;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text};
+  letter-spacing: 0.3px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
   align-items: center;
@@ -163,34 +182,33 @@ const MobileMenuButton = styled.button`
 const ProblemList = styled.ul`
   list-style: none;
   margin: 0;
-  padding: 0 24px 0 24px;
+  padding: 16px 20px;
   flex: 1;
   overflow-y: auto;
 `;
 
 const ProblemCard = styled.li<{ selected: boolean }>`
   background: ${({ selected, theme }) => selected ? theme.colors.background : theme.colors.backgroundAlt};
-  border: 2px solid ${({ selected, theme }) => selected ? theme.colors.primary : 'transparent'};
-  border-radius: 12px;
-  margin-bottom: 18px;
-  padding: 18px 16px 14px 16px;
+  border: 1px solid ${({ selected, theme }) => selected ? theme.colors.primary : theme.colors.border};
+  border-radius: 10px;
+  margin-bottom: 12px;
+  padding: 16px;
   color: ${({ selected, theme }) => selected ? theme.colors.primary : theme.colors.text};
   font-weight: ${({ selected }) => (selected ? 600 : 400)};
   cursor: pointer;
-  box-shadow: ${({ selected }) => selected ? '0 4px 16px rgba(0,0,0,0.10)' : '0 1px 4px rgba(0,0,0,0.04)'};
+  box-shadow: ${({ selected }) => selected ? '0 4px 12px rgba(0,0,0,0.08)' : 'none'};
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   position: relative;
   overflow: hidden;
 
   &:hover {
     background: ${({ theme }) => theme.colors.background};
-    color: ${({ theme }) => theme.colors.primary};
-    border: 2px solid ${({ theme }) => theme.colors.primary};
-    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-    transform: translateY(-2px);
+    border-color: ${({ theme }) => theme.colors.primary};
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
   }
 
   &::after {
@@ -198,7 +216,7 @@ const ProblemCard = styled.li<{ selected: boolean }>`
     position: absolute;
     top: 0;
     left: 0;
-    width: 4px;
+    width: 3px;
     height: 100%;
     background: ${({ selected, theme }) => selected ? theme.colors.primary : 'transparent'};
     transition: background 0.2s ease;
@@ -206,37 +224,39 @@ const ProblemCard = styled.li<{ selected: boolean }>`
 `;
 
 const ProblemIcon = styled.div`
-  font-size: 1.5em;
+  font-size: 1.3em;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: ${({ theme }) => theme.colors.primary};
+  opacity: 0.9;
 `;
 
 const ProblemInfo = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 `;
 
 const ProblemTitle = styled.div`
-  font-size: 1.08em;
-  font-weight: 600;
-  margin-bottom: 2px;
+  font-size: 1em;
+  font-weight: 500;
+  line-height: 1.4;
 `;
 
 const BadgeRow = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 6px;
 `;
 
 const Badge = styled.span<{ color: string }>`
   background: ${({ color }) => color};
   color: #fff;
-  border-radius: 999px;
-  padding: 3px 12px;
-  font-size: 0.85em;
-  font-weight: 600;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.8em;
+  font-weight: 500;
   display: inline-flex;
   align-items: center;
 `;
@@ -251,68 +271,133 @@ const MainPanel = styled.main`
   height: 100vh;
   margin-top: 80px;
   transition: all 0.3s ease;
+  position: relative;
+  overflow-y: auto;
 `;
 
-const StickyHeader = styled.div`
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  background: ${({ theme }) => theme.colors.background};
+const Header = styled.div`
   width: 100%;
-  padding: 36px 0 18px 0;
+  padding: 32px 0;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
   flex-direction: column;
   align-items: center;
-  backdrop-filter: blur(8px);
-  background: ${({ theme }) => `${theme.colors.background}CC`};
+  background: ${({ theme }) => theme.colors.background};
+  margin-bottom: 24px;
+`;
+
+const HeaderContent = styled.div`
+  max-width: 900px;
+  width: 100%;
+  padding: 0 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  @media (max-width: 768px) {
+    padding: 0 24px;
+  }
 `;
 
 const MainTitle = styled.h1`
-  font-size: 2em;
+  font-size: 2.2em;
   font-weight: 700;
-  margin: 0 0 10px 0;
+  margin: 0;
   color: ${({ theme }) => theme.colors.text};
   font-family: "GT Alpina", "Georgia", "Cambria", "Times New Roman", "Times", serif;
   letter-spacing: -0.016em;
   line-height: 1.2;
+  text-align: center;
+  position: relative;
+  padding-bottom: 16px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: ${({ theme }) => theme.colors.primary};
+    border-radius: 2px;
+  }
+`;
+
+const BadgeContainer = styled.div`
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+`;
+
+const HeaderBadge = styled.div<{ color: string }>`
+  background: ${({ color }) => color};
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 0.95em;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px ${({ color }) => `${color}40`};
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px ${({ color }) => `${color}50`};
+  }
+
+  svg {
+    font-size: 1.1em;
+  }
+`;
+
+const DifficultyBadge = styled(HeaderBadge)`
+  background: ${({ theme }) => theme.colors.primary};
+`;
+
+const TimeBadge = styled(HeaderBadge)`
+  background: #6c63ff;
 `;
 
 const MainBadgeRow = styled.div`
   display: flex;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 0;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 
 const ContentCard = styled.div`
   width: 100%;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 140px 36px 48px 36px;
+  padding: 0 36px 40px 36px;
   background: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
-  border-radius: 18px;
-  box-shadow: 0 4px 32px rgba(0,0,0,0.10);
-  overflow-y: auto;
+  border-radius: 0;
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
 
-  &:hover {
-    box-shadow: 0 8px 48px rgba(0,0,0,0.15);
-  }
-
   @media (max-width: 768px) {
-    padding: 100px 24px 36px 24px;
+    padding: 0 24px 32px 24px;
   }
 `;
 
 const FilterSection = styled.div`
-  padding: 16px 24px;
+  padding: 16px 20px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   background: ${({ theme }) => theme.colors.backgroundAlt};
   position: sticky;
   top: 0;
   z-index: 1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 `;
 
 const SearchInput = styled.div`
@@ -321,18 +406,23 @@ const SearchInput = styled.div`
   
   input {
     width: 100%;
-    padding: 12px 16px 12px 40px;
+    padding: 10px 14px 10px 38px;
     border: 1px solid ${({ theme }) => theme.colors.border};
     border-radius: 8px;
     background: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
-    font-size: 0.95em;
+    font-size: 0.9em;
     transition: all 0.2s ease;
     
     &:focus {
       outline: none;
       border-color: ${({ theme }) => theme.colors.primary};
-      box-shadow: 0 0 0 3px ${({ theme }) => `${theme.colors.primary}20`};
+      box-shadow: 0 0 0 3px ${({ theme }) => `${theme.colors.primary}10`};
+    }
+
+    &::placeholder {
+      color: ${({ theme }) => theme.colors.textSecondary};
+      opacity: 0.7;
     }
   }
   
@@ -343,6 +433,7 @@ const SearchInput = styled.div`
     transform: translateY(-50%);
     color: ${({ theme }) => theme.colors.textSecondary};
     transition: color 0.2s ease;
+    font-size: 1em;
   }
 
   &:focus-within svg {
@@ -350,8 +441,113 @@ const SearchInput = styled.div`
   }
 `;
 
-const FilterGroup = styled.div`
+const DropdownFilter = styled.div`
+  position: relative;
+  width: 100%;
   margin-bottom: 16px;
+`;
+
+const DropdownButton = styled.button<{ isOpen: boolean }>`
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid ${({ isOpen, theme }) => isOpen ? theme.colors.primary : theme.colors.border};
+  border-radius: 8px;
+  background: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.text};
+  font-size: 0.9em;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.primary};
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  }
+
+  svg {
+    transition: transform 0.2s ease;
+    transform: rotate(${({ isOpen }) => isOpen ? '180deg' : '0'});
+    font-size: 0.9em;
+  }
+`;
+
+const DropdownContent = styled.div<{ isOpen: boolean }>`
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 8px;
+  padding: 6px;
+  z-index: 10;
+  display: ${({ isOpen }) => isOpen ? 'block' : 'none'};
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-height: 280px;
+  overflow-y: auto;
+`;
+
+const DropdownOption = styled.div<{ selected: boolean }>`
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: ${({ selected, theme }) => selected ? theme.colors.primary : theme.colors.text};
+  background: ${({ selected, theme }) => selected ? `${theme.colors.primary}10` : 'transparent'};
+  font-weight: ${({ selected }) => selected ? '500' : '400'};
+  font-size: 0.9em;
+
+  &:hover {
+    background: ${({ theme }) => `${theme.colors.primary}10`};
+  }
+`;
+
+const PriceRangeInput = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 12px;
+
+  input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid ${({ theme }) => theme.colors.border};
+    border-radius: 6px;
+    font-size: 0.9em;
+    
+    &:focus {
+      outline: none;
+      border-color: ${({ theme }) => theme.colors.primary};
+    }
+  }
+`;
+
+const ApplyButton = styled.button`
+  width: 100%;
+  padding: 8px;
+  margin-top: 8px;
+  background: ${({ theme }) => theme.colors.primary};
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+  }
+`;
+
+const FilterGroup = styled.div`
+  margin-bottom: 20px;
   
   &:last-child {
     margin-bottom: 0;
@@ -362,50 +558,155 @@ const FilterLabel = styled.div`
   font-size: 0.9em;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.textSecondary};
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  svg {
+    font-size: 0.9em;
+    opacity: 0.7;
+  }
 `;
 
 const FilterOptions = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 `;
 
 const FilterChip = styled.button<{ active: boolean }>`
   padding: 8px 16px;
   border-radius: 999px;
-  border: 1px solid ${({ active, theme }) => active ? theme.colors.primary : theme.colors.border};
+  border: 2px solid ${({ active, theme }) => active ? theme.colors.primary : theme.colors.border};
   background: ${({ active, theme }) => active ? theme.colors.primary : 'transparent'};
   color: ${({ active, theme }) => active ? '#fff' : theme.colors.text};
   font-size: 0.85em;
+  font-weight: ${({ active }) => active ? '600' : '500'};
   cursor: pointer;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   
   &:hover {
     border-color: ${({ theme }) => theme.colors.primary};
     background: ${({ active, theme }) => active ? theme.colors.primary : 'rgba(108, 99, 255, 0.1)'};
     transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `;
 
 const ClearFilters = styled.button`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  padding: 8px 16px;
+  padding: 8px 14px;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 8px;
   background: transparent;
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: 0.9em;
+  font-weight: 500;
   cursor: pointer;
   margin-top: 16px;
   width: 100%;
+  transition: all 0.2s ease;
   
   &:hover {
     background: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
+    border-color: ${({ theme }) => theme.colors.primary};
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  svg {
+    font-size: 0.9em;
+  }
+`;
+
+const InfoSection = styled.div`
+  background: ${({ theme }) => theme.colors.background};
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+`;
+
+const InfoTitle = styled.h3`
+  font-size: 1.1em;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.text};
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  svg {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+const CompanyList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+`;
+
+const CompanyTag = styled.div`
+  background: ${({ theme }) => theme.colors.primary}15;
+  color: ${({ theme }) => theme.colors.primary};
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  svg {
+    font-size: 0.9em;
+  }
+`;
+
+const InfoRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 0.95em;
+
+  svg {
+    color: ${({ theme }) => theme.colors.primary};
+    font-size: 1em;
+  }
+`;
+
+const TagList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+`;
+
+const InfoTag = styled.div`
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+  color: ${({ theme }) => theme.colors.text};
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.85em;
+  border: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
 function DynamicMDX({ slug }: { slug: string }) {
@@ -423,53 +724,54 @@ function DynamicMDX({ slug }: { slug: string }) {
 
 const MDXContent = styled.div`
   h1 {
-    font-size: 2.5em;
-    font-weight: 700;
-    margin: 1.5em 0 0.5em;
-    color: ${({ theme }) => theme.colors.text};
-    font-family: "GT Alpina", "Georgia", "Cambria", "Times New Roman", "Times", serif;
-    letter-spacing: -0.016em;
-    line-height: 1.2;
+    display: none;
   }
 
   h2 {
     font-size: 1.8em;
     font-weight: 600;
-    margin: 1.2em 0 0.5em;
+    margin: 1.6em 0 0.8em;
     color: ${({ theme }) => theme.colors.text};
     font-family: "GT Alpina", "Georgia", "Cambria", "Times New Roman", "Times", serif;
     letter-spacing: -0.016em;
-    line-height: 1.2;
+    line-height: 1.3;
   }
 
   h3 {
     font-size: 1.4em;
     font-weight: 600;
-    margin: 1em 0 0.5em;
+    margin: 1.4em 0 0.6em;
     color: ${({ theme }) => theme.colors.text};
     font-family: "GT Alpina", "Georgia", "Cambria", "Times New Roman", "Times", serif;
     letter-spacing: -0.016em;
-    line-height: 1.2;
+    line-height: 1.4;
   }
 
   p {
-    font-size: 21px;
-    line-height: 1.58;
+    font-size: 1.1em;
+    line-height: 1.7;
     letter-spacing: -0.003em;
     margin-bottom: 1.5em;
     color: ${({ theme }) => theme.colors.text};
+    max-width: 65ch;
   }
 
   ul, ol {
-    font-size: 21px;
-    line-height: 1.58;
+    font-size: 1.1em;
+    line-height: 1.7;
     letter-spacing: -0.003em;
     margin: 1.5em 0;
     padding-left: 2em;
+    max-width: 65ch;
   }
 
   li {
-    margin-bottom: 0.5em;
+    margin-bottom: 0.8em;
+    position: relative;
+  }
+
+  li::marker {
+    color: ${({ theme }) => theme.colors.primary};
   }
 
   code {
@@ -477,40 +779,48 @@ const MDXContent = styled.div`
     font-size: 0.9em;
     background: ${({ theme }) => theme.colors.backgroundAlt};
     padding: 0.2em 0.4em;
-    border-radius: 3px;
+    border-radius: 4px;
+    color: ${({ theme }) => theme.colors.primary};
   }
 
   pre {
     background: ${({ theme }) => theme.colors.backgroundAlt};
-    padding: 1em;
+    padding: 1.2em;
     border-radius: 8px;
     overflow-x: auto;
     margin: 1.5em 0;
+    border: 1px solid ${({ theme }) => theme.colors.border};
   }
 
   pre code {
     background: none;
     padding: 0;
     font-size: 0.9em;
+    color: ${({ theme }) => theme.colors.text};
   }
 
   blockquote {
-    border-left: 4px solid ${({ theme }) => theme.colors.primary};
-    padding-left: 1em;
+    border-left: 3px solid ${({ theme }) => theme.colors.primary};
+    padding: 0.8em 1.2em;
     margin: 1.5em 0;
     color: ${({ theme }) => theme.colors.textSecondary};
     font-style: italic;
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    border-radius: 0 8px 8px 0;
   }
 
   table {
     width: 100%;
     border-collapse: collapse;
     margin: 1.5em 0;
-    font-size: 0.9em;
+    font-size: 0.95em;
+    border: 1px solid ${({ theme }) => theme.colors.border};
+    border-radius: 8px;
+    overflow: hidden;
   }
 
   th, td {
-    padding: 0.75em;
+    padding: 0.8em 1em;
     border: 1px solid ${({ theme }) => theme.colors.border};
     text-align: left;
   }
@@ -518,10 +828,15 @@ const MDXContent = styled.div`
   th {
     background: ${({ theme }) => theme.colors.backgroundAlt};
     font-weight: 600;
+    color: ${({ theme }) => theme.colors.text};
   }
 
   tr:nth-child(even) {
     background: ${({ theme }) => theme.colors.backgroundAlt};
+  }
+
+  tr:hover {
+    background: ${({ theme }) => `${theme.colors.primary}08`};
   }
 
   img {
@@ -529,27 +844,46 @@ const MDXContent = styled.div`
     height: auto;
     border-radius: 8px;
     margin: 1.5em 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
 
   a {
     color: ${({ theme }) => theme.colors.primary};
     text-decoration: none;
     transition: color 0.2s ease;
+    border-bottom: 1px solid transparent;
 
     &:hover {
-      text-decoration: underline;
+      border-bottom-color: ${({ theme }) => theme.colors.primary};
     }
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid ${({ theme }) => theme.colors.border};
+    margin: 2em 0;
+  }
+
+  strong {
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.text};
+  }
+
+  em {
+    font-style: italic;
+    color: ${({ theme }) => theme.colors.textSecondary};
   }
 `;
 
 export default function ProblemPage() {
   const [selectedProblem, setSelectedProblem] = useState(problemsList[0]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
   const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
   const [selectedTimeLimits, setSelectedTimeLimits] = useState<number[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   // Get unique tags from all problems
   const allTags = useMemo(() => {
@@ -560,36 +894,16 @@ export default function ProblemPage() {
     return Array.from(tags);
   }, []);
 
-  // Filter problems based on all criteria
-  const filteredProblems = useMemo(() => {
-    return problemsList.filter(problem => {
-      // Search query filter
-      if (searchQuery && !problem.name.toLowerCase().includes(searchQuery.toLowerCase())) {
-        return false;
-      }
-      
-      // Difficulty filter
-      if (selectedDifficulties.length > 0 && !selectedDifficulties.includes(problem.difficulty)) {
-        return false;
-      }
-      
-      // Time limit filter
-      if (selectedTimeLimits.length > 0 && !selectedTimeLimits.includes(problem.time_limit)) {
-        return false;
-      }
-      
-      // Tags filter
-      if (selectedTags.length > 0 && !selectedTags.some(tag => problem.tags.includes(tag))) {
-        return false;
-      }
-      
-      return true;
-    });
-  }, [searchQuery, selectedDifficulties, selectedTimeLimits, selectedTags]);
+  const difficulties = ['Easy', 'Medium', 'Hard'];
+  const timeLimits = [30, 45, 60, 75, 90, 120];
+
+  const toggleDropdown = (dropdownName: string) => {
+    setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
+  };
 
   const toggleDifficulty = (difficulty: string) => {
-    setSelectedDifficulties(prev => 
-      prev.includes(difficulty) 
+    setSelectedDifficulties(prev =>
+      prev.includes(difficulty)
         ? prev.filter(d => d !== difficulty)
         : [...prev, difficulty]
     );
@@ -629,6 +943,21 @@ export default function ProblemPage() {
     setIsMobileMenuOpen(false);
   }, [selectedProblem]);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.dropdown-filter')) {
+        setActiveDropdown(null);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <Layout>
       <LeftPanel isOpen={isMobileMenuOpen}>
@@ -649,52 +978,71 @@ export default function ProblemPage() {
             />
           </SearchInput>
           
-          <FilterGroup>
-            <FilterLabel>Difficulty</FilterLabel>
-            <FilterOptions>
-              {['Easy', 'Medium', 'Hard'].map(difficulty => (
-                <FilterChip
+          <DropdownFilter className="dropdown-filter">
+            <DropdownButton 
+              isOpen={activeDropdown === 'difficulty'}
+              onClick={() => toggleDropdown('difficulty')}
+            >
+              Difficulty Level {selectedDifficulties.length > 0 && `(${selectedDifficulties.length})`}
+              <FaFilter />
+            </DropdownButton>
+            <DropdownContent isOpen={activeDropdown === 'difficulty'}>
+              {difficulties.map(difficulty => (
+                <DropdownOption
                   key={difficulty}
-                  active={selectedDifficulties.includes(difficulty)}
+                  selected={selectedDifficulties.includes(difficulty)}
                   onClick={() => toggleDifficulty(difficulty)}
                 >
                   {difficulty}
-                </FilterChip>
+                </DropdownOption>
               ))}
-            </FilterOptions>
-          </FilterGroup>
+            </DropdownContent>
+          </DropdownFilter>
 
-          <FilterGroup>
-            <FilterLabel>Time Limit</FilterLabel>
-            <FilterOptions>
-              {[30, 45, 60, 75, 90, 120].map(time => (
-                <FilterChip
+          <DropdownFilter className="dropdown-filter">
+            <DropdownButton 
+              isOpen={activeDropdown === 'timeLimit'}
+              onClick={() => toggleDropdown('timeLimit')}
+            >
+              Time Limit {selectedTimeLimits.length > 0 && `(${selectedTimeLimits.length})`}
+              <FaFilter />
+            </DropdownButton>
+            <DropdownContent isOpen={activeDropdown === 'timeLimit'}>
+              {timeLimits.map(time => (
+                <DropdownOption
                   key={time}
-                  active={selectedTimeLimits.includes(time)}
+                  selected={selectedTimeLimits.includes(time)}
                   onClick={() => toggleTimeLimit(time)}
                 >
                   {time} min
-                </FilterChip>
+                </DropdownOption>
               ))}
-            </FilterOptions>
-          </FilterGroup>
+            </DropdownContent>
+          </DropdownFilter>
 
-          <FilterGroup>
-            <FilterLabel>Tags</FilterLabel>
-            <FilterOptions>
+          <DropdownFilter className="dropdown-filter">
+            <DropdownButton 
+              isOpen={activeDropdown === 'tags'}
+              onClick={() => toggleDropdown('tags')}
+            >
+              Tags {selectedTags.length > 0 && `(${selectedTags.length})`}
+              <FaFilter />
+            </DropdownButton>
+            <DropdownContent isOpen={activeDropdown === 'tags'}>
               {allTags.map(tag => (
-                <FilterChip
+                <DropdownOption
                   key={tag}
-                  active={selectedTags.includes(tag)}
+                  selected={selectedTags.includes(tag)}
                   onClick={() => toggleTag(tag)}
                 >
                   {tag}
-                </FilterChip>
+                </DropdownOption>
               ))}
-            </FilterOptions>
-          </FilterGroup>
+            </DropdownContent>
+          </DropdownFilter>
 
-          {(searchQuery || selectedDifficulties.length > 0 || selectedTimeLimits.length > 0 || selectedTags.length > 0) && (
+          {(searchQuery || selectedDifficulties.length > 0 || 
+            selectedTimeLimits.length > 0 || selectedTags.length > 0) && (
             <ClearFilters onClick={clearAllFilters}>
               <FaTimes />
               Clear All Filters
@@ -702,7 +1050,7 @@ export default function ProblemPage() {
           )}
         </FilterSection>
         <ProblemList>
-          {filteredProblems.map((problem) => (
+          {problemsList.map((problem) => (
             <ProblemCard
               key={problem.slug}
               selected={selectedProblem.slug === problem.slug}
@@ -720,29 +1068,27 @@ export default function ProblemPage() {
                   </Badge>
                   <Badge color={'#6c63ff'}>{problem.time_limit} min</Badge>
                 </BadgeRow>
-                <div style={{ fontSize: '0.92em', color: '#aaa', marginTop: 4 }}>{problem.description}</div>
-                <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                  {problem.tags.map(tag => (
-                    <Badge key={tag} color={'#222'} style={{ background: '#222', color: '#fff', fontWeight: 400, fontSize: '0.78em' }}>
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
               </ProblemInfo>
             </ProblemCard>
           ))}
         </ProblemList>
       </LeftPanel>
       <MainPanel>
-        <StickyHeader>
-          <MainTitle>{selectedProblem.name}</MainTitle>
-          <MainBadgeRow>
-            <Badge color={selectedProblem.difficulty === 'Hard' ? '#e74c3c' : selectedProblem.difficulty === 'Medium' ? '#f39c12' : '#27ae60'}>
-              {selectedProblem.difficulty}
-            </Badge>
-            <Badge color={'#6c63ff'}>{selectedProblem.time_limit} min</Badge>
-          </MainBadgeRow>
-        </StickyHeader>
+        <Header>
+          <HeaderContent>
+            <MainTitle>{selectedProblem.name}</MainTitle>
+            <BadgeContainer>
+              <HeaderBadge color={selectedProblem.difficulty === 'Hard' ? '#e74c3c' : selectedProblem.difficulty === 'Medium' ? '#f39c12' : '#27ae60'}>
+                <FaBolt />
+                {selectedProblem.difficulty}
+              </HeaderBadge>
+              <HeaderBadge color={'#6c63ff'}>
+                <FaClock />
+                {selectedProblem.time_limit} min
+              </HeaderBadge>
+            </BadgeContainer>
+          </HeaderContent>
+        </Header>
         <ContentCard ref={contentRef}>
           <Suspense fallback={<div>Loading...</div>}>
             <MDXContent>
@@ -751,6 +1097,60 @@ export default function ProblemPage() {
           </Suspense>
         </ContentCard>
       </MainPanel>
+      <RightPanel>
+        <InfoSection>
+          <InfoTitle>
+            <FaComments />
+            Problem Overview
+          </InfoTitle>
+          <CompanyList>
+            {selectedProblem.company_asked.map(company => (
+              <CompanyTag key={company}>
+                <FaBuilding />
+                {company}
+              </CompanyTag>
+            ))}
+          </CompanyList>
+          <InfoRow>
+            <FaClock />
+            Time Limit: {selectedProblem.time_limit} minutes
+          </InfoRow>
+          <InfoRow>
+            <FaBolt />
+            Difficulty: {selectedProblem.difficulty}
+          </InfoRow>
+          <InfoRow>
+            <FaList />
+            Tags:
+          </InfoRow>
+          <TagList>
+            {selectedProblem.tags.map(tag => (
+              <InfoTag key={tag}>{tag}</InfoTag>
+            ))}
+          </TagList>
+        </InfoSection>
+
+        <InfoSection>
+          <InfoTitle>
+            <FaCommentDots />
+            Problem Description
+          </InfoTitle>
+          <div style={{ color: '#666', fontSize: '0.95em', lineHeight: 1.5 }}>
+            {selectedProblem.description}
+          </div>
+        </InfoSection>
+
+        <InfoSection>
+          <InfoTitle>
+            <FaBolt />
+            Additional Challenge
+          </InfoTitle>
+          <div style={{ color: '#666', fontSize: '0.95em', lineHeight: 1.5 }}>
+            {selectedProblem.twist}
+          </div>
+        </InfoSection>
+      </RightPanel>
     </Layout>
   );
 }
+
