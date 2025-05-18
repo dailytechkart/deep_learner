@@ -14,7 +14,37 @@ const problemsList = [
     time_limit: 90,
     difficulty: 'Hard',
     tags: ['WebSocket', 'Real-time', 'Chat', 'React', 'State Management'],
-    description: 'Build a real-time chat interface with message history, typing indicator, and file sharing.',
+    description: `Design and implement a real-time chat application with the following core features:
+    1. Real-time messaging with WebSocket support
+    2. Group chat functionality with multiple participants
+    3. Message history and persistence
+    4. Unread message count badges
+    5. Typing indicators
+    6. Message delivery status
+    7. User presence indicators
+    8. Message reactions and emoji support`,
+    requirements: [
+      'Support multiple concurrent users and groups',
+      'Handle message delivery in real-time',
+      'Maintain message history in a database',
+      'Show unread message counts per chat/group',
+      'Implement typing indicators',
+      'Support message reactions and emojis',
+      'Handle user online/offline status',
+      'Ensure message delivery status (sent, delivered, read)',
+      'Support file sharing and media messages',
+      'Implement proper error handling and retry mechanisms'
+    ],
+    constraints: [
+      'Must handle at least 1000 concurrent users',
+      'Message delivery should be under 100ms',
+      'Support groups with up to 1000 members',
+      'Message history should be searchable',
+      'Must be scalable and handle high message throughput',
+      'Should work across different devices and browsers',
+      'Must implement proper security measures',
+      'Should handle network issues gracefully'
+    ],
     twist: 'Add group chat and unread count badges.',
     icon: <FaComments />,
   },
@@ -916,6 +946,209 @@ const DataModelDiagram = () => (
   </DiagramBox>
 );
 
+const CodeBlock = styled.pre`
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+  padding: 1.4em;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1.8em 0;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  font-size: 0.9em;
+  line-height: 1.6;
+`;
+
+const CodeComment = styled.span`
+  color: #6a737d;
+  font-style: italic;
+`;
+
+const CodeKeyword = styled.span`
+  color: #d73a49;
+`;
+
+const CodeString = styled.span`
+  color: #032f62;
+`;
+
+const CodeFunction = styled.span`
+  color: #6f42c1;
+`;
+
+const CodeVariable = styled.span`
+  color: #005cc5;
+`;
+
+const ImplementationSection = styled.div`
+  margin: 2em 0;
+  padding: 1.5em;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+  border-radius: 12px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+`;
+
+const ImplementationTitle = styled.h4`
+  font-size: 1.2em;
+  font-weight: 600;
+  margin: 0 0 1em 0;
+  color: ${({ theme }) => theme.colors.text};
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  svg {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+const SystemDesignCode = () => (
+  <>
+    <ImplementationSection>
+      <ImplementationTitle>
+        <FaCode />
+        API Implementation
+      </ImplementationTitle>
+      <CodeBlock>
+        {`// API Routes
+${CodeKeyword}const ${CodeVariable}router = ${CodeFunction}express.Router()${CodeComment};
+
+// Message Routes
+${CodeKeyword}router.post('/messages', ${CodeKeyword}async (${CodeVariable}req, ${CodeVariable}res) => {
+  ${CodeKeyword}try {
+    ${CodeKeyword}const { content, userId, groupId } = ${CodeVariable}req.body;
+    ${CodeKeyword}const ${CodeVariable}message = ${CodeKeyword}await ${CodeVariable}Message.create({
+      content,
+      userId,
+      groupId,
+      timestamp: ${CodeFunction}Date.now()
+    });
+    
+    ${CodeComment}// Emit to WebSocket
+    ${CodeVariable}io.to(groupId).emit('new_message', ${CodeVariable}message);
+    
+    ${CodeVariable}res.status(201).json(${CodeVariable}message);
+  } ${CodeKeyword}catch (${CodeVariable}error) {
+    ${CodeVariable}res.status(500).json({ error: ${CodeVariable}error.message });
+  }
+});`}
+      </CodeBlock>
+    </ImplementationSection>
+
+    <ImplementationSection>
+      <ImplementationTitle>
+        <FaDatabase />
+        Database Schema
+      </ImplementationTitle>
+      <CodeBlock>
+        {`${CodeComment}// User Schema
+${CodeKeyword}const ${CodeVariable}userSchema = ${CodeKeyword}new ${CodeVariable}mongoose.Schema({
+  username: { type: ${CodeVariable}String, required: ${CodeKeyword}true, unique: ${CodeKeyword}true },
+  email: { type: ${CodeVariable}String, required: ${CodeKeyword}true, unique: ${CodeKeyword}true },
+  password: { type: ${CodeVariable}String, required: ${CodeKeyword}true },
+  groups: [{ type: ${CodeVariable}mongoose.Schema.Types.ObjectId, ref: 'Group' }],
+  unreadCounts: {
+    type: ${CodeVariable}Map,
+    of: ${CodeVariable}Number,
+    default: ${CodeKeyword}new ${CodeVariable}Map()
+  }
+});
+
+${CodeComment}// Message Schema
+${CodeKeyword}const ${CodeVariable}messageSchema = ${CodeKeyword}new ${CodeVariable}mongoose.Schema({
+  content: { type: ${CodeVariable}String, required: ${CodeKeyword}true },
+  userId: { type: ${CodeVariable}mongoose.Schema.Types.ObjectId, ref: 'User' },
+  groupId: { type: ${CodeVariable}mongoose.Schema.Types.ObjectId, ref: 'Group' },
+  timestamp: { type: ${CodeVariable}Date, default: ${CodeFunction}Date.now },
+  reactions: [{
+    type: { type: ${CodeVariable}String },
+    userId: { type: ${CodeVariable}mongoose.Schema.Types.ObjectId, ref: 'User' }
+  }]
+});`}
+      </CodeBlock>
+    </ImplementationSection>
+
+    <ImplementationSection>
+      <ImplementationTitle>
+        <FaServer />
+        WebSocket Implementation
+      </ImplementationTitle>
+      <CodeBlock>
+        {`${CodeComment}// WebSocket Server Setup
+${CodeKeyword}const ${CodeVariable}io = ${CodeKeyword}new ${CodeVariable}Server(${CodeVariable}server);
+
+${CodeVariable}io.on('connection', (${CodeVariable}socket) => {
+  ${CodeComment}// Join group chat
+  ${CodeVariable}socket.on('join_group', (${CodeVariable}groupId) => {
+    ${CodeVariable}socket.join(groupId);
+    ${CodeComment}// Reset unread count
+    ${CodeKeyword}await ${CodeVariable}User.findByIdAndUpdate(
+      ${CodeVariable}socket.userId,
+      { $set: { ['unreadCounts.' + groupId]: 0 } }
+    );
+  });
+
+  ${CodeComment}// Handle new message
+  ${CodeVariable}socket.on('send_message', ${CodeKeyword}async (${CodeVariable}data) => {
+    ${CodeKeyword}const { content, groupId } = ${CodeVariable}data;
+    ${CodeKeyword}const ${CodeVariable}message = ${CodeKeyword}await ${CodeVariable}Message.create({
+      content,
+      userId: ${CodeVariable}socket.userId,
+      groupId
+    });
+
+    ${CodeComment}// Notify all users in group except sender
+    ${CodeVariable}io.to(groupId).emit('new_message', ${CodeVariable}message);
+    
+    ${CodeComment}// Update unread counts
+    ${CodeKeyword}const ${CodeVariable}group = ${CodeKeyword}await ${CodeVariable}Group.findById(groupId);
+    ${CodeKeyword}for (${CodeKeyword}const ${CodeVariable}userId of ${CodeVariable}group.members) {
+      ${CodeKeyword}if (${CodeVariable}userId !== ${CodeVariable}socket.userId) {
+        ${CodeKeyword}await ${CodeVariable}User.findByIdAndUpdate(
+          ${CodeVariable}userId,
+          { $inc: { ['unreadCounts.' + groupId]: 1 } }
+        );
+      }
+    }
+  });
+});`}
+      </CodeBlock>
+    </ImplementationSection>
+
+    <ImplementationSection>
+      <ImplementationTitle>
+        <FaCogs />
+        Cache Implementation
+      </ImplementationTitle>
+      <CodeBlock>
+        {`${CodeComment}// Redis Cache Implementation
+${CodeKeyword}const ${CodeVariable}redis = ${CodeKeyword}new ${CodeVariable}Redis({
+  host: ${CodeString}'redis-server',
+  port: 6379
+});
+
+${CodeComment}// Cache middleware
+${CodeKeyword}const ${CodeVariable}cacheMiddleware = ${CodeKeyword}async (${CodeVariable}req, ${CodeVariable}res, ${CodeVariable}next) => {
+  ${CodeKeyword}const ${CodeVariable}key = ${CodeVariable}req.originalUrl;
+  ${CodeKeyword}const ${CodeVariable}cachedData = ${CodeKeyword}await ${CodeVariable}redis.get(key);
+  
+  ${CodeKeyword}if (${CodeVariable}cachedData) {
+    ${CodeKeyword}return ${CodeVariable}res.json(JSON.parse(cachedData));
+  }
+  
+  ${CodeVariable}res.sendResponse = ${CodeVariable}res.json;
+  ${CodeVariable}res.json = (${CodeVariable}body) => {
+    ${CodeVariable}redis.setex(key, 3600, JSON.stringify(body));
+    ${CodeVariable}res.sendResponse(body);
+  };
+  
+  ${CodeVariable}next();
+};`}
+      </CodeBlock>
+    </ImplementationSection>
+  </>
+);
+
 function DynamicMDX({ slug }: { slug: string }) {
   const MDXComponent = dynamic(() => import(`./${slug}.mdx`), {
     loading: () => <div>Loading...</div>,
@@ -1674,6 +1907,8 @@ export default function ProblemPage() {
                 </ul>
               </DesignCard>
             </DesignGrid>
+
+            <SystemDesignCode />
           </DesignSection>
         </ContentCard>
       </MainPanel>
