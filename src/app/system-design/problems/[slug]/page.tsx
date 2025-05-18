@@ -101,9 +101,10 @@ const Layout = styled.div`
   height: 100vh;
   min-height: 100vh;
   background: ${({ theme }) => theme.colors.background};
+  font-family: "Charter", "Georgia", "Cambria", "Times New Roman", "Times", serif;
 `;
 
-const LeftPanel = styled.nav`
+const LeftPanel = styled.nav<{ isOpen?: boolean }>`
   width: 340px;
   min-width: 220px;
   max-width: 400px;
@@ -114,6 +115,14 @@ const LeftPanel = styled.nav`
   height: 100vh;
   position: relative;
   margin-top: 80px;
+  transition: all 0.3s ease;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    position: fixed;
+    left: ${({ isOpen }) => (isOpen ? '0' : '-100%')};
+    z-index: 1000;
+  }
 `;
 
 const PanelHeader = styled.div`
@@ -127,6 +136,28 @@ const PanelHeader = styled.div`
   color: ${({ theme }) => theme.colors.textSecondary};
   letter-spacing: 0.5px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const MobileMenuButton = styled.button`
+  display: none;
+  background: none;
+  border: none;
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 1.5em;
+  cursor: pointer;
+  padding: 8px;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+
+  @media (max-width: 768px) {
+    display: block;
+  }
 `;
 
 const ProblemList = styled.ul`
@@ -147,15 +178,30 @@ const ProblemCard = styled.li<{ selected: boolean }>`
   font-weight: ${({ selected }) => (selected ? 600 : 400)};
   cursor: pointer;
   box-shadow: ${({ selected }) => selected ? '0 4px 16px rgba(0,0,0,0.10)' : '0 1px 4px rgba(0,0,0,0.04)'};
-  transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: 16px;
+  position: relative;
+  overflow: hidden;
+
   &:hover {
     background: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.primary};
     border: 2px solid ${({ theme }) => theme.colors.primary};
     box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: ${({ selected, theme }) => selected ? theme.colors.primary : 'transparent'};
+    transition: background 0.2s ease;
   }
 `;
 
@@ -204,6 +250,7 @@ const MainPanel = styled.main`
   background: ${({ theme }) => theme.colors.background};
   height: 100vh;
   margin-top: 80px;
+  transition: all 0.3s ease;
 `;
 
 const StickyHeader = styled.div`
@@ -217,6 +264,8 @@ const StickyHeader = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  backdrop-filter: blur(8px);
+  background: ${({ theme }) => `${theme.colors.background}CC`};
 `;
 
 const MainTitle = styled.h1`
@@ -224,6 +273,9 @@ const MainTitle = styled.h1`
   font-weight: 700;
   margin: 0 0 10px 0;
   color: ${({ theme }) => theme.colors.text};
+  font-family: "GT Alpina", "Georgia", "Cambria", "Times New Roman", "Times", serif;
+  letter-spacing: -0.016em;
+  line-height: 1.2;
 `;
 
 const MainBadgeRow = styled.div`
@@ -233,7 +285,6 @@ const MainBadgeRow = styled.div`
 `;
 
 const ContentCard = styled.div`
-  max-width: 800px;
   width: 100%;
   margin: 0 auto;
   padding: 140px 36px 48px 36px;
@@ -244,12 +295,24 @@ const ContentCard = styled.div`
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 8px 48px rgba(0,0,0,0.15);
+  }
+
+  @media (max-width: 768px) {
+    padding: 100px 24px 36px 24px;
+  }
 `;
 
 const FilterSection = styled.div`
   padding: 16px 24px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   background: ${({ theme }) => theme.colors.backgroundAlt};
+  position: sticky;
+  top: 0;
+  z-index: 1;
 `;
 
 const SearchInput = styled.div`
@@ -258,16 +321,18 @@ const SearchInput = styled.div`
   
   input {
     width: 100%;
-    padding: 10px 16px 10px 40px;
+    padding: 12px 16px 12px 40px;
     border: 1px solid ${({ theme }) => theme.colors.border};
     border-radius: 8px;
     background: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
     font-size: 0.95em;
+    transition: all 0.2s ease;
     
     &:focus {
       outline: none;
       border-color: ${({ theme }) => theme.colors.primary};
+      box-shadow: 0 0 0 3px ${({ theme }) => `${theme.colors.primary}20`};
     }
   }
   
@@ -277,6 +342,11 @@ const SearchInput = styled.div`
     top: 50%;
     transform: translateY(-50%);
     color: ${({ theme }) => theme.colors.textSecondary};
+    transition: color 0.2s ease;
+  }
+
+  &:focus-within svg {
+    color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
@@ -302,18 +372,19 @@ const FilterOptions = styled.div`
 `;
 
 const FilterChip = styled.button<{ active: boolean }>`
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 999px;
   border: 1px solid ${({ active, theme }) => active ? theme.colors.primary : theme.colors.border};
   background: ${({ active, theme }) => active ? theme.colors.primary : 'transparent'};
   color: ${({ active, theme }) => active ? '#fff' : theme.colors.text};
   font-size: 0.85em;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   
   &:hover {
     border-color: ${({ theme }) => theme.colors.primary};
     background: ${({ active, theme }) => active ? theme.colors.primary : 'rgba(108, 99, 255, 0.1)'};
+    transform: translateY(-1px);
   }
 `;
 
@@ -338,9 +409,138 @@ const ClearFilters = styled.button`
 `;
 
 function DynamicMDX({ slug }: { slug: string }) {
-  const MDXComponent = dynamic(() => import(`./${slug}.mdx`).then(mod => mod.default), { ssr: false });
-  return <MDXComponent />;
+  const MDXComponent = dynamic(() => import(`./${slug}.mdx`), {
+    loading: () => <div>Loading...</div>,
+    ssr: true
+  });
+
+  return (
+    <div className="mdx-content">
+      <MDXComponent />
+    </div>
+  );
 }
+
+const MDXContent = styled.div`
+  h1 {
+    font-size: 2.5em;
+    font-weight: 700;
+    margin: 1.5em 0 0.5em;
+    color: ${({ theme }) => theme.colors.text};
+    font-family: "GT Alpina", "Georgia", "Cambria", "Times New Roman", "Times", serif;
+    letter-spacing: -0.016em;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: 1.8em;
+    font-weight: 600;
+    margin: 1.2em 0 0.5em;
+    color: ${({ theme }) => theme.colors.text};
+    font-family: "GT Alpina", "Georgia", "Cambria", "Times New Roman", "Times", serif;
+    letter-spacing: -0.016em;
+    line-height: 1.2;
+  }
+
+  h3 {
+    font-size: 1.4em;
+    font-weight: 600;
+    margin: 1em 0 0.5em;
+    color: ${({ theme }) => theme.colors.text};
+    font-family: "GT Alpina", "Georgia", "Cambria", "Times New Roman", "Times", serif;
+    letter-spacing: -0.016em;
+    line-height: 1.2;
+  }
+
+  p {
+    font-size: 21px;
+    line-height: 1.58;
+    letter-spacing: -0.003em;
+    margin-bottom: 1.5em;
+    color: ${({ theme }) => theme.colors.text};
+  }
+
+  ul, ol {
+    font-size: 21px;
+    line-height: 1.58;
+    letter-spacing: -0.003em;
+    margin: 1.5em 0;
+    padding-left: 2em;
+  }
+
+  li {
+    margin-bottom: 0.5em;
+  }
+
+  code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 0.9em;
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+  }
+
+  pre {
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    padding: 1em;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5em 0;
+  }
+
+  pre code {
+    background: none;
+    padding: 0;
+    font-size: 0.9em;
+  }
+
+  blockquote {
+    border-left: 4px solid ${({ theme }) => theme.colors.primary};
+    padding-left: 1em;
+    margin: 1.5em 0;
+    color: ${({ theme }) => theme.colors.textSecondary};
+    font-style: italic;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5em 0;
+    font-size: 0.9em;
+  }
+
+  th, td {
+    padding: 0.75em;
+    border: 1px solid ${({ theme }) => theme.colors.border};
+    text-align: left;
+  }
+
+  th {
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    font-weight: 600;
+  }
+
+  tr:nth-child(even) {
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1.5em 0;
+  }
+
+  a {
+    color: ${({ theme }) => theme.colors.primary};
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
 
 export default function ProblemPage() {
   const [selectedProblem, setSelectedProblem] = useState(problemsList[0]);
@@ -348,6 +548,7 @@ export default function ProblemPage() {
   const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
   const [selectedTimeLimits, setSelectedTimeLimits] = useState<number[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
 
   // Get unique tags from all problems
@@ -423,10 +624,20 @@ export default function ProblemPage() {
     }
   }, [selectedProblem]);
 
+  // Close mobile menu when selecting a problem
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [selectedProblem]);
+
   return (
     <Layout>
-      <LeftPanel aria-label="System Design Problem List">
-        <PanelHeader>System Design Problems</PanelHeader>
+      <LeftPanel isOpen={isMobileMenuOpen}>
+        <PanelHeader>
+          System Design Problems
+          <MobileMenuButton onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            {isMobileMenuOpen ? '×' : '☰'}
+          </MobileMenuButton>
+        </PanelHeader>
         <FilterSection>
           <SearchInput>
             <FaSearch />
@@ -504,13 +715,17 @@ export default function ProblemPage() {
               <ProblemInfo>
                 <ProblemTitle>{problem.name}</ProblemTitle>
                 <BadgeRow>
-                  <Badge color={problem.difficulty === 'Hard' ? '#e74c3c' : problem.difficulty === 'Medium' ? '#f39c12' : '#27ae60'}>{problem.difficulty}</Badge>
+                  <Badge color={problem.difficulty === 'Hard' ? '#e74c3c' : problem.difficulty === 'Medium' ? '#f39c12' : '#27ae60'}>
+                    {problem.difficulty}
+                  </Badge>
                   <Badge color={'#6c63ff'}>{problem.time_limit} min</Badge>
                 </BadgeRow>
                 <div style={{ fontSize: '0.92em', color: '#aaa', marginTop: 4 }}>{problem.description}</div>
                 <div style={{ marginTop: 6, display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                   {problem.tags.map(tag => (
-                    <Badge key={tag} color={'#222'} style={{ background: '#222', color: '#fff', fontWeight: 400, fontSize: '0.78em' }}>{tag}</Badge>
+                    <Badge key={tag} color={'#222'} style={{ background: '#222', color: '#fff', fontWeight: 400, fontSize: '0.78em' }}>
+                      {tag}
+                    </Badge>
                   ))}
                 </div>
               </ProblemInfo>
@@ -522,13 +737,17 @@ export default function ProblemPage() {
         <StickyHeader>
           <MainTitle>{selectedProblem.name}</MainTitle>
           <MainBadgeRow>
-            <Badge color={selectedProblem.difficulty === 'Hard' ? '#e74c3c' : selectedProblem.difficulty === 'Medium' ? '#f39c12' : '#27ae60'}>{selectedProblem.difficulty}</Badge>
+            <Badge color={selectedProblem.difficulty === 'Hard' ? '#e74c3c' : selectedProblem.difficulty === 'Medium' ? '#f39c12' : '#27ae60'}>
+              {selectedProblem.difficulty}
+            </Badge>
             <Badge color={'#6c63ff'}>{selectedProblem.time_limit} min</Badge>
           </MainBadgeRow>
         </StickyHeader>
         <ContentCard ref={contentRef}>
           <Suspense fallback={<div>Loading...</div>}>
-            <DynamicMDX slug={selectedProblem.slug} />
+            <MDXContent>
+              <DynamicMDX slug={selectedProblem.slug} />
+            </MDXContent>
           </Suspense>
         </ContentCard>
       </MainPanel>

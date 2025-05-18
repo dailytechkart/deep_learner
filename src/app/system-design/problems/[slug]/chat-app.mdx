@@ -2,12 +2,22 @@
 
 ## Problem Statement
 Design and implement a real-time chat application similar to Facebook Messenger or WhatsApp. The application should support:
+
+### Core Features
 - Real-time messaging between users
 - Message history
 - Typing indicators
 - File sharing
 - Group chat functionality
 - Unread message count badges
+
+### Additional Features
+- Message reactions
+- Message editing
+- Message deletion
+- Message forwarding
+- Voice messages
+- Video calls
 
 ## System Requirements
 
@@ -17,6 +27,8 @@ Design and implement a real-time chat application similar to Facebook Messenger 
    - User profiles with avatars
    - Online/offline status
    - Last seen timestamp
+   - User blocking
+   - User reporting
 
 2. **Messaging Features**
    - One-to-one chat
@@ -27,28 +39,40 @@ Design and implement a real-time chat application similar to Facebook Messenger 
    - Message history
    - Message search
    - File sharing (images, documents, etc.)
+   - Message reactions
+   - Message editing
+   - Message deletion
 
 3. **Notifications**
    - Push notifications for new messages
    - Unread message count badges
    - Desktop notifications
+   - Email notifications
+   - Sound alerts
+   - Vibration alerts
 
 ### Non-Functional Requirements
 1. **Performance**
    - Message delivery latency < 100ms
    - Support for 1M+ concurrent users
    - 99.9% uptime
+   - Low battery consumption
+   - Efficient data usage
 
 2. **Scalability**
    - Horizontal scaling
    - Load balancing
    - Database sharding
+   - CDN integration
+   - Geographic distribution
 
 3. **Security**
    - End-to-end encryption
    - Secure file transfer
    - Rate limiting
    - DDoS protection
+   - Data privacy
+   - GDPR compliance
 
 ## High-Level Architecture
 
@@ -57,6 +81,7 @@ Design and implement a real-time chat application similar to Facebook Messenger 
    - Web client (React)
    - Mobile clients (iOS/Android)
    - Desktop client (Electron)
+   - Progressive Web App (PWA)
 
 2. **Backend Services**
    - API Gateway
@@ -65,16 +90,20 @@ Design and implement a real-time chat application similar to Facebook Messenger 
    - File Service
    - Notification Service
    - Presence Service
+   - Analytics Service
 
 3. **Data Storage**
    - User Database (PostgreSQL)
    - Message Database (MongoDB)
    - File Storage (S3)
    - Cache (Redis)
+   - Search Index (Elasticsearch)
 
 4. **Real-time Communication**
    - WebSocket Server
    - Message Queue (Kafka)
+   - Load Balancer
+   - CDN
 
 ## Detailed Design
 
