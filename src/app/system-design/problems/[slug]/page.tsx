@@ -4,6 +4,7 @@ import { useState, useRef, useEffect, Suspense, useMemo } from 'react';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import { FaComments, FaList, FaClock, FaCommentDots, FaClipboardList, FaBolt, FaSearch, FaLayerGroup, FaFilter, FaTimes, FaBuilding, FaCode, FaDatabase, FaCogs, FaServer, FaNetworkWired, FaChartLine } from 'react-icons/fa';
+import { useParams, useRouter } from 'next/navigation';
 
 const problemsList = [
   {
@@ -187,7 +188,7 @@ const ProblemList = styled.ul`
   overflow-y: auto;
 `;
 
-const ProblemCard = styled.li<{ selected: boolean }>`
+const ProblemCard = styled.li<{ selected: boolean; isDisabled?: boolean }>`
   background: ${({ selected, theme }) => selected ? theme.colors.background : theme.colors.backgroundAlt};
   border: 1px solid ${({ selected, theme }) => selected ? theme.colors.primary : theme.colors.border};
   border-radius: 10px;
@@ -195,7 +196,8 @@ const ProblemCard = styled.li<{ selected: boolean }>`
   padding: 16px;
   color: ${({ selected, theme }) => selected ? theme.colors.primary : theme.colors.text};
   font-weight: ${({ selected }) => (selected ? 600 : 400)};
-  cursor: pointer;
+  cursor: ${({ isDisabled }) => isDisabled ? 'not-allowed' : 'pointer'};
+  opacity: ${({ isDisabled }) => isDisabled ? 0.7 : 1};
   box-shadow: ${({ selected }) => selected ? '0 4px 12px rgba(0,0,0,0.08)' : 'none'};
   transition: all 0.2s ease;
   display: flex;
@@ -205,10 +207,10 @@ const ProblemCard = styled.li<{ selected: boolean }>`
   overflow: hidden;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.background};
-    border-color: ${({ theme }) => theme.colors.primary};
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    transform: translateY(-1px);
+    background: ${({ theme, isDisabled }) => isDisabled ? 'inherit' : theme.colors.background};
+    border-color: ${({ theme, isDisabled }) => isDisabled ? 'inherit' : theme.colors.primary};
+    box-shadow: ${({ isDisabled }) => isDisabled ? 'none' : '0 4px 12px rgba(0,0,0,0.08)'};
+    transform: ${({ isDisabled }) => isDisabled ? 'none' : 'translateY(-1px)'};
   }
 
   &::after {
@@ -1142,8 +1144,86 @@ const MDXContent = styled.div`
   }
 `;
 
+const LoadingOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+`;
+
+const LoadingSpinner = styled.div`
+  width: 40px;
+  height: 40px;
+  border: 3px solid ${({ theme }) => theme.colors.primary}20;
+  border-top-color: ${({ theme }) => theme.colors.primary};
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+const ErrorContainer = styled.div`
+  padding: 40px;
+  text-align: center;
+  background: ${({ theme }) => theme.colors.background};
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 40px auto;
+  max-width: 600px;
+
+  h2 {
+    color: ${({ theme }) => theme.colors.text};
+    margin-bottom: 16px;
+    font-size: 1.8em;
+  }
+
+  p {
+    color: ${({ theme }) => theme.colors.textSecondary};
+    margin-bottom: 24px;
+    font-size: 1.1em;
+  }
+`;
+
+const RetryButton = styled.button`
+  background: ${({ theme }) => theme.colors.primary};
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px ${({ theme }) => `${theme.colors.primary}40`};
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
 export default function ProblemPage() {
-  const [selectedProblem, setSelectedProblem] = useState(problemsList[0]);
+  const params = useParams();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedProblem, setSelectedProblem] = useState(() => {
+    const initialSlug = params?.slug as string;
+    return problemsList.find(p => p.slug === initialSlug) || problemsList[0];
+  });
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -1151,6 +1231,79 @@ export default function ProblemPage() {
   const [selectedTimeLimits, setSelectedTimeLimits] = useState<number[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const navigationTimeoutRef = useRef<NodeJS.Timeout>();
+
+  // Update selected problem when URL changes
+  useEffect(() => {
+    const currentSlug = params?.slug as string;
+    const problem = problemsList.find(p => p.slug === currentSlug);
+    
+    if (!problem) {
+      setError('Problem not found');
+      return;
+    }
+
+    if (problem.slug !== selectedProblem.slug) {
+      setIsLoading(true);
+      setError(null);
+      
+      // Clear any existing timeout
+      if (navigationTimeoutRef.current) {
+        clearTimeout(navigationTimeoutRef.current);
+      }
+
+      // Set a timeout to handle navigation timeout
+      navigationTimeoutRef.current = setTimeout(() => {
+        setIsLoading(false);
+        setError('Navigation timeout. Please try again.');
+      }, 5000);
+
+      setSelectedProblem(problem);
+    }
+  }, [params?.slug]);
+
+  // Clear loading state when content is ready
+  useEffect(() => {
+    if (contentRef.current) {
+      setIsLoading(false);
+      if (navigationTimeoutRef.current) {
+        clearTimeout(navigationTimeoutRef.current);
+      }
+    }
+  }, [selectedProblem]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (navigationTimeoutRef.current) {
+        clearTimeout(navigationTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Update URL when problem changes
+  const handleProblemSelect = async (problem: typeof problemsList[0]) => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      setSelectedProblem(problem);
+      await router.push(`/system-design/problems/${problem.slug}`);
+    } catch (err) {
+      setError('Failed to navigate. Please try again.');
+      setIsLoading(false);
+    }
+  };
+
+  const handleRetry = () => {
+    setError(null);
+    const currentSlug = params?.slug as string;
+    const problem = problemsList.find(p => p.slug === currentSlug);
+    if (problem) {
+      handleProblemSelect(problem);
+    } else {
+      router.push('/system-design/problems');
+    }
+  };
 
   // Get unique tags from all problems
   const allTags = useMemo(() => {
@@ -1225,8 +1378,27 @@ export default function ProblemPage() {
     };
   }, []);
 
+  if (error) {
+    return (
+      <Layout>
+        <ErrorContainer>
+          <h2>Oops! Something went wrong</h2>
+          <p>{error}</p>
+          <RetryButton onClick={handleRetry}>
+            Try Again
+          </RetryButton>
+        </ErrorContainer>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
+      {isLoading && (
+        <LoadingOverlay>
+          <LoadingSpinner />
+        </LoadingOverlay>
+      )}
       <LeftPanel isOpen={isMobileMenuOpen}>
         <PanelHeader>
           System Design Problems
@@ -1321,10 +1493,13 @@ export default function ProblemPage() {
             <ProblemCard
               key={problem.slug}
               selected={selectedProblem.slug === problem.slug}
-              onClick={() => setSelectedProblem(problem)}
-              tabIndex={0}
+              onClick={() => !isLoading && handleProblemSelect(problem)}
+              tabIndex={isLoading ? -1 : 0}
               aria-current={selectedProblem.slug === problem.slug ? 'page' : undefined}
               aria-label={problem.name}
+              isDisabled={isLoading}
+              role="button"
+              aria-disabled={isLoading}
             >
               <ProblemIcon>{problem.icon}</ProblemIcon>
               <ProblemInfo>
