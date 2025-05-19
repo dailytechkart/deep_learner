@@ -29,11 +29,29 @@ import {
   FaSmile,
   FaHome,
   FaChevronRight,
-  FaChartLine
+  FaChartLine,
+  FaRegQuestionCircle,
+  FaListAlt,
+  FaSitemap,
+  FaArrowRight,
+  FaBalanceScale,
+  FaCubes,
+  FaSyncAlt,
+  FaExclamationTriangle,
+  FaGlobe,
+  FaRocket,
+  FaLaptopCode,
+  FaVial,
+  FaRegLightbulb,
+  FaRegCopy,
+  FaChevronDown,
+  FaChevronUp,
+  FaThumbtack
 } from 'react-icons/fa';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import SystemDesignLayout from '@/components/SystemDesignLayout';
+import mermaid from 'mermaid';
 
 const RoleTag = styled.span`
   background: #e3e8ff;
@@ -47,6 +65,108 @@ const RoleTag = styled.span`
   display: inline-block;
   border: 1px solid #bfcfff;
 `;
+
+const whatToCoverData = [
+  {
+    time: 45,
+    icon: <FaRegQuestionCircle style={{ marginRight: 8 }} />,
+    label: '45 min',
+    points: [
+      {
+        icon: <FaRegQuestionCircle />,
+        label: 'Clarifying Questions',
+        example: 'Ask about requirements, constraints, edge cases.',
+        tooltip: 'E.g., "What platforms? Any scale or a11y constraints?"',
+      },
+      {
+        icon: <FaListAlt />,
+        label: 'Core Requirements',
+        example: 'List must-have features and user flows.',
+        tooltip: 'E.g., "Real-time chat, group support, unread badges."',
+      },
+      {
+        icon: <FaSitemap />,
+        label: 'High-Level Architecture',
+        example: 'Draw a simple block diagram.',
+        tooltip: 'E.g., "SPA, state, API, WebSocket, cache."',
+      },
+      {
+        icon: <FaArrowRight />,
+        label: 'Key UI Flows',
+        example: 'Describe main user interactions.',
+        tooltip: 'E.g., "Send message, receive, unread update."',
+      },
+      {
+        icon: <FaBalanceScale />,
+        label: 'Basic Tradeoffs',
+        example: 'Mention one or two design choices.',
+        tooltip: 'E.g., "WebSocket vs polling, optimistic UI."',
+      },
+    ],
+  },
+  {
+    time: 60,
+    icon: <FaCubes style={{ marginRight: 8 }} />,
+    label: '60 min',
+    points: [
+      {
+        icon: <FaCubes />,
+        label: 'Component Breakdown',
+        example: 'List and describe main UI components.',
+        tooltip: 'E.g., "ChatList, ChatThread, MessageInput, etc."',
+      },
+      {
+        icon: <FaSyncAlt />,
+        label: 'State Model',
+        example: 'Show state shape, normalization, updates.',
+        tooltip: 'E.g., "Redux/Zustand, normalized chat/message state."',
+      },
+      {
+        icon: <FaExclamationTriangle />,
+        label: 'Bottlenecks',
+        example: 'Discuss performance, scaling, or UX pain points.',
+        tooltip: 'E.g., "Virtualized lists, reconnection, file upload."',
+      },
+      {
+        icon: <FaGlobe />,
+        label: 'Advanced Considerations',
+        example: 'Mention a11y, i18n, theming, etc.',
+        tooltip: 'E.g., "Dark mode, localization, push notifications."',
+      },
+    ],
+  },
+  {
+    time: 61,
+    icon: <FaRocket style={{ marginRight: 8 }} />,
+    label: '60+ min',
+    points: [
+      {
+        icon: <FaRocket />,
+        label: 'Deep Dives',
+        example: 'Scalability, security, monitoring, code samples.',
+        tooltip: 'E.g., "Sharding, E2E encryption, Sentry, code demo."',
+      },
+      {
+        icon: <FaLaptopCode />,
+        label: 'Live Demo/Code',
+        example: 'Show a code snippet or working prototype.',
+        tooltip: 'E.g., "Show a working chat input or message list."',
+      },
+      {
+        icon: <FaVial />,
+        label: 'Testing & Monitoring',
+        example: 'How would you test and monitor the system?',
+        tooltip: 'E.g., "Unit/E2E tests, Sentry, LogRocket, metrics."',
+      },
+      {
+        icon: <FaRegLightbulb />,
+        label: 'Open Q&A',
+        example: 'Invite questions, discuss tradeoffs.',
+        tooltip: 'E.g., "Ask for feedback, discuss alternatives."',
+      },
+    ],
+  },
+];
 
 const problemsList = [
   {
@@ -358,81 +478,59 @@ const MainPanel = styled.main`
 `;
 
 const Header = styled.div`
-  width: 100%;
-  padding: 32px 0;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: ${({ theme }) => theme.colors.background};
-  margin-bottom: 24px;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 3.5rem 0 0 0;
+  background: none;
 `;
 
 const HeaderContent = styled.div`
-  max-width: 900px;
-  width: 100%;
-  padding: 0 36px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 20px;
-
+  align-items: flex-start;
+  width: 100%;
+  padding: 0 2.5rem;
   @media (max-width: 768px) {
-    padding: 0 24px;
+    padding: 0 1.2rem;
   }
 `;
 
 const MainTitle = styled.h1`
-  font-size: 2.2em;
-  font-weight: 700;
-  margin: 0;
+  font-size: 2.8rem;
+  font-weight: 500;
+  margin: 0 0 1.5rem 0;
   color: ${({ theme }) => theme.colors.text};
-  font-family: "GT Alpina", "Georgia", "Cambria", "Times New Roman", "Times", serif;
-  letter-spacing: -0.016em;
-  line-height: 1.2;
-  text-align: center;
-  position: relative;
-  padding-bottom: 16px;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 3px;
-    background: ${({ theme }) => theme.colors.primary};
-    border-radius: 2px;
-  }
+  font-family: 'Charter', 'Georgia', 'Cambria', 'Times New Roman', 'Times', serif;
+  letter-spacing: -0.018em;
+  line-height: 1.16;
+  text-align: left;
+  padding-bottom: 0;
+  position: static;
 `;
 
 const BadgeContainer = styled.div`
   display: flex;
-  gap: 12px;
+  gap: 1rem;
   align-items: center;
-  justify-content: center;
   flex-wrap: wrap;
+  margin-bottom: 2.2rem;
+  margin-left: 0;
 `;
 
 const HeaderBadge = styled.div<{ color: string }>`
   background: ${({ color }) => color};
   color: #fff;
-  padding: 8px 20px;
-  border-radius: 8px;
-  font-size: 0.95em;
+  padding: 7px 18px;
+  border-radius: 999px;
+  font-size: 1.05em;
   font-weight: 500;
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 2px 8px ${({ color }) => `${color}40`};
-  transition: all 0.2s ease;
-
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px ${({ color }) => `${color}50`};
-  }
-
+  box-shadow: none;
+  transition: background 0.2s;
+  margin-right: 0;
+  margin-bottom: 0;
   svg {
     font-size: 1.1em;
   }
@@ -456,19 +554,18 @@ const MainBadgeRow = styled.div`
 
 const ContentCard = styled.div`
   width: 100%;
-  max-width: 900px;
+  max-width: 700px;
   margin: 0 auto;
-  padding: 0 36px 40px 36px;
-  background: ${({ theme }) => theme.colors.background};
+  padding: 0 2.5rem 3rem 2.5rem;
+  background: #fff;
   color: ${({ theme }) => theme.colors.text};
   border-radius: 0;
   box-shadow: none;
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
-
   @media (max-width: 768px) {
-    padding: 0 24px 32px 24px;
+    padding: 0 1.2rem 2.2rem 1.2rem;
   }
 `;
 
@@ -921,6 +1018,9 @@ const DiagramContainer = styled.div`
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   overflow-x: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const DiagramBox = styled.div`
@@ -961,89 +1061,187 @@ const DiagramDescription = styled.div`
   color: ${({ theme }) => theme.colors.textSecondary};
 `;
 
+// Mermaid diagram renderer (centered)
+const MermaidDiagram = ({ chart }: { chart: string }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [svg, setSvg] = useState('');
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const id = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
+    mermaid.parseError = () => {};
+    mermaid.render(id, chart)
+      .then(({ svg }) => {
+        setSvg(svg);
+      })
+      .catch(() => setSvg('<div style="color:red">Diagram Error</div>'));
+  }, [chart]);
+  return <div ref={ref} style={{ width: '100%', minHeight: 200, display: 'flex', justifyContent: 'center', alignItems: 'center' }} dangerouslySetInnerHTML={{ __html: svg }} />;
+};
+
+// HLD: System Architecture (flowchart)
 const SystemArchitectureDiagram = () => (
-  <DiagramBox>
-    {`
-    [Client Apps]     [Client Apps]
-         ↓                ↓
-    [Load Balancer] ← → [Load Balancer]
-         ↓                ↓
-    [App Server 1]   [App Server 2]
-         ↓                ↓
-    ┌─────────────────────────────┐
-    │        [Cache Layer]        │
-    └─────────────────────────────┘
-         ↓                ↓
-    ┌─────────────────────────────┐
-    │         [Database]          │
-    └─────────────────────────────┘
-         ↓                ↓
-    ┌─────────────────────────────┐
-    │      [Message Queue]        │
-    └─────────────────────────────┘
-                ↓
-    ┌─────────────────────────────┐
-    │      [Worker Process]       │
-    └─────────────────────────────┘
-    `}
-  </DiagramBox>
+  <MermaidDiagram
+    chart={`flowchart TD
+  User[User]
+  LB[Load Balancer]
+  Web[Web Server]
+  App[Application Server]
+  DB[(Database)]
+  Cache[(Cache)]
+  MQ[(Message Queue)]
+  Worker[Worker Process]
+
+  User --> LB
+  LB --> Web
+  Web --> App
+  App --> DB
+  App --> Cache
+  App --> MQ
+  MQ --> Worker
+  Worker --> DB
+`}
+  />
 );
 
+// HLD: Data Flow (sequence diagram)
 const DataFlowDiagram = () => (
-  <DiagramBox>
-    {`
-    [Client] → [API Gateway] → [Service Layer]
-                     ↓
-    [Cache] ← → [Service Layer] → [Database]
-                     ↓
-    [Message Queue] → [Worker] → [Database]
-    `}
-  </DiagramBox>
+  <MermaidDiagram
+    chart={`sequenceDiagram
+  participant User
+  participant LB as LoadBalancer
+  participant Web as WebServer
+  participant App as AppServer
+  participant DB as Database
+  participant Cache as Cache
+  participant MQ as MessageQueue
+  participant Worker
+
+  User->>LB: HTTP Request
+  LB->>Web: Forward Request
+  Web->>App: API Call
+  App->>Cache: Check/Set Data
+  App->>DB: Query/Write Data
+  App->>MQ: Publish Event
+  MQ->>Worker: Process Event
+  Worker->>DB: Write Data
+  App-->>Web: Response
+  Web-->>LB: Response
+  LB-->>User: HTTP Response
+`}
+  />
 );
 
+// HLD: Deployment/Infra Diagram
+const DeploymentInfraDiagram = () => (
+  <MermaidDiagram
+    chart={`flowchart TD
+  User[User]
+  CDN[CDN]
+  LB[Load Balancer]
+  Web[Web Server]
+  App[App Server]
+  DB[(Database)]
+  S3[(Object Storage)]
+  User --> CDN --> LB --> Web --> App --> DB
+  App --> S3
+`}
+  />
+);
+
+// LLD: Component/Class Design (class diagram)
 const ComponentDesignDiagram = () => (
-  <DiagramBox>
-    {`
-    +----------------+     +----------------+
-    |    Client      |     |    Service     |
-    +----------------+     +----------------+
-    | +sendRequest() | --> | +processRequest()|
-    | +handleResponse|     | +validateData()  |
-    +----------------+     | +handleError()   |
-                           +----------------+
-                                  ↓
-    +----------------+     +----------------+
-    |   Database     |     |     Cache      |
-    +----------------+     +----------------+
-    | +query()       |     | +get()         |
-    | +transaction() |     | +set()         |
-    | +index()       |     | +invalidate()  |
-    +----------------+     +----------------+
-    `}
-  </DiagramBox>
+  <MermaidDiagram
+    chart={`classDiagram
+  class User {
+    +String id
+    +String name
+    +login()
+    +logout()
+  }
+  class Session {
+    +String sessionId
+    +DateTime createdAt
+    +isActive()
+  }
+  class Message {
+    +String id
+    +String content
+    +DateTime timestamp
+    +send()
+    +edit()
+    +delete()
+  }
+  User --> Session : manages
+  User --> Message : sends
+`}
+  />
 );
 
+// LLD: Data Model (ER diagram)
 const DataModelDiagram = () => (
-  <DiagramBox>
-    {`
-    +--------+       +---------+       +--------+
-    |  User  |       | Message |       | Group  |
-    +--------+       +---------+       +--------+
-    | id     |       | id      |       | id     |
-    | name   |       | content |       | name   |
-    | email  |       | user_id |       | desc   |
-    +--------+       | group_id|       +--------+
-         ↓           +---------+           ↓
-         |                ↓                |
-         |           +----------+          |
-         +---------->| Reaction |<---------+
-                     +----------+
-                     | id       |
-                     | type     |
-                     | user_id  |
-                     +----------+
-    `}
-  </DiagramBox>
+  <MermaidDiagram
+    chart={`erDiagram
+  USER {
+    string id
+    string name
+    string email
+  }
+  MESSAGE {
+    string id
+    string content
+    string user_id
+    string group_id
+    datetime timestamp
+  }
+  GROUP {
+    string id
+    string name
+    string desc
+  }
+  REACTION {
+    string id
+    string type
+    string user_id
+    string message_id
+  }
+  USER ||--o{ MESSAGE : sends
+  USER ||--o{ REACTION : reacts
+  GROUP ||--o{ MESSAGE : contains
+  MESSAGE ||--o{ REACTION : has
+`}
+  />
+);
+
+// LLD: Sequence Diagram (Send Message)
+const SendMessageSequenceDiagram = () => (
+  <MermaidDiagram
+    chart={`sequenceDiagram
+  participant User
+  participant Web
+  participant App
+  participant DB
+  participant Cache
+  User->>Web: Send Message
+  Web->>App: API Call
+  App->>DB: Store Message
+  App->>Cache: Update Unread Count
+  App-->>Web: Success
+  Web-->>User: Show Confirmation
+`}
+  />
+);
+
+// LLD: State Diagram (Message)
+const MessageStateDiagram = () => (
+  <MermaidDiagram
+    chart={`stateDiagram-v2
+  [*] --> Draft
+  Draft --> Sent
+  Sent --> Delivered
+  Delivered --> Read
+  Read --> Archived
+`}
+  />
 );
 
 const CodeBlock = styled.pre`
@@ -1548,6 +1746,144 @@ const RetryButton = styled.button`
   }
 `;
 
+const ChatAppAnswer = dynamic(() => import('../chat-app/Answer'), { ssr: false });
+
+const Tooltip = styled.div`
+  position: absolute;
+  left: 110%;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #222;
+  color: #fff;
+  padding: 0.5em 1em;
+  border-radius: 6px;
+  font-size: 0.98em;
+  white-space: pre-line;
+  z-index: 10;
+  min-width: 180px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+  pointer-events: none;
+`;
+
+const WhatToCoverSection = styled.section`
+  margin-bottom: 2.5rem;
+  padding: 1.5rem 1.5rem 1.2rem 1.5rem;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+  border-radius: 10px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  max-width: 700px;
+  width: 100%;
+  position: relative;
+`;
+
+const WhatToCoverTitleRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.1rem;
+`;
+
+const WhatToCoverTitle = styled.h2`
+  font-size: 1.18rem;
+  font-weight: 600;
+  margin: 0;
+  color: ${({ theme }) => theme.colors.text};
+  font-family: inherit;
+`;
+
+const PinCopyRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+`;
+
+const PinButton = styled.button`
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: color 0.2s;
+  &:hover { color: ${({ theme }) => theme.colors.primary}; }
+`;
+
+const CopyButton = styled.button`
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: color 0.2s;
+  &:hover { color: ${({ theme }) => theme.colors.primary}; }
+`;
+
+const CollapseButton = styled.button`
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 1.2em;
+  cursor: pointer;
+  margin-left: 0.5rem;
+  transition: color 0.2s;
+  &:hover { color: ${({ theme }) => theme.colors.primary}; }
+`;
+
+const WhatToCoverTabs = styled.div`
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1.2rem;
+`;
+
+const WhatToCoverTab = styled.button<{ active: boolean }>`
+  background: none;
+  border: none;
+  color: ${({ active, theme }) => active ? theme.colors.primary : '#888'};
+  font-weight: ${({ active }) => active ? 700 : 500};
+  font-size: 1.08em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+  border-bottom: 2.5px solid ${({ active, theme }) => active ? theme.colors.primary : 'transparent'};
+  padding: 0.2em 0.5em 0.4em 0.5em;
+  transition: color 0.2s, border-bottom 0.2s;
+`;
+
+const WhatToCoverList = styled.ul`
+  list-style: none;
+  margin: 0 0 1.2rem 0;
+  padding: 0;
+`;
+
+const WhatToCoverItem = styled.li<{ active?: boolean }>`
+  margin-bottom: 0.7rem;
+  padding-left: 2.2em;
+  position: relative;
+  color: ${({ active, theme }) => active ? theme.colors.primary : theme.colors.text};
+  font-weight: ${({ active }) => active ? 600 : 400};
+  display: flex;
+  align-items: center;
+  min-height: 2.2em;
+  transition: background 0.2s, color 0.2s;
+  border-radius: 6px;
+  background: ${({ active, theme }) => active ? `${theme.colors.primary}08` : 'transparent'};
+  &:hover {
+    background: ${({ theme }) => `${theme.colors.primary}10`};
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0.7em;
+    top: 1.1em;
+    width: 0.6em;
+    height: 0.6em;
+    border-radius: 50%;
+    background: ${({ active, theme }) => active ? theme.colors.primary : '#bbb'};
+    display: inline-block;
+  }
+`;
+
 export default function ProblemPage() {
   const params = useParams();
   const router = useRouter();
@@ -1565,6 +1901,29 @@ export default function ProblemPage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const navigationTimeoutRef = useRef<NodeJS.Timeout>();
+  
+  // Initialize state with default values
+  const [coverTab, setCoverTab] = useState(45);
+  const [coverCollapsed, setCoverCollapsed] = useState(false);
+  const [pinned, setPinned] = useState(false);
+  const [tooltipIdx, setTooltipIdx] = useState<number | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  // Update coverTab when selectedProblem changes
+  useEffect(() => {
+    if (selectedProblem.time_limit <= 45) setCoverTab(45);
+    else if (selectedProblem.time_limit === 60) setCoverTab(60);
+    else setCoverTab(61);
+  }, [selectedProblem.time_limit]);
+
+  const handleCopy = () => {
+    const slot = whatToCoverData.find(d => d.time === coverTab || (coverTab === 61 && d.time === 61));
+    if (!slot) return;
+    const text = slot.points.map(p => `• ${p.label}: ${p.example}`).join('\n');
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1200);
+  };
 
   const allTags = useMemo(() => {
     const tags = new Set<string>();
@@ -1995,155 +2354,71 @@ export default function ProblemPage() {
               {selectedProblem.time_limit} min
             </HeaderBadge>
           </BadgeContainer>
+          <WhatToCoverSection>
+            <WhatToCoverTitleRow>
+              <WhatToCoverTitle>What to Cover in Your Answer</WhatToCoverTitle>
+              <PinCopyRow>
+                <PinButton aria-label={pinned ? 'Unpin checklist' : 'Pin checklist'} onClick={() => setPinned(prev => !prev)}>
+                  <FaThumbtack style={{ color: pinned ? '#6c63ff' : undefined, transform: pinned ? 'rotate(-20deg)' : undefined }} />
+                </PinButton>
+                <CopyButton aria-label="Copy checklist" onClick={handleCopy} title="Copy checklist">
+                  <FaRegCopy />{copied && <span style={{ marginLeft: 6, fontSize: '0.95em', color: '#6c63ff' }}>Copied!</span>}
+                </CopyButton>
+                <CollapseButton aria-label={coverCollapsed ? 'Expand checklist' : 'Collapse checklist'} onClick={() => setCoverCollapsed(prev => !prev)}>
+                  {coverCollapsed ? <FaChevronDown /> : <FaChevronUp />}
+                </CollapseButton>
+              </PinCopyRow>
+            </WhatToCoverTitleRow>
+            {!coverCollapsed && (
+              <>
+                <WhatToCoverTabs>
+                  {whatToCoverData.map(slot => (
+                    <WhatToCoverTab
+                      key={slot.time}
+                      active={coverTab === slot.time || (coverTab === 61 && slot.time === 61)}
+                      onClick={() => setCoverTab(slot.time)}
+                      aria-selected={coverTab === slot.time || (coverTab === 61 && slot.time === 61)}
+                    >
+                      {slot.icon} {slot.label}
+                    </WhatToCoverTab>
+                  ))}
+                </WhatToCoverTabs>
+                <WhatToCoverList>
+                  {whatToCoverData.find(slot => coverTab === slot.time || (coverTab === 61 && slot.time === 61))?.points.map((point, idx) => (
+                    <WhatToCoverItem
+                      key={point.label}
+                      active={coverTab === (selectedProblem.time_limit <= 45 ? 45 : selectedProblem.time_limit === 60 ? 60 : 61)}
+                      onMouseEnter={() => setTooltipIdx(idx)}
+                      onMouseLeave={() => setTooltipIdx(null)}
+                      tabIndex={0}
+                      aria-describedby={`cover-tip-${idx}`}
+                      style={{ position: 'relative' }}
+                    >
+                      <span style={{ marginRight: 10, fontSize: '1.1em', display: 'inline-flex', alignItems: 'center' }}>{point.icon}</span>
+                      <span style={{ fontWeight: 500 }}>{point.label}</span>
+                      <span style={{ color: '#888', marginLeft: 8, fontSize: '0.98em' }}>{point.example}</span>
+                      {tooltipIdx === idx && (
+                        <Tooltip id={`cover-tip-${idx}`}>{point.tooltip}</Tooltip>
+                      )}
+                    </WhatToCoverItem>
+                  ))}
+                </WhatToCoverList>
+              </>
+            )}
+          </WhatToCoverSection>
         </HeaderContent>
       </Header>
       <ContentCard ref={contentRef}>
         <article>
-          <Suspense fallback={<div>Loading...</div>}>
-            <MDXContent>
-              <DynamicMDX slug={selectedProblem.slug} />
-            </MDXContent>
-          </Suspense>
-
-          <DesignSection>
-            <h2>
-              <FaBolt />
-              High-Level Design (HLD)
-            </h2>
-            
-            <DiagramContainer>
-              <DiagramTitle>
-                <FaServer />
-                System Architecture
-              </DiagramTitle>
-              <SystemArchitectureDiagram />
-              <DiagramDescription>
-                The system architecture shows the main components and their interactions. The load balancer distributes traffic across multiple application servers, which interact with the cache layer, database, and message queue. Worker processes handle asynchronous tasks and background jobs.
-              </DiagramDescription>
-            </DiagramContainer>
-
-            <DiagramContainer>
-              <DiagramTitle>
-                <FaNetworkWired />
-                Data Flow
-              </DiagramTitle>
-              <DataFlowDiagram />
-              <DiagramDescription>
-                This diagram illustrates the data flow through the system. Requests from clients go through the API Gateway, which routes them to appropriate services. Services interact with cache and database layers, while asynchronous operations are handled through the message queue system.
-              </DiagramDescription>
-            </DiagramContainer>
-
-            <DesignGrid>
-              <DesignCard>
-                <h3>
-                  <FaBuilding />
-                  System Components
-                </h3>
-                <ul>
-                  <li>Client Applications</li>
-                  <li>Load Balancer</li>
-                  <li>Application Servers</li>
-                  <li>Database Servers</li>
-                  <li>Cache Layer</li>
-                  <li>Message Queue</li>
-                </ul>
-              </DesignCard>
-              <DesignCard>
-                <h3>
-                  <FaComments />
-                  Communication Flow
-                </h3>
-                <ul>
-                  <li>Client-Server Communication</li>
-                  <li>Inter-service Communication</li>
-                  <li>Data Flow Patterns</li>
-                  <li>Error Handling</li>
-                </ul>
-              </DesignCard>
-              <DesignCard>
-                <h3>
-                  <FaChartLine />
-                  Performance Considerations
-                </h3>
-                <ul>
-                  <li>Scalability Strategy</li>
-                  <li>Load Distribution</li>
-                  <li>Response Time Optimization</li>
-                  <li>Resource Utilization</li>
-                </ul>
-              </DesignCard>
-            </DesignGrid>
-          </DesignSection>
-
-          <DesignSection>
-            <h2>
-              <FaBolt />
-              Low-Level Design (LLD)
-            </h2>
-
-            <DiagramContainer>
-              <DiagramTitle>
-                <FaCode />
-                Component Design
-              </DiagramTitle>
-              <ComponentDesignDiagram />
-              <DiagramDescription>
-                The component design shows the main classes and their relationships. The Client class handles user interactions, while the Service class processes requests and manages business logic. The Database and Cache classes handle data persistence and caching respectively.
-              </DiagramDescription>
-            </DiagramContainer>
-
-            <DiagramContainer>
-              <DiagramTitle>
-                <FaDatabase />
-                Data Model
-              </DiagramTitle>
-              <DataModelDiagram />
-              <DiagramDescription>
-                The data model shows the relationships between different entities in the system. Users can send messages and join groups, while messages can have reactions. Each entity has its own attributes and relationships with other entities.
-              </DiagramDescription>
-            </DiagramContainer>
-
-            <DesignGrid>
-              <DesignCard>
-                <h3>
-                  <FaCode />
-                  Implementation Details
-                </h3>
-                <ul>
-                  <li>API Endpoints</li>
-                  <li>Business Logic</li>
-                  <li>Error Handling</li>
-                  <li>Security Measures</li>
-                </ul>
-              </DesignCard>
-              <DesignCard>
-                <h3>
-                  <FaDatabase />
-                  Database Schema
-                </h3>
-                <ul>
-                  <li>Table Structures</li>
-                  <li>Relationships</li>
-                  <li>Indexing Strategy</li>
-                  <li>Query Optimization</li>
-                </ul>
-              </DesignCard>
-              <DesignCard>
-                <h3>
-                  <FaCogs />
-                  Technical Specifications
-                </h3>
-                <ul>
-                  <li>API Documentation</li>
-                  <li>Service Contracts</li>
-                  <li>Data Validation</li>
-                  <li>Error Codes</li>
-                </ul>
-              </DesignCard>
-            </DesignGrid>
-
-            <SystemDesignCode />
-          </DesignSection>
+          {selectedProblem.slug === 'chat-app' ? (
+            <ChatAppAnswer />
+          ) : (
+            <Suspense fallback={<div>Loading...</div>}>
+              <MDXContent>
+                <DynamicMDX slug={selectedProblem.slug} />
+              </MDXContent>
+            </Suspense>
+          )}
         </article>
       </ContentCard>
     </>

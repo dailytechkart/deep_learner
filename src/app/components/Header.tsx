@@ -144,6 +144,13 @@ export default function Header() {
                 System Design
               </NavLink>
               <NavLink 
+                href="/roadmap" 
+                className={isActive('/roadmap') ? 'active' : ''}
+                onClick={() => handleNavigation('/roadmap')}
+              >
+                Roadmap
+              </NavLink>
+              <NavLink 
                 href="/interview" 
                 className={isActive('/interview') ? 'active' : ''}
                 onClick={() => handleNavigation('/interview')}
@@ -251,6 +258,14 @@ export default function Header() {
           >
             <span className="nav-icon">🏗️</span>
             System Design
+          </MobileSidebarLink>
+          <MobileSidebarLink 
+            href="/roadmap" 
+            onClick={() => handleNavigation('/roadmap')}
+            className={isActive('/roadmap') ? 'active' : ''}
+          >
+            <span className="nav-icon">🗺️</span>
+            Roadmap
           </MobileSidebarLink>
           <MobileSidebarLink 
             href="/interview" 
