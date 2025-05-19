@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Editor from '@monaco-editor/react';
+import { useTheme } from '../../../../../context/ThemeContext';
 
 const EditorContainer = styled.div`
   height: 100%;
@@ -17,6 +18,18 @@ const EditorToolbar = styled.div`
   padding: ${props => props.theme.spacing.md};
   border-bottom: 1px solid ${props => props.theme.colors.border};
   background: ${props => props.theme.colors.backgroundAlt};
+`;
+
+const ToolbarLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.md};
+`;
+
+const ToolbarRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.md};
 `;
 
 const LanguageSelector = styled.select`
@@ -37,6 +50,25 @@ const LanguageSelector = styled.select`
   &:focus {
     border-color: ${props => props.theme.colors.primary};
     box-shadow: 0 0 0 2px ${props => props.theme.colors.primary}20;
+  }
+`;
+
+const ThemeToggle = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.sm};
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+  border-radius: ${props => props.theme.borderRadius.md};
+  border: 1px solid ${props => props.theme.colors.border};
+  background: ${props => props.theme.colors.background};
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: ${props => props.theme.colors.primary};
+    background: ${props => props.theme.colors.backgroundAlt};
   }
 `;
 
@@ -78,6 +110,7 @@ function twoSum(nums: number[], target: number): number[] {
 export default function CodeEditor({ problemId }: { problemId: string }) {
   const [language, setLanguage] = useState<'javascript' | 'typescript'>('javascript');
   const [code, setCode] = useState(problems[problemId]?.[language] || '');
+  const { isDarkMode, toggleTheme } = useTheme();
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLanguage = e.target.value as 'javascript' | 'typescript';
@@ -94,10 +127,17 @@ export default function CodeEditor({ problemId }: { problemId: string }) {
   return (
     <EditorContainer>
       <EditorToolbar>
-        <LanguageSelector value={language} onChange={handleLanguageChange}>
-          <option value="javascript">JavaScript</option>
-          <option value="typescript">TypeScript</option>
-        </LanguageSelector>
+        <ToolbarLeft>
+          <LanguageSelector value={language} onChange={handleLanguageChange}>
+            <option value="javascript">JavaScript</option>
+            <option value="typescript">TypeScript</option>
+          </LanguageSelector>
+        </ToolbarLeft>
+        <ToolbarRight>
+          <ThemeToggle onClick={toggleTheme}>
+            {isDarkMode ? '🌞 Light' : '🌙 Dark'}
+          </ThemeToggle>
+        </ToolbarRight>
       </EditorToolbar>
       <EditorWrapper>
         <Editor
@@ -106,7 +146,7 @@ export default function CodeEditor({ problemId }: { problemId: string }) {
           language={language}
           value={code}
           onChange={handleEditorChange}
-          theme="vs-dark"
+          theme={isDarkMode ? 'vs-dark' : 'light'}
           options={{
             minimap: { enabled: false },
             fontSize: 14,

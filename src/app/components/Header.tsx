@@ -29,16 +29,23 @@ const HeaderContainer = styled.header`
   }
 `;
 
-const Logo = styled.div`
+const Logo = styled(Link)`
   display: flex;
   align-items: center;
   gap: ${props => props.theme.spacing.sm};
   font-size: ${props => props.theme.typography.fontSize.xl};
   font-weight: ${props => props.theme.typography.fontWeight.bold};
   color: ${props => props.theme.colors.primary};
+  text-decoration: none;
+  transition: all ${props => props.theme.transitions.default};
   
   .logo-icon {
     font-size: ${props => props.theme.typography.fontSize['2xl']};
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
   }
 `;
 
@@ -336,9 +343,9 @@ export default function Header({ searchQuery, onSearchChange }: HeaderProps) {
 
   return (
     <HeaderContainer>
-      <Logo>
+      <Logo href="/">
         <span className="logo-icon">🚀</span>
-        DeepLearner
+        Frontendly
       </Logo>
 
       <NavLinks>

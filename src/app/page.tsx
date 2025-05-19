@@ -472,7 +472,7 @@ export default function Home() {
 
       <FeaturesSection id="features">
         <SectionHeader>
-          <SectionTitle>Why Choose DeepLearner?</SectionTitle>
+          <SectionTitle>Why Choose Frontendly?</SectionTitle>
           <SectionContent>
             Discover the features that make us the preferred choice for deep learning education
           </SectionContent>
