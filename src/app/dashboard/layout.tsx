@@ -1,6 +1,5 @@
 import { requireAuth } from '@/lib/auth';
 import AuthenticatedLayout from '../components/AuthenticatedLayout';
-import ThemeWrapper from '../components/ThemeWrapper';
 
 export default async function DashboardLayout({
   children,
@@ -11,10 +10,8 @@ export default async function DashboardLayout({
   await requireAuth();
 
   return (
-    <ThemeWrapper>
-      <AuthenticatedLayout>
-        {children}
-      </AuthenticatedLayout>
-    </ThemeWrapper>
+    <AuthenticatedLayout>
+      {children}
+    </AuthenticatedLayout>
   );
 } 

@@ -1744,7 +1744,6 @@ const GlobalStyle = createGlobalStyle`
     line-height: ${({ theme }) => theme.typography.body1.lineHeight};
   }
 `;
-
 interface ThemeProviderWrapperProps {
   children: React.ReactNode;
 }

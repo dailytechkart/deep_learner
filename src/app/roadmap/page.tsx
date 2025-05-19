@@ -19,6 +19,21 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import mermaid from 'mermaid';
+import Header from '../components/Header';
+import { useTheme } from '../context/ThemeContext';
+import { useSearch } from '../context/SearchContext';
+import {
+  Container,
+  Content,
+  Title,
+  Description,
+  RoadmapSection,
+  SectionTitle,
+  RoadmapGrid,
+  RoadmapCard,
+  CardTitle,
+  CardContent
+} from './RoadmapPage.styled';
 
 const NODE_COLOR = '#fffbe6';
 const NODE_BORDER = '#f7c948';
@@ -397,18 +412,6 @@ const ConnectorSVG = styled.svg`
   top: 0;
   pointer-events: none;
   z-index: 0;
-`;
-
-const Header = styled.header`
-  background: white;
-  border-bottom: 1px solid #eee;
-  padding: 16px 32px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 `;
 
 const Logo = styled(Link)`
@@ -1490,6 +1493,8 @@ const RoadmapPage = () => {
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
   const [activeRole, setActiveRole] = useState<string>(roles[0]);
   const diagramRef = useRef<HTMLDivElement>(null);
+  const { isDarkMode, toggleTheme } = useTheme();
+  const { searchQuery, setSearchQuery } = useSearch();
 
   const role = selectedRoles[0] || roles[0];
   const steps = roleSteps[role as keyof typeof roleSteps];
@@ -1526,47 +1531,124 @@ const RoadmapPage = () => {
   }
 
   return (
-    <>
-      <Header>
-        <Logo href="/">Frontendly</Logo>
-        <Nav>
-          <NavLink href="/">Home</NavLink>
-          <NavLink href="/roadmap" className="active">Roadmap</NavLink>
-          <NavLink href="/system-design">System Design</NavLink>
-        </Nav>
-      </Header>
-      <RoadmapContainer>
-        <PageHeader>
-          <PageTitle>Frontend Developer Roadmap</PageTitle>
-          <PageDescription>
-            Follow these step-by-step learning paths based on your role level. Each path is designed to help you progress systematically in your frontend development journey.
-          </PageDescription>
-        </PageHeader>
-        <RoleFilterBar>
-          {roles.map(role => (
-            <RoleChip
-              key={role}
-              active={selectedRoles.includes(role)}
-              onClick={() => setSelectedRoles([role])}
-            >
-              {role}
-            </RoleChip>
-          ))}
-        </RoleFilterBar>
-        <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap' }}>
-          <div style={{ flex: 2, minWidth: 0 }}>
-            <div ref={diagramRef} style={{ width: '100%', minHeight: 400, background: '#fafbff', borderRadius: 16, boxShadow: '0 2px 12px rgba(108,99,255,0.04)', padding: 16, overflow: 'auto' }} />
-            <div style={{ marginTop: 16, fontSize: 14, color: '#666' }}>
-              <b>Legend:</b> <span style={{ marginLeft: 8 }}>🟡 Main Step</span> <span style={{ marginLeft: 16 }}>🔹 Sub Step</span> <span style={{ marginLeft: 16 }}>✅ Completed</span>
-            </div>
-          </div>
-          <div style={{ flex: 1, minWidth: 220, maxWidth: 320, background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px rgba(108,99,255,0.06)', padding: 16 }}>
-            <h3 style={{ fontSize: '1.1em', fontWeight: 700, marginBottom: 12 }}>Mark Steps as Complete</h3>
-            {renderCheckboxes(steps)}
-          </div>
-        </div>
-      </RoadmapContainer>
-    </>
+    <Container>
+      <Header 
+        isDarkMode={isDarkMode}
+        onThemeToggle={toggleTheme}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+      />
+      <Content>
+        <Title>Learning Roadmap</Title>
+        <Description>
+          A comprehensive guide to mastering deep learning concepts and techniques
+        </Description>
+
+        <RoadmapSection>
+          <SectionTitle>1. Foundations</SectionTitle>
+          <RoadmapGrid>
+            <RoadmapCard>
+              <CardTitle>Mathematics</CardTitle>
+              <CardContent>
+                <ul>
+                  <li>Linear Algebra</li>
+                  <li>Calculus</li>
+                  <li>Probability & Statistics</li>
+                </ul>
+              </CardContent>
+            </RoadmapCard>
+            <RoadmapCard>
+              <CardTitle>Python Programming</CardTitle>
+              <CardContent>
+                <ul>
+                  <li>Basic Python</li>
+                  <li>NumPy & Pandas</li>
+                  <li>Data Structures</li>
+                </ul>
+              </CardContent>
+            </RoadmapCard>
+          </RoadmapGrid>
+        </RoadmapSection>
+
+        <RoadmapSection>
+          <SectionTitle>2. Machine Learning Basics</SectionTitle>
+          <RoadmapGrid>
+            <RoadmapCard>
+              <CardTitle>Supervised Learning</CardTitle>
+              <CardContent>
+                <ul>
+                  <li>Linear Regression</li>
+                  <li>Logistic Regression</li>
+                  <li>Decision Trees</li>
+                </ul>
+              </CardContent>
+            </RoadmapCard>
+            <RoadmapCard>
+              <CardTitle>Unsupervised Learning</CardTitle>
+              <CardContent>
+                <ul>
+                  <li>Clustering</li>
+                  <li>Dimensionality Reduction</li>
+                  <li>Association Rules</li>
+                </ul>
+              </CardContent>
+            </RoadmapCard>
+          </RoadmapGrid>
+        </RoadmapSection>
+
+        <RoadmapSection>
+          <SectionTitle>3. Deep Learning Fundamentals</SectionTitle>
+          <RoadmapGrid>
+            <RoadmapCard>
+              <CardTitle>Neural Networks</CardTitle>
+              <CardContent>
+                <ul>
+                  <li>Perceptrons</li>
+                  <li>Backpropagation</li>
+                  <li>Activation Functions</li>
+                </ul>
+              </CardContent>
+            </RoadmapCard>
+            <RoadmapCard>
+              <CardTitle>Deep Learning Frameworks</CardTitle>
+              <CardContent>
+                <ul>
+                  <li>TensorFlow</li>
+                  <li>PyTorch</li>
+                  <li>Keras</li>
+                </ul>
+              </CardContent>
+            </RoadmapCard>
+          </RoadmapGrid>
+        </RoadmapSection>
+
+        <RoadmapSection>
+          <SectionTitle>4. Advanced Topics</SectionTitle>
+          <RoadmapGrid>
+            <RoadmapCard>
+              <CardTitle>Computer Vision</CardTitle>
+              <CardContent>
+                <ul>
+                  <li>CNNs</li>
+                  <li>Object Detection</li>
+                  <li>Image Segmentation</li>
+                </ul>
+              </CardContent>
+            </RoadmapCard>
+            <RoadmapCard>
+              <CardTitle>Natural Language Processing</CardTitle>
+              <CardContent>
+                <ul>
+                  <li>RNNs</li>
+                  <li>Transformers</li>
+                  <li>BERT & GPT</li>
+                </ul>
+              </CardContent>
+            </RoadmapCard>
+          </RoadmapGrid>
+        </RoadmapSection>
+      </Content>
+    </Container>
   );
 };
 

@@ -19,7 +19,13 @@ export default function StyledComponentsRegistry({
     return <>{styles}</>;
   });
 
-  if (typeof window !== 'undefined') return <>{children}</>;
+  if (typeof window !== 'undefined') {
+    return (
+      <StyleSheetManager shouldForwardProp={(prop) => prop !== 'theme'}>
+        {children}
+      </StyleSheetManager>
+    );
+  }
 
   return (
     <StyleSheetManager sheet={styledComponentsStyleSheet.instance}>

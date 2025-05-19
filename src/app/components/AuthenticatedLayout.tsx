@@ -13,7 +13,6 @@ export default function AuthenticatedLayout({
 }) {
   const { user, loading } = useAuth();
   const router = useRouter();
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   React.useEffect(() => {
@@ -33,8 +32,6 @@ export default function AuthenticatedLayout({
   return (
     <PageContainer>
       <Header
-        isDarkMode={isDarkMode}
-        onThemeToggle={() => setIsDarkMode(!isDarkMode)}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
       />

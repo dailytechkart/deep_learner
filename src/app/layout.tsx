@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import ClientLayoutWrapper from './components/ClientLayoutWrapper';
+import { Providers } from './providers';
+import { AuthProvider } from './context/AuthContext';
+import { SearchProvider } from './context/SearchContext';
+import Script from 'next/script';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -55,9 +58,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <Script id="theme-script" strategy="beforeInteractive">
+          {`
+            (function() {
+              try {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme) {
+                  document.documentElement.setAttribute('data-theme', savedTheme);
+                } else {
+                  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                  document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+                }
+              } catch (e) {
+                console.error('Error setting initial theme:', e);
+              }
+            })();
+          `}
+        </Script>
+      </head>
+      <body className={inter.className} suppressHydrationWarning>
+        <AuthProvider>
+          <SearchProvider>
+            <Providers>
+              {children}
+            </Providers>
+          </SearchProvider>
+        </AuthProvider>
       </body>
     </html>
   );
