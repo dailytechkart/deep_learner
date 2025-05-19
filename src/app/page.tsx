@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import {
@@ -87,7 +87,7 @@ const LandingHeader = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.5rem 2rem;
+  padding: 1rem 2rem;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(8px);
   position: fixed;
@@ -96,6 +96,11 @@ const LandingHeader = styled.header`
   right: 0;
   z-index: 1000;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  height: 64px;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    padding: 1rem;
+  }
 `;
 
 const Logo = styled.div`
@@ -103,8 +108,8 @@ const Logo = styled.div`
   align-items: center;
   gap: 0.75rem;
   font-size: 1.5rem;
-  font-weight: 600;
-  color: #1E293B;
+  font-weight: 700;
+  color: ${props => props.theme.colors.primary};
   
   .logo-icon {
     font-size: 1.75rem;
@@ -115,10 +120,14 @@ const LandingNavLinks = styled.nav`
   display: flex;
   gap: 2rem;
   align-items: center;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: none;
+  }
 `;
 
 const LandingNavLink = styled.a`
-  color: #1E293B;
+  color: ${props => props.theme.colors.text};
   text-decoration: none;
   font-weight: 500;
   font-size: 1rem;
@@ -132,12 +141,12 @@ const LandingNavLink = styled.a`
     height: 2px;
     bottom: -4px;
     left: 0;
-    background-color: var(--primary-color);
+    background-color: ${props => props.theme.colors.primary};
     transition: width 0.2s ease;
   }
   
   &:hover {
-    color: var(--primary-color);
+    color: ${props => props.theme.colors.primary};
     
     &:after {
       width: 100%;
@@ -149,6 +158,10 @@ const LandingActions = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: none;
+  }
 `;
 
 const HeroSection = styled.section`
@@ -221,19 +234,76 @@ const BackgroundPattern = styled.div`
   pointer-events: none;
 `;
 
+const MobileMenuButton = styled.button`
+  display: none;
+  background: none;
+  border: none;
+  color: ${props => props.theme.colors.text};
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: block;
+  }
+`;
+
+const MobileMenu = styled.div<{ $isOpen: boolean }>`
+  display: none;
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  background: ${props => props.theme.colors.background};
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    display: ${props => props.$isOpen ? 'block' : 'none'};
+  }
+`;
+
+const MobileNavLink = styled.a`
+  display: block;
+  color: ${props => props.theme.colors.text};
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${props => props.theme.colors.backgroundAlt};
+    color: ${props => props.theme.colors.primary};
+  }
+`;
+
+const MobileActions = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border-top: 1px solid ${props => props.theme.colors.border};
+  margin-top: 1rem;
+`;
+
 export default function Home() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <LandingContainer>
       <LandingHeader>
         <Logo>
           <span className="logo-icon">🎓</span>
-          FrontendPro Academy
+          Frontendly
         </Logo>
         <LandingNavLinks>
           <LandingNavLink href="/learn">Learn</LandingNavLink>
           <LandingNavLink href="/practice">Practice</LandingNavLink>
-          <LandingNavLink href="/resources">Resources</LandingNavLink>
-          <LandingNavLink href="/pricing">Pricing</LandingNavLink>
+          <LandingNavLink href="/roadmap">Roadmap</LandingNavLink>
+          <LandingNavLink href="/system-design">System Design</LandingNavLink>
         </LandingNavLinks>
         <LandingActions>
           <Link href="/login" passHref>
@@ -243,7 +313,25 @@ export default function Home() {
             <CTAButton style={{ padding: '0.75rem 1.75rem', fontSize: '1rem' }}>Get Started</CTAButton>
           </Link>
         </LandingActions>
+        <MobileMenuButton onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          ☰
+        </MobileMenuButton>
       </LandingHeader>
+
+      <MobileMenu $isOpen={isMobileMenuOpen}>
+        <MobileNavLink href="/learn">Learn</MobileNavLink>
+        <MobileNavLink href="/practice">Practice</MobileNavLink>
+        <MobileNavLink href="/roadmap">Roadmap</MobileNavLink>
+        <MobileNavLink href="/system-design">System Design</MobileNavLink>
+        <MobileActions>
+          <Link href="/login" passHref>
+            <MobileNavLink>Sign In</MobileNavLink>
+          </Link>
+          <Link href="/signup" passHref>
+            <CTAButton style={{ width: '100%', textAlign: 'center' }}>Get Started</CTAButton>
+          </Link>
+        </MobileActions>
+      </MobileMenu>
 
       <HeroSection>
         <BackgroundPattern />

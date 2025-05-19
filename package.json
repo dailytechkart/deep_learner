@@ -1,7 +1,7 @@
 {
-  "name": "deep-learner",
+  "name": "frontendly",
   "version": "1.0.0",
-  "description": "Interactive JavaScript Learning Platform",
+  "description": "Interactive Frontend Development Learning Platform",
   "type": "module",
   "engines": {
     "node": ">=18.17.0"
@@ -60,5 +60,9 @@
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
     "typescript": "^5.0.4"
-  }
+  },
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

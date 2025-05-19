@@ -1,0 +1,60 @@
+{
+  "description": "Frontend development rules and guidelines for consistent, scalable, and maintainable UI codebase.",
+  "instructions": [
+    {
+      "title": "Code Architecture & Structure",
+      "steps": [
+        "Structure code into clearly defined folders: `components`, `hooks`, `utils`, `pages`, `services`, `store`.",
+        "Break components into smaller reusable units.",
+        "Use `index.ts` or `index.js` to simplify imports for folders with multiple exports.",
+        "Avoid deeply nested files unless necessary."
+      ]
+    },
+    {
+      "title": "Styling Guidelines",
+      "steps": [
+        "Use **Tailwind CSS** for styling. Do not write custom CSS unless absolutely required.",
+        "Use utility-first classes and avoid `!important`.",
+        "Use responsive and dark mode utilities when appropriate.",
+        "Group Tailwind classes logically (layout > spacing > typography > color > others)."
+      ]
+    },
+    {
+      "title": "Code Quality & Standards",
+      "steps": [
+        "Follow the **Airbnb JavaScript/React style guide**.",
+        "Use ESLint with Airbnb config and Prettier for formatting.",
+        "Avoid unused variables, functions, and imports.",
+        "Use TypeScript or PropTypes to define component props."
+      ]
+    },
+    {
+      "title": "Best Practices",
+      "steps": [
+        "Make code **modular** and **maintainable**.",
+        "Do **not duplicate code**; extract shared logic into `hooks` or `utils`.",
+        "Use **custom hooks** for logic reuse instead of repeating logic inside components.",
+        "Avoid hard-coded values; use constants or config files.",
+        "Use descriptive variable and function names."
+      ]
+    },
+    {
+      "title": "Component Development",
+      "steps": [
+        "Keep components **pure** (stateless) whenever possible.",
+        "Separate presentational and container components.",
+        "Write **accessible** components with semantic HTML and ARIA roles.",
+        "Use controlled components for form inputs.",
+        "Use `React.memo`, `useMemo`, and `useCallback` for performance optimization when needed."
+      ]
+    },
+    {
+      "title": "Version Control & Commits",
+      "steps": [
+        "Use **Conventional Commits**: `feat:`, `fix:`, `chore:`, `refactor:`, `style:`, etc.",
+        "Write meaningful commit messages that describe **what** and **why**, not just **how**.",
+        "Avoid committing commented code or debug logs."
+      ]
+    }
+  ]
+}

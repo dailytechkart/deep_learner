@@ -1528,7 +1528,7 @@ const RoadmapPage = () => {
   return (
     <>
       <Header>
-        <Logo href="/">Deep Learner</Logo>
+        <Logo href="/">Frontendly</Logo>
         <Nav>
           <NavLink href="/">Home</NavLink>
           <NavLink href="/roadmap" className="active">Roadmap</NavLink>
