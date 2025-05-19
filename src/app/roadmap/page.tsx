@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import { FaCheckCircle, FaCircle, FaDotCircle, FaInfoCircle, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaCheckCircle, FaCircle, FaDotCircle, FaInfoCircle, FaChevronLeft, FaChevronRight, FaCheck, FaClock, FaBook, FaCode } from 'react-icons/fa';
 import Link from 'next/link';
 import ReactFlow, {
   Background,
@@ -32,7 +32,11 @@ import {
   RoadmapGrid,
   RoadmapCard,
   CardTitle,
-  CardContent
+  CardContent,
+  ProgressBar,
+  SectionProgress,
+  SectionStats,
+  Stat
 } from './RoadmapPage.styled';
 
 const NODE_COLOR = '#fffbe6';
@@ -1489,162 +1493,173 @@ function roadmapToMermaidMindmap(steps: any[], completedSteps: Record<string, bo
 }
 
 const RoadmapPage = () => {
-  const [completedSteps, setCompletedSteps] = useState<Record<string, boolean>>({});
-  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
-  const [activeRole, setActiveRole] = useState<string>(roles[0]);
-  const diagramRef = useRef<HTMLDivElement>(null);
-  const { isDarkMode, toggleTheme } = useTheme();
   const { searchQuery, setSearchQuery } = useSearch();
+  const [completedItems, setCompletedItems] = useState<Record<string, boolean>>({});
 
-  const role = selectedRoles[0] || roles[0];
-  const steps = roleSteps[role as keyof typeof roleSteps];
-  const mindmapStr = `mindmap\n  root((Frontend Roadmap))\n${roadmapToMermaidMindmap(steps, completedSteps)}`;
-
-  useEffect(() => {
-    if (diagramRef.current) {
-      diagramRef.current.innerHTML = `<div class='mermaid'>${mindmapStr}</div>`;
-      mermaid.init(undefined, diagramRef.current);
-    }
-  }, [mindmapStr]);
-
-  // Handler for mark as complete (checkboxes below diagram)
-  const handleComplete = (stepId: string) => {
-    setCompletedSteps(prev => ({ ...prev, [stepId]: !prev[stepId] }));
+  const toggleItem = (itemId: string) => {
+    setCompletedItems(prev => ({
+      ...prev,
+      [itemId]: !prev[itemId]
+    }));
   };
 
-  // Render checkboxes for completion
-  function renderCheckboxes(steps: any[]) {
-    return steps.map(step => (
-      <div key={step.id} style={{ marginBottom: 4, marginLeft: 8 }}>
-        <label style={{ cursor: 'pointer' }}>
-          <input
-            type="checkbox"
-            checked={!!completedSteps[step.id]}
-            onChange={() => handleComplete(step.id)}
-            style={{ marginRight: 6 }}
-          />
-          {step.label}
-        </label>
-        {step.children && renderCheckboxes(step.children)}
-      </div>
-    ));
-  }
+  const getSectionProgress = (items: string[]) => {
+    const completed = items.filter(item => completedItems[item]).length;
+    return (completed / items.length) * 100;
+  };
+
+  const renderCard = (title: string, items: string[], sectionId: string) => (
+    <RoadmapCard>
+      <CardTitle>{title}</CardTitle>
+      <CardContent>
+        <ul>
+          {items.map((item, index) => (
+            <li 
+              key={index}
+              onClick={() => toggleItem(`${sectionId}-${index}`)}
+              style={{ 
+                cursor: 'pointer',
+                textDecoration: completedItems[`${sectionId}-${index}`] ? 'line-through' : 'none',
+                opacity: completedItems[`${sectionId}-${index}`] ? 0.7 : 1
+              }}
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+      </CardContent>
+      <SectionStats>
+        <Stat>
+          <FaCheck />
+          {items.filter((_, index) => completedItems[`${sectionId}-${index}`]).length} completed
+        </Stat>
+        <Stat>
+          <FaClock />
+          {items.length} total
+        </Stat>
+      </SectionStats>
+      <ProgressBar progress={getSectionProgress(items.map((_, index) => `${sectionId}-${index}`))} />
+    </RoadmapCard>
+  );
 
   return (
     <Container>
       <Header 
-        isDarkMode={isDarkMode}
-        onThemeToggle={toggleTheme}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
       />
       <Content>
-        <Title>Learning Roadmap</Title>
+        <Title>Frontend Development Roadmap</Title>
         <Description>
-          A comprehensive guide to mastering deep learning concepts and techniques
+          A comprehensive guide to becoming a frontend developer, from basics to advanced concepts.
+          Click on items to mark them as completed and track your progress.
         </Description>
 
         <RoadmapSection>
-          <SectionTitle>1. Foundations</SectionTitle>
+          <SectionTitle>1. Web Fundamentals</SectionTitle>
+          <SectionProgress>
+            <FaBook /> Essential knowledge for every frontend developer
+          </SectionProgress>
           <RoadmapGrid>
-            <RoadmapCard>
-              <CardTitle>Mathematics</CardTitle>
-              <CardContent>
-                <ul>
-                  <li>Linear Algebra</li>
-                  <li>Calculus</li>
-                  <li>Probability & Statistics</li>
-                </ul>
-              </CardContent>
-            </RoadmapCard>
-            <RoadmapCard>
-              <CardTitle>Python Programming</CardTitle>
-              <CardContent>
-                <ul>
-                  <li>Basic Python</li>
-                  <li>NumPy & Pandas</li>
-                  <li>Data Structures</li>
-                </ul>
-              </CardContent>
-            </RoadmapCard>
+            {renderCard('HTML5 & Accessibility', [
+              'Semantic HTML',
+              'Forms & Validation',
+              'ARIA & Accessibility',
+              'SEO Best Practices'
+            ], 'html')}
+            {renderCard('CSS3 & Layout', [
+              'Flexbox & Grid',
+              'Responsive Design',
+              'CSS Variables',
+              'CSS Architecture'
+            ], 'css')}
+            {renderCard('JavaScript Fundamentals', [
+              'ES6+ Features',
+              'DOM Manipulation',
+              'Async Programming',
+              'Error Handling'
+            ], 'js')}
           </RoadmapGrid>
         </RoadmapSection>
 
         <RoadmapSection>
-          <SectionTitle>2. Machine Learning Basics</SectionTitle>
+          <SectionTitle>2. Frontend Frameworks</SectionTitle>
+          <SectionProgress>
+            <FaCode /> Modern tools and frameworks for building web applications
+          </SectionProgress>
           <RoadmapGrid>
-            <RoadmapCard>
-              <CardTitle>Supervised Learning</CardTitle>
-              <CardContent>
-                <ul>
-                  <li>Linear Regression</li>
-                  <li>Logistic Regression</li>
-                  <li>Decision Trees</li>
-                </ul>
-              </CardContent>
-            </RoadmapCard>
-            <RoadmapCard>
-              <CardTitle>Unsupervised Learning</CardTitle>
-              <CardContent>
-                <ul>
-                  <li>Clustering</li>
-                  <li>Dimensionality Reduction</li>
-                  <li>Association Rules</li>
-                </ul>
-              </CardContent>
-            </RoadmapCard>
+            {renderCard('React Ecosystem', [
+              'React Core Concepts',
+              'Hooks & Custom Hooks',
+              'State Management',
+              'React Router'
+            ], 'react')}
+            {renderCard('Next.js & SSR', [
+              'Pages & Routing',
+              'Data Fetching',
+              'API Routes',
+              'Deployment'
+            ], 'next')}
+            {renderCard('TypeScript', [
+              'Type System',
+              'Interfaces & Types',
+              'Generics',
+              'Type Safety'
+            ], 'ts')}
           </RoadmapGrid>
         </RoadmapSection>
 
         <RoadmapSection>
-          <SectionTitle>3. Deep Learning Fundamentals</SectionTitle>
+          <SectionTitle>3. Advanced Frontend</SectionTitle>
+          <SectionProgress>
+            <FaCode /> Advanced concepts and best practices
+          </SectionProgress>
           <RoadmapGrid>
-            <RoadmapCard>
-              <CardTitle>Neural Networks</CardTitle>
-              <CardContent>
-                <ul>
-                  <li>Perceptrons</li>
-                  <li>Backpropagation</li>
-                  <li>Activation Functions</li>
-                </ul>
-              </CardContent>
-            </RoadmapCard>
-            <RoadmapCard>
-              <CardTitle>Deep Learning Frameworks</CardTitle>
-              <CardContent>
-                <ul>
-                  <li>TensorFlow</li>
-                  <li>PyTorch</li>
-                  <li>Keras</li>
-                </ul>
-              </CardContent>
-            </RoadmapCard>
+            {renderCard('State Management', [
+              'Redux Toolkit',
+              'Context API',
+              'Zustand/Jotai',
+              'React Query'
+            ], 'state')}
+            {renderCard('Testing & Quality', [
+              'Jest & React Testing',
+              'E2E Testing',
+              'Performance Testing',
+              'Code Quality Tools'
+            ], 'testing')}
+            {renderCard('Build Tools & Optimization', [
+              'Webpack/Vite',
+              'Code Splitting',
+              'Bundle Analysis',
+              'Performance Optimization'
+            ], 'build')}
           </RoadmapGrid>
         </RoadmapSection>
 
         <RoadmapSection>
-          <SectionTitle>4. Advanced Topics</SectionTitle>
+          <SectionTitle>4. Modern Frontend</SectionTitle>
+          <SectionProgress>
+            <FaCode /> Cutting-edge technologies and practices
+          </SectionProgress>
           <RoadmapGrid>
-            <RoadmapCard>
-              <CardTitle>Computer Vision</CardTitle>
-              <CardContent>
-                <ul>
-                  <li>CNNs</li>
-                  <li>Object Detection</li>
-                  <li>Image Segmentation</li>
-                </ul>
-              </CardContent>
-            </RoadmapCard>
-            <RoadmapCard>
-              <CardTitle>Natural Language Processing</CardTitle>
-              <CardContent>
-                <ul>
-                  <li>RNNs</li>
-                  <li>Transformers</li>
-                  <li>BERT & GPT</li>
-                </ul>
-              </CardContent>
-            </RoadmapCard>
+            {renderCard('Styling Solutions', [
+              'Styled Components',
+              'Tailwind CSS',
+              'CSS Modules',
+              'Design Systems'
+            ], 'styling')}
+            {renderCard('Advanced Patterns', [
+              'Micro Frontends',
+              'Server Components',
+              'Progressive Web Apps',
+              'Web Workers'
+            ], 'patterns')}
+            {renderCard('DevOps & CI/CD', [
+              'Git & GitHub',
+              'Docker Basics',
+              'CI/CD Pipelines',
+              'Monitoring & Analytics'
+            ], 'devops')}
           </RoadmapGrid>
         </RoadmapSection>
       </Content>
