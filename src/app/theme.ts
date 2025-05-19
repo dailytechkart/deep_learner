@@ -9,6 +9,7 @@ declare module 'styled-components' {
       secondary: string;
       background: string;
       backgroundAlt: string;
+      backgroundHover: string;
       sidebar: string;
       text: string;
       textSecondary: string;
@@ -16,6 +17,7 @@ declare module 'styled-components' {
       // UI Element colors
       codeBackground: string;
       border: string;
+      borderLight: string;
       practiceBackground: string;
       problemBackground: string;
       solutionBackground: string;
@@ -35,10 +37,10 @@ declare module 'styled-components' {
       codeFunction: string;
       codeVariable: string;
       codeOperator: string;
-      borderLight: string;
     };
     fonts: {
       body: string;
+      heading: string;
       code: string;
     };
     spacing: {
@@ -58,21 +60,12 @@ declare module 'styled-components' {
       md: string;
       lg: string;
       xl: string;
+      full: string;
     };
     shadows: {
       sm: string;
       md: string;
       lg: string;
-    };
-    fontSizes: {
-      xs: string;
-      sm: string;
-      md: string;
-      lg: string;
-      xl: string;
-      '2xl': string;
-      '3xl': string;
-      '4xl': string;
     };
     typography: {
       fontSize: {
@@ -81,6 +74,9 @@ declare module 'styled-components' {
         md: string;
         lg: string;
         xl: string;
+        '2xl': string;
+        '3xl': string;
+        '4xl': string;
       };
       fontWeight: {
         normal: number;
@@ -88,47 +84,98 @@ declare module 'styled-components' {
         semibold: number;
         bold: number;
       };
-      h1: string;
-      h2: string;
-      h3: string;
-      h4: string;
-      h5: string;
-      h6: string;
+      h1: {
+        fontSize: string;
+        fontWeight: number;
+        lineHeight: number;
+      };
+      h2: {
+        fontSize: string;
+        fontWeight: number;
+        lineHeight: number;
+      };
+      h3: {
+        fontSize: string;
+        fontWeight: number;
+        lineHeight: number;
+      };
+      h4: {
+        fontSize: string;
+        fontWeight: number;
+        lineHeight: number;
+      };
+      h5: {
+        fontSize: string;
+        fontWeight: number;
+        lineHeight: number;
+      };
+      h6: {
+        fontSize: string;
+        fontWeight: number;
+        lineHeight: number;
+      };
+      body1: {
+        fontSize: string;
+        fontWeight: number;
+        lineHeight: number;
+      };
+      body2: {
+        fontSize: string;
+        fontWeight: number;
+        lineHeight: number;
+      };
+      caption: {
+        fontSize: string;
+        fontWeight: number;
+        lineHeight: number;
+      };
+    };
+    transitions: {
+      default: string;
+      fast: string;
+      slow: string;
+    };
+    breakpoints: {
+      mobile: string;
+      tablet: string;
+      desktop: string;
     };
   }
 }
 
 export const lightTheme: DefaultTheme = {
   colors: {
-    primary: '#F59E0B',
-    primaryDark: '#D97706',
-    secondary: '#6c757d',
+    primary: '#2563eb',
+    primaryDark: '#1d4ed8',
+    secondary: '#64748b',
     background: '#ffffff',
     backgroundAlt: '#f8fafc',
-    sidebar: '#f8f9fa',
-    text: '#212529',
-    textSecondary: '#64748b',
-    codeBackground: '#f8f9fa',
-    border: '#dee2e6',
-    practiceBackground: '#f8f9fa',
+    backgroundHover: '#f1f5f9',
+    sidebar: '#f8fafc',
+    text: '#0f172a',
+    textSecondary: '#475569',
+    codeBackground: '#f8fafc',
+    border: '#e2e8f0',
+    borderLight: '#f1f5f9',
+    practiceBackground: '#f8fafc',
     problemBackground: '#ffffff',
-    solutionBackground: '#f8f9fa',
-    success: '#22c55e',
-    error: '#ef4444',
-    warning: '#f59e0b',
-    info: '#3b82f6',
-    codeKeyword: '#d73a49',
-    codeString: '#032f62',
-    codeComment: '#6a737d',
-    codeFunction: '#6f42c1',
-    codeVariable: '#e36209',
-    codeOperator: '#d73a49',
-    codeText: '#24292e',
-    codeNumber: '#005cc5',
-    borderLight: '#e2e8f0'
+    solutionBackground: '#f8fafc',
+    success: '#16a34a',
+    error: '#dc2626',
+    warning: '#d97706',
+    info: '#2563eb',
+    codeKeyword: '#2563eb',
+    codeString: '#16a34a',
+    codeComment: '#64748b',
+    codeFunction: '#7c3aed',
+    codeVariable: '#d97706',
+    codeOperator: '#2563eb',
+    codeText: '#0f172a',
+    codeNumber: '#2563eb'
   },
   fonts: {
     body: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+    heading: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
     code: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
   },
   spacing: {
@@ -147,30 +194,24 @@ export const lightTheme: DefaultTheme = {
     sm: '0.25rem',
     md: '0.5rem',
     lg: '1rem',
-    xl: '1.5rem'
+    xl: '1.5rem',
+    full: '9999px'
   },
   shadows: {
     sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
     md: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
     lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
   },
-  fontSizes: {
-    xs: '0.75rem',
-    sm: '0.875rem',
-    md: '1rem',
-    lg: '1.125rem',
-    xl: '1.25rem',
-    '2xl': '1.5rem',
-    '3xl': '1.875rem',
-    '4xl': '2.25rem'
-  },
   typography: {
     fontSize: {
       xs: '0.75rem',
       sm: '0.875rem',
       md: '1rem',
       lg: '1.125rem',
-      xl: '1.25rem'
+      xl: '1.25rem',
+      '2xl': '1.5rem',
+      '3xl': '1.875rem',
+      '4xl': '2.25rem'
     },
     fontWeight: {
       normal: 400,
@@ -178,46 +219,97 @@ export const lightTheme: DefaultTheme = {
       semibold: 600,
       bold: 700
     },
-    h1: '2.5rem',
-    h2: '2rem',
-    h3: '1.5rem',
-    h4: '1.25rem',
-    h5: '1.125rem',
-    h6: '1rem'
+    h1: {
+      fontSize: '2.5rem',
+      fontWeight: 700,
+      lineHeight: 1.2
+    },
+    h2: {
+      fontSize: '2rem',
+      fontWeight: 700,
+      lineHeight: 1.3
+    },
+    h3: {
+      fontSize: '1.75rem',
+      fontWeight: 600,
+      lineHeight: 1.4
+    },
+    h4: {
+      fontSize: '1.5rem',
+      fontWeight: 600,
+      lineHeight: 1.4
+    },
+    h5: {
+      fontSize: '1.25rem',
+      fontWeight: 600,
+      lineHeight: 1.4
+    },
+    h6: {
+      fontSize: '1rem',
+      fontWeight: 600,
+      lineHeight: 1.4
+    },
+    body1: {
+      fontSize: '1rem',
+      fontWeight: 400,
+      lineHeight: 1.5
+    },
+    body2: {
+      fontSize: '0.875rem',
+      fontWeight: 400,
+      lineHeight: 1.5
+    },
+    caption: {
+      fontSize: '0.75rem',
+      fontWeight: 400,
+      lineHeight: 1.5
+    }
+  },
+  transitions: {
+    default: '0.3s ease',
+    fast: '0.15s ease',
+    slow: '0.5s ease'
+  },
+  breakpoints: {
+    mobile: '640px',
+    tablet: '768px',
+    desktop: '1024px'
   }
 };
 
 export const darkTheme: DefaultTheme = {
   colors: {
-    primary: '#F59E0B',
-    primaryDark: '#D97706',
-    secondary: '#6c757d',
-    background: '#212529',
+    primary: '#3b82f6',
+    primaryDark: '#2563eb',
+    secondary: '#94a3b8',
+    background: '#0f172a',
     backgroundAlt: '#1e293b',
-    sidebar: '#2c3034',
-    text: '#f8f9fa',
-    textSecondary: '#94a3b8',
-    codeBackground: '#2c3034',
-    border: '#495057',
-    practiceBackground: '#2c3034',
-    problemBackground: '#212529',
-    solutionBackground: '#2c3034',
-    success: '#4ade80',
-    error: '#f87171',
-    warning: '#fbbf24',
-    info: '#60a5fa',
-    codeKeyword: '#ff7b72',
-    codeString: '#a5d6ff',
-    codeComment: '#8b949e',
-    codeFunction: '#d2a8ff',
-    codeVariable: '#ffa657',
-    codeOperator: '#ff7b72',
-    codeText: '#e6edf3',
-    codeNumber: '#79c0ff',
-    borderLight: '#334155'
+    backgroundHover: '#334155',
+    sidebar: '#1e293b',
+    text: '#f8fafc',
+    textSecondary: '#cbd5e1',
+    codeBackground: '#1e293b',
+    border: '#334155',
+    borderLight: '#475569',
+    practiceBackground: '#1e293b',
+    problemBackground: '#0f172a',
+    solutionBackground: '#1e293b',
+    success: '#22c55e',
+    error: '#ef4444',
+    warning: '#f59e0b',
+    info: '#3b82f6',
+    codeKeyword: '#3b82f6',
+    codeString: '#22c55e',
+    codeComment: '#94a3b8',
+    codeFunction: '#a855f7',
+    codeVariable: '#f59e0b',
+    codeOperator: '#3b82f6',
+    codeText: '#f8fafc',
+    codeNumber: '#3b82f6'
   },
   fonts: {
     body: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+    heading: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
     code: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
   },
   spacing: {
@@ -236,22 +328,13 @@ export const darkTheme: DefaultTheme = {
     sm: '0.25rem',
     md: '0.5rem',
     lg: '1rem',
-    xl: '1.5rem'
+    xl: '1.5rem',
+    full: '9999px'
   },
   shadows: {
     sm: '0 1px 2px 0 rgba(0, 0, 0, 0.2)',
     md: '0 4px 6px -1px rgba(0, 0, 0, 0.3)',
     lg: '0 10px 15px -3px rgba(0, 0, 0, 0.3)'
-  },
-  fontSizes: {
-    xs: '0.75rem',
-    sm: '0.875rem',
-    md: '1rem',
-    lg: '1.125rem',
-    xl: '1.25rem',
-    '2xl': '1.5rem',
-    '3xl': '1.875rem',
-    '4xl': '2.25rem'
   },
   typography: {
     fontSize: {
@@ -259,7 +342,10 @@ export const darkTheme: DefaultTheme = {
       sm: '0.875rem',
       md: '1rem',
       lg: '1.125rem',
-      xl: '1.25rem'
+      xl: '1.25rem',
+      '2xl': '1.5rem',
+      '3xl': '1.875rem',
+      '4xl': '2.25rem'
     },
     fontWeight: {
       normal: 400,
@@ -267,11 +353,60 @@ export const darkTheme: DefaultTheme = {
       semibold: 600,
       bold: 700
     },
-    h1: '2.5rem',
-    h2: '2rem',
-    h3: '1.5rem',
-    h4: '1.25rem',
-    h5: '1.125rem',
-    h6: '1rem'
+    h1: {
+      fontSize: '2.5rem',
+      fontWeight: 700,
+      lineHeight: 1.2
+    },
+    h2: {
+      fontSize: '2rem',
+      fontWeight: 700,
+      lineHeight: 1.3
+    },
+    h3: {
+      fontSize: '1.75rem',
+      fontWeight: 600,
+      lineHeight: 1.4
+    },
+    h4: {
+      fontSize: '1.5rem',
+      fontWeight: 600,
+      lineHeight: 1.4
+    },
+    h5: {
+      fontSize: '1.25rem',
+      fontWeight: 600,
+      lineHeight: 1.4
+    },
+    h6: {
+      fontSize: '1rem',
+      fontWeight: 600,
+      lineHeight: 1.4
+    },
+    body1: {
+      fontSize: '1rem',
+      fontWeight: 400,
+      lineHeight: 1.5
+    },
+    body2: {
+      fontSize: '0.875rem',
+      fontWeight: 400,
+      lineHeight: 1.5
+    },
+    caption: {
+      fontSize: '0.75rem',
+      fontWeight: 400,
+      lineHeight: 1.5
+    }
+  },
+  transitions: {
+    default: '0.3s ease',
+    fast: '0.15s ease',
+    slow: '0.5s ease'
+  },
+  breakpoints: {
+    mobile: '640px',
+    tablet: '768px',
+    desktop: '1024px'
   }
 }; 

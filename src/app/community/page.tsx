@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Layout from '../components/Layout';
+import ClientLayout from '../components/ClientLayout';
 import {
   MainContent,
   Section,
@@ -77,7 +77,7 @@ export default function CommunityPage() {
     : discussions.filter(discussion => discussion.category === selectedCategory);
 
   return (
-    <Layout>
+    <ClientLayout>
       <MainContent>
         <Section>
           <SectionHeader>
@@ -135,6 +135,6 @@ export default function CommunityPage() {
           </TopicCardGrid>
         </Section>
       </MainContent>
-    </Layout>
+    </ClientLayout>
   );
 } 

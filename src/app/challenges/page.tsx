@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import Layout from '../components/Layout';
+import ClientLayout from '../components/ClientLayout';
 import {
   MainContent,
   Section,
@@ -15,25 +15,26 @@ import {
   TopicCardStats,
   TopicCardAction,
   CategoryList,
-  CategoryButton
+  CategoryButton,
 } from '../components/StyledComponents';
 
 const categories = [
   { id: 'all', name: 'All Challenges', count: 15 },
   { id: 'ongoing', name: 'Ongoing', count: 5 },
   { id: 'upcoming', name: 'Upcoming', count: 5 },
-  { id: 'completed', name: 'Completed', count: 5 }
+  { id: 'completed', name: 'Completed', count: 5 },
 ];
 
 const challenges = [
   {
     id: 1,
     title: 'Weekly Algorithm Challenge',
-    description: 'Solve 5 algorithm problems in 24 hours. Compete with other developers!',
+    description:
+      'Solve 5 algorithm problems in 24 hours. Compete with other developers!',
     status: 'ongoing',
     participants: 150,
     prize: '$500',
-    endDate: '2024-03-20'
+    endDate: '2024-03-20',
   },
   {
     id: 2,
@@ -42,7 +43,7 @@ const challenges = [
     status: 'upcoming',
     participants: 0,
     prize: '$300',
-    startDate: '2024-03-25'
+    startDate: '2024-03-25',
   },
   {
     id: 3,
@@ -51,26 +52,27 @@ const challenges = [
     status: 'completed',
     participants: 200,
     prize: '$1000',
-    endDate: '2024-03-15'
-  }
+    endDate: '2024-03-15',
+  },
 ];
 
 export default function ChallengesPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  const filteredChallenges = selectedCategory === 'all'
-    ? challenges
-    : challenges.filter(challenge => challenge.status === selectedCategory);
+  const filteredChallenges =
+    selectedCategory === 'all'
+      ? challenges
+      : challenges.filter((challenge) => challenge.status === selectedCategory);
 
   return (
-    <Layout>
+    <ClientLayout>
       <MainContent>
         <Section>
           <SectionHeader>
             <SectionTitle>Coding Challenges</SectionTitle>
           </SectionHeader>
           <CategoryList>
-            {categories.map(category => (
+            {categories.map((category) => (
               <CategoryButton
                 key={category.id}
                 active={selectedCategory === category.id}
@@ -88,7 +90,7 @@ export default function ChallengesPage() {
             <SectionTitle>Available Challenges</SectionTitle>
           </SectionHeader>
           <TopicCardGrid>
-            {filteredChallenges.map(challenge => (
+            {filteredChallenges.map((challenge) => (
               <TopicCard key={challenge.id}>
                 <TopicCardHeader>
                   <span>{challenge.status}</span>
@@ -103,12 +105,17 @@ export default function ChallengesPage() {
                     <span>Participants: {challenge.participants}</span>
                     <span>
                       {challenge.status === 'ongoing' ? 'Ends: ' : 'Starts: '}
-                      {challenge.status === 'ongoing' ? challenge.endDate : challenge.startDate}
+                      {challenge.status === 'ongoing'
+                        ? challenge.endDate
+                        : challenge.startDate}
                     </span>
                   </TopicCardStats>
                   <TopicCardAction>
-                    {challenge.status === 'ongoing' ? 'Join Challenge' :
-                     challenge.status === 'upcoming' ? 'Set Reminder' : 'View Results'}
+                    {challenge.status === 'ongoing'
+                      ? 'Join Challenge'
+                      : challenge.status === 'upcoming'
+                      ? 'Set Reminder'
+                      : 'View Results'}
                   </TopicCardAction>
                 </TopicCardFooter>
               </TopicCard>
@@ -116,6 +123,6 @@ export default function ChallengesPage() {
           </TopicCardGrid>
         </Section>
       </MainContent>
-    </Layout>
+    </ClientLayout>
   );
-} 
+}

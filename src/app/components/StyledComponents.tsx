@@ -2,6 +2,8 @@
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 import Image from 'next/image';
 import { useTheme } from '../context/ThemeContext';
+import React from 'react';
+import { lightTheme, darkTheme } from '../theme';
 
 const spacing = {
   xs: '0.25rem',
@@ -173,7 +175,7 @@ export const CategoryButton = styled.button<{ active: boolean }>`
   border-radius: ${props => props.theme.borderRadius.md};
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: ${props => props.theme.fontSizes.sm};
+  font-size: ${props => props.theme.typography.fontSize.sm};
   font-weight: ${props => props.active ? '600' : '400'};
   display: flex;
   align-items: center;
@@ -196,7 +198,7 @@ export const CategoryButton = styled.button<{ active: boolean }>`
     background: ${props => props.active ? 'rgba(255, 255, 255, 0.2)' : props.theme.colors.backgroundAlt};
     padding: 2px 8px;
     border-radius: 12px;
-    font-size: ${props => props.theme.fontSizes.xs};
+    font-size: ${props => props.theme.typography.fontSize.xs};
     color: ${props => props.active ? '#FFFFFF' : props.theme.colors.textSecondary};
   }
 `;
@@ -347,8 +349,8 @@ export const SidebarHeader = styled.div`
 `;
 
 export const SidebarTitle = styled.h2`
-  font-size: ${props => props.theme.typography.h3};
-  font-weight: 600;
+  font-size: ${props => props.theme.typography.h3.fontSize};
+  font-weight: ${props => props.theme.typography.h3.fontWeight};
   color: ${props => props.theme.colors.text};
   margin: 0;
 `;
@@ -425,8 +427,8 @@ export const SidebarProgressText = styled.div`
 `;
 
 export const SidebarProgressValue = styled.span`
-  font-size: ${props => props.theme.typography.h4};
-  font-weight: 600;
+  font-size: ${props => props.theme.typography.h4.fontSize};
+  font-weight: ${props => props.theme.typography.h4.fontWeight};
   color: ${props => props.theme.colors.primary};
 `;
 
@@ -1032,31 +1034,31 @@ export const StatsSection = styled.section`
 `;
 
 export const Title = styled.h1`
-  font-size: 2rem;
+  font-size: ${props => props.theme.typography.h1.fontSize};
+  font-weight: ${props => props.theme.typography.fontWeight.bold};
   color: ${props => props.theme.colors.text};
   margin-bottom: 1rem;
-  font-weight: 700;
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 1.75rem;
+    font-size: ${props => props.theme.typography.h2.fontSize};
   }
 `;
 
 export const Description = styled.p`
-  font-size: 1.1rem;
+  font-size: ${props => props.theme.typography.body1.fontSize};
   color: ${props => props.theme.colors.textSecondary};
-  line-height: 1.6;
+  line-height: ${props => props.theme.typography.body1.lineHeight};
   margin-bottom: 2rem;
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 1rem;
+    font-size: ${props => props.theme.typography.body2.fontSize};
   }
 `;
 
 export const Content = styled.div`
   color: ${props => props.theme.colors.text};
-  line-height: 1.8;
-  font-size: 1.1rem;
+  line-height: ${props => props.theme.typography.body1.lineHeight};
+  font-size: ${props => props.theme.typography.body1.fontSize};
 
   p {
     margin-bottom: 1.5rem;
@@ -1072,7 +1074,7 @@ export const Content = styled.div`
   }
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 1rem;
+    font-size: ${props => props.theme.typography.body2.fontSize};
   }
 `;
 
@@ -1094,20 +1096,20 @@ export const StatCard = styled.div`
 `;
 
 export const StatNumber = styled.div`
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: ${props => props.theme.typography.h1.fontSize};
+  font-weight: ${props => props.theme.typography.fontWeight.bold};
   color: ${props => props.theme.colors.primary};
   margin-bottom: ${props => props.theme.spacing.sm};
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 2rem;
+    font-size: ${props => props.theme.typography.h2.fontSize};
   }
 `;
 
 export const StatLabel = styled.div`
-  font-size: 1rem;
+  font-size: ${props => props.theme.typography.body1.fontSize};
   color: ${props => props.theme.colors.textSecondary};
-  font-weight: 500;
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
 `;
 
 export const TestimonialsSection = styled.section`
@@ -1143,14 +1145,14 @@ export const TestimonialCard = styled.div`
 `;
 
 export const TestimonialContent = styled.p`
-  font-size: 1.1rem;
+  font-size: ${props => props.theme.typography.body1.fontSize};
   color: ${props => props.theme.colors.text};
-  line-height: 1.6;
+  line-height: ${props => props.theme.typography.body1.lineHeight};
   margin-bottom: ${props => props.theme.spacing.lg};
   font-style: italic;
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    font-size: 1rem;
+    font-size: ${props => props.theme.typography.body2.fontSize};
   }
 `;
 
@@ -1175,12 +1177,12 @@ export const TestimonialRole = styled.div`
 
   strong {
     color: ${props => props.theme.colors.text};
-    font-size: 1rem;
+    font-size: ${props => props.theme.typography.body1.fontSize};
   }
 
   span {
     color: ${props => props.theme.colors.textSecondary};
-    font-size: 0.9rem;
+    font-size: ${props => props.theme.typography.body2.fontSize};
   }
 `;
 
@@ -1206,14 +1208,15 @@ export const CardHeader = styled.div`
 `;
 
 export const CardTitle = styled.h3`
-  font-size: ${props => props.theme.typography.h4};
-  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  font-size: ${props => props.theme.typography.h4.fontSize};
+  font-weight: ${props => props.theme.typography.h4.fontWeight};
   color: ${props => props.theme.colors.text};
   margin: 0;
 `;
 
 export const CardContent = styled.div`
   color: ${props => props.theme.colors.textSecondary};
+  font-size: ${props => props.theme.typography.body2.fontSize};
 `;
 
 export const Button = styled.button`
@@ -1258,15 +1261,15 @@ export const FeatureIcon = styled.div`
 `;
 
 export const FeatureTitle = styled.h3`
-  font-size: ${props => props.theme.typography.fontSize.lg};
-  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  font-size: ${props => props.theme.typography.h4.fontSize};
+  font-weight: ${props => props.theme.typography.h4.fontWeight};
   color: ${props => props.theme.colors.text};
 `;
 
 export const FeatureDescription = styled.p`
-  font-size: ${props => props.theme.typography.fontSize.md};
+  font-size: ${props => props.theme.typography.body2.fontSize};
   color: ${props => props.theme.colors.textSecondary};
-  line-height: 1.6;
+  line-height: ${props => props.theme.typography.body2.lineHeight};
 `;
 
 export const Section = styled.section`
@@ -1279,8 +1282,8 @@ export const SectionHeader = styled.div`
 `;
 
 export const SectionTitle = styled.h2`
-  font-size: ${props => props.theme.typography.fontSize.xl};
-  font-weight: ${props => props.theme.typography.fontWeight.bold};
+  font-size: ${props => props.theme.typography.h2.fontSize};
+  font-weight: ${props => props.theme.typography.h2.fontWeight};
   color: ${props => props.theme.colors.text};
   margin-bottom: ${props => props.theme.spacing.md};
 `;
@@ -1430,8 +1433,8 @@ export const ProgressBar = styled.div<{ progress: number }>`
 `;
 
 export const TopicTitle = styled.h1`
-  font-size: ${props => props.theme.typography.h2};
-  font-weight: ${props => props.theme.typography.fontWeight.bold};
+  font-size: ${props => props.theme.typography.h2.fontSize};
+  font-weight: ${props => props.theme.typography.h2.fontWeight};
   color: ${props => props.theme.colors.text};
   margin-bottom: ${props => props.theme.spacing.md};
 `;
@@ -1462,15 +1465,15 @@ export const QuizHeader = styled.div`
 `;
 
 export const QuizQuestion = styled.h3`
-  font-size: ${props => props.theme.typography.h4};
-  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  font-size: ${props => props.theme.typography.h4.fontSize};
+  font-weight: ${props => props.theme.typography.h4.fontWeight};
   color: ${props => props.theme.colors.text};
   margin-bottom: ${props => props.theme.spacing.sm};
 `;
 
 export const QuizProgress = styled.div`
   color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.typography.fontSize.sm};
+  font-size: ${props => props.theme.typography.body2.fontSize};
 `;
 
 export const QuizOptions = styled.div`
@@ -1531,11 +1534,11 @@ export const AuthContainer = styled.div`
   background-color: ${props => props.theme.colors.background};
 `;
 
-export const AuthCard = styled.div<{ theme: Theme }>`
+export const AuthCard = styled.div`
   width: 100%;
   max-width: 400px;
   padding: ${props => props.theme.spacing.xl};
-  background-color: ${props => props.theme.colors.card};
+  background-color: ${props => props.theme.colors.background};
   border-radius: ${props => props.theme.borderRadius.lg};
   box-shadow: ${props => props.theme.shadows.md};
 `;
@@ -1559,7 +1562,7 @@ export const ErrorMessage = styled.div`
   background-color: ${props => props.theme.colors.error}15;
   color: ${props => props.theme.colors.error};
   border-radius: ${props => props.theme.borderRadius.md};
-  font-size: ${props => props.theme.fontSizes.sm};
+  font-size: ${props => props.theme.typography.fontSize.sm};
 `;
 
 export const SocialButtonGroup = styled.div`
@@ -1572,7 +1575,7 @@ export const SocialButton = styled.button`
   width: 100%;
   padding: ${props => props.theme.spacing.md};
   border-radius: ${props => props.theme.borderRadius.md};
-  font-size: ${props => props.theme.fontSizes.md};
+  font-size: ${props => props.theme.typography.fontSize.md};
   font-weight: ${props => props.theme.typography.fontWeight.medium};
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1595,14 +1598,14 @@ export const SocialButton = styled.button`
 `;
 
 export const StatTitle = styled.div`
-  font-size: ${props => props.theme.typography.fontSize.sm};
+  font-size: ${props => props.theme.typography.body2.fontSize};
   color: ${props => props.theme.colors.textSecondary};
   margin-bottom: ${props => props.theme.spacing.xs};
 `;
 
 export const StatValue = styled.div`
-  font-size: ${props => props.theme.typography.h3};
-  font-weight: ${props => props.theme.typography.fontWeight.bold};
+  font-size: ${props => props.theme.typography.h3.fontSize};
+  font-weight: ${props => props.theme.typography.h3.fontWeight};
   color: ${props => props.theme.colors.text};
 `;
 
@@ -1638,236 +1641,89 @@ export const ProfileAvatar = styled.img`
 `;
 
 export const ProfileName = styled.h1`
-  font-size: ${props => props.theme.typography.h2};
-  font-weight: ${props => props.theme.typography.fontWeight.bold};
+  font-size: ${props => props.theme.typography.h2.fontSize};
+  font-weight: ${props => props.theme.typography.h2.fontWeight};
   color: ${props => props.theme.colors.text};
   margin-bottom: ${props => props.theme.spacing.xs};
 `;
 
 export const ProfileEmail = styled.div`
   color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.typography.fontSize.md};
+  font-size: ${props => props.theme.typography.body2.fontSize};
 `;
 
 export const ProfileSection = styled.div`
   margin-bottom: ${props => props.theme.spacing.xl};
 `;
 
-export type Theme = {
-  colors: {
-    primary: string;
-    primaryDark: string;
-    secondary: string;
-    background: string;
-    backgroundAlt: string;
-    sidebar: string;
-    text: string;
-    textSecondary: string;
-    codeBackground: string;
-    border: string;
-    borderLight: string;
-    hover: string;
-    card: string;
-    cardHover: string;
-    cardBackground: string;
-    success: string;
-    error: string;
-    warning: string;
-    info: string;
-    codeText: string;
-    codeComment: string;
-    codeKeyword: string;
-    codeString: string;
-    codeNumber: string;
-    codeFunction: string;
-    codeVariable: string;
-    codeOperator: string;
-    practiceBackground: string;
-    problemBackground: string;
-    solutionBackground: string;
-  };
-  shadows: {
-    sm: string;
-    md: string;
-    lg: string;
-  };
-  transitions: {
-    default: string;
-    fast: string;
-    slow: string;
-  };
-  borderRadius: {
-    sm: string;
-    md: string;
-    lg: string;
-    xl: string;
-    full: string;
-  };
-  spacing: {
-    xs: string;
-    sm: string;
-    md: string;
-    lg: string;
-    xl: string;
-    '2xl': string;
-    '3xl': string;
-    '4xl': string;
-    '5xl': string;
-    '6xl': string;
-  };
-  breakpoints: {
-    mobile: string;
-    tablet: string;
-    desktop: string;
-  };
-  typography: typeof typography;
-  fonts: {
-    body: string;
-    heading: string;
-    code: string;
-  };
-  fontSizes: {
-    xs: string;
-    sm: string;
-    md: string;
-    lg: string;
-    xl: string;
-    '2xl': string;
-    '3xl': string;
-    '4xl': string;
-  };
-};
+export const UserName = styled.span`
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.body2.fontSize};
+`;
 
-export const lightTheme = {
-  colors: {
-    primary: '#007AFF',
-    primaryDark: '#0051a8',
-    secondary: '#5856D6',
-    background: '#FFFFFF',
-    backgroundAlt: '#F2F2F7',
-    sidebar: '#F8F9FA',
-    text: '#000000',
-    textSecondary: '#8E8E93',
-    codeBackground: '#F8F9FA',
-    border: '#C6C6C8',
-    borderLight: '#E2E8F0',
-    hover: '#F5F5F5',
-    card: '#FFFFFF',
-    cardHover: '#FAFAFA',
-    cardBackground: '#FFFFFF',
-    success: '#34C759',
-    error: '#FF3B30',
-    warning: '#FF9500',
-    info: '#5856D6',
-    codeText: '#24292E',
-    codeComment: '#6A737D',
-    codeKeyword: '#D73A49',
-    codeString: '#032F62',
-    codeNumber: '#005CC5',
-    codeFunction: '#6F42C1',
-    codeVariable: '#E36209',
-    codeOperator: '#D73A49',
-    practiceBackground: '#F8F9FA',
-    problemBackground: '#FFFFFF',
-    solutionBackground: '#F8F9FA',
-  },
-  fonts,
-  typography,
-  spacing,
-  breakpoints,
-  fontSizes: {
-    xs: '0.75rem',
-    sm: '0.875rem',
-    md: '1rem',
-    lg: '1.125rem',
-    xl: '1.25rem',
-    '2xl': '1.5rem',
-    '3xl': '1.875rem',
-    '4xl': '2.25rem',
-  },
-  borderRadius: {
-    sm: '4px',
-    md: '8px',
-    lg: '12px',
-    xl: '16px',
-    full: '9999px'
-  },
-  shadows: {
-    sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-    md: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-  },
-  transitions: {
-    default: 'all 0.2s ease-in-out',
+export const FormGroup = styled.div`
+  margin-bottom: ${props => props.theme.spacing.md};
+`;
+
+export const FormLabel = styled.label`
+  display: block;
+  margin-bottom: ${props => props.theme.spacing.xs};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.body2.fontSize};
+`;
+
+export const FormInput = styled.input`
+  width: 100%;
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.md};
+  background: ${props => props.theme.colors.background};
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.body1.fontSize};
+  transition: all ${props => props.theme.transitions.default};
+
+  &:focus {
+    outline: none;
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 2px ${props => props.theme.colors.primary}20;
   }
-};
 
-export const darkTheme = {
-  colors: {
-    primary: '#0A84FF',
-    primaryDark: '#0064D1',
-    secondary: '#5E5CE6',
-    background: '#000000',
-    backgroundAlt: '#1C1C1E',
-    sidebar: '#1C1C1E',
-    text: '#FFFFFF',
-    textSecondary: '#8E8E93',
-    codeBackground: '#1C1C1E',
-    border: '#38383A',
-    borderLight: '#2C2C2E',
-    hover: '#2C2C2E',
-    card: '#1C1C1E',
-    cardHover: '#2C2C2E',
-    cardBackground: '#1C1C1E',
-    success: '#30D158',
-    error: '#FF453A',
-    warning: '#FF9F0A',
-    info: '#5E5CE6',
-    codeText: '#FFFFFF',
-    codeComment: '#8E8E93',
-    codeKeyword: '#FF453A',
-    codeString: '#30D158',
-    codeNumber: '#FF9F0A',
-    codeFunction: '#5E5CE6',
-    codeVariable: '#FF453A',
-    codeOperator: '#FF453A',
-    practiceBackground: '#1C1C1E',
-    problemBackground: '#000000',
-    solutionBackground: '#1C1C1E',
-  },
-  fonts,
-  typography,
-  spacing,
-  breakpoints,
-  fontSizes: {
-    xs: '0.75rem',
-    sm: '0.875rem',
-    md: '1rem',
-    lg: '1.125rem',
-    xl: '1.25rem',
-    '2xl': '1.5rem',
-    '3xl': '1.875rem',
-    '4xl': '2.25rem',
-  },
-  borderRadius: {
-    sm: '4px',
-    md: '8px',
-    lg: '12px',
-    xl: '16px',
-    full: '9999px'
-  },
-  shadows: {
-    sm: '0 1px 2px 0 rgba(255, 255, 255, 0.05)',
-    md: '0 4px 6px -1px rgba(255, 255, 255, 0.1)',
-    lg: '0 10px 15px -3px rgba(255, 255, 255, 0.1)',
-  },
-  transitions: {
-    default: 'all 0.2s ease-in-out',
+  &::placeholder {
+    color: ${props => props.theme.colors.textSecondary};
   }
-};
+`;
 
-// Create a GlobalStyle component
-export const GlobalStyle = createGlobalStyle`
+export const SubmitButton = styled.button`
+  width: 100%;
+  padding: ${props => props.theme.spacing.md};
+  background: ${props => props.theme.colors.primary};
+  color: white;
+  border: none;
+  border-radius: ${props => props.theme.borderRadius.md};
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  font-size: ${props => props.theme.typography.body1.fontSize};
+  cursor: pointer;
+  transition: all ${props => props.theme.transitions.default};
+
+  &:hover {
+    background: ${props => props.theme.colors.primaryDark};
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    background: ${props => props.theme.colors.border};
+    cursor: not-allowed;
+    transform: none;
+  }
+`;
+
+const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
     margin: 0;
@@ -1875,14 +1731,20 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-family: ${props => props.theme.fonts.body};
-    color: ${props => props.theme.colors.text};
-    background: ${props => props.theme.colors.background};
+    font-family: ${({ theme }) => theme.fonts.body};
+    background-color: ${({ theme }) => theme.colors.background};
+    color: ${({ theme }) => theme.colors.text};
+    font-size: ${({ theme }) => theme.typography.body1.fontSize};
+    font-weight: ${({ theme }) => theme.typography.body1.fontWeight};
+    line-height: ${({ theme }) => theme.typography.body1.lineHeight};
   }
 `;
 
-// Create a ThemeProvider wrapper component
-export const ThemeProviderWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+interface ThemeProviderWrapperProps {
+  children: React.ReactNode;
+}
+
+export const ThemeProviderWrapper: React.FC<ThemeProviderWrapperProps> = ({ children }) => {
   const { isDarkMode } = useTheme();
   const theme = isDarkMode ? darkTheme : lightTheme;
 
@@ -1893,8 +1755,3 @@ export const ThemeProviderWrapper: React.FC<{ children: React.ReactNode }> = ({ 
     </ThemeProvider>
   );
 };
-
-// Add proper TypeScript types for styled components
-declare module 'styled-components' {
-  export interface DefaultTheme extends Theme {}
-}

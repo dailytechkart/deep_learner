@@ -5,7 +5,7 @@ import { SearchProvider } from '../context/SearchContext';
 import { ThemeProvider } from '../context/ThemeContext';
 import ClientLayout from './ClientLayout';
 import StyledComponentsRegistry from '../registry';
-import ThemeSwitcher from './ThemeSwitcher';
+import ThemeWrapper from './ThemeWrapper';
 
 export default function ClientLayoutWrapper({
   children,
@@ -15,13 +15,13 @@ export default function ClientLayoutWrapper({
   return (
     <StyledComponentsRegistry>
       <ThemeProvider>
-        <AuthProvider>
-          <SearchProvider>
-            <ThemeSwitcher>
+        <ThemeWrapper>
+          <AuthProvider>
+            <SearchProvider>
               <ClientLayout>{children}</ClientLayout>
-            </ThemeSwitcher>
-          </SearchProvider>
-        </AuthProvider>
+            </SearchProvider>
+          </AuthProvider>
+        </ThemeWrapper>
       </ThemeProvider>
     </StyledComponentsRegistry>
   );

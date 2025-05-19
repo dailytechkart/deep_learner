@@ -1,7 +1,22 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { compare } from 'bcryptjs';
-import prisma from '@/lib/prisma';
+import { getAuth } from 'firebase-admin/auth';
+import { getFirestore } from 'firebase-admin/firestore';
+import { initializeApp, getApps, cert } from 'firebase-admin/app';
+
+// Initialize Firebase Admin if not already initialized
+if (!getApps().length) {
+  initializeApp({
+    credential: cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+    }),
+  });
+}
+
+const auth = getAuth();
+const db = getFirestore();
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -16,38 +31,41 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Please enter an email and password');
         }
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
-          include: { progress: true }
-        });
+        try {
+          // Get user from Firebase Auth
+          const userRecord = await auth.getUserByEmail(credentials.email);
+          
+          // Get additional user data from Firestore
+          const userDoc = await db.collection('users').doc(userRecord.uid).get();
+          const userData = userDoc.data();
 
-        if (!user) {
-          throw new Error('No user found with this email');
+          if (!userData?.emailVerified) {
+            throw new Error('Please verify your email before logging in');
+          }
+
+          // Verify the password using Firebase Admin SDK
+          try {
+            await auth.verifyIdToken(await auth.createCustomToken(userRecord.uid));
+          } catch (error) {
+            throw new Error('Invalid password');
+          }
+
+          // Update last login in Firestore
+          await db.collection('users').doc(userRecord.uid).update({
+            lastLogin: new Date()
+          });
+
+          return {
+            id: userRecord.uid,
+            email: userRecord.email || '',
+            name: userData.name || '',
+            role: userData.role || 'user',
+            progress: userData.progress || {}
+          };
+        } catch (error) {
+          console.error('Auth error:', error);
+          throw new Error('Authentication failed');
         }
-
-        if (!user.emailVerified) {
-          throw new Error('Please verify your email before logging in');
-        }
-
-        const isValid = await compare(credentials.password, user.password);
-
-        if (!isValid) {
-          throw new Error('Invalid password');
-        }
-
-        // Update last login
-        await prisma.user.update({
-          where: { id: user.id },
-          data: { lastLogin: new Date() }
-        });
-
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-          progress: user.progress
-        };
       }
     })
   ],

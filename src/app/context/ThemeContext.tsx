@@ -17,17 +17,21 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
       setIsDarkMode(savedTheme === 'dark');
+      document.documentElement.setAttribute('data-theme', savedTheme);
     } else {
       // Check system preference
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
       setIsDarkMode(prefersDark);
+      document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
     }
   }, []);
 
   const toggleTheme = () => {
     setIsDarkMode(prev => {
       const newTheme = !prev;
-      localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+      const themeValue = newTheme ? 'dark' : 'light';
+      localStorage.setItem('theme', themeValue);
+      document.documentElement.setAttribute('data-theme', themeValue);
       return newTheme;
     });
   };

@@ -1,7 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/route';
-import prisma from '@/lib/prisma';
+import { getFirestore } from 'firebase-admin/firestore';
+
+const db = getFirestore();
 
 export async function GET() {
   try {
@@ -14,30 +16,46 @@ export async function GET() {
       );
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-      include: {
-        achievements: {
-          orderBy: { earnedAt: 'desc' },
-          take: 10
-        },
-        activityLog: {
-          orderBy: { timestamp: 'desc' },
-          take: 10
-        }
-      }
-    });
+    const userDoc = await db.collection('users').doc(session.user.id).get();
+    const userData = userDoc.data();
 
-    if (!user) {
+    if (!userData) {
       return NextResponse.json(
         { message: 'User not found' },
         { status: 404 }
       );
     }
 
+    // Get achievements and activities from subcollections
+    const achievementsSnapshot = await db
+      .collection('users')
+      .doc(session.user.id)
+      .collection('achievements')
+      .orderBy('earnedAt', 'desc')
+      .limit(10)
+      .get();
+
+    const activitiesSnapshot = await db
+      .collection('users')
+      .doc(session.user.id)
+      .collection('activityLog')
+      .orderBy('timestamp', 'desc')
+      .limit(10)
+      .get();
+
+    const achievements = achievementsSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    const activities = activitiesSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
     return NextResponse.json({
-      achievements: user.achievements,
-      activities: user.activityLog
+      achievements,
+      activities
     });
   } catch (error) {
     console.error('Error fetching user profile:', error);

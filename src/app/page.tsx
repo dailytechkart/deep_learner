@@ -623,7 +623,7 @@ export default function Home() {
           </div>
           <div style={{ flex: '1 1 350px', minWidth: 0 }}>
             <SectionHeader>
-              <SectionTitle>Why Choose FrontendPro Academy?</SectionTitle>
+              <SectionTitle>Why Choose Frontendly?</SectionTitle>
             </SectionHeader>
             <FeatureGrid>
               <FeatureCard>
@@ -710,7 +710,7 @@ export default function Home() {
         <SectionHeader>
           <SectionTitle>What Our Learners Say</SectionTitle>
           <HeroDescription style={{ maxWidth: '600px', margin: '1rem auto 2rem' }}>
-            Join thousands of successful developers who transformed their careers with FrontendPro Academy
+            Join thousands of successful developers who transformed their careers with Frontendly
           </HeroDescription>
         </SectionHeader>
         <FeatureGrid>
@@ -747,7 +747,7 @@ export default function Home() {
         </SectionHeader>
         <SectionContent>
           <HeroDescription style={{ maxWidth: '600px', margin: '0 auto 2rem', color: 'white' }}>
-            Join thousands of developers who have transformed their careers with FrontendPro Academy.
+            Join thousands of developers who have transformed their careers with Frontendly.
           </HeroDescription>
           <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href="/signup" passHref>
