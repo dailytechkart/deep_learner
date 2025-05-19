@@ -11,7 +11,7 @@ const HeaderContainer = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 2rem;
+  padding: ${props => props.theme.spacing.md} ${props => props.theme.spacing.xl};
   background: ${props => props.theme.colors.background}dd;
   backdrop-filter: blur(8px);
   position: fixed;
@@ -19,30 +19,32 @@ const HeaderContainer = styled.header`
   left: 0;
   right: 0;
   z-index: 1000;
-  box-shadow: 0 1px 3px ${props => props.theme.colors.border};
+  box-shadow: ${props => props.theme.shadows.sm};
   height: 64px;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  transition: all ${props => props.theme.transitions.default};
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    padding: 1rem;
+    padding: ${props => props.theme.spacing.md};
   }
 `;
 
 const Logo = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  font-size: 1.5rem;
-  font-weight: 700;
+  gap: ${props => props.theme.spacing.sm};
+  font-size: ${props => props.theme.typography.fontSize.xl};
+  font-weight: ${props => props.theme.typography.fontWeight.bold};
   color: ${props => props.theme.colors.primary};
   
   .logo-icon {
-    font-size: 1.75rem;
+    font-size: ${props => props.theme.typography.fontSize['2xl']};
   }
 `;
 
 const NavLinks = styled.nav`
   display: flex;
-  gap: 2rem;
+  gap: ${props => props.theme.spacing.xl};
   align-items: center;
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
@@ -53,9 +55,9 @@ const NavLinks = styled.nav`
 const NavLink = styled.a`
   color: ${props => props.theme.colors.text};
   text-decoration: none;
-  font-weight: 500;
-  font-size: 1rem;
-  transition: color 0.2s ease;
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  font-size: ${props => props.theme.typography.fontSize.md};
+  transition: all ${props => props.theme.transitions.default};
   position: relative;
   
   &:after {
@@ -66,7 +68,7 @@ const NavLink = styled.a`
     bottom: -4px;
     left: 0;
     background-color: ${props => props.theme.colors.primary};
-    transition: width 0.2s ease;
+    transition: width ${props => props.theme.transitions.default};
   }
   
   &:hover {
@@ -80,7 +82,7 @@ const NavLink = styled.a`
 
 const Actions = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: ${props => props.theme.spacing.md};
   align-items: center;
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
@@ -91,15 +93,15 @@ const Actions = styled.div`
 const CTAButton = styled(Link)`
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1.5rem;
+  gap: ${props => props.theme.spacing.sm};
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.lg};
   background: linear-gradient(135deg, ${props => props.theme.colors.primary} 0%, ${props => props.theme.colors.secondary} 100%);
   color: white;
-  border-radius: 12px;
-  font-weight: 600;
-  font-size: 1rem;
+  border-radius: ${props => props.theme.borderRadius.md};
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  font-size: ${props => props.theme.typography.fontSize.md};
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all ${props => props.theme.transitions.default};
   box-shadow: 0 4px 20px ${props => props.theme.colors.primary}40;
   
   &:hover {
@@ -112,24 +114,24 @@ const UserMenu = styled.div`
   position: relative;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: ${props => props.theme.spacing.md};
 `;
 
 const UserAvatar = styled.div`
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  background: ${({ theme }) => theme.colors.primary};
+  border-radius: ${props => props.theme.borderRadius.full};
+  background: ${props => props.theme.colors.primary};
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all ${props => props.theme.transitions.default};
 
   .avatar-initials {
     color: white;
-    font-size: 1.2rem;
-    font-weight: 600;
+    font-size: ${props => props.theme.typography.fontSize.md};
+    font-weight: ${props => props.theme.typography.fontWeight.semibold};
   }
 
   &:hover {
@@ -142,23 +144,47 @@ const UserDropdown = styled.div<{ $isOpen: boolean }>`
   top: 100%;
   right: 0;
   background: ${props => props.theme.colors.background};
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  padding: 0.5rem;
+  border-radius: ${props => props.theme.borderRadius.md};
+  box-shadow: ${props => props.theme.shadows.md};
+  padding: ${props => props.theme.spacing.sm};
   min-width: 200px;
   display: ${props => props.$isOpen ? 'block' : 'none'};
-  margin-top: 0.5rem;
+  margin-top: ${props => props.theme.spacing.sm};
+  border: 1px solid ${props => props.theme.colors.border};
+  animation: ${props => props.$isOpen ? 'slideDown' : 'slideUp'} ${props => props.theme.transitions.default};
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  }
 `;
 
 const DropdownItem = styled(Link)`
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
+  gap: ${props => props.theme.spacing.sm};
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
   color: ${props => props.theme.colors.text};
   text-decoration: none;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  border-radius: ${props => props.theme.borderRadius.sm};
+  transition: all ${props => props.theme.transitions.default};
   
   &:hover {
     background: ${props => props.theme.colors.backgroundAlt};
@@ -171,9 +197,14 @@ const MobileMenuButton = styled.button`
   background: none;
   border: none;
   color: ${props => props.theme.colors.text};
-  font-size: 1.5rem;
+  font-size: ${props => props.theme.typography.fontSize.xl};
   cursor: pointer;
-  padding: 0.5rem;
+  padding: ${props => props.theme.spacing.sm};
+  transition: all ${props => props.theme.transitions.default};
+
+  &:hover {
+    color: ${props => props.theme.colors.primary};
+  }
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     display: block;
@@ -187,9 +218,33 @@ const MobileMenu = styled.div<{ $isOpen: boolean }>`
   left: 0;
   right: 0;
   background: ${props => props.theme.colors.background};
-  padding: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: ${props => props.theme.spacing.md};
+  box-shadow: ${props => props.theme.shadows.md};
   z-index: 999;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  animation: ${props => props.$isOpen ? 'slideDown' : 'slideUp'} ${props => props.theme.transitions.default};
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  }
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     display: ${props => props.$isOpen ? 'block' : 'none'};
@@ -200,11 +255,11 @@ const MobileNavLink = styled.a`
   display: block;
   color: ${props => props.theme.colors.text};
   text-decoration: none;
-  font-weight: 500;
-  font-size: 1.1rem;
-  padding: 1rem;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  font-size: ${props => props.theme.typography.fontSize.md};
+  padding: ${props => props.theme.spacing.md};
+  border-radius: ${props => props.theme.borderRadius.md};
+  transition: all ${props => props.theme.transitions.default};
 
   &:hover {
     background: ${props => props.theme.colors.backgroundAlt};
@@ -215,10 +270,41 @@ const MobileNavLink = styled.a`
 const MobileActions = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
+  gap: ${props => props.theme.spacing.md};
+  padding: ${props => props.theme.spacing.md};
   border-top: 1px solid ${props => props.theme.colors.border};
-  margin-top: 1rem;
+  margin-top: ${props => props.theme.spacing.md};
+`;
+
+const SearchInput = styled.input`
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.md};
+  background: ${props => props.theme.colors.backgroundAlt};
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSize.md};
+  transition: all ${props => props.theme.transitions.default};
+
+  &:focus {
+    outline: none;
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 2px ${props => props.theme.colors.primary}20;
+  }
+`;
+
+const ThemeToggle = styled.button`
+  background: none;
+  border: none;
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSize.xl};
+  cursor: pointer;
+  padding: ${props => props.theme.spacing.sm};
+  transition: all ${props => props.theme.transitions.default};
+
+  &:hover {
+    color: ${props => props.theme.colors.primary};
+    transform: scale(1.1);
+  }
 `;
 
 interface HeaderProps {
@@ -260,6 +346,7 @@ export default function Header({ searchQuery, onSearchChange }: HeaderProps) {
         <NavLink href="/practice">Practice</NavLink>
         <NavLink href="/roadmap">Roadmap</NavLink>
         <NavLink href="/system-design">System Design</NavLink>
+        <NavLink href="/interview">Interview</NavLink>
       </NavLinks>
 
       <Actions>
@@ -315,6 +402,7 @@ export default function Header({ searchQuery, onSearchChange }: HeaderProps) {
         <MobileNavLink href="/practice">Practice</MobileNavLink>
         <MobileNavLink href="/roadmap">Roadmap</MobileNavLink>
         <MobileNavLink href="/system-design">System Design</MobileNavLink>
+        <MobileNavLink href="/interview">Interview</MobileNavLink>
         <MobileActions>
           {session ? (
             <>
@@ -337,39 +425,4 @@ export default function Header({ searchQuery, onSearchChange }: HeaderProps) {
       </MobileMenu>
     </HeaderContainer>
   );
-}
-
-const SearchInput = styled.input`
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  border: 1px solid ${props => props.theme.colors.border};
-  background: ${props => props.theme.colors.backgroundAlt};
-  color: ${props => props.theme.colors.text};
-  width: 200px;
-  transition: all 0.2s ease;
-
-  &:focus {
-    outline: none;
-    border-color: ${props => props.theme.colors.primary};
-    box-shadow: 0 0 0 2px ${props => props.theme.colors.primary}20;
-  }
-`;
-
-const ThemeToggle = styled.button`
-  padding: 0.5rem;
-  border-radius: 8px;
-  border: 1px solid ${props => props.theme.colors.border};
-  background: ${props => props.theme.colors.backgroundAlt};
-  color: ${props => props.theme.colors.text};
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    border-color: ${props => props.theme.colors.primary};
-    transform: translateY(-1px);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-`; 
+} 

@@ -2,154 +2,241 @@
 
 import React from 'react';
 import styled from 'styled-components';
+import { Layout, Section, SectionHeader, SectionTitle, SectionContent, Grid } from '../../components/Layout';
+import Link from 'next/link';
 
-const PageContainer = styled.div`
-  min-height: 100vh;
-  padding: ${props => props.theme.spacing.xl};
-  background: ${props => props.theme.colors.background};
-  color: ${props => props.theme.colors.text};
-`;
-
-const Title = styled.h1`
-  font-size: ${props => props.theme.typography.h1};
-  margin-bottom: ${props => props.theme.spacing.xl};
-  color: ${props => props.theme.colors.primary};
-  font-family: ${props => props.theme.fonts.body};
-`;
-
-const Section = styled.section`
-  margin-bottom: ${props => props.theme.spacing.xl};
+const Card = styled.div`
   background: ${props => props.theme.colors.background};
   border: 1px solid ${props => props.theme.colors.border};
   border-radius: ${props => props.theme.borderRadius.lg};
-  padding: ${props => props.theme.spacing.xl};
-  box-shadow: ${props => props.theme.shadows.sm};
+  padding: ${props => props.theme.spacing.lg};
+  transition: all ${props => props.theme.transitions.default};
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${props => props.theme.shadows.md};
+    border-color: ${props => props.theme.colors.primary};
+  }
 `;
 
-const SectionTitle = styled.h2`
-  font-size: ${props => props.theme.typography.h2};
-  color: ${props => props.theme.colors.primary};
-  margin-bottom: ${props => props.theme.spacing.lg};
-  font-family: ${props => props.theme.fonts.body};
-`;
-
-const Content = styled.div`
+const CardTitle = styled.h3`
+  font-size: ${props => props.theme.typography.h3.fontSize};
+  font-weight: ${props => props.theme.typography.h3.fontWeight};
   color: ${props => props.theme.colors.text};
-  font-size: ${props => props.theme.typography.fontSize.md};
-  line-height: 1.6;
+  margin-bottom: ${props => props.theme.spacing.md};
+`;
 
-  p {
-    margin-bottom: ${props => props.theme.spacing.md};
-  }
+const CardDescription = styled.p`
+  color: ${props => props.theme.colors.textSecondary};
+  font-size: ${props => props.theme.typography.body2.fontSize};
+  margin-bottom: ${props => props.theme.spacing.lg};
+  flex: 1;
+`;
 
-  ul {
-    margin-bottom: ${props => props.theme.spacing.md};
-    padding-left: ${props => props.theme.spacing.xl};
-  }
+const CardLink = styled(Link)`
+  color: ${props => props.theme.colors.primary};
+  text-decoration: none;
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  display: inline-flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.sm};
+  transition: all ${props => props.theme.transitions.default};
 
-  li {
-    margin-bottom: ${props => props.theme.spacing.sm};
-  }
-
-  h3 {
-    font-size: ${props => props.theme.typography.h3};
-    color: ${props => props.theme.colors.text};
-    margin: ${props => props.theme.spacing.lg} 0 ${props => props.theme.spacing.md};
+  &:hover {
+    color: ${props => props.theme.colors.secondary};
+    gap: ${props => props.theme.spacing.md};
   }
 `;
 
-const patterns = [
-  {
-    title: 'Monolithic Architecture',
-    content: `
-      <p>A monolithic architecture is a traditional unified model for the design of a software program. Monolithic means composed all in one piece.</p>
-      <h3>Characteristics:</h3>
-      <ul>
-        <li>Single codebase</li>
-        <li>All components are tightly coupled</li>
-        <li>Deployed as a single unit</li>
-        <li>Shared memory space</li>
-      </ul>
-      <h3>Pros:</h3>
-      <ul>
-        <li>Simple to develop and deploy</li>
-        <li>Easy to test and debug</li>
-        <li>Better performance for small applications</li>
-      </ul>
-      <h3>Cons:</h3>
-      <ul>
-        <li>Difficult to scale</li>
-        <li>Hard to maintain as the application grows</li>
-        <li>Single point of failure</li>
-      </ul>
-    `
-  },
-  {
-    title: 'Microservices Architecture',
-    content: `
-      <p>Microservices architecture is a method of developing software applications as a suite of independently deployable, small, modular services.</p>
-      <h3>Characteristics:</h3>
-      <ul>
-        <li>Loosely coupled services</li>
-        <li>Independent deployment</li>
-        <li>Service-specific databases</li>
-        <li>Inter-service communication</li>
-      </ul>
-      <h3>Pros:</h3>
-      <ul>
-        <li>Better scalability</li>
-        <li>Easier maintenance</li>
-        <li>Technology diversity</li>
-        <li>Fault isolation</li>
-      </ul>
-      <h3>Cons:</h3>
-      <ul>
-        <li>Increased complexity</li>
-        <li>Network latency</li>
-        <li>Distributed system challenges</li>
-      </ul>
-    `
-  },
-  {
-    title: 'Event-Driven Architecture',
-    content: `
-      <p>Event-driven architecture is a software architecture pattern promoting the production, detection, consumption of, and reaction to events.</p>
-      <h3>Characteristics:</h3>
-      <ul>
-        <li>Event producers and consumers</li>
-        <li>Event channels</li>
-        <li>Asynchronous processing</li>
-        <li>Loose coupling</li>
-      </ul>
-      <h3>Pros:</h3>
-      <ul>
-        <li>High scalability</li>
-        <li>Real-time processing</li>
-        <li>Loose coupling</li>
-        <li>Better responsiveness</li>
-      </ul>
-      <h3>Cons:</h3>
-      <ul>
-        <li>Complex debugging</li>
-        <li>Event ordering challenges</li>
-        <li>Message loss handling</li>
-      </ul>
-    `
-  }
-];
+const Badge = styled.span`
+  background: ${props => props.theme.colors.backgroundAlt};
+  color: ${props => props.theme.colors.textSecondary};
+  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
+  border-radius: ${props => props.theme.borderRadius.full};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  margin-bottom: ${props => props.theme.spacing.md};
+  display: inline-block;
+`;
 
-export default function ArchitecturePatternsPage() {
+export default function SystemDesignPatternsPage() {
+  const patterns = [
+    {
+      title: 'Component Architecture',
+      description: 'Design reusable, maintainable, and scalable component hierarchies for modern web applications.',
+      category: 'Frontend',
+      link: '/system-design/patterns/component-architecture'
+    },
+    {
+      title: 'State Management',
+      description: 'Implement efficient state management patterns for complex frontend applications.',
+      category: 'Frontend',
+      link: '/system-design/patterns/state-management'
+    },
+    {
+      title: 'Micro Frontends',
+      description: 'Break down frontend monoliths into smaller, independently deployable applications.',
+      category: 'Frontend',
+      link: '/system-design/patterns/micro-frontends'
+    },
+    {
+      title: 'Load Balancer Pattern',
+      description: 'Distribute incoming network traffic across multiple servers to ensure high availability and reliability.',
+      category: 'Backend',
+      link: '/system-design/patterns/load-balancer'
+    },
+    {
+      title: 'Caching Pattern',
+      description: 'Store frequently accessed data in memory to improve response time and reduce database load.',
+      category: 'Backend',
+      link: '/system-design/patterns/caching'
+    },
+    {
+      title: 'Circuit Breaker Pattern',
+      description: 'Prevent cascading failures by detecting and handling faults in distributed systems.',
+      category: 'Backend',
+      link: '/system-design/patterns/circuit-breaker'
+    },
+    {
+      title: 'Event-Driven Architecture',
+      description: 'Design systems that communicate through events, enabling loose coupling and scalability.',
+      category: 'Architecture',
+      link: '/system-design/patterns/event-driven'
+    },
+    {
+      title: 'Microservices Pattern',
+      description: 'Break down applications into small, independent services that can be developed and deployed separately.',
+      category: 'Architecture',
+      link: '/system-design/patterns/microservices'
+    },
+    {
+      title: 'Database Sharding',
+      description: 'Split a database into smaller, more manageable pieces to improve performance and scalability.',
+      category: 'Backend',
+      link: '/system-design/patterns/sharding'
+    }
+  ];
+
   return (
-    <PageContainer>
-      <Title>Architecture Patterns</Title>
-      <p>Explore common system architecture patterns and their use cases.</p>
-      
-      {patterns.map((pattern, index) => (
-        <Section key={index}>
-          <SectionTitle>{pattern.title}</SectionTitle>
-          <Content dangerouslySetInnerHTML={{ __html: pattern.content }} />
-        </Section>
-      ))}
-    </PageContainer>
+    <Layout
+      title="System Design Patterns"
+      description="Explore common system design patterns and learn how to apply them to build scalable, reliable, and efficient systems."
+    >
+      <Section>
+        <SectionHeader>
+          <SectionTitle>Frontend Patterns</SectionTitle>
+        </SectionHeader>
+        <SectionContent>
+          <Grid>
+            {patterns
+              .filter(pattern => pattern.category === 'Frontend')
+              .map((pattern, index) => (
+                <Card key={index}>
+                  <Badge>{pattern.category}</Badge>
+                  <CardTitle>{pattern.title}</CardTitle>
+                  <CardDescription>{pattern.description}</CardDescription>
+                  <CardLink href={pattern.link}>
+                    Learn More →
+                  </CardLink>
+                </Card>
+              ))}
+          </Grid>
+        </SectionContent>
+      </Section>
+
+      <Section>
+        <SectionHeader>
+          <SectionTitle>Backend Patterns</SectionTitle>
+        </SectionHeader>
+        <SectionContent>
+          <Grid>
+            {patterns
+              .filter(pattern => pattern.category === 'Backend')
+              .map((pattern, index) => (
+                <Card key={index}>
+                  <Badge>{pattern.category}</Badge>
+                  <CardTitle>{pattern.title}</CardTitle>
+                  <CardDescription>{pattern.description}</CardDescription>
+                  <CardLink href={pattern.link}>
+                    Learn More →
+                  </CardLink>
+                </Card>
+              ))}
+          </Grid>
+        </SectionContent>
+      </Section>
+
+      <Section>
+        <SectionHeader>
+          <SectionTitle>Architecture Patterns</SectionTitle>
+        </SectionHeader>
+        <SectionContent>
+          <Grid>
+            {patterns
+              .filter(pattern => pattern.category === 'Architecture')
+              .map((pattern, index) => (
+                <Card key={index}>
+                  <Badge>{pattern.category}</Badge>
+                  <CardTitle>{pattern.title}</CardTitle>
+                  <CardDescription>{pattern.description}</CardDescription>
+                  <CardLink href={pattern.link}>
+                    Learn More →
+                  </CardLink>
+                </Card>
+              ))}
+          </Grid>
+        </SectionContent>
+      </Section>
+
+      <Section>
+        <SectionHeader>
+          <SectionTitle>About Design Patterns</SectionTitle>
+        </SectionHeader>
+        <SectionContent>
+          <p>
+            System design patterns are reusable solutions to common problems in software architecture.
+            They help you build systems that are scalable, reliable, and maintainable.
+          </p>
+          <p>
+            Frontend patterns focus on:
+          </p>
+          <ul>
+            <li>Component architecture and composition</li>
+            <li>State management and data flow</li>
+            <li>Performance optimization</li>
+            <li>Code splitting and lazy loading</li>
+            <li>Micro frontend architecture</li>
+          </ul>
+          <p>
+            Backend patterns address:
+          </p>
+          <ul>
+            <li>Scalability and load balancing</li>
+            <li>Caching and performance</li>
+            <li>Fault tolerance and reliability</li>
+            <li>Database design and optimization</li>
+            <li>Service communication</li>
+          </ul>
+          <p>
+            Architecture patterns provide high-level solutions for:
+          </p>
+          <ul>
+            <li>System decomposition</li>
+            <li>Service boundaries</li>
+            <li>Event-driven communication</li>
+            <li>Distributed systems</li>
+            <li>Cross-cutting concerns</li>
+          </ul>
+          <p>
+            Explore the patterns above to learn more about their use cases, implementation details,
+            and best practices. Each pattern includes real-world examples and practical guidance
+            for implementation.
+          </p>
+        </SectionContent>
+      </Section>
+    </Layout>
   );
 } 
