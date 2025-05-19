@@ -33,6 +33,93 @@ import {
   MobileSidebarOverlay,
   UserName
 } from './StyledComponents';
+import styled from 'styled-components';
+
+const Nav = styled.nav`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+`;
+
+const NavLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.xl};
+`;
+
+const NavRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.md};
+`;
+
+const UserMenu = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.sm};
+  cursor: pointer;
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+  border-radius: ${props => props.theme.borderRadius.md};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${props => props.theme.colors.backgroundAlt};
+  }
+`;
+
+const MobileMenu = styled.div<{ $isOpen: boolean }>`
+  display: ${props => props.$isOpen ? 'flex' : 'none'};
+  flex-direction: column;
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  background: ${props => props.theme.colors.background};
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  padding: ${props => props.theme.spacing.md};
+  gap: ${props => props.theme.spacing.sm};
+  z-index: 999;
+
+  @media (min-width: 769px) {
+    display: none;
+  }
+`;
+
+interface StyledNavLinkProps {
+  $active?: boolean;
+}
+
+const StyledNavLink = styled(Link)<StyledNavLinkProps>`
+  color: ${props => props.$active ? props.theme.colors.primary : props.theme.colors.text};
+  text-decoration: none;
+  font-size: ${props => props.theme.typography.fontSize.md};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+  border-radius: ${props => props.theme.borderRadius.md};
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
+  &:hover {
+    background: ${props => props.theme.colors.backgroundAlt};
+  }
+`;
+
+const StyledMobileNavLink = styled(Link)<StyledNavLinkProps>`
+  color: ${props => props.$active ? props.theme.colors.primary : props.theme.colors.text};
+  text-decoration: none;
+  font-size: ${props => props.theme.typography.fontSize.md};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  padding: ${props => props.theme.spacing.md};
+  border-radius: ${props => props.theme.borderRadius.md};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${props => props.theme.colors.backgroundAlt};
+  }
+`;
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -43,6 +130,7 @@ export default function Header() {
   const pathname = usePathname();
   const { isDarkMode, toggleTheme } = useTheme();
   const { user, signOut } = useAuth();
+  const [activePath, setActivePath] = useState('');
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -118,6 +206,17 @@ export default function Header() {
 
   const isActive = (path: string) => pathname === path;
 
+  React.useEffect(() => {
+    setActivePath(window.location.pathname);
+  }, []);
+
+  const navLinks = [
+    { href: '/learn', label: 'Learn' },
+    { href: '/practice', label: 'Practice' },
+    { href: '/system-design', label: 'System Design' },
+    { href: '/interview', label: 'Interview' }
+  ];
+
   return (
     <>
       <HeaderContainer>
@@ -134,41 +233,16 @@ export default function Header() {
               <Logo>Frontendly</Logo>
             </Link>
             <NavLinks>
-              <NavLink 
-                href="/learn" 
-                className={isActive('/learn') ? 'active' : ''}
-                onClick={() => handleNavigation('/learn')}
-              >
-                Learn
-              </NavLink>
-              <NavLink 
-                href="/practice" 
-                className={isActive('/practice') ? 'active' : ''}
-                onClick={() => handleNavigation('/practice')}
-              >
-                Practice
-              </NavLink>
-              <NavLink 
-                href="/system-design" 
-                className={isActive('/system-design') ? 'active' : ''}
-                onClick={() => handleNavigation('/system-design')}
-              >
-                System Design
-              </NavLink>
-              <NavLink 
-                href="/roadmap" 
-                className={isActive('/roadmap') ? 'active' : ''}
-                onClick={() => handleNavigation('/roadmap')}
-              >
-                Roadmap
-              </NavLink>
-              <NavLink 
-                href="/interview" 
-                className={isActive('/interview') ? 'active' : ''}
-                onClick={() => handleNavigation('/interview')}
-              >
-                Interview
-              </NavLink>
+              {navLinks.map((link) => (
+                <StyledNavLink 
+                  key={link.href} 
+                  href={link.href}
+                  $active={activePath === link.href}
+                  onClick={() => handleNavigation(link.href)}
+                >
+                  {link.label}
+                </StyledNavLink>
+              ))}
             </NavLinks>
           </HeaderLeft>
           <HeaderRight>
@@ -247,46 +321,32 @@ export default function Header() {
               </MobileSidebarClose>
             </MobileSidebarHeader>
             <MobileSidebarNav>
-              <MobileSidebarLink 
-                href="/learn" 
-                onClick={() => handleNavigation('/learn')}
-                className={isActive('/learn') ? 'active' : ''}
-              >
-                <span className="nav-icon">📚</span>
-                Learn
-              </MobileSidebarLink>
-              <MobileSidebarLink 
-                href="/practice" 
-                onClick={() => handleNavigation('/practice')}
-                className={isActive('/practice') ? 'active' : ''}
-              >
-                <span className="nav-icon">💻</span>
-                Practice
-              </MobileSidebarLink>
-              <MobileSidebarLink 
-                href="/system-design" 
-                onClick={() => handleNavigation('/system-design')}
-                className={isActive('/system-design') ? 'active' : ''}
-              >
-                <span className="nav-icon">🏗️</span>
-                System Design
-              </MobileSidebarLink>
-              <MobileSidebarLink 
-                href="/roadmap" 
-                onClick={() => handleNavigation('/roadmap')}
-                className={isActive('/roadmap') ? 'active' : ''}
-              >
-                <span className="nav-icon">🗺️</span>
-                Roadmap
-              </MobileSidebarLink>
-              <MobileSidebarLink 
-                href="/interview" 
-                onClick={() => handleNavigation('/interview')}
-                className={isActive('/interview') ? 'active' : ''}
-              >
-                <span className="nav-icon">🎯</span>
-                Interview
-              </MobileSidebarLink>
+              <MobileMenu $isOpen={isMobileMenuOpen}>
+                {navLinks.map((link) => (
+                  <StyledMobileNavLink 
+                    key={link.href} 
+                    href={link.href}
+                    $active={activePath === link.href}
+                    onClick={() => {
+                      handleNavigation(link.href);
+                      setIsMobileMenuOpen(false);
+                    }}
+                  >
+                    {link.label}
+                  </StyledMobileNavLink>
+                ))}
+                {user && (
+                  <StyledMobileNavLink 
+                    href="/profile" 
+                    onClick={() => {
+                      handleNavigation('/profile');
+                      setIsMobileMenuOpen(false);
+                    }}
+                  >
+                    Profile
+                  </StyledMobileNavLink>
+                )}
+              </MobileMenu>
             </MobileSidebarNav>
             <MobileSidebarActions>
               <ThemeToggle 

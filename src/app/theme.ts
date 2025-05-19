@@ -37,6 +37,12 @@ declare module 'styled-components' {
       codeFunction: string;
       codeVariable: string;
       codeOperator: string;
+      
+      // Accent colors
+      accent1: string;
+      accent2: string;
+      accent3: string;
+      accent4: string;
     };
     fonts: {
       body: string;
@@ -145,33 +151,41 @@ declare module 'styled-components' {
 
 export const lightTheme: DefaultTheme = {
   colors: {
-    primary: '#2563eb',
-    primaryDark: '#1d4ed8',
-    secondary: '#64748b',
+    primary: '#007acc',
+    primaryDark: '#005999',
+    secondary: '#666666',
     background: '#ffffff',
-    backgroundAlt: '#f8fafc',
-    backgroundHover: '#f1f5f9',
-    sidebar: '#f8fafc',
-    text: '#0f172a',
-    textSecondary: '#475569',
-    codeBackground: '#f8fafc',
-    border: '#e2e8f0',
-    borderLight: '#f1f5f9',
-    practiceBackground: '#f8fafc',
+    backgroundAlt: '#f5f5f5',
+    backgroundHover: '#f0f0f0',
+    sidebar: '#f5f5f5',
+    text: '#1e1e1e',
+    textSecondary: '#666666',
+    border: '#e0e0e0',
+    borderLight: '#e0e0e0',
+    practiceBackground: '#ffffff',
     problemBackground: '#ffffff',
-    solutionBackground: '#f8fafc',
-    success: '#16a34a',
-    error: '#dc2626',
-    warning: '#d97706',
-    info: '#2563eb',
-    codeKeyword: '#2563eb',
-    codeString: '#16a34a',
-    codeComment: '#64748b',
-    codeFunction: '#7c3aed',
-    codeVariable: '#d97706',
-    codeOperator: '#2563eb',
-    codeText: '#0f172a',
-    codeNumber: '#2563eb'
+    solutionBackground: '#ffffff',
+    accent1: '#FF6B6B',
+    accent2: '#4ECDC4',
+    accent3: '#FFD93D',
+    accent4: '#95E1D3',
+    status: {
+      success: '#2ECC71',
+      error: '#E74C3C',
+      warning: '#F1C40F',
+      info: '#3498DB'
+    },
+    code: {
+      background: '#f8f8f8',
+      text: '#333333',
+      comment: '#6A9955',
+      keyword: '#569CD6',
+      string: '#CE9178',
+      function: '#DCDCAA',
+      variable: '#9CDCFE',
+      number: '#B5CEA8',
+      operator: '#D4D4D4'
+    }
   },
   fonts: {
     body: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
@@ -279,33 +293,41 @@ export const lightTheme: DefaultTheme = {
 
 export const darkTheme: DefaultTheme = {
   colors: {
-    primary: '#3b82f6',
-    primaryDark: '#2563eb',
-    secondary: '#94a3b8',
-    background: '#0f172a',
-    backgroundAlt: '#1e293b',
-    backgroundHover: '#334155',
-    sidebar: '#1e293b',
-    text: '#f8fafc',
-    textSecondary: '#cbd5e1',
-    codeBackground: '#1e293b',
-    border: '#334155',
-    borderLight: '#475569',
-    practiceBackground: '#1e293b',
-    problemBackground: '#0f172a',
-    solutionBackground: '#1e293b',
-    success: '#22c55e',
-    error: '#ef4444',
-    warning: '#f59e0b',
-    info: '#3b82f6',
-    codeKeyword: '#3b82f6',
-    codeString: '#22c55e',
-    codeComment: '#94a3b8',
-    codeFunction: '#a855f7',
-    codeVariable: '#f59e0b',
-    codeOperator: '#3b82f6',
-    codeText: '#f8fafc',
-    codeNumber: '#3b82f6'
+    primary: '#007acc',
+    primaryDark: '#005999',
+    secondary: '#999999',
+    background: '#1e1e1e',
+    backgroundAlt: '#252526',
+    backgroundHover: '#2d2d2d',
+    sidebar: '#252526',
+    text: '#cccccc',
+    textSecondary: '#858585',
+    border: '#3c3c3c',
+    borderLight: '#3c3c3c',
+    practiceBackground: '#1e1e1e',
+    problemBackground: '#1e1e1e',
+    solutionBackground: '#1e1e1e',
+    accent1: '#FF6B6B',
+    accent2: '#4ECDC4',
+    accent3: '#FFD93D',
+    accent4: '#95E1D3',
+    status: {
+      success: '#2ECC71',
+      error: '#E74C3C',
+      warning: '#F1C40F',
+      info: '#3498DB'
+    },
+    code: {
+      background: '#1e1e1e',
+      text: '#d4d4d4',
+      comment: '#6A9955',
+      keyword: '#569CD6',
+      string: '#CE9178',
+      function: '#DCDCAA',
+      variable: '#9CDCFE',
+      number: '#B5CEA8',
+      operator: '#D4D4D4'
+    }
   },
   fonts: {
     body: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',

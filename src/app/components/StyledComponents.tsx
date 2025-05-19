@@ -76,13 +76,12 @@ export const Header = styled.header`
   left: 0;
   right: 0;
   z-index: 1000;
-  background-color: ${props => props.theme.colors.sidebar};
+  background-color: ${props => props.theme.colors.background}dd;
   border-bottom: 1px solid ${props => props.theme.colors.border};
   height: 64px;
   display: flex;
   align-items: center;
   backdrop-filter: blur(8px);
-  background-color: ${props => props.theme.colors.background}dd;
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     flex-direction: column;
@@ -184,7 +183,7 @@ export const CategoryButton = styled.button<{ active: boolean }>`
   justify-content: space-between;
 
   &:hover {
-    background: ${props => props.active ? props.theme.colors.primary : props.theme.colors.background};
+    background: ${props => props.active ? props.theme.colors.primaryDark : props.theme.colors.backgroundAlt};
     border-color: ${props => props.theme.colors.primary};
     transform: translateY(-1px);
     box-shadow: 0 2px 4px ${props => props.theme.colors.primary}15;
@@ -248,16 +247,22 @@ export const SearchContainer = styled.div<{ $isFocused: boolean }>`
 
 export const SearchInput = styled.input`
   width: 100%;
-  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  padding: 0.5rem 1rem;
   border: 1px solid ${props => props.theme.colors.border};
   border-radius: ${props => props.theme.borderRadius.md};
-  background: ${props => props.theme.colors.background};
+  background: ${props => props.theme.colors.backgroundAlt};
   color: ${props => props.theme.colors.text};
   font-size: 0.875rem;
+  transition: all 0.2s ease;
 
   &:focus {
     outline: none;
     border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 2px ${props => props.theme.colors.primary}20;
+  }
+
+  &::placeholder {
+    color: ${props => props.theme.colors.textSecondary};
   }
 `;
 

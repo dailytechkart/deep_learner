@@ -3,46 +3,49 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface Problem {
-  id: string;
-  title: string;
-  difficulty: string;
-  category: string;
-  description: string;
-  examples: {
-    input: string;
-    output: string;
-    explanation?: string;
-  }[];
-  constraints: string[];
-  template: string;
-}
-
 const ProblemContainer = styled.div`
   max-width: 800px;
   margin: 0 auto;
 `;
 
+const ProblemHeader = styled.div`
+  margin-bottom: ${props => props.theme.spacing.xl};
+`;
+
 const Title = styled.h1`
-  font-size: ${props => props.theme.typography.fontSize['3xl']};
+  font-size: ${props => props.theme.typography.fontSize['2xl']};
   font-weight: ${props => props.theme.typography.fontWeight.bold};
   color: ${props => props.theme.colors.text};
   margin-bottom: ${props => props.theme.spacing.md};
 `;
 
-const MetaInfo = styled.div`
-  display: flex;
-  gap: ${props => props.theme.spacing.md};
-  margin-bottom: ${props => props.theme.spacing.xl};
-`;
-
-const MetaTag = styled.span`
+const DifficultyBadge = styled.span<{ $difficulty: 'Easy' | 'Medium' | 'Hard' }>`
+  display: inline-block;
   padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
   border-radius: ${props => props.theme.borderRadius.full};
   font-size: ${props => props.theme.typography.fontSize.sm};
   font-weight: ${props => props.theme.typography.fontWeight.medium};
-  background: ${props => props.theme.colors.backgroundAlt};
-  color: ${props => props.theme.colors.text};
+  margin-bottom: ${props => props.theme.spacing.md};
+
+  ${props => {
+    switch (props.$difficulty) {
+      case 'Easy':
+        return `
+          background: ${props.theme.colors.success}20;
+          color: ${props.theme.colors.success};
+        `;
+      case 'Medium':
+        return `
+          background: ${props.theme.colors.warning}20;
+          color: ${props.theme.colors.warning};
+        `;
+      case 'Hard':
+        return `
+          background: ${props.theme.colors.error}20;
+          color: ${props.theme.colors.error};
+        `;
+    }
+  }}
 `;
 
 const Section = styled.section`
@@ -58,15 +61,15 @@ const SectionTitle = styled.h2`
 
 const Description = styled.p`
   font-size: ${props => props.theme.typography.fontSize.md};
-  color: ${props => props.theme.colors.text};
+  color: ${props => props.theme.colors.textSecondary};
   line-height: 1.6;
   margin-bottom: ${props => props.theme.spacing.md};
 `;
 
 const ExampleContainer = styled.div`
-  background: ${props => props.theme.colors.backgroundAlt};
-  border-radius: ${props => props.theme.borderRadius.md};
-  padding: ${props => props.theme.spacing.md};
+  background: ${props => props.theme.colors.background};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  padding: ${props => props.theme.spacing.lg};
   margin-bottom: ${props => props.theme.spacing.md};
 `;
 
@@ -78,13 +81,13 @@ const ExampleTitle = styled.h3`
 `;
 
 const CodeBlock = styled.pre`
-  background: ${props => props.theme.colors.background};
-  border-radius: ${props => props.theme.borderRadius.sm};
+  background: ${props => props.theme.colors.backgroundAlt};
+  border-radius: ${props => props.theme.borderRadius.md};
   padding: ${props => props.theme.spacing.md};
+  overflow-x: auto;
   font-family: 'Fira Code', monospace;
   font-size: ${props => props.theme.typography.fontSize.sm};
   color: ${props => props.theme.colors.text};
-  overflow-x: auto;
   margin: ${props => props.theme.spacing.sm} 0;
 `;
 
@@ -95,12 +98,12 @@ const ConstraintList = styled.ul`
 `;
 
 const ConstraintItem = styled.li`
-  font-size: ${props => props.theme.typography.fontSize.md};
-  color: ${props => props.theme.colors.text};
-  margin-bottom: ${props => props.theme.spacing.sm};
   display: flex;
   align-items: center;
   gap: ${props => props.theme.spacing.sm};
+  margin-bottom: ${props => props.theme.spacing.sm};
+  font-size: ${props => props.theme.typography.fontSize.md};
+  color: ${props => props.theme.colors.textSecondary};
 
   &::before {
     content: '•';
@@ -108,16 +111,27 @@ const ConstraintItem = styled.li`
   }
 `;
 
-// Mock data - In a real app, this would come from an API or database
+interface Problem {
+  id: string;
+  title: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  description: string;
+  examples: Array<{
+    input: string;
+    output: string;
+    explanation?: string;
+  }>;
+  constraints: string[];
+}
+
 const problems: Record<string, Problem> = {
   'two-sum': {
     id: 'two-sum',
     title: 'Two Sum',
     difficulty: 'Easy',
-    category: 'Arrays',
     description: `Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
-You may assume that each input would have exactly one solution, and you may not use the same element twice.
-You can return the answer in any order.`,
+    You may assume that each input would have exactly one solution, and you may not use the same element twice.
+    You can return the answer in any order.`,
     examples: [
       {
         input: 'nums = [2,7,11,15], target = 9',
@@ -126,8 +140,7 @@ You can return the answer in any order.`,
       },
       {
         input: 'nums = [3,2,4], target = 6',
-        output: '[1,2]',
-        explanation: 'Because nums[1] + nums[2] == 6, we return [1, 2].'
+        output: '[1,2]'
       }
     ],
     constraints: [
@@ -135,15 +148,11 @@ You can return the answer in any order.`,
       '-109 <= nums[i] <= 109',
       '-109 <= target <= 109',
       'Only one valid answer exists.'
-    ],
-    template: `function twoSum(nums: number[], target: number): number[] {
-    // Write your code here
-};`
+    ]
   }
-  // Add more problems here
 };
 
-export const ProblemStatement: React.FC<{ problemId: string }> = ({ problemId }) => {
+export default function ProblemStatement({ problemId }: { problemId: string }) {
   const problem = problems[problemId];
 
   if (!problem) {
@@ -152,11 +161,12 @@ export const ProblemStatement: React.FC<{ problemId: string }> = ({ problemId })
 
   return (
     <ProblemContainer>
-      <Title>{problem.title}</Title>
-      <MetaInfo>
-        <MetaTag>{problem.difficulty}</MetaTag>
-        <MetaTag>{problem.category}</MetaTag>
-      </MetaInfo>
+      <ProblemHeader>
+        <Title>{problem.title}</Title>
+        <DifficultyBadge $difficulty={problem.difficulty}>
+          {problem.difficulty}
+        </DifficultyBadge>
+      </ProblemHeader>
 
       <Section>
         <SectionTitle>Problem Description</SectionTitle>
@@ -168,11 +178,13 @@ export const ProblemStatement: React.FC<{ problemId: string }> = ({ problemId })
         {problem.examples.map((example, index) => (
           <ExampleContainer key={index}>
             <ExampleTitle>Example {index + 1}</ExampleTitle>
-            <CodeBlock>Input: {example.input}</CodeBlock>
-            <CodeBlock>Output: {example.output}</CodeBlock>
-            {example.explanation && (
-              <Description>Explanation: {example.explanation}</Description>
-            )}
+            <CodeBlock>
+              <div>Input: {example.input}</div>
+              <div>Output: {example.output}</div>
+              {example.explanation && (
+                <div>Explanation: {example.explanation}</div>
+              )}
+            </CodeBlock>
           </ExampleContainer>
         ))}
       </Section>
@@ -187,4 +199,4 @@ export const ProblemStatement: React.FC<{ problemId: string }> = ({ problemId })
       </Section>
     </ProblemContainer>
   );
-}; 
+} 

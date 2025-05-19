@@ -12,24 +12,32 @@ declare module 'styled-components' {
       sidebar: string;
       text: string;
       textSecondary: string;
-      codeBackground: string;
       border: string;
       borderLight: string;
       practiceBackground: string;
       problemBackground: string;
       solutionBackground: string;
-      success: string;
-      error: string;
-      warning: string;
-      info: string;
-      codeKeyword: string;
-      codeString: string;
-      codeComment: string;
-      codeFunction: string;
-      codeVariable: string;
-      codeOperator: string;
-      codeText: string;
-      codeNumber: string;
+      accent1: string;
+      accent2: string;
+      accent3: string;
+      accent4: string;
+      status: {
+        success: string;
+        error: string;
+        warning: string;
+        info: string;
+      };
+      code: {
+        background: string;
+        text: string;
+        comment: string;
+        keyword: string;
+        string: string;
+        function: string;
+        variable: string;
+        number: string;
+        operator: string;
+      };
     };
     fonts: {
       body: string;

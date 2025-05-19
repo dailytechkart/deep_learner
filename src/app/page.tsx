@@ -36,14 +36,14 @@ import {
 // Add new styled components for the companies section
 const CompaniesSection = styled.div`
   padding: 3rem 0;
-  background: #F8FAFC;
+  background: ${props => props.theme.colors.backgroundAlt};
   overflow: hidden;
   position: relative;
 `;
 
 const CompaniesTitle = styled.h3`
   text-align: center;
-  color: #1E293B;
+  color: ${props => props.theme.colors.text};
   font-size: 1.25rem;
   margin-bottom: 2rem;
   font-weight: 500;
@@ -88,14 +88,14 @@ const LandingHeader = styled.header`
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2rem;
-  background: rgba(255, 255, 255, 0.95);
+  background: ${props => props.theme.colors.background}dd;
   backdrop-filter: blur(8px);
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px ${props => props.theme.colors.border};
   height: 64px;
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
@@ -166,7 +166,7 @@ const LandingActions = styled.div`
 
 const HeroSection = styled.section`
   padding: 8rem 2rem 4rem;
-  background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
+  background: linear-gradient(135deg, ${props => props.theme.colors.backgroundAlt} 0%, ${props => props.theme.colors.background} 100%);
   position: relative;
   overflow: hidden;
 `;
@@ -179,7 +179,7 @@ const HeroTitle = styled.h1`
   font-size: 3.5rem;
   font-weight: 700;
   line-height: 1.2;
-  color: #1E293B;
+  color: ${props => props.theme.colors.text};
   margin-bottom: 1.5rem;
   
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
@@ -189,14 +189,14 @@ const HeroTitle = styled.h1`
 
 const HeroSubtitle = styled.p`
   font-size: 1.25rem;
-  color: #475569;
+  color: ${props => props.theme.colors.textSecondary};
   margin-bottom: 1.5rem;
   line-height: 1.6;
 `;
 
 const HeroDescription = styled.p`
   font-size: 1.125rem;
-  color: #64748B;
+  color: ${props => props.theme.colors.textSecondary};
   line-height: 1.7;
   margin-bottom: 2rem;
 `;
@@ -206,15 +206,16 @@ const CTAButton = styled.button`
   font-size: 1rem;
   font-weight: 600;
   color: white;
-  background: var(--primary-color);
+  background: ${props => props.theme.colors.primary};
   border: none;
-  border-radius: 8px;
+  border-radius: ${props => props.theme.borderRadius.md};
   cursor: pointer;
   transition: all 0.2s ease;
   
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+    background: ${props => props.theme.colors.primaryDark};
+    box-shadow: 0 4px 12px ${props => props.theme.colors.primary}20;
   }
   
   &:active {
@@ -228,7 +229,7 @@ const BackgroundPattern = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: radial-gradient(circle at 1px 1px, #E2E8F0 1px, transparent 0);
+  background-image: radial-gradient(circle at 1px 1px, ${props => props.theme.colors.border} 1px, transparent 0);
   background-size: 40px 40px;
   opacity: 0.5;
   pointer-events: none;

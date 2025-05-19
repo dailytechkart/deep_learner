@@ -5,32 +5,35 @@ import styled from 'styled-components';
 import Link from 'next/link';
 
 const QuestionsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${props => props.theme.spacing.lg};
+  padding: 2rem;
+  background: ${props => props.theme.colors.background};
+  min-height: 100vh;
 `;
 
 const FiltersContainer = styled.div`
   display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: ${props => props.theme.colors.backgroundAlt};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.md};
   flex-wrap: wrap;
-  gap: ${props => props.theme.spacing.md};
-  margin-bottom: ${props => props.theme.spacing.lg};
 `;
 
 const FilterButton = styled.button<{ active: boolean }>`
-  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
-  border-radius: ${props => props.theme.borderRadius.full};
+  padding: 0.5rem 1rem;
   border: 1px solid ${props => props.active ? props.theme.colors.primary : props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.md};
   background: ${props => props.active ? props.theme.colors.primary : 'transparent'};
-  color: ${props => props.active ? 'white' : props.theme.colors.text};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  color: ${props => props.active ? '#fff' : props.theme.colors.text};
   cursor: pointer;
   transition: all 0.2s ease;
+  font-size: 0.875rem;
 
   &:hover {
+    background: ${props => props.active ? props.theme.colors.primaryDark : props.theme.colors.backgroundHover};
     border-color: ${props => props.theme.colors.primary};
-    background: ${props => props.active ? props.theme.colors.primary : props.theme.colors.primary}10;
   }
 `;
 
@@ -38,22 +41,23 @@ const QuestionsList = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   gap: ${props => props.theme.spacing.md};
+  padding: ${props => props.theme.spacing.md};
 `;
 
 const QuestionCard = styled(Link)`
-  background: ${props => props.theme.colors.background};
+  padding: 1.5rem;
+  background: ${props => props.theme.colors.backgroundAlt};
   border: 1px solid ${props => props.theme.colors.border};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  padding: ${props => props.theme.spacing.lg};
+  border-radius: ${props => props.theme.borderRadius.md};
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
   text-decoration: none;
-  transition: all 0.3s ease;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 
   &:hover {
-    transform: translateX(4px);
-    border-color: ${props => props.theme.colors.primary};
+    background: ${props => props.theme.colors.backgroundHover};
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px ${props => props.theme.colors.primary}10;
   }
 `;
 
@@ -62,10 +66,10 @@ const QuestionInfo = styled.div`
 `;
 
 const QuestionTitle = styled.h3`
-  font-size: ${props => props.theme.typography.fontSize.lg};
-  font-weight: ${props => props.theme.typography.fontWeight.semibold};
   color: ${props => props.theme.colors.text};
-  margin: 0 0 ${props => props.theme.spacing.xs};
+  margin-bottom: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
 `;
 
 const QuestionMeta = styled.div`
@@ -75,49 +79,61 @@ const QuestionMeta = styled.div`
 `;
 
 const QuestionTag = styled.span`
-  font-size: ${props => props.theme.typography.fontSize.sm};
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: ${props => props.theme.colors.background};
   color: ${props => props.theme.colors.textSecondary};
-  display: flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing.xs};
+  border-radius: ${props => props.theme.borderRadius.full};
+  font-size: 0.75rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid ${props => props.theme.colors.border};
 `;
 
-const DifficultyBadge = styled.span<{ difficulty: string }>`
-  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
-  border-radius: 9999px;
-  font-size: ${props => props.theme.typography.fontSize.xs};
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
+type Difficulty = 'Easy' | 'Medium' | 'Hard';
+
+const DifficultyBadge = styled.span<{ difficulty: Difficulty }>`
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: ${props => props.theme.borderRadius.full};
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-left: 0.5rem;
   background: ${props => {
     switch (props.difficulty) {
       case 'Easy':
-        return props.theme.colors.success;
+        return props.theme.colors.status.success;
       case 'Medium':
-        return props.theme.colors.warning;
+        return props.theme.colors.status.warning;
       case 'Hard':
-        return props.theme.colors.error;
+        return props.theme.colors.status.error;
       default:
-        return props.theme.colors.backgroundAlt;
+        return props.theme.colors.status.info;
     }
   }};
   color: white;
 `;
 
 const Blind75Badge = styled.span`
-  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
-  border-radius: 9999px;
-  font-size: ${props => props.theme.typography.fontSize.xs};
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
   background: ${props => props.theme.colors.primary};
   color: white;
-  margin-left: ${props => props.theme.spacing.sm};
+  border-radius: ${props => props.theme.borderRadius.full};
+  font-size: 0.75rem;
+  margin-left: 0.5rem;
+  font-weight: 500;
 `;
+
+const categories = ['All', 'Arrays', 'Strings', 'Linked Lists', 'Trees', 'Graphs', 'Dynamic Programming', 'JavaScript', 'React', 'Frontend'];
+const difficulties = ['All', 'Easy', 'Medium', 'Hard'];
 
 const questions = [
   // Arrays & Strings
   {
     id: '1',
     title: 'Two Sum',
-    difficulty: 'Easy',
+    difficulty: 'Easy' as Difficulty,
     category: 'Arrays',
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '85%',
@@ -127,7 +143,7 @@ const questions = [
   {
     id: '2',
     title: 'Valid Parentheses',
-    difficulty: 'Easy',
+    difficulty: 'Easy' as Difficulty,
     category: 'Strings',
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '75%',
@@ -137,7 +153,7 @@ const questions = [
   {
     id: '3',
     title: 'Merge Intervals',
-    difficulty: 'Medium',
+    difficulty: 'Medium' as Difficulty,
     category: 'Arrays',
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '65%',
@@ -147,7 +163,7 @@ const questions = [
   {
     id: '4',
     title: 'Longest Substring Without Repeating Characters',
-    difficulty: 'Medium',
+    difficulty: 'Medium' as Difficulty,
     category: 'Strings',
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '55%',
@@ -158,7 +174,7 @@ const questions = [
   {
     id: '5',
     title: 'Reverse Linked List',
-    difficulty: 'Easy',
+    difficulty: 'Easy' as Difficulty,
     category: 'Linked Lists',
     companies: ['Amazon', 'Microsoft', 'Facebook'],
     acceptanceRate: '80%',
@@ -168,7 +184,7 @@ const questions = [
   {
     id: '6',
     title: 'Linked List Cycle',
-    difficulty: 'Easy',
+    difficulty: 'Easy' as Difficulty,
     category: 'Linked Lists',
     companies: ['Amazon', 'Microsoft', 'Facebook'],
     acceptanceRate: '70%',
@@ -179,7 +195,7 @@ const questions = [
   {
     id: '7',
     title: 'Maximum Depth of Binary Tree',
-    difficulty: 'Easy',
+    difficulty: 'Easy' as Difficulty,
     category: 'Trees',
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '75%',
@@ -189,7 +205,7 @@ const questions = [
   {
     id: '8',
     title: 'Validate Binary Search Tree',
-    difficulty: 'Medium',
+    difficulty: 'Medium' as Difficulty,
     category: 'Trees',
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '60%',
@@ -200,7 +216,7 @@ const questions = [
   {
     id: '9',
     title: 'Climbing Stairs',
-    difficulty: 'Easy',
+    difficulty: 'Easy' as Difficulty,
     category: 'Dynamic Programming',
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '70%',
@@ -210,7 +226,7 @@ const questions = [
   {
     id: '10',
     title: 'Coin Change',
-    difficulty: 'Medium',
+    difficulty: 'Medium' as Difficulty,
     category: 'Dynamic Programming',
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '45%',
@@ -221,7 +237,7 @@ const questions = [
   {
     id: '11',
     title: 'Number of Islands',
-    difficulty: 'Medium',
+    difficulty: 'Medium' as Difficulty,
     category: 'Graphs',
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '65%',
@@ -231,17 +247,107 @@ const questions = [
   {
     id: '12',
     title: 'Course Schedule',
-    difficulty: 'Medium',
+    difficulty: 'Medium' as Difficulty,
     category: 'Graphs',
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '55%',
     href: '/interview/practice/course-schedule',
     isBlind75: true
+  },
+  // Frontend - JavaScript
+  {
+    id: '13',
+    title: 'Implement Promise.all',
+    difficulty: 'Medium' as Difficulty,
+    category: 'JavaScript',
+    companies: ['Google', 'Amazon', 'Atlassian'],
+    acceptanceRate: '60%',
+    href: '/interview/practice/javascript/implement-promise-all',
+    isBlind75: false
+  },
+  {
+    id: '14',
+    title: 'Event Loop and Async JavaScript',
+    difficulty: 'Hard' as Difficulty,
+    category: 'JavaScript',
+    companies: ['Google', 'Amazon', 'Microsoft'],
+    acceptanceRate: '45%',
+    href: '/interview/practice/javascript/event-loop',
+    isBlind75: false
+  },
+  {
+    id: '15',
+    title: 'Implement Debounce Function',
+    difficulty: 'Medium' as Difficulty,
+    category: 'JavaScript',
+    companies: ['Google', 'Amazon', 'Atlassian'],
+    acceptanceRate: '70%',
+    href: '/interview/practice/javascript/implement-debounce',
+    isBlind75: false
+  },
+  // Frontend - React
+  {
+    id: '16',
+    title: 'Implement Custom Hook',
+    difficulty: 'Medium' as Difficulty,
+    category: 'React',
+    companies: ['Google', 'Amazon', 'Atlassian'],
+    acceptanceRate: '65%',
+    href: '/interview/practice/react/custom-hook',
+    isBlind75: false
+  },
+  {
+    id: '17',
+    title: 'React Performance Optimization',
+    difficulty: 'Hard' as Difficulty,
+    category: 'React',
+    companies: ['Google', 'Amazon', 'Microsoft'],
+    acceptanceRate: '50%',
+    href: '/interview/practice/react/performance',
+    isBlind75: false
+  },
+  {
+    id: '18',
+    title: 'State Management in React',
+    difficulty: 'Medium' as Difficulty,
+    category: 'React',
+    companies: ['Google', 'Amazon', 'Atlassian'],
+    acceptanceRate: '60%',
+    href: '/interview/practice/react/state-management',
+    isBlind75: false
+  },
+  // Frontend - General
+  {
+    id: '19',
+    title: 'CSS Grid Layout Implementation',
+    difficulty: 'Medium' as Difficulty,
+    category: 'Frontend',
+    companies: ['Google', 'Amazon', 'Atlassian'],
+    acceptanceRate: '75%',
+    href: '/interview/practice/frontend/css-grid',
+    isBlind75: false
+  },
+  {
+    id: '20',
+    title: 'Web Accessibility Implementation',
+    difficulty: 'Medium' as Difficulty,
+    category: 'Frontend',
+    companies: ['Google', 'Amazon', 'Microsoft'],
+    acceptanceRate: '65%',
+    href: '/interview/practice/frontend/web-accessibility',
+    isBlind75: false
+  },
+  {
+    id: '21',
+    title: 'Browser Rendering Process',
+    difficulty: 'Hard' as Difficulty,
+    category: 'Frontend',
+    companies: ['Google', 'Amazon', 'Microsoft'],
+    acceptanceRate: '40%',
+    href: '/interview/practice/frontend/browser-rendering',
+    isBlind75: false
   }
 ];
-
-const categories = ['All', 'Arrays', 'Strings', 'Linked Lists', 'Trees', 'Graphs', 'Dynamic Programming'];
-const difficulties = ['All', 'Easy', 'Medium', 'Hard'];
 
 export const PracticeQuestions: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
