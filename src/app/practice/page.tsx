@@ -368,7 +368,7 @@ export default function PracticePage() {
     <PageContainer style={{ padding: 0, height: '100vh', overflow: 'hidden' }}>
       <Header>
         <HeaderLeft>
-          <Logo>Deep Learner</Logo>
+          <Logo>Frontendly</Logo>
           <nav>
             <NavLink href="/practice" className="active">Practice</NavLink>
             <NavLink href="/system-design">System Design</NavLink>

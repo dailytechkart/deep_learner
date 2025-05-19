@@ -206,25 +206,22 @@ export const CategoryIcon = styled.span`
 `;
 
 export const Logo = styled.div`
+  font-size: ${props => props.theme.typography.fontSize.xl};
+  font-weight: ${props => props.theme.typography.fontWeight.bold};
+  color: ${props => props.theme.colors.primary};
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: ${props => props.theme.colors.text};
-  cursor: pointer;
-  white-space: nowrap;
-
-  .logo-icon {
-    font-size: 1.5rem;
+  gap: ${props => props.theme.spacing.sm};
+  
+  &::before {
+    content: '🚀';
+    font-size: 1.2em;
   }
-
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
-    font-size: 1.1rem;
-    
-    .logo-icon {
-      font-size: 1.3rem;
-    }
+  
+  &:hover {
+    color: ${props => props.theme.colors.primaryDark};
+    transform: scale(1.02);
+    transition: all 0.2s ease;
   }
 `;
 

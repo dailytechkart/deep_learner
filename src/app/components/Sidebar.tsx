@@ -88,10 +88,7 @@ const SidebarComponent: React.FC<SidebarProps> = ({
       <SidebarSection>
         <SidebarHeader>
           <Link href="/" passHref>
-            <Logo>
-              <span className="logo-icon">🎓</span>
-              Deep Learner
-            </Logo>
+            <Logo>Frontendly</Logo>
           </Link>
         </SidebarHeader>
         <SidebarSearch>
@@ -209,8 +206,8 @@ const SidebarComponent: React.FC<SidebarProps> = ({
 
       <SidebarFooter>
         <SidebarFooterText>
-          <span>🎓</span>
-          FrontendPro Academy
+          <span>🚀</span>
+          Frontendly
         </SidebarFooterText>
       </SidebarFooter>
     </Sidebar>

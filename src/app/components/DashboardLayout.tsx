@@ -4,6 +4,13 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../hooks/useAuth';
 import Link from 'next/link';
+import styled from 'styled-components';
+
+const Logo = styled.div`
+  font-size: ${props => props.theme.typography.fontSize.xl};
+  font-weight: ${props => props.theme.typography.fontWeight.bold};
+  color: ${props => props.theme.colors.primary};
+`;
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -39,7 +46,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             <div className="flex">
               <div className="flex-shrink-0 flex items-center">
                 <Link href="/dashboard" className="text-xl font-bold text-gray-900">
-                  Deep Learner
+                  <Logo>Frontendly</Logo>
                 </Link>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">

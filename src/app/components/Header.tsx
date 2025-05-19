@@ -119,10 +119,7 @@ export default function Header() {
               ☰
             </MobileMenuButton>
             <Link href="/" passHref>
-              <Logo>
-                <span className="logo-icon">🎓</span>
-                Deep Learner
-              </Logo>
+              <Logo>Frontendly</Logo>
             </Link>
             <NavLinks>
               <NavLink 
@@ -221,10 +218,7 @@ export default function Header() {
       >
         <MobileSidebarHeader>
           <Link href="/" passHref>
-            <Logo>
-              <span className="logo-icon">🎓</span>
-              Deep Learner
-            </Logo>
+            <Logo>Frontendly</Logo>
           </Link>
           <MobileSidebarClose 
             onClick={handleMobileMenuToggle}

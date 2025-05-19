@@ -3,7 +3,32 @@
 import { useState, useRef, useEffect, Suspense, useMemo } from 'react';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
-import { FaComments, FaList, FaClock, FaCommentDots, FaClipboardList, FaBolt, FaSearch, FaLayerGroup, FaFilter, FaTimes, FaBuilding, FaCode, FaDatabase, FaCogs, FaServer, FaNetworkWired, FaChartLine } from 'react-icons/fa';
+import { 
+  FaComments, 
+  FaList, 
+  FaClock, 
+  FaCommentDots, 
+  FaClipboardList, 
+  FaBolt, 
+  FaSearch, 
+  FaLayerGroup, 
+  FaFilter, 
+  FaTimes, 
+  FaBuilding, 
+  FaCode, 
+  FaDatabase, 
+  FaCogs, 
+  FaServer, 
+  FaNetworkWired, 
+  FaChartLine,
+  FaUsers,
+  FaHistory,
+  FaBell,
+  FaKeyboard,
+  FaCheckDouble,
+  FaUserCircle,
+  FaSmile
+} from 'react-icons/fa';
 import { useParams, useRouter } from 'next/navigation';
 
 const problemsList = [
@@ -669,22 +694,71 @@ const ClearFilters = styled.button`
 const InfoSection = styled.div`
   background: ${({ theme }) => theme.colors.background};
   border-radius: 12px;
-  padding: 20px;
+  padding: 24px;
   margin-bottom: 24px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 `;
 
 const InfoTitle = styled.h3`
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 1.1em;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.text};
-  margin: 0 0 16px 0;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 
   svg {
     color: ${({ theme }) => theme.colors.primary};
+  }
+`;
+
+const ProblemDescriptionContent = styled.div`
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: 0.95em;
+  line-height: 1.6;
+
+  .feature-list {
+    margin: 16px 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 12px;
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    border-radius: 8px;
+    border: 1px solid ${({ theme }) => theme.colors.border};
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateX(4px);
+      border-color: ${({ theme }) => theme.colors.primary};
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .feature-icon {
+      color: ${({ theme }) => theme.colors.primary};
+      font-size: 1.2em;
+      padding-top: 2px;
+    }
+
+    .feature-content {
+      flex: 1;
+
+      .feature-title {
+        font-weight: 600;
+        color: ${({ theme }) => theme.colors.text};
+        margin-bottom: 4px;
+      }
+    }
   }
 `;
 
@@ -696,17 +770,18 @@ const CompanyList = styled.div`
 `;
 
 const CompanyTag = styled.div`
-  background: ${({ theme }) => theme.colors.primary}15;
-  color: ${({ theme }) => theme.colors.primary};
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.9em;
-  font-weight: 500;
   display: flex;
   align-items: center;
   gap: 6px;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+  color: ${({ theme }) => theme.colors.text};
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  border: 1px solid ${({ theme }) => theme.colors.border};
 
   svg {
+    color: ${({ theme }) => theme.colors.primary};
     font-size: 0.9em;
   }
 `;
@@ -714,10 +789,10 @@ const CompanyTag = styled.div`
 const InfoRow = styled.div`
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 10px;
   color: ${({ theme }) => theme.colors.textSecondary};
   font-size: 0.95em;
+  margin-bottom: 12px;
 
   svg {
     color: ${({ theme }) => theme.colors.primary};
@@ -729,10 +804,10 @@ const TagList = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 8px;
 `;
 
-const InfoTag = styled.div`
+const InfoTag = styled.span`
   background: ${({ theme }) => theme.colors.backgroundAlt};
   color: ${({ theme }) => theme.colors.text};
   padding: 4px 10px;
@@ -1950,9 +2025,40 @@ export default function ProblemPage() {
             <FaCommentDots />
             Problem Description
           </InfoTitle>
-          <div style={{ color: '#666', fontSize: '0.95em', lineHeight: 1.5 }}>
-            {selectedProblem.description}
-          </div>
+          <ProblemDescriptionContent>
+            {selectedProblem.description.split('\n').map((line, index) => {
+              // Check if the line is a numbered feature (e.g., "1. Feature")
+              const featureMatch = line.match(/^\s*(\d+)\.\s*(.+)/);
+              
+              if (featureMatch) {
+                const [, number, content] = featureMatch;
+                // Map feature numbers to appropriate icons
+                const icons = [
+                  FaComments,    // Real-time messaging
+                  FaUsers,       // Group chat
+                  FaHistory,     // Message history
+                  FaBell,        // Unread count
+                  FaKeyboard,    // Typing indicators
+                  FaCheckDouble, // Message status
+                  FaUserCircle,  // User presence
+                  FaSmile        // Reactions & emojis
+                ];
+                const Icon = icons[parseInt(number) - 1] || FaBolt;
+
+                return (
+                  <div key={index} className="feature-item">
+                    <span className="feature-icon"><Icon /></span>
+                    <div className="feature-content">
+                      <div className="feature-title">{content.trim()}</div>
+                    </div>
+                  </div>
+                );
+              }
+              
+              // Regular paragraph
+              return line.trim() ? <p key={index}>{line.trim()}</p> : null;
+            })}
+          </ProblemDescriptionContent>
         </InfoSection>
 
         <InfoSection>
