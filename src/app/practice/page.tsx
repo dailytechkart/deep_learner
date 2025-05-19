@@ -1,8 +1,9 @@
 'use client';
 
+import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { Sandpack } from '@codesandbox/sandpack-react';
-import { useState, useCallback, useEffect } from 'react';
+import Header from '../components/Header';
 import {
   PageContainer,
   Section,
@@ -10,89 +11,110 @@ import {
   SectionContent,
 } from '../components/StyledComponents';
 
-const Header = styled.header`
-  height: 64px;
-  background: ${props => props.theme.colors.background};
-  border-bottom: 1px solid ${props => props.theme.colors.border};
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 ${props => props.theme.spacing.xl};
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-`;
-
-const HeaderLeft = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing.lg};
-`;
-
-const HeaderRight = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing.md};
-`;
-
-const Logo = styled.div`
-  font-size: ${props => props.theme.typography.fontSize.xl};
-  font-weight: ${props => props.theme.typography.fontWeight.bold};
-  color: ${props => props.theme.colors.primary};
-`;
-
-const NavLink = styled.a`
-  color: ${props => props.theme.colors.text};
-  text-decoration: none;
-  font-size: ${props => props.theme.typography.fontSize.md};
-  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
-  border-radius: ${props => props.theme.borderRadius.md};
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: ${props => props.theme.colors.backgroundAlt};
-    color: ${props => props.theme.colors.primary};
-  }
-
-  &.active {
-    color: ${props => props.theme.colors.primary};
-    font-weight: ${props => props.theme.typography.fontWeight.medium};
-  }
-`;
-
-const UserInfo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing.sm};
-  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
-  border-radius: ${props => props.theme.borderRadius.md};
-  background: ${props => props.theme.colors.backgroundAlt};
-  color: ${props => props.theme.colors.text};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-`;
-
 const PracticeContainer = styled.div`
   display: flex;
-  gap: ${props => props.theme.spacing.xl};
   height: calc(100vh - 64px);
-  position: fixed;
-  top: 64px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
+  margin-top: 64px;
 `;
 
 const ProblemSection = styled.div`
-  flex: 0.3;
-  padding: ${props => props.theme.spacing.lg};
+  flex: 1;
+  padding: ${props => props.theme.spacing.xl};
   overflow-y: auto;
   border-right: 1px solid ${props => props.theme.colors.border};
-  min-width: 300px;
-  background: ${props => props.theme.colors.background};
-  height: 100%;
+`;
+
+const ProblemHeader = styled.div`
+  margin-bottom: ${props => props.theme.spacing.xl};
+`;
+
+const ProblemTitle = styled.h2`
+  font-size: ${props => props.theme.typography.fontSize.xl};
+  font-weight: ${props => props.theme.typography.fontWeight.bold};
+  margin-bottom: ${props => props.theme.spacing.md};
+  color: ${props => props.theme.colors.text};
+`;
+
+const ProblemMeta = styled.div`
+  display: flex;
+  gap: ${props => props.theme.spacing.md};
+  margin-bottom: ${props => props.theme.spacing.lg};
+`;
+
+const MetaBadge = styled.div<{ type: 'difficulty' | 'time' | 'category' }>`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.xs};
+  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
+  border-radius: 9999px;
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  background: ${props => {
+    switch (props.type) {
+      case 'difficulty':
+        return props.theme.colors.primary;
+      case 'time':
+        return props.theme.colors.secondary;
+      case 'category':
+        return props.theme.colors.primaryDark;
+      default:
+        return props.theme.colors.backgroundAlt;
+    }
+  }};
+  color: white;
+`;
+
+const ProblemDescription = styled.div`
+  font-size: ${props => props.theme.typography.fontSize.md};
+  line-height: 1.6;
+  color: ${props => props.theme.colors.text};
+  margin-bottom: ${props => props.theme.spacing.lg};
+`;
+
+const SectionTitle = styled.h3`
+  font-size: ${props => props.theme.typography.fontSize.lg};
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  color: ${props => props.theme.colors.text};
+  margin: ${props => props.theme.spacing.xl} 0 ${props => props.theme.spacing.md};
+  padding-bottom: ${props => props.theme.spacing.sm};
+  border-bottom: 2px solid ${props => props.theme.colors.border};
+`;
+
+const RequirementsList = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-bottom: ${props => props.theme.spacing.lg};
+`;
+
+const RequirementItem = styled.li`
+  display: flex;
+  align-items: flex-start;
+  gap: ${props => props.theme.spacing.sm};
+  margin-bottom: ${props => props.theme.spacing.md};
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSize.md};
+  line-height: 1.5;
+
+  &:before {
+    content: "•";
+    color: ${props => props.theme.colors.primary};
+    font-weight: bold;
+  }
+`;
+
+const HintSection = styled.div`
+  background: ${props => props.theme.colors.backgroundAlt};
+  border-radius: ${props => props.theme.borderRadius.md};
+  padding: ${props => props.theme.spacing.lg};
+  margin: ${props => props.theme.spacing.lg} 0;
+`;
+
+const HintTitle = styled.h4`
+  font-size: ${props => props.theme.typography.fontSize.md};
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  color: ${props => props.theme.colors.primary};
+  margin-bottom: ${props => props.theme.spacing.sm};
 `;
 
 const ResizeHandle = styled.div`
@@ -195,99 +217,6 @@ const EditorSection = styled.div<EditorSectionProps>`
   }
 `;
 
-const ProblemHeader = styled.div`
-  margin-bottom: ${props => props.theme.spacing.xl};
-`;
-
-const ProblemTitle = styled.h2`
-  font-size: ${props => props.theme.typography.fontSize.xl};
-  font-weight: ${props => props.theme.typography.fontWeight.bold};
-  margin-bottom: ${props => props.theme.spacing.md};
-  color: ${props => props.theme.colors.text};
-`;
-
-const ProblemMeta = styled.div`
-  display: flex;
-  gap: ${props => props.theme.spacing.md};
-  margin-bottom: ${props => props.theme.spacing.lg};
-`;
-
-const MetaBadge = styled.div<{ type: 'difficulty' | 'time' | 'category' }>`
-  display: flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing.xs};
-  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
-  border-radius: 9999px;
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
-  background: ${props => {
-    switch (props.type) {
-      case 'difficulty':
-        return props.theme.colors.primary;
-      case 'time':
-        return props.theme.colors.secondary;
-      case 'category':
-        return props.theme.colors.primaryDark;
-      default:
-        return props.theme.colors.backgroundAlt;
-    }
-  }};
-  color: white;
-`;
-
-const ProblemDescription = styled.div`
-  font-size: ${props => props.theme.typography.fontSize.md};
-  line-height: 1.6;
-  color: ${props => props.theme.colors.text};
-  margin-bottom: ${props => props.theme.spacing.lg};
-`;
-
-const SectionTitle = styled.h3`
-  font-size: ${props => props.theme.typography.fontSize.lg};
-  font-weight: ${props => props.theme.typography.fontWeight.semibold};
-  color: ${props => props.theme.colors.text};
-  margin: ${props => props.theme.spacing.xl} 0 ${props => props.theme.spacing.md};
-  padding-bottom: ${props => props.theme.spacing.sm};
-  border-bottom: 2px solid ${props => props.theme.colors.border};
-`;
-
-const RequirementsList = styled.ul`
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  margin-bottom: ${props => props.theme.spacing.lg};
-`;
-
-const RequirementItem = styled.li`
-  display: flex;
-  align-items: flex-start;
-  gap: ${props => props.theme.spacing.sm};
-  margin-bottom: ${props => props.theme.spacing.md};
-  color: ${props => props.theme.colors.text};
-  font-size: ${props => props.theme.typography.fontSize.md};
-  line-height: 1.5;
-
-  &:before {
-    content: "•";
-    color: ${props => props.theme.colors.primary};
-    font-weight: bold;
-  }
-`;
-
-const HintSection = styled.div`
-  background: ${props => props.theme.colors.backgroundAlt};
-  border-radius: ${props => props.theme.borderRadius.md};
-  padding: ${props => props.theme.spacing.lg};
-  margin: ${props => props.theme.spacing.lg} 0;
-`;
-
-const HintTitle = styled.h4`
-  font-size: ${props => props.theme.typography.fontSize.md};
-  font-weight: ${props => props.theme.typography.fontWeight.semibold};
-  color: ${props => props.theme.colors.primary};
-  margin-bottom: ${props => props.theme.spacing.sm};
-`;
-
 const initialCode = {
   '/App.js': `import React from 'react';
 
@@ -366,23 +295,7 @@ export default function PracticePage() {
 
   return (
     <PageContainer style={{ padding: 0, height: '100vh', overflow: 'hidden' }}>
-      <Header>
-        <HeaderLeft>
-          <Logo>Frontendly</Logo>
-          <nav>
-            <NavLink href="/practice" className="active">Practice</NavLink>
-            <NavLink href="/system-design">System Design</NavLink>
-            <NavLink href="/profile">Profile</NavLink>
-          </nav>
-        </HeaderLeft>
-        <HeaderRight>
-          <UserInfo>
-            <span>👤 John Doe</span>
-            <span>•</span>
-            <span>Level 5</span>
-          </UserInfo>
-        </HeaderRight>
-      </Header>
+      <Header />
       <PracticeContainer>
         <ProblemSection>
           <ProblemHeader>

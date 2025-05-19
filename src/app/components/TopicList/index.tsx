@@ -1,6 +1,6 @@
 import React from 'react';
+import styled from 'styled-components';
 import { TopicCard } from '../TopicCard';
-import { Container, Section, SectionHeader, SectionTitle } from '../TailwindComponents';
 
 interface Topic {
   id: string;
@@ -19,19 +19,36 @@ interface TopicListProps {
   title?: string;
 }
 
-export const TopicList: React.FC<TopicListProps> = ({ topics, title = 'Learning Topics' }) => {
+const TopicsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: ${props => props.theme.spacing.lg};
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
+
+const TopicCardWrapper = styled.div`
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+`;
+
+export const TopicList: React.FC<TopicListProps> = ({ topics }) => {
   return (
-    <Section>
-      <Container>
-        <SectionHeader>
-          <SectionTitle>{title}</SectionTitle>
-        </SectionHeader>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {topics.map((topic) => (
-            <TopicCard key={topic.id} topic={topic} />
-          ))}
-        </div>
-      </Container>
-    </Section>
+    <TopicsGrid>
+      {topics.map((topic) => (
+        <TopicCardWrapper key={topic.id}>
+          <TopicCard topic={topic} />
+        </TopicCardWrapper>
+      ))}
+    </TopicsGrid>
   );
 }; 

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 import {
   Header as HeaderContainer,
   HeaderContent,
@@ -29,7 +30,8 @@ import {
   MobileSidebarNav,
   MobileSidebarLink,
   MobileSidebarActions,
-  MobileSidebarOverlay
+  MobileSidebarOverlay,
+  UserName
 } from './StyledComponents';
 
 export default function Header() {
@@ -40,6 +42,7 @@ export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const { isDarkMode, toggleTheme } = useTheme();
+  const { user, signOut } = useAuth();
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -102,6 +105,15 @@ export default function Header() {
     router.push(path);
     setIsMobileMenuOpen(false);
     setIsUserMenuOpen(false);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      router.push('/login');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
   };
 
   const isActive = (path: string) => pathname === path;
@@ -180,116 +192,123 @@ export default function Header() {
             >
               <span>{isDarkMode ? '☀️' : '🌙'}</span>
             </ThemeToggle>
-            <UserMenuContainer className="user-menu">
-              <UserButton onClick={handleUserMenuToggle}>
-                <UserAvatar src="/default-avatar.png" alt="User" />
-                <span>John Doe</span>
-              </UserButton>
-              {isUserMenuOpen && (
-                <DropdownMenu>
-                  <MenuItem 
-                    data-icon="profile"
-                    onClick={() => handleNavigation('/profile')}
-                  >
-                    Profile
-                  </MenuItem>
-                  <MenuItem 
-                    data-icon="settings"
-                    onClick={() => handleNavigation('/settings')}
-                  >
-                    Settings
-                  </MenuItem>
-                  <MenuDivider />
-                  <MenuItem 
-                    data-icon="logout"
-                    onClick={() => handleNavigation('/logout')}
-                  >
-                    Logout
-                  </MenuItem>
-                </DropdownMenu>
-              )}
-            </UserMenuContainer>
+            {user && (
+              <UserMenuContainer className="user-menu">
+                <UserButton onClick={handleUserMenuToggle}>
+                  <UserAvatar 
+                    src={user.photoURL || '/default-avatar.png'} 
+                    alt={user.displayName || 'User'} 
+                  />
+                  <UserName>{user.displayName || user.email}</UserName>
+                </UserButton>
+                {isUserMenuOpen && (
+                  <DropdownMenu>
+                    <MenuItem 
+                      data-icon="profile"
+                      onClick={() => handleNavigation('/profile')}
+                    >
+                      Profile
+                    </MenuItem>
+                    <MenuItem 
+                      data-icon="settings"
+                      onClick={() => handleNavigation('/settings')}
+                    >
+                      Settings
+                    </MenuItem>
+                    <MenuDivider />
+                    <MenuItem 
+                      data-icon="logout"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </MenuItem>
+                  </DropdownMenu>
+                )}
+              </UserMenuContainer>
+            )}
           </HeaderRight>
         </HeaderContent>
       </HeaderContainer>
 
-      <MobileSidebarOverlay 
-        $isOpen={isMobileMenuOpen} 
-        onClick={() => setIsMobileMenuOpen(false)}
-        aria-hidden={!isMobileMenuOpen}
-      />
-      <MobileSidebar 
-        $isOpen={isMobileMenuOpen} 
-        className="mobile-sidebar"
-        aria-hidden={!isMobileMenuOpen}
-      >
-        <MobileSidebarHeader>
-          <Link href="/" passHref>
-            <Logo>Frontendly</Logo>
-          </Link>
-          <MobileSidebarClose 
-            onClick={handleMobileMenuToggle}
-            aria-label="Close mobile menu"
+      {isMobileMenuOpen && (
+        <>
+          <MobileSidebarOverlay 
+            $isOpen={isMobileMenuOpen}
+            onClick={() => setIsMobileMenuOpen(false)} 
+          />
+          <MobileSidebar 
+            $isOpen={isMobileMenuOpen}
+            className="mobile-sidebar"
           >
-            ✕
-          </MobileSidebarClose>
-        </MobileSidebarHeader>
-        <MobileSidebarNav>
-          <MobileSidebarLink 
-            href="/learn" 
-            onClick={() => handleNavigation('/learn')}
-            className={isActive('/learn') ? 'active' : ''}
-          >
-            <span className="nav-icon">📚</span>
-            Learn
-          </MobileSidebarLink>
-          <MobileSidebarLink 
-            href="/practice" 
-            onClick={() => handleNavigation('/practice')}
-            className={isActive('/practice') ? 'active' : ''}
-          >
-            <span className="nav-icon">💻</span>
-            Practice
-          </MobileSidebarLink>
-          <MobileSidebarLink 
-            href="/system-design" 
-            onClick={() => handleNavigation('/system-design')}
-            className={isActive('/system-design') ? 'active' : ''}
-          >
-            <span className="nav-icon">🏗️</span>
-            System Design
-          </MobileSidebarLink>
-          <MobileSidebarLink 
-            href="/roadmap" 
-            onClick={() => handleNavigation('/roadmap')}
-            className={isActive('/roadmap') ? 'active' : ''}
-          >
-            <span className="nav-icon">🗺️</span>
-            Roadmap
-          </MobileSidebarLink>
-          <MobileSidebarLink 
-            href="/interview" 
-            onClick={() => handleNavigation('/interview')}
-            className={isActive('/interview') ? 'active' : ''}
-          >
-            <span className="nav-icon">🎯</span>
-            Interview
-          </MobileSidebarLink>
-        </MobileSidebarNav>
-        <MobileSidebarActions>
-          <ThemeToggle 
-            onClick={toggleTheme}
-            aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-          >
-            <span>{isDarkMode ? '☀️' : '🌙'}</span>
-            <span>Toggle Theme</span>
-          </ThemeToggle>
-          <UserButton onClick={handleUserMenuToggle}>
-            <UserAvatar src="/default-avatar.png" alt="User" />
-            <span>John Doe</span>
-          </UserButton>
-        </MobileSidebarActions>
-      </MobileSidebar>
+            <MobileSidebarHeader>
+              <Logo>Frontendly</Logo>
+              <MobileSidebarClose onClick={() => setIsMobileMenuOpen(false)}>
+                ✕
+              </MobileSidebarClose>
+            </MobileSidebarHeader>
+            <MobileSidebarNav>
+              <MobileSidebarLink 
+                href="/learn" 
+                onClick={() => handleNavigation('/learn')}
+                className={isActive('/learn') ? 'active' : ''}
+              >
+                <span className="nav-icon">📚</span>
+                Learn
+              </MobileSidebarLink>
+              <MobileSidebarLink 
+                href="/practice" 
+                onClick={() => handleNavigation('/practice')}
+                className={isActive('/practice') ? 'active' : ''}
+              >
+                <span className="nav-icon">💻</span>
+                Practice
+              </MobileSidebarLink>
+              <MobileSidebarLink 
+                href="/system-design" 
+                onClick={() => handleNavigation('/system-design')}
+                className={isActive('/system-design') ? 'active' : ''}
+              >
+                <span className="nav-icon">🏗️</span>
+                System Design
+              </MobileSidebarLink>
+              <MobileSidebarLink 
+                href="/roadmap" 
+                onClick={() => handleNavigation('/roadmap')}
+                className={isActive('/roadmap') ? 'active' : ''}
+              >
+                <span className="nav-icon">🗺️</span>
+                Roadmap
+              </MobileSidebarLink>
+              <MobileSidebarLink 
+                href="/interview" 
+                onClick={() => handleNavigation('/interview')}
+                className={isActive('/interview') ? 'active' : ''}
+              >
+                <span className="nav-icon">🎯</span>
+                Interview
+              </MobileSidebarLink>
+            </MobileSidebarNav>
+            <MobileSidebarActions>
+              <ThemeToggle 
+                onClick={toggleTheme}
+                aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                <span>{isDarkMode ? '☀️' : '🌙'}</span>
+                <span>Toggle Theme</span>
+              </ThemeToggle>
+              {user && (
+                <UserButton onClick={handleUserMenuToggle}>
+                  <UserAvatar 
+                    src={user.photoURL || '/default-avatar.png'} 
+                    alt={user.displayName || 'User'} 
+                  />
+                  <UserName>{user.displayName || user.email}</UserName>
+                </UserButton>
+              )}
+            </MobileSidebarActions>
+          </MobileSidebar>
+        </>
+      )}
     </>
   );
 } 

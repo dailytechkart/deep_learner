@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { ProgressBar } from '../TailwindComponents';
+import styled from 'styled-components';
 
 interface TopicCardProps {
   topic: {
@@ -16,60 +16,213 @@ interface TopicCardProps {
   };
 }
 
-export const TopicCard: React.FC<TopicCardProps> = ({ topic }) => {
-  const difficultyColors = {
-    Beginner: 'bg-green-100 text-green-800',
-    Intermediate: 'bg-yellow-100 text-yellow-800',
-    Advanced: 'bg-red-100 text-red-800'
-  };
+const Card = styled.div`
+  background: ${props => props.theme.colors.background};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  padding: ${props => props.theme.spacing.lg};
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(
+      90deg,
+      ${props => props.theme.colors.primary},
+      ${props => props.theme.colors.secondary}
+    );
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover::before {
+    transform: scaleX(1);
+  }
+`;
+
+const CardHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: ${props => props.theme.spacing.md};
+`;
+
+const Title = styled.h3`
+  font-size: ${props => props.theme.typography.fontSize.xl};
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  color: ${props => props.theme.colors.text};
+  margin-bottom: ${props => props.theme.spacing.sm};
+  line-height: 1.4;
+`;
+
+const Description = styled.p`
+  color: ${props => props.theme.colors.textSecondary};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: ${props => props.theme.spacing.md};
+`;
+
+const DifficultyBadge = styled.span<{ difficulty: string }>`
+  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
+  border-radius: 9999px;
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  background: ${props => {
+    switch (props.difficulty) {
+      case 'Beginner':
+        return props.theme.colors.success;
+      case 'Intermediate':
+        return props.theme.colors.warning;
+      case 'Advanced':
+        return props.theme.colors.error;
+      default:
+        return props.theme.colors.backgroundAlt;
+    }
+  }};
+  color: white;
+  white-space: nowrap;
+`;
+
+const ProgressContainer = styled.div`
+  margin: ${props => props.theme.spacing.md} 0;
+  flex-grow: 1;
+`;
+
+const ProgressHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: ${props => props.theme.spacing.xs};
+`;
+
+const ProgressLabel = styled.span`
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  color: ${props => props.theme.colors.textSecondary};
+`;
+
+const ProgressValue = styled.span`
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  color: ${props => props.theme.colors.text};
+`;
+
+const ProgressBar = styled.div<{ progress: number }>`
+  width: 100%;
+  height: 6px;
+  background: ${props => props.theme.colors.backgroundAlt};
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: ${props => props.progress}%;
+    background: linear-gradient(
+      90deg,
+      ${props => props.theme.colors.primary},
+      ${props => props.theme.colors.secondary}
+    );
+    transition: width 0.3s ease;
+  }
+`;
+
+const StatsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: ${props => props.theme.spacing.md};
+  margin: ${props => props.theme.spacing.md} 0;
+`;
+
+const StatItem = styled.div`
+  text-align: center;
+  padding: ${props => props.theme.spacing.sm};
+  background: ${props => props.theme.colors.backgroundAlt};
+  border-radius: ${props => props.theme.borderRadius.md};
+`;
+
+const StatValue = styled.p`
+  font-size: ${props => props.theme.typography.fontSize.lg};
+  font-weight: ${props => props.theme.typography.fontWeight.bold};
+  color: ${props => props.theme.colors.primary};
+  margin-bottom: ${props => props.theme.spacing.xs};
+`;
+
+const StatLabel = styled.p`
+  font-size: ${props => props.theme.typography.fontSize.xs};
+  color: ${props => props.theme.colors.textSecondary};
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`;
+
+const CategoryBadge = styled.span`
+  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
+  background: ${props => props.theme.colors.backgroundAlt};
+  color: ${props => props.theme.colors.text};
+  border-radius: 9999px;
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  display: inline-flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.xs};
+`;
+
+export const TopicCard: React.FC<TopicCardProps> = ({ topic }) => {
   return (
     <Link href={`/topics/${topic.id}`}>
-      <div className="bg-white rounded-lg shadow-sm hover:shadow-md transition-all duration-200 p-6 border border-gray-200">
-        <div className="flex justify-between items-start mb-4">
+      <Card>
+        <CardHeader>
           <div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">{topic.title}</h3>
-            <p className="text-gray-600 text-sm line-clamp-2">{topic.description}</p>
+            <Title>{topic.title}</Title>
+            <Description>{topic.description}</Description>
           </div>
-          <span className={`px-3 py-1 rounded-full text-sm font-medium ${difficultyColors[topic.difficulty]}`}>
+          <DifficultyBadge difficulty={topic.difficulty}>
             {topic.difficulty}
-          </span>
-        </div>
+          </DifficultyBadge>
+        </CardHeader>
 
-        <div className="space-y-4">
-          {/* Progress */}
-          <div>
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-medium text-gray-500">Progress</span>
-              <span className="text-sm font-medium text-gray-700">{topic.progress}%</span>
-            </div>
-            <ProgressBar progress={topic.progress} />
-          </div>
+        <ProgressContainer>
+          <ProgressHeader>
+            <ProgressLabel>Progress</ProgressLabel>
+            <ProgressValue>{topic.progress}%</ProgressValue>
+          </ProgressHeader>
+          <ProgressBar progress={topic.progress} />
+        </ProgressContainer>
 
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-4">
-            <div className="text-center">
-              <p className="text-2xl font-bold text-primary">{topic.completedLessons}</p>
-              <p className="text-sm text-gray-500">Completed</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-gray-900">{topic.totalLessons}</p>
-              <p className="text-sm text-gray-500">Total Lessons</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-gray-900">{topic.estimatedTime}</p>
-              <p className="text-sm text-gray-500">Est. Time</p>
-            </div>
-          </div>
+        <StatsGrid>
+          <StatItem>
+            <StatValue>{topic.completedLessons}</StatValue>
+            <StatLabel>Completed</StatLabel>
+          </StatItem>
+          <StatItem>
+            <StatValue>{topic.totalLessons}</StatValue>
+            <StatLabel>Total</StatLabel>
+          </StatItem>
+          <StatItem>
+            <StatValue>{topic.estimatedTime}</StatValue>
+            <StatLabel>Est. Time</StatLabel>
+          </StatItem>
+        </StatsGrid>
 
-          {/* Category */}
-          <div>
-            <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">
-              {topic.category}
-            </span>
-          </div>
-        </div>
-      </div>
+        <CategoryBadge>{topic.category}</CategoryBadge>
+      </Card>
     </Link>
   );
 }; 
