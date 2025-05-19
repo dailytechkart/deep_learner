@@ -19,17 +19,34 @@ import {
   FaDatabase, 
   FaCogs, 
   FaServer, 
-  FaNetworkWired, 
-  FaChartLine,
+  FaNetworkWired,
   FaUsers,
   FaHistory,
   FaBell,
   FaKeyboard,
   FaCheckDouble,
   FaUserCircle,
-  FaSmile
+  FaSmile,
+  FaHome,
+  FaChevronRight,
+  FaChartLine
 } from 'react-icons/fa';
 import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
+import SystemDesignLayout from '@/components/SystemDesignLayout';
+
+const RoleTag = styled.span`
+  background: #e3e8ff;
+  color: #3a3a7c;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.8em;
+  font-weight: 500;
+  margin-right: 4px;
+  margin-bottom: 2px;
+  display: inline-block;
+  border: 1px solid #bfcfff;
+`;
 
 const problemsList = [
   {
@@ -38,6 +55,7 @@ const problemsList = [
     company_asked: ['Meta', 'Microsoft', 'Swiggy'],
     time_limit: 90,
     difficulty: 'Hard',
+    roles: ['SDE2', 'SDE3'],
     tags: ['WebSocket', 'Real-time', 'Chat', 'React', 'State Management'],
     description: `Design and implement a real-time chat application with the following core features:
     1. Real-time messaging with WebSocket support
@@ -79,6 +97,7 @@ const problemsList = [
     company_asked: ['Meta', 'LinkedIn'],
     time_limit: 120,
     difficulty: 'Hard',
+    roles: ['SDE2', 'SDE3'],
     tags: ['Pagination', 'Virtualization', 'React', 'Feed System', 'Infinite Scroll'],
     description: 'Create a responsive, paginated news feed with likes, comments, and post creation.',
     twist: 'Add real-time update for new posts and optimistic UI.',
@@ -90,6 +109,7 @@ const problemsList = [
     company_asked: ['Amazon', 'Meesho', 'Flipkart'],
     time_limit: 60,
     difficulty: 'Medium',
+    roles: ['SDE1', 'SDE2'],
     tags: ['Filters', 'Sorting', 'Pagination', 'React', 'UI Performance'],
     description: 'Build a product list page with filters, sorting, and lazy loading of images.',
     twist: 'Support comparison view and wishlist functionality.',
@@ -101,6 +121,7 @@ const problemsList = [
     company_asked: ['Uber', 'Microsoft'],
     time_limit: 45,
     difficulty: 'Easy',
+    roles: ['SDE1'],
     tags: ['Timer', 'Hooks', 'React', 'Ref', 'Controlled Inputs'],
     description: 'Create a timer component that counts down and allows multiple timers sequentially.',
     twist: 'Show an alert and allow rescheduling expired timers.',
@@ -112,6 +133,7 @@ const problemsList = [
     company_asked: ['Google', 'Meesho', 'Meta'],
     time_limit: 75,
     difficulty: 'Medium',
+    roles: ['SDE1', 'SDE2'],
     tags: ['Nested Comments', 'Recursion', 'React', 'UX'],
     description: 'Implement a comment section that supports replies, editing, deleting and collapse.',
     twist: 'Add real-time updates and lazy loading of replies.',
@@ -123,6 +145,7 @@ const problemsList = [
     company_asked: ['Atlassian', 'Jira', 'Microsoft'],
     time_limit: 90,
     difficulty: 'Hard',
+    roles: ['SDE2', 'SDE3'],
     tags: ['Drag and Drop', 'React', 'State Sync', 'UX'],
     description: 'Build a board with draggable cards across columns with editable tasks.',
     twist: 'Support offline mode and sync when back online.',
@@ -134,6 +157,7 @@ const problemsList = [
     company_asked: ['Google', 'Adobe'],
     time_limit: 45,
     difficulty: 'Medium',
+    roles: ['SDE1'],
     tags: ['Form Validation', 'React', 'Step Navigation', 'UX'],
     description: 'Create a multi-step form with validation, progress indicator, and summary view.',
     twist: 'Add auto-save and form state recovery after refresh.',
@@ -145,6 +169,7 @@ const problemsList = [
     company_asked: ['Amazon', 'Zomato', 'Swiggy'],
     time_limit: 30,
     difficulty: 'Easy',
+    roles: ['SDE1'],
     tags: ['Debounce', 'Fetch', 'React', 'UX'],
     description: 'Implement a search bar that shows suggestions with debounce and highlight.',
     twist: 'Group results by category and support keyboard navigation.',
@@ -1541,6 +1566,43 @@ export default function ProblemPage() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const navigationTimeoutRef = useRef<NodeJS.Timeout>();
 
+  const allTags = useMemo(() => {
+    const tags = new Set<string>();
+    problemsList.forEach(problem => {
+      problem.tags.forEach(tag => tags.add(tag));
+    });
+    return Array.from(tags);
+  }, []);
+
+  const allRoles = useMemo(() => {
+    const roles = new Set<string>();
+    problemsList.forEach(problem => {
+      problem.roles?.forEach(role => roles.add(role));
+    });
+    return Array.from(roles);
+  }, []);
+
+  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+
+  const toggleRole = (role: string) => {
+    setSelectedRoles(prev =>
+      prev.includes(role)
+        ? prev.filter(r => r !== role)
+        : [...prev, role]
+    );
+  };
+
+  const filteredProblems = useMemo(() => {
+    return problemsList.filter(problem => {
+      const matchesSearch = !searchQuery || problem.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesDifficulty = selectedDifficulties.length === 0 || selectedDifficulties.includes(problem.difficulty);
+      const matchesTime = selectedTimeLimits.length === 0 || selectedTimeLimits.includes(problem.time_limit);
+      const matchesTags = selectedTags.length === 0 || problem.tags.some(tag => selectedTags.includes(tag));
+      const matchesRoles = selectedRoles.length === 0 || (problem.roles && problem.roles.some(role => selectedRoles.includes(role)));
+      return matchesSearch && matchesDifficulty && matchesTime && matchesTags && matchesRoles;
+    });
+  }, [problemsList, searchQuery, selectedDifficulties, selectedTimeLimits, selectedTags, selectedRoles]);
+
   // Update selected problem when URL changes
   useEffect(() => {
     const currentSlug = params?.slug as string;
@@ -1613,15 +1675,6 @@ export default function ProblemPage() {
     }
   };
 
-  // Get unique tags from all problems
-  const allTags = useMemo(() => {
-    const tags = new Set<string>();
-    problemsList.forEach(problem => {
-      problem.tags.forEach(tag => tags.add(tag));
-    });
-    return Array.from(tags);
-  }, []);
-
   const difficulties = ['Easy', 'Medium', 'Hard'];
   const timeLimits = [30, 45, 60, 75, 90, 120];
 
@@ -1686,160 +1739,266 @@ export default function ProblemPage() {
     };
   }, []);
 
-  if (error) {
-    return (
-      <Layout>
-        <ErrorContainer>
-          <h2>Oops! Something went wrong</h2>
-          <p>{error}</p>
-          <RetryButton onClick={handleRetry}>
-            Try Again
-          </RetryButton>
-        </ErrorContainer>
-      </Layout>
-    );
-  }
+  // Breadcrumbs
+  const breadcrumbsContent = (
+    <ol style={{ listStyle: 'none', display: 'flex', alignItems: 'center', gap: 8, margin: 0, padding: 0, fontSize: '0.9em' }}>
+      <li>
+        <Link href="/" aria-label="Home"><FaHome /></Link>
+      </li>
+      <li><FaChevronRight /><Link href="/system-design">System Design</Link></li>
+      <li><FaChevronRight /><Link href="/system-design/problems">Problems</Link></li>
+      <li><FaChevronRight /><span>{selectedProblem.name}</span></li>
+    </ol>
+  );
 
-  return (
-    <Layout>
-      {isLoading && (
-        <LoadingOverlay>
-          <LoadingSpinner />
-        </LoadingOverlay>
-      )}
-      <LeftPanel isOpen={isMobileMenuOpen}>
-        <PanelHeader>
-          System Design Problems
-          <MobileMenuButton onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-            {isMobileMenuOpen ? '×' : '☰'}
-          </MobileMenuButton>
-        </PanelHeader>
-        <FilterSection>
-          <SearchInput>
-            <FaSearch />
-            <input
-              type="text"
-              placeholder="Search problems..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </SearchInput>
-          
-          <DropdownFilter className="dropdown-filter">
-            <DropdownButton 
-              isOpen={activeDropdown === 'difficulty'}
-              onClick={() => toggleDropdown('difficulty')}
-            >
-              Difficulty Level {selectedDifficulties.length > 0 && `(${selectedDifficulties.length})`}
-              <FaFilter />
-            </DropdownButton>
-            <DropdownContent isOpen={activeDropdown === 'difficulty'}>
-              {difficulties.map(difficulty => (
-                <DropdownOption
-                  key={difficulty}
-                  selected={selectedDifficulties.includes(difficulty)}
-                  onClick={() => toggleDifficulty(difficulty)}
-                >
-                  {difficulty}
-                </DropdownOption>
-              ))}
-            </DropdownContent>
-          </DropdownFilter>
+  // Left Panel
+  const leftPanelContent = (
+    <>
+      <PanelHeader>
+        System Design Problems
+        <MobileMenuButton onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+          {isMobileMenuOpen ? '×' : '☰'}
+        </MobileMenuButton>
+      </PanelHeader>
+      <FilterSection>
+        <SearchInput>
+          <FaSearch />
+          <input
+            type="text"
+            placeholder="Search problems..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </SearchInput>
+        
+        <DropdownFilter className="dropdown-filter">
+          <DropdownButton 
+            isOpen={activeDropdown === 'difficulty'}
+            onClick={() => toggleDropdown('difficulty')}
+          >
+            Difficulty Level {selectedDifficulties.length > 0 && `(${selectedDifficulties.length})`}
+            <FaFilter />
+          </DropdownButton>
+          <DropdownContent isOpen={activeDropdown === 'difficulty'}>
+            {difficulties.map(difficulty => (
+              <DropdownOption
+                key={difficulty}
+                selected={selectedDifficulties.includes(difficulty)}
+                onClick={() => toggleDifficulty(difficulty)}
+              >
+                {difficulty}
+              </DropdownOption>
+            ))}
+          </DropdownContent>
+        </DropdownFilter>
 
-          <DropdownFilter className="dropdown-filter">
-            <DropdownButton 
-              isOpen={activeDropdown === 'timeLimit'}
-              onClick={() => toggleDropdown('timeLimit')}
-            >
-              Time Limit {selectedTimeLimits.length > 0 && `(${selectedTimeLimits.length})`}
-              <FaFilter />
-            </DropdownButton>
-            <DropdownContent isOpen={activeDropdown === 'timeLimit'}>
-              {timeLimits.map(time => (
-                <DropdownOption
-                  key={time}
-                  selected={selectedTimeLimits.includes(time)}
-                  onClick={() => toggleTimeLimit(time)}
-                >
-                  {time} min
-                </DropdownOption>
-              ))}
-            </DropdownContent>
-          </DropdownFilter>
+        <DropdownFilter className="dropdown-filter">
+          <DropdownButton 
+            isOpen={activeDropdown === 'timeLimit'}
+            onClick={() => toggleDropdown('timeLimit')}
+          >
+            Time Limit {selectedTimeLimits.length > 0 && `(${selectedTimeLimits.length})`}
+            <FaFilter />
+          </DropdownButton>
+          <DropdownContent isOpen={activeDropdown === 'timeLimit'}>
+            {timeLimits.map(time => (
+              <DropdownOption
+                key={time}
+                selected={selectedTimeLimits.includes(time)}
+                onClick={() => toggleTimeLimit(time)}
+              >
+                {time} min
+              </DropdownOption>
+            ))}
+          </DropdownContent>
+        </DropdownFilter>
 
-          <DropdownFilter className="dropdown-filter">
-            <DropdownButton 
-              isOpen={activeDropdown === 'tags'}
-              onClick={() => toggleDropdown('tags')}
-            >
-              Tags {selectedTags.length > 0 && `(${selectedTags.length})`}
-              <FaFilter />
-            </DropdownButton>
-            <DropdownContent isOpen={activeDropdown === 'tags'}>
-              {allTags.map(tag => (
-                <DropdownOption
-                  key={tag}
-                  selected={selectedTags.includes(tag)}
-                  onClick={() => toggleTag(tag)}
-                >
-                  {tag}
-                </DropdownOption>
-              ))}
-            </DropdownContent>
-          </DropdownFilter>
+        <DropdownFilter className="dropdown-filter">
+          <DropdownButton 
+            isOpen={activeDropdown === 'tags'}
+            onClick={() => toggleDropdown('tags')}
+          >
+            Tags {selectedTags.length > 0 && `(${selectedTags.length})`}
+            <FaFilter />
+          </DropdownButton>
+          <DropdownContent isOpen={activeDropdown === 'tags'}>
+            {allTags.map(tag => (
+              <DropdownOption
+                key={tag}
+                selected={selectedTags.includes(tag)}
+                onClick={() => toggleTag(tag)}
+              >
+                {tag}
+              </DropdownOption>
+            ))}
+          </DropdownContent>
+        </DropdownFilter>
 
-          {(searchQuery || selectedDifficulties.length > 0 || 
-            selectedTimeLimits.length > 0 || selectedTags.length > 0) && (
-            <ClearFilters onClick={clearAllFilters}>
-              <FaTimes />
-              Clear All Filters
-            </ClearFilters>
-          )}
-        </FilterSection>
-        <ProblemList>
-          {problemsList.map((problem) => (
-            <ProblemCard
-              key={problem.slug}
-              selected={selectedProblem.slug === problem.slug}
-              onClick={() => !isLoading && handleProblemSelect(problem)}
-              tabIndex={isLoading ? -1 : 0}
-              aria-current={selectedProblem.slug === problem.slug ? 'page' : undefined}
-              aria-label={problem.name}
-              isDisabled={isLoading}
-              role="button"
-              aria-disabled={isLoading}
-            >
-              <ProblemIcon>{problem.icon}</ProblemIcon>
-              <ProblemInfo>
-                <ProblemTitle>{problem.name}</ProblemTitle>
-                <BadgeRow>
-                  <Badge color={problem.difficulty === 'Hard' ? '#e74c3c' : problem.difficulty === 'Medium' ? '#f39c12' : '#27ae60'}>
-                    {problem.difficulty}
-                  </Badge>
-                  <Badge color={'#6c63ff'}>{problem.time_limit} min</Badge>
-                </BadgeRow>
-              </ProblemInfo>
-            </ProblemCard>
+        <DropdownFilter className="dropdown-filter">
+          <DropdownButton 
+            isOpen={activeDropdown === 'roles'}
+            onClick={() => toggleDropdown('roles')}
+          >
+            Role Level {selectedRoles.length > 0 && `(${selectedRoles.length})`}
+            <FaFilter />
+          </DropdownButton>
+          <DropdownContent isOpen={activeDropdown === 'roles'}>
+            {allRoles.map(role => (
+              <DropdownOption
+                key={role}
+                selected={selectedRoles.includes(role)}
+                onClick={() => toggleRole(role)}
+              >
+                {role}
+              </DropdownOption>
+            ))}
+          </DropdownContent>
+        </DropdownFilter>
+
+        {(searchQuery || selectedDifficulties.length > 0 || 
+          selectedTimeLimits.length > 0 || selectedTags.length > 0) && (
+          <ClearFilters onClick={clearAllFilters}>
+            <FaTimes />
+            Clear All Filters
+          </ClearFilters>
+        )}
+      </FilterSection>
+      <ProblemList>
+        {filteredProblems.map((problem) => (
+          <ProblemCard
+            key={problem.slug}
+            selected={selectedProblem.slug === problem.slug}
+            onClick={() => !isLoading && handleProblemSelect(problem)}
+            tabIndex={isLoading ? -1 : 0}
+            aria-current={selectedProblem.slug === problem.slug ? 'page' : undefined}
+            aria-label={problem.name}
+            isDisabled={isLoading}
+            role="button"
+            aria-disabled={isLoading}
+          >
+            <ProblemIcon>{problem.icon}</ProblemIcon>
+            <ProblemInfo>
+              <ProblemTitle>{problem.name}</ProblemTitle>
+              <BadgeRow>
+                <Badge color={problem.difficulty === 'Hard' ? '#e74c3c' : problem.difficulty === 'Medium' ? '#f39c12' : '#27ae60'}>
+                  {problem.difficulty}
+                </Badge>
+                <Badge color={'#6c63ff'}>{problem.time_limit} min</Badge>
+              </BadgeRow>
+              <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 4 }}>
+                {problem.roles && problem.roles.map(role => (
+                  <RoleTag key={role}>{role}</RoleTag>
+                ))}
+              </div>
+            </ProblemInfo>
+          </ProblemCard>
+        ))}
+      </ProblemList>
+    </>
+  );
+
+  // Right Panel
+  const rightPanelContent = (
+    <>
+      <InfoSection>
+        <InfoTitle>
+          <FaComments />
+          Problem Overview
+        </InfoTitle>
+        <CompanyList>
+          {selectedProblem.company_asked.map(company => (
+            <CompanyTag key={company}>
+              <FaBuilding />
+              {company}
+            </CompanyTag>
           ))}
-        </ProblemList>
-      </LeftPanel>
-      <MainPanel>
-        <Header>
-          <HeaderContent>
-            <MainTitle>{selectedProblem.name}</MainTitle>
-            <BadgeContainer>
-              <HeaderBadge color={selectedProblem.difficulty === 'Hard' ? '#e74c3c' : selectedProblem.difficulty === 'Medium' ? '#f39c12' : '#27ae60'}>
-                <FaBolt />
-                {selectedProblem.difficulty}
-              </HeaderBadge>
-              <HeaderBadge color={'#6c63ff'}>
-                <FaClock />
-                {selectedProblem.time_limit} min
-              </HeaderBadge>
-            </BadgeContainer>
-          </HeaderContent>
-        </Header>
-        <ContentCard ref={contentRef}>
+        </CompanyList>
+        <InfoRow>
+          <FaClock />
+          Time Limit: {selectedProblem.time_limit} minutes
+        </InfoRow>
+        <InfoRow>
+          <FaBolt />
+          Difficulty: {selectedProblem.difficulty}
+        </InfoRow>
+        <InfoRow>
+          <FaList />
+          Tags:
+        </InfoRow>
+        <TagList>
+          {selectedProblem.tags.map(tag => (
+            <InfoTag key={tag}>{tag}</InfoTag>
+          ))}
+        </TagList>
+        <InfoRow>
+          <FaUserCircle />
+          Roles:
+          <span style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginLeft: 8 }}>
+            {selectedProblem.roles && selectedProblem.roles.map(role => (
+              <RoleTag key={role}>{role}</RoleTag>
+            ))}
+          </span>
+        </InfoRow>
+      </InfoSection>
+      <InfoSection>
+        <InfoTitle>
+          <FaCommentDots />
+          Problem Description
+        </InfoTitle>
+        <ProblemDescriptionContent>
+          {selectedProblem.description.split('\n').map((line, index) => {
+            const featureMatch = line.match(/^\s*(\d+)\.\s*(.+)/);
+            if (featureMatch) {
+              const [, number, content] = featureMatch;
+              const icons = [
+                FaComments, FaUsers, FaHistory, FaBell, FaKeyboard, FaCheckDouble, FaUserCircle, FaSmile
+              ];
+              const Icon = icons[parseInt(number) - 1] || FaBolt;
+              return (
+                <div key={index} className="feature-item">
+                  <span className="feature-icon"><Icon /></span>
+                  <div className="feature-content">
+                    <div className="feature-title">{content.trim()}</div>
+                  </div>
+                </div>
+              );
+            }
+            return line.trim() ? <p key={index}>{line.trim()}</p> : null;
+          })}
+        </ProblemDescriptionContent>
+      </InfoSection>
+      <InfoSection>
+        <InfoTitle>
+          <FaBolt />
+          Additional Challenge
+        </InfoTitle>
+        <div style={{ color: '#666', fontSize: '0.95em', lineHeight: 1.5 }}>
+          {selectedProblem.twist}
+        </div>
+      </InfoSection>
+    </>
+  );
+
+  // Main Panel
+  const mainPanelContent = (
+    <>
+      <Header>
+        <HeaderContent>
+          <MainTitle>{selectedProblem.name}</MainTitle>
+          <BadgeContainer>
+            <HeaderBadge color={selectedProblem.difficulty === 'Hard' ? '#e74c3c' : selectedProblem.difficulty === 'Medium' ? '#f39c12' : '#27ae60'}>
+              <FaBolt />
+              {selectedProblem.difficulty}
+            </HeaderBadge>
+            <HeaderBadge color={'#6c63ff'}>
+              <FaClock />
+              {selectedProblem.time_limit} min
+            </HeaderBadge>
+          </BadgeContainer>
+        </HeaderContent>
+      </Header>
+      <ContentCard ref={contentRef}>
+        <article>
           <Suspense fallback={<div>Loading...</div>}>
             <MDXContent>
               <DynamicMDX slug={selectedProblem.slug} />
@@ -1985,93 +2144,18 @@ export default function ProblemPage() {
 
             <SystemDesignCode />
           </DesignSection>
-        </ContentCard>
-      </MainPanel>
-      <RightPanel>
-        <InfoSection>
-          <InfoTitle>
-            <FaComments />
-            Problem Overview
-          </InfoTitle>
-          <CompanyList>
-            {selectedProblem.company_asked.map(company => (
-              <CompanyTag key={company}>
-                <FaBuilding />
-                {company}
-              </CompanyTag>
-            ))}
-          </CompanyList>
-          <InfoRow>
-            <FaClock />
-            Time Limit: {selectedProblem.time_limit} minutes
-          </InfoRow>
-          <InfoRow>
-            <FaBolt />
-            Difficulty: {selectedProblem.difficulty}
-          </InfoRow>
-          <InfoRow>
-            <FaList />
-            Tags:
-          </InfoRow>
-          <TagList>
-            {selectedProblem.tags.map(tag => (
-              <InfoTag key={tag}>{tag}</InfoTag>
-            ))}
-          </TagList>
-        </InfoSection>
+        </article>
+      </ContentCard>
+    </>
+  );
 
-        <InfoSection>
-          <InfoTitle>
-            <FaCommentDots />
-            Problem Description
-          </InfoTitle>
-          <ProblemDescriptionContent>
-            {selectedProblem.description.split('\n').map((line, index) => {
-              // Check if the line is a numbered feature (e.g., "1. Feature")
-              const featureMatch = line.match(/^\s*(\d+)\.\s*(.+)/);
-              
-              if (featureMatch) {
-                const [, number, content] = featureMatch;
-                // Map feature numbers to appropriate icons
-                const icons = [
-                  FaComments,    // Real-time messaging
-                  FaUsers,       // Group chat
-                  FaHistory,     // Message history
-                  FaBell,        // Unread count
-                  FaKeyboard,    // Typing indicators
-                  FaCheckDouble, // Message status
-                  FaUserCircle,  // User presence
-                  FaSmile        // Reactions & emojis
-                ];
-                const Icon = icons[parseInt(number) - 1] || FaBolt;
-
-                return (
-                  <div key={index} className="feature-item">
-                    <span className="feature-icon"><Icon /></span>
-                    <div className="feature-content">
-                      <div className="feature-title">{content.trim()}</div>
-                    </div>
-                  </div>
-                );
-              }
-              
-              // Regular paragraph
-              return line.trim() ? <p key={index}>{line.trim()}</p> : null;
-            })}
-          </ProblemDescriptionContent>
-        </InfoSection>
-
-        <InfoSection>
-          <InfoTitle>
-            <FaBolt />
-            Additional Challenge
-          </InfoTitle>
-          <div style={{ color: '#666', fontSize: '0.95em', lineHeight: 1.5 }}>
-            {selectedProblem.twist}
-          </div>
-        </InfoSection>
-      </RightPanel>
-    </Layout>
+  return (
+    <SystemDesignLayout
+      leftPanel={leftPanelContent}
+      mainPanel={mainPanelContent}
+      rightPanel={rightPanelContent}
+      breadcrumbs={breadcrumbsContent}
+    />
   );
 }
 

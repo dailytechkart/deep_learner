@@ -5,6 +5,19 @@ import styled from 'styled-components';
 import { FaComments, FaList, FaClock, FaCommentDots, FaClipboardList, FaBolt, FaSearch, FaLayerGroup, FaFilter, FaTimes } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 
+const RoleTag = styled.span`
+  background: #e3e8ff;
+  color: #3a3a7c;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.8em;
+  font-weight: 500;
+  margin-right: 4px;
+  margin-bottom: 2px;
+  display: inline-block;
+  border: 1px solid #bfcfff;
+`;
+
 const problemsList = [
   {
     name: 'Chat App (Messenger Clone)',
@@ -12,6 +25,7 @@ const problemsList = [
     company_asked: ['Meta', 'Microsoft', 'Swiggy'],
     time_limit: 90,
     difficulty: 'Hard',
+    roles: ['SDE2', 'SDE3'],
     tags: ['WebSocket', 'Real-time', 'Chat', 'React', 'State Management'],
     description: 'Build a real-time chat interface with message history, typing indicator, and file sharing.',
     twist: 'Add group chat and unread count badges.',
@@ -23,6 +37,7 @@ const problemsList = [
     company_asked: ['Meta', 'LinkedIn'],
     time_limit: 120,
     difficulty: 'Hard',
+    roles: ['SDE2', 'SDE3'],
     tags: ['Pagination', 'Virtualization', 'React', 'Feed System', 'Infinite Scroll'],
     description: 'Create a responsive, paginated news feed with likes, comments, and post creation.',
     twist: 'Add real-time update for new posts and optimistic UI.',
@@ -34,6 +49,7 @@ const problemsList = [
     company_asked: ['Amazon', 'Meesho', 'Flipkart'],
     time_limit: 60,
     difficulty: 'Medium',
+    roles: ['SDE1', 'SDE2'],
     tags: ['Filters', 'Sorting', 'Pagination', 'React', 'UI Performance'],
     description: 'Build a product list page with filters, sorting, and lazy loading of images.',
     twist: 'Support comparison view and wishlist functionality.',
@@ -45,6 +61,7 @@ const problemsList = [
     company_asked: ['Uber', 'Microsoft'],
     time_limit: 45,
     difficulty: 'Easy',
+    roles: ['SDE1'],
     tags: ['Timer', 'Hooks', 'React', 'Ref', 'Controlled Inputs'],
     description: 'Create a timer component that counts down and allows multiple timers sequentially.',
     twist: 'Show an alert and allow rescheduling expired timers.',
@@ -56,6 +73,7 @@ const problemsList = [
     company_asked: ['Google', 'Meesho', 'Meta'],
     time_limit: 75,
     difficulty: 'Medium',
+    roles: ['SDE1', 'SDE2'],
     tags: ['Nested Comments', 'Recursion', 'React', 'UX'],
     description: 'Implement a comment section that supports replies, editing, deleting and collapse.',
     twist: 'Add real-time updates and lazy loading of replies.',
@@ -67,6 +85,7 @@ const problemsList = [
     company_asked: ['Atlassian', 'Jira', 'Microsoft'],
     time_limit: 90,
     difficulty: 'Hard',
+    roles: ['SDE2', 'SDE3'],
     tags: ['Drag and Drop', 'React', 'State Sync', 'UX'],
     description: 'Build a board with draggable cards across columns with editable tasks.',
     twist: 'Support offline mode and sync when back online.',
@@ -78,6 +97,7 @@ const problemsList = [
     company_asked: ['Google', 'Adobe'],
     time_limit: 45,
     difficulty: 'Medium',
+    roles: ['SDE1'],
     tags: ['Form Validation', 'React', 'Step Navigation', 'UX'],
     description: 'Create a multi-step form with validation, progress indicator, and summary view.',
     twist: 'Add auto-save and form state recovery after refresh.',
@@ -89,6 +109,7 @@ const problemsList = [
     company_asked: ['Amazon', 'Zomato', 'Swiggy'],
     time_limit: 30,
     difficulty: 'Easy',
+    roles: ['SDE1'],
     tags: ['Debounce', 'Fetch', 'React', 'UX'],
     description: 'Implement a search bar that shows suggestions with debounce and highlight.',
     twist: 'Group results by category and support keyboard navigation.',
@@ -277,6 +298,7 @@ export default function ProblemsPage() {
   const [selectedTimeLimits, setSelectedTimeLimits] = useState<number[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
+  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
 
   // Get unique tags from all problems
   const allTags = useMemo(() => {
@@ -294,6 +316,15 @@ export default function ProblemsPage() {
       problem.company_asked.forEach(company => companies.add(company));
     });
     return Array.from(companies).sort();
+  }, []);
+
+  // Get unique roles from all problems
+  const allRoles = useMemo(() => {
+    const roles = new Set<string>();
+    problemsList.forEach(problem => {
+      problem.roles?.forEach(role => roles.add(role));
+    });
+    return Array.from(roles);
   }, []);
 
   // Filter problems based on all criteria
@@ -323,10 +354,13 @@ export default function ProblemsPage() {
       if (selectedCompanies.length > 0 && !selectedCompanies.some(company => problem.company_asked.includes(company))) {
         return false;
       }
-      
-      return true;
+
+      // Role filter
+      const matchesRoles = selectedRoles.length === 0 || (problem.roles && problem.roles.some(role => selectedRoles.includes(role)));
+
+      return matchesRoles;
     });
-  }, [searchQuery, selectedDifficulties, selectedTimeLimits, selectedTags, selectedCompanies]);
+  }, [searchQuery, selectedDifficulties, selectedTimeLimits, selectedTags, selectedCompanies, selectedRoles]);
 
   const toggleDifficulty = (difficulty: string) => {
     setSelectedDifficulties(prev => 
@@ -360,12 +394,21 @@ export default function ProblemsPage() {
     );
   };
 
+  const toggleRole = (role: string) => {
+    setSelectedRoles(prev =>
+      prev.includes(role)
+        ? prev.filter(r => r !== role)
+        : [...prev, role]
+    );
+  };
+
   const clearAllFilters = () => {
     setSearchQuery('');
     setSelectedDifficulties([]);
     setSelectedTimeLimits([]);
     setSelectedTags([]);
     setSelectedCompanies([]);
+    setSelectedRoles([]);
   };
 
   return (
@@ -448,7 +491,22 @@ export default function ProblemsPage() {
           </FilterOptions>
         </FilterGroup>
 
-        {(searchQuery || selectedDifficulties.length > 0 || selectedTimeLimits.length > 0 || selectedTags.length > 0 || selectedCompanies.length > 0) && (
+        <FilterGroup>
+          <FilterLabel>Role Level</FilterLabel>
+          <FilterOptions>
+            {allRoles.map(role => (
+              <FilterChip
+                key={role}
+                active={selectedRoles.includes(role)}
+                onClick={() => toggleRole(role)}
+              >
+                {role}
+              </FilterChip>
+            ))}
+          </FilterOptions>
+        </FilterGroup>
+
+        {(searchQuery || selectedDifficulties.length > 0 || selectedTimeLimits.length > 0 || selectedTags.length > 0 || selectedCompanies.length > 0 || selectedRoles.length > 0) && (
           <ClearFilters onClick={clearAllFilters}>
             <FaTimes />
             Clear All Filters
@@ -478,6 +536,11 @@ export default function ProblemsPage() {
                 </Badge>
               ))}
             </TagsContainer>
+            <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 4 }}>
+              {problem.roles && problem.roles.map(role => (
+                <RoleTag key={role}>{role}</RoleTag>
+              ))}
+            </div>
           </ProblemCard>
         ))}
       </ProblemsGrid>
