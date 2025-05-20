@@ -9,8 +9,8 @@ export async function GET() {
     { date: '2024-03-17', hours: 4 },
     { date: '2024-03-18', hours: 2 },
     { date: '2024-03-19', hours: 3 },
-    { date: '2024-03-20', hours: 2 }
+    { date: '2024-03-20', hours: 2 },
   ];
 
   return NextResponse.json(activity);
-} 
+}

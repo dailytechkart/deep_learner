@@ -1,14 +1,14 @@
-import { 
-  collection, 
-  doc, 
-  getDocs, 
-  getDoc, 
-  setDoc, 
-  updateDoc, 
-  query, 
-  where, 
+import {
+  collection,
+  doc,
+  getDocs,
+  getDoc,
+  setDoc,
+  updateDoc,
+  query,
+  where,
   orderBy,
-  Timestamp 
+  Timestamp,
 } from 'firebase/firestore';
 import { db } from '../lib/firebase/config';
 import { Course, UserCourse, UserProgress } from '../types/course';
@@ -26,7 +26,7 @@ export const courseService = {
       id: doc.id,
       ...doc.data(),
       createdAt: doc.data().createdAt.toDate(),
-      updatedAt: doc.data().updatedAt.toDate()
+      updatedAt: doc.data().updatedAt.toDate(),
     })) as Course[];
   },
 
@@ -34,30 +34,26 @@ export const courseService = {
   async getCourse(courseId: string): Promise<Course | null> {
     const courseRef = doc(db, COURSES_COLLECTION, courseId);
     const courseDoc = await getDoc(courseRef);
-    
+
     if (!courseDoc.exists()) return null;
-    
+
     return {
       id: courseDoc.id,
       ...courseDoc.data(),
       createdAt: courseDoc.data().createdAt.toDate(),
-      updatedAt: courseDoc.data().updatedAt.toDate()
+      updatedAt: courseDoc.data().updatedAt.toDate(),
     } as Course;
   },
 
   // Get user's enrolled courses
   async getUserCourses(userId: string): Promise<UserCourse[]> {
     const userCoursesRef = collection(db, USER_COURSES_COLLECTION);
-    const q = query(
-      userCoursesRef,
-      where('userId', '==', userId),
-      orderBy('enrolledAt', 'desc')
-    );
-    
+    const q = query(userCoursesRef, where('userId', '==', userId), orderBy('enrolledAt', 'desc'));
+
     const snapshot = await getDocs(q);
     return snapshot.docs.map(doc => ({
       ...doc.data(),
-      enrolledAt: doc.data().enrolledAt.toDate()
+      enrolledAt: doc.data().enrolledAt.toDate(),
     })) as UserCourse[];
   },
 
@@ -65,15 +61,15 @@ export const courseService = {
   async enrollUserInCourse(userId: string, courseId: string): Promise<void> {
     const userCourseRef = doc(db, USER_COURSES_COLLECTION, `${userId}_${courseId}`);
     const userProgressRef = doc(db, USER_PROGRESS_COLLECTION, `${userId}_${courseId}`);
-    
+
     const now = Timestamp.now();
-    
+
     // Create user course document
     await setDoc(userCourseRef, {
       userId,
       courseId,
       enrolledAt: now,
-      status: 'not_started'
+      status: 'not_started',
     });
 
     // Create initial progress document
@@ -84,20 +80,20 @@ export const courseService = {
       currentLesson: '',
       progress: 0,
       lastAccessed: now,
-      startedAt: now
+      startedAt: now,
     });
   },
 
   // Update user's course progress
   async updateUserProgress(
-    userId: string, 
-    courseId: string, 
-    lessonId: string, 
+    userId: string,
+    courseId: string,
+    lessonId: string,
     isCompleted: boolean
   ): Promise<void> {
     const progressRef = doc(db, USER_PROGRESS_COLLECTION, `${userId}_${courseId}`);
     const userCourseRef = doc(db, USER_COURSES_COLLECTION, `${userId}_${courseId}`);
-    
+
     const progressDoc = await getDoc(progressRef);
     if (!progressDoc.exists()) return;
 
@@ -117,7 +113,7 @@ export const courseService = {
       completedLessons: updatedCompletedLessons,
       currentLesson: lessonId,
       progress: newProgress,
-      lastAccessed: Timestamp.now()
+      lastAccessed: Timestamp.now(),
     });
 
     // Update user course status
@@ -125,13 +121,13 @@ export const courseService = {
     if (newProgress === 100) {
       status = 'completed';
       await updateDoc(progressRef, {
-        completedAt: Timestamp.now()
+        completedAt: Timestamp.now(),
       });
     }
 
     await updateDoc(userCourseRef, {
       status,
-      progress: newProgress
+      progress: newProgress,
     });
   },
 
@@ -139,14 +135,14 @@ export const courseService = {
   async getUserCourseProgress(userId: string, courseId: string): Promise<UserProgress | null> {
     const progressRef = doc(db, USER_PROGRESS_COLLECTION, `${userId}_${courseId}`);
     const progressDoc = await getDoc(progressRef);
-    
+
     if (!progressDoc.exists()) return null;
-    
+
     return {
       ...progressDoc.data(),
       lastAccessed: progressDoc.data().lastAccessed.toDate(),
       startedAt: progressDoc.data().startedAt.toDate(),
-      completedAt: progressDoc.data().completedAt?.toDate()
+      completedAt: progressDoc.data().completedAt?.toDate(),
     } as UserProgress;
-  }
-}; 
+  },
+};

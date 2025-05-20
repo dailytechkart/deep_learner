@@ -29,7 +29,7 @@ const ProfileGrid = styled.div`
   display: grid;
   grid-template-columns: 300px 1fr;
   gap: ${props => props.theme.spacing.xl};
-  
+
   @media (max-width: ${props => props.theme.breakpoints.desktop}) {
     grid-template-columns: 1fr;
   }
@@ -56,7 +56,9 @@ const StatsGrid = styled.div`
 const StatCard = styled(Card)`
   text-align: center;
   padding: ${props => props.theme.spacing.lg};
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
@@ -84,7 +86,9 @@ const SkillsGrid = styled.div`
 
 const SkillCard = styled(Card)`
   padding: ${props => props.theme.spacing.lg};
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
@@ -232,7 +236,7 @@ export default function Profile() {
     joinDate: 'January 2024',
     lastActive: '2 hours ago',
     timezone: 'UTC+5:30',
-    language: 'English'
+    language: 'English',
   });
 
   const userStats = {
@@ -242,7 +246,7 @@ export default function Profile() {
     streak: 7,
     totalHours: 48,
     quizzesCompleted: 12,
-    averageScore: 85
+    averageScore: 85,
   };
 
   const skills = [
@@ -256,7 +260,7 @@ export default function Profile() {
     { id: 1, name: 'Quick Learner', icon: '⚡' },
     { id: 2, name: 'Consistent', icon: '📈' },
     { id: 3, name: 'Problem Solver', icon: '🎯' },
-    { id: 4, name: 'Team Player', icon: '🤝' }
+    { id: 4, name: 'Team Player', icon: '🤝' },
   ];
 
   const recentActivity = [
@@ -289,13 +293,13 @@ export default function Profile() {
         <EditButton onClick={() => setIsEditing(!isEditing)}>
           {isEditing ? 'Save Changes' : 'Edit Profile'}
         </EditButton>
-        
+
         <ProfileGrid>
           <Sidebar>
             <ProfileHeader>
-              <ProfileAvatar 
-                src={user?.photoURL || '/default-avatar.png'} 
-                alt={profileData.displayName} 
+              <ProfileAvatar
+                src={user?.photoURL || '/default-avatar.png'}
+                alt={profileData.displayName}
               />
               <ProfileName>{profileData.displayName}</ProfileName>
               <ProfileEmail>{profileData.email}</ProfileEmail>
@@ -410,4 +414,4 @@ export default function Profile() {
       </ProfileCard>
     </ProfileContainer>
   );
-} 
+}

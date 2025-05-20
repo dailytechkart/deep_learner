@@ -1,7 +1,9 @@
 # News Feed (Facebook/Twitter)
 
 ## Problem Statement
+
 Design and implement a social media news feed system similar to Facebook or Twitter. The system should support:
+
 - Real-time feed updates
 - Infinite scroll
 - Post creation and interaction
@@ -11,7 +13,9 @@ Design and implement a social media news feed system similar to Facebook or Twit
 ## System Requirements
 
 ### Functional Requirements
+
 1. **Feed Features**
+
    - Post creation (text, images, videos)
    - Real-time feed updates
    - Infinite scroll
@@ -20,6 +24,7 @@ Design and implement a social media news feed system similar to Facebook or Twit
    - Trending topics
 
 2. **User Features**
+
    - User profiles
    - Follow/unfollow
    - Content discovery
@@ -33,13 +38,16 @@ Design and implement a social media news feed system similar to Facebook or Twit
    - Media processing
 
 ### Non-Functional Requirements
+
 1. **Performance**
+
    - Feed load time < 2s
    - Real-time updates < 1s
    - Support for 10M+ daily active users
    - 99.9% uptime
 
 2. **Scalability**
+
    - Horizontal scaling
    - Data partitioning
    - Caching strategy
@@ -54,12 +62,15 @@ Design and implement a social media news feed system similar to Facebook or Twit
 ## High-Level Architecture
 
 ### Components
+
 1. **Client Applications**
+
    - Web client (React)
    - Mobile clients (iOS/Android)
    - API Gateway
 
 2. **Backend Services**
+
    - Feed Service
    - Post Service
    - User Service
@@ -68,6 +79,7 @@ Design and implement a social media news feed system similar to Facebook or Twit
    - Analytics Service
 
 3. **Data Storage**
+
    - User Database (PostgreSQL)
    - Post Database (MongoDB)
    - Cache (Redis)
@@ -81,6 +93,7 @@ Design and implement a social media news feed system similar to Facebook or Twit
 ## Detailed Design
 
 ### 1. Feed Generation
+
 ```mermaid
 sequenceDiagram
     Client->>API Gateway: Request Feed
@@ -93,7 +106,9 @@ sequenceDiagram
 ```
 
 ### 2. Post Creation Flow
+
 1. **Content Processing**
+
    - Text processing
    - Media upload
    - Content validation
@@ -106,7 +121,9 @@ sequenceDiagram
    - Analytics tracking
 
 ### 3. Feed Personalization
+
 1. **Content Ranking**
+
    - User preferences
    - Engagement metrics
    - Time decay
@@ -119,7 +136,9 @@ sequenceDiagram
    - Machine learning models
 
 ### 4. Real-time Updates
+
 1. **WebSocket Events**
+
    - New posts
    - Interactions
    - Notifications
@@ -133,6 +152,7 @@ sequenceDiagram
 ## Database Schema
 
 ### Users Collection
+
 ```json
 {
   "userId": "string",
@@ -150,15 +170,18 @@ sequenceDiagram
 ```
 
 ### Posts Collection
+
 ```json
 {
   "postId": "string",
   "authorId": "string",
   "content": "string",
-  "media": [{
-    "type": "string",
-    "url": "string"
-  }],
+  "media": [
+    {
+      "type": "string",
+      "url": "string"
+    }
+  ],
   "stats": {
     "likes": "number",
     "comments": "number",
@@ -170,14 +193,17 @@ sequenceDiagram
 ```
 
 ### Feed Collection
+
 ```json
 {
   "userId": "string",
-  "posts": [{
-    "postId": "string",
-    "score": "number",
-    "timestamp": "timestamp"
-  }],
+  "posts": [
+    {
+      "postId": "string",
+      "score": "number",
+      "timestamp": "timestamp"
+    }
+  ],
   "lastUpdated": "timestamp"
 }
 ```
@@ -185,6 +211,7 @@ sequenceDiagram
 ## API Endpoints
 
 ### Feed
+
 ```
 GET /api/feed
 GET /api/feed/trending
@@ -192,6 +219,7 @@ POST /api/feed/refresh
 ```
 
 ### Posts
+
 ```
 POST /api/posts
 GET /api/posts/:postId
@@ -200,6 +228,7 @@ DELETE /api/posts/:postId
 ```
 
 ### Interactions
+
 ```
 POST /api/posts/:postId/like
 POST /api/posts/:postId/comment
@@ -207,6 +236,7 @@ POST /api/posts/:postId/share
 ```
 
 ### Users
+
 ```
 GET /api/users/:userId
 GET /api/users/:userId/posts
@@ -216,6 +246,7 @@ POST /api/users/:userId/follow
 ## Implementation Considerations
 
 ### 1. Performance Optimization
+
 - Implement feed pagination
 - Use Redis for caching
 - Implement content preloading
@@ -223,12 +254,14 @@ POST /api/users/:userId/follow
 - Implement virtual scrolling
 
 ### 2. Data Consistency
+
 - Use eventual consistency model
 - Implement conflict resolution
 - Handle offline scenarios
 - Implement data synchronization
 
 ### 3. Security Measures
+
 - Implement rate limiting
 - Use JWT for authentication
 - Validate user input
@@ -236,6 +269,7 @@ POST /api/users/:userId/follow
 - Use HTTPS for all communications
 
 ### 4. Monitoring and Analytics
+
 - Track feed performance
 - Monitor user engagement
 - Log error rates
@@ -244,24 +278,28 @@ POST /api/users/:userId/follow
 ## Testing Strategy
 
 ### 1. Unit Tests
+
 - Feed generation
 - Post creation
 - User interactions
 - Content ranking
 
 ### 2. Integration Tests
+
 - Feed flow
 - Real-time updates
 - Media processing
 - Cache invalidation
 
 ### 3. Load Tests
+
 - Concurrent users
 - Feed generation
 - Media upload
 - Real-time updates
 
 ### 4. Security Tests
+
 - Authentication
 - Authorization
 - Rate limiting
@@ -270,12 +308,14 @@ POST /api/users/:userId/follow
 ## Deployment Strategy
 
 ### 1. Infrastructure
+
 - Use Kubernetes for container orchestration
 - Implement auto-scaling
 - Use multiple availability zones
 - Implement disaster recovery
 
 ### 2. CI/CD
+
 - Automated testing
 - Blue-green deployment
 - Rollback capability
@@ -284,6 +324,7 @@ POST /api/users/:userId/follow
 ## Future Enhancements
 
 1. **Advanced Features**
+
    - Stories
    - Live streaming
    - Polls
@@ -291,6 +332,7 @@ POST /api/users/:userId/follow
    - Direct messaging
 
 2. **AI Features**
+
    - Content recommendation
    - Trend prediction
    - Content moderation
@@ -303,11 +345,13 @@ POST /api/users/:userId/follow
    - Business insights
 
 ## Conclusion
+
 This system design provides a scalable and maintainable architecture for a social media news feed. The design focuses on:
+
 - Real-time updates
 - Performance optimization
 - Content personalization
 - Scalability
 - User experience
 
-The implementation should be done in phases, starting with core features and gradually adding more complex functionality. 
+The implementation should be done in phases, starting with core features and gradually adding more complex functionality.

@@ -4,7 +4,18 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { MainLayout } from '@/components/MainLayout';
-import { FaCode, FaBook, FaChartLine, FaTrophy, FaCalendar, FaStar, FaFire, FaCheck, FaLock, FaUnlock } from 'react-icons/fa';
+import {
+  FaCode,
+  FaBook,
+  FaChartLine,
+  FaTrophy,
+  FaCalendar,
+  FaStar,
+  FaFire,
+  FaCheck,
+  FaLock,
+  FaUnlock,
+} from 'react-icons/fa';
 
 // Styled Components
 const DashboardContainer = styled.div`
@@ -122,7 +133,7 @@ const ViewAll = styled(Link)`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  
+
   &:hover {
     text-decoration: underline;
   }
@@ -174,16 +185,18 @@ const DifficultyBadge = styled.span<{ difficulty: string }>`
   border-radius: 6px;
   font-size: 0.75rem;
   font-weight: 600;
-  background: ${props => 
-    props.difficulty === 'Easy' ? props.theme.colors.status.success + '20' :
-    props.difficulty === 'Medium' ? props.theme.colors.status.warning + '20' :
-    props.theme.colors.status.error + '20'
-  };
-  color: ${props => 
-    props.difficulty === 'Easy' ? props.theme.colors.status.success :
-    props.difficulty === 'Medium' ? props.theme.colors.status.warning :
-    props.theme.colors.status.error
-  };
+  background: ${props =>
+    props.difficulty === 'Easy'
+      ? props.theme.colors.status.success + '20'
+      : props.difficulty === 'Medium'
+        ? props.theme.colors.status.warning + '20'
+        : props.theme.colors.status.error + '20'};
+  color: ${props =>
+    props.difficulty === 'Easy'
+      ? props.theme.colors.status.success
+      : props.difficulty === 'Medium'
+        ? props.theme.colors.status.warning
+        : props.theme.colors.status.error};
 `;
 
 const CourseCard = styled(Link)`
@@ -280,14 +293,14 @@ const ActivityIcon = styled.div`
 
 const ActivityContent = styled.div`
   flex: 1;
-  
+
   h4 {
     color: ${props => props.theme.colors.text};
     font-size: 0.875rem;
     font-weight: 500;
     margin-bottom: 0.25rem;
   }
-  
+
   p {
     color: ${props => props.theme.colors.textSecondary};
     font-size: 0.75rem;
@@ -312,50 +325,52 @@ export default function DashboardPage() {
     problemsSolved: 42,
     coursesCompleted: 3,
     currentStreak: 7,
-    totalPoints: 1250
+    totalPoints: 1250,
   });
 
   const [recentProblems] = useState([
-    { 
-      id: 1, 
-      title: 'Design a Chat Application', 
-      difficulty: 'Hard', 
+    {
+      id: 1,
+      title: 'Design a Chat Application',
+      difficulty: 'Hard',
       category: 'System Design',
-      isPremium: true
+      isPremium: true,
     },
-    { 
-      id: 2, 
-      title: 'Implement Rate Limiter', 
-      difficulty: 'Medium', 
+    {
+      id: 2,
+      title: 'Implement Rate Limiter',
+      difficulty: 'Medium',
       category: 'System Design',
-      isPremium: false
+      isPremium: false,
     },
-    { 
-      id: 3, 
-      title: 'Design URL Shortener', 
-      difficulty: 'Medium', 
+    {
+      id: 3,
+      title: 'Design URL Shortener',
+      difficulty: 'Medium',
       category: 'System Design',
-      isPremium: true
-    }
+      isPremium: true,
+    },
   ]);
 
   const [courses] = useState([
     {
       id: 1,
       title: 'System Design Fundamentals',
-      description: 'Master the core concepts of system design including scalability, reliability, and performance optimization.',
+      description:
+        'Master the core concepts of system design including scalability, reliability, and performance optimization.',
       progress: 75,
       totalModules: 12,
-      completedModules: 9
+      completedModules: 9,
     },
     {
       id: 2,
       title: 'Advanced System Design Patterns',
-      description: 'Learn advanced patterns and best practices for building scalable and maintainable systems.',
+      description:
+        'Learn advanced patterns and best practices for building scalable and maintainable systems.',
       progress: 45,
       totalModules: 8,
-      completedModules: 4
-    }
+      completedModules: 4,
+    },
   ]);
 
   const [recentActivity] = useState([
@@ -364,22 +379,22 @@ export default function DashboardPage() {
       type: 'problem',
       title: 'Solved Design a Chat Application',
       time: '2 hours ago',
-      icon: <FaCheck />
+      icon: <FaCheck />,
     },
     {
       id: 2,
       type: 'course',
       title: 'Completed System Design Fundamentals Module 3',
       time: '1 day ago',
-      icon: <FaBook />
+      icon: <FaBook />,
     },
     {
       id: 3,
       type: 'streak',
       title: 'Maintained 7-day streak',
       time: '2 days ago',
-      icon: <FaFire />
-    }
+      icon: <FaFire />,
+    },
   ]);
 
   return (
@@ -388,28 +403,36 @@ export default function DashboardPage() {
         <DashboardContent>
           <StatsGrid>
             <StatCard>
-              <StatIcon><FaCode /></StatIcon>
+              <StatIcon>
+                <FaCode />
+              </StatIcon>
               <StatContent>
                 <h3>{stats.problemsSolved}</h3>
                 <p>Problems Solved</p>
               </StatContent>
             </StatCard>
             <StatCard>
-              <StatIcon><FaBook /></StatIcon>
+              <StatIcon>
+                <FaBook />
+              </StatIcon>
               <StatContent>
                 <h3>{stats.coursesCompleted}</h3>
                 <p>Courses Completed</p>
               </StatContent>
             </StatCard>
             <StatCard>
-              <StatIcon><FaFire /></StatIcon>
+              <StatIcon>
+                <FaFire />
+              </StatIcon>
               <StatContent>
                 <h3>{stats.currentStreak}</h3>
                 <p>Day Streak</p>
               </StatContent>
             </StatCard>
             <StatCard>
-              <StatIcon><FaTrophy /></StatIcon>
+              <StatIcon>
+                <FaTrophy />
+              </StatIcon>
               <StatContent>
                 <h3>{stats.totalPoints}</h3>
                 <p>Total Points</p>
@@ -464,7 +487,9 @@ export default function DashboardPage() {
                   <ProgressContainer>
                     <ProgressLabel>
                       <span>Progress</span>
-                      <span>{course.completedModules}/{course.totalModules} Modules</span>
+                      <span>
+                        {course.completedModules}/{course.totalModules} Modules
+                      </span>
                     </ProgressLabel>
                     <ProgressBar progress={course.progress} />
                   </ProgressContainer>

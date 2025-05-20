@@ -18,8 +18,12 @@ const LogoContainer = styled.div`
     border-radius: 12px;
     padding: 1px;
     background: linear-gradient(135deg, ${props => props.theme.colors.primary}33, transparent);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     opacity: 0;
@@ -28,7 +32,7 @@ const LogoContainer = styled.div`
 
   &:hover {
     background: ${props => props.theme.colors.backgroundAlt};
-    
+
     &::before {
       opacity: 1;
     }
@@ -42,7 +46,11 @@ const LogoIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary}, ${props => props.theme.colors.primary}dd);
+  background: linear-gradient(
+    135deg,
+    ${props => props.theme.colors.primary},
+    ${props => props.theme.colors.primary}dd
+  );
   border-radius: 12px;
   color: white;
   font-size: 1.5rem;
@@ -57,8 +65,12 @@ const LogoIcon = styled.div`
     border-radius: 12px;
     padding: 2px;
     background: linear-gradient(135deg, ${props => props.theme.colors.primary}99, transparent);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
   }
@@ -157,7 +169,7 @@ const MainText = styled.span`
   ${LogoContainer}:hover & {
     background-position: right center;
     transform: translateY(-1px);
-    
+
     &::after {
       transform: scaleX(1);
     }
@@ -219,4 +231,4 @@ const Logo: React.FC = () => {
   );
 };
 
-export default Logo; 
+export default Logo;

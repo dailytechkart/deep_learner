@@ -44,11 +44,11 @@ const TopicCardWrapper = styled.div`
 export const TopicList: React.FC<TopicListProps> = ({ topics }) => {
   return (
     <TopicsGrid>
-      {topics.map((topic) => (
+      {topics.map(topic => (
         <TopicCardWrapper key={topic.id}>
           <TopicCard topic={topic} />
         </TopicCardWrapper>
       ))}
     </TopicsGrid>
   );
-}; 
+};

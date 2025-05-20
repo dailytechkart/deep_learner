@@ -6,8 +6,58 @@ import { TopicList } from '../components/TopicList';
 import { learningTopics } from '../../data/learningTopics';
 import { MainLayout } from '@/components/MainLayout';
 import { useTheme } from '../context/ThemeContext';
-import { FaSearch, FaFilter, FaChevronDown, FaStar, FaClock, FaUsers, FaBook, FaJs, FaReact, FaCss3Alt, FaGitAlt, FaShieldAlt, FaSearch as FaSearchIcon, FaRocket, FaChartLine, FaCode, FaSpinner, FaLock } from 'react-icons/fa';
-import { SiJavascript, SiTypescript, SiNextdotjs, SiTailwindcss, SiJest, SiCypress, SiWebpack, SiVite, SiDocker, SiKubernetes, SiJenkins, SiGithubactions, SiJunit5, SiTestinglibrary, SiCucumber, SiSelenium, SiPostman, SiNewrelic, SiDatadog, SiGrafana, SiPrometheus, SiSentry, SiGoogleanalytics, SiHotjar, SiContentful, SiWordpress, SiShopify, SiMagento, SiWoo, SiBigcommerce } from 'react-icons/si';
+import {
+  FaSearch,
+  FaFilter,
+  FaChevronDown,
+  FaStar,
+  FaClock,
+  FaUsers,
+  FaBook,
+  FaJs,
+  FaReact,
+  FaCss3Alt,
+  FaGitAlt,
+  FaShieldAlt,
+  FaSearch as FaSearchIcon,
+  FaRocket,
+  FaChartLine,
+  FaCode,
+  FaSpinner,
+  FaLock,
+} from 'react-icons/fa';
+import {
+  SiJavascript,
+  SiTypescript,
+  SiNextdotjs,
+  SiTailwindcss,
+  SiJest,
+  SiCypress,
+  SiWebpack,
+  SiVite,
+  SiDocker,
+  SiKubernetes,
+  SiJenkins,
+  SiGithubactions,
+  SiJunit5,
+  SiTestinglibrary,
+  SiCucumber,
+  SiSelenium,
+  SiPostman,
+  SiNewrelic,
+  SiDatadog,
+  SiGrafana,
+  SiPrometheus,
+  SiSentry,
+  SiGoogleanalytics,
+  SiHotjar,
+  SiContentful,
+  SiWordpress,
+  SiShopify,
+  SiMagento,
+  SiWoo,
+  SiBigcommerce,
+} from 'react-icons/si';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -172,9 +222,10 @@ const CustomCheckbox = styled.span`
 const FilterButton = styled.button<{ active?: boolean }>`
   padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
   border-radius: ${props => props.theme.borderRadius.md};
-  border: 1px solid ${props => props.active ? props.theme.colors.primary : 'transparent'};
-  background: ${props => props.active ? props.theme.colors.primary : props.theme.colors.background};
-  color: ${props => props.active ? '#FFFFFF' : props.theme.colors.text};
+  border: 1px solid ${props => (props.active ? props.theme.colors.primary : 'transparent')};
+  background: ${props =>
+    props.active ? props.theme.colors.primary : props.theme.colors.background};
+  color: ${props => (props.active ? '#FFFFFF' : props.theme.colors.text)};
   font-size: ${props => props.theme.typography.fontSize.sm};
   cursor: pointer;
   transition: all 0.2s ease;
@@ -189,7 +240,8 @@ const FilterButton = styled.button<{ active?: boolean }>`
   &:hover {
     transform: translateX(4px);
     border-color: ${props => props.theme.colors.primary};
-    background: ${props => props.active ? props.theme.colors.primary : props.theme.colors.backgroundAlt};
+    background: ${props =>
+      props.active ? props.theme.colors.primary : props.theme.colors.backgroundAlt};
   }
 
   &:active {
@@ -341,14 +393,14 @@ const CourseRow = styled.div<{ isLocked?: boolean }>`
   gap: ${props => props.theme.spacing.lg};
   box-shadow: ${props => props.theme.shadows.sm};
   transition: all 0.3s ease;
-  cursor: ${props => props.isLocked ? 'default' : 'pointer'};
+  cursor: ${props => (props.isLocked ? 'default' : 'pointer')};
   border: 1px solid ${props => props.theme.colors.border};
   position: relative;
   overflow: hidden;
 
   &:hover {
-    transform: ${props => props.isLocked ? 'none' : 'translateY(-2px)'};
-    box-shadow: ${props => props.isLocked ? props.theme.shadows.sm : props.theme.shadows.md};
+    transform: ${props => (props.isLocked ? 'none' : 'translateY(-2px)')};
+    box-shadow: ${props => (props.isLocked ? props.theme.shadows.sm : props.theme.shadows.md)};
   }
 `;
 
@@ -386,7 +438,7 @@ const CourseImage = styled.div<{ category: string; isLocked?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  filter: ${props => props.isLocked ? 'grayscale(0.5)' : 'none'};
+  filter: ${props => (props.isLocked ? 'grayscale(0.5)' : 'none')};
   transition: all 0.3s ease;
 `;
 
@@ -557,7 +609,7 @@ const SectionTitle = styled.h4<SectionTitleProps>`
   font-size: ${props => props.theme.typography.fontSize.md};
   font-weight: ${props => props.theme.typography.fontWeight.semibold};
   color: ${props => props.theme.colors.text};
-  margin-bottom: ${props => props.isOpen ? props.theme.spacing.md : 0};
+  margin-bottom: ${props => (props.isOpen ? props.theme.spacing.md : 0)};
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -572,7 +624,7 @@ const SectionTitle = styled.h4<SectionTitleProps>`
 
   svg {
     transition: transform 0.3s ease;
-    transform: rotate(${props => props.isOpen ? '180deg' : '0deg'});
+    transform: rotate(${props => (props.isOpen ? '180deg' : '0deg')});
     color: ${props => props.theme.colors.primary};
   }
 `;
@@ -581,11 +633,11 @@ const FilterGroup = styled.div<FilterGroupProps>`
   display: flex;
   flex-direction: column;
   gap: ${props => props.theme.spacing.sm};
-  max-height: ${props => props.isOpen ? '500px' : '0'};
+  max-height: ${props => (props.isOpen ? '500px' : '0')};
   overflow: hidden;
   transition: all 0.3s ease;
-  padding: ${props => props.isOpen ? props.theme.spacing.sm : 0};
-  opacity: ${props => props.isOpen ? 1 : 0};
+  padding: ${props => (props.isOpen ? props.theme.spacing.sm : 0)};
+  opacity: ${props => (props.isOpen ? 1 : 0)};
 `;
 
 const LoadingSpinner = styled.div`
@@ -925,13 +977,13 @@ const LearnPage: React.FC = () => {
   const roles = ['all', ...new Set(learningTopics.map(topic => topic.role))];
 
   // Filter options based on filter search query
-  const filteredCategories = categories.filter(category => 
+  const filteredCategories = categories.filter(category =>
     category.toLowerCase().includes(filterSearchQuery.toLowerCase())
   );
-  const filteredDifficulties = difficulties.filter(difficulty => 
+  const filteredDifficulties = difficulties.filter(difficulty =>
     difficulty.toLowerCase().includes(filterSearchQuery.toLowerCase())
   );
-  const filteredRoles = roles.filter(role => 
+  const filteredRoles = roles.filter(role =>
     role.toLowerCase().includes(filterSearchQuery.toLowerCase())
   );
 
@@ -963,15 +1015,18 @@ const LearnPage: React.FC = () => {
 
   // Filter topics based on selected filters and search query
   const filteredTopics = learningTopics.filter(topic => {
-    const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(topic.category);
-    const difficultyMatch = selectedDifficulties.length === 0 || selectedDifficulties.includes(topic.difficulty);
+    const categoryMatch =
+      selectedCategories.length === 0 || selectedCategories.includes(topic.category);
+    const difficultyMatch =
+      selectedDifficulties.length === 0 || selectedDifficulties.includes(topic.difficulty);
     const roleMatch = selectedRoles.length === 0 || selectedRoles.includes(topic.role);
-    const searchMatch = topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                       topic.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                       topic.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                       topic.difficulty.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                       topic.role.toLowerCase().includes(searchQuery.toLowerCase());
-                       topic.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const searchMatch =
+      topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      topic.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      topic.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      topic.difficulty.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      topic.role.toLowerCase().includes(searchQuery.toLowerCase());
+    topic.description.toLowerCase().includes(searchQuery.toLowerCase());
     return categoryMatch && difficultyMatch && roleMatch && searchMatch;
   });
 
@@ -1012,13 +1067,13 @@ const LearnPage: React.FC = () => {
   const handleNotifyClick = (courseId: string) => {
     setNotifyStates(prev => ({
       ...prev,
-      [courseId]: true
+      [courseId]: true,
     }));
     // Here you would typically make an API call to subscribe the user
     setTimeout(() => {
       setNotifyStates(prev => ({
         ...prev,
-        [courseId]: false
+        [courseId]: false,
       }));
     }, 2000);
   };
@@ -1027,26 +1082,39 @@ const LearnPage: React.FC = () => {
     <NoResultsContainer>
       <NoResultsIllustration>
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 8V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 16H12.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path
+            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M12 8V12"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M12 16H12.01"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       </NoResultsIllustration>
       <NoResultsTitle>No Courses Found</NoResultsTitle>
       <NoResultsText>
-        We couldn't find any courses matching your current filters. Try adjusting your search criteria or clear all filters to see all available courses.
+        We couldn't find any courses matching your current filters. Try adjusting your search
+        criteria or clear all filters to see all available courses.
       </NoResultsText>
-      <NoResultsAction onClick={clearAllFilters}>
-        Clear All Filters
-      </NoResultsAction>
+      <NoResultsAction onClick={clearAllFilters}>Clear All Filters</NoResultsAction>
     </NoResultsContainer>
   );
 
-  const renderFilterNoResults = () => (
-    <FilterNoResults>
-      No matching options found
-    </FilterNoResults>
-  );
+  const renderFilterNoResults = () => <FilterNoResults>No matching options found</FilterNoResults>;
 
   const isCourseLocked = (index: number) => {
     return index >= 2; // First 2 courses are unlocked, rest are locked
@@ -1063,10 +1131,11 @@ const LearnPage: React.FC = () => {
             </FilterHeader>
 
             <FilterActions>
-              <span>Selected: {selectedCategories.length + selectedDifficulties.length + selectedRoles.length}</span>
-              <ClearAllButton onClick={clearAllFilters}>
-                Clear All
-              </ClearAllButton>
+              <span>
+                Selected:{' '}
+                {selectedCategories.length + selectedDifficulties.length + selectedRoles.length}
+              </span>
+              <ClearAllButton onClick={clearAllFilters}>Clear All</ClearAllButton>
             </FilterActions>
 
             <FilterSearch>
@@ -1074,12 +1143,15 @@ const LearnPage: React.FC = () => {
               <FilterSearchInput
                 placeholder="Search filters..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
               />
             </FilterSearch>
 
             <FilterSection>
-              <SectionTitle isOpen={isCategoryOpen} onClick={() => setIsCategoryOpen(!isCategoryOpen)}>
+              <SectionTitle
+                isOpen={isCategoryOpen}
+                onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+              >
                 Categories
                 <FaChevronDown />
               </SectionTitle>
@@ -1093,7 +1165,14 @@ const LearnPage: React.FC = () => {
                     <FilterButton
                       key={category}
                       active={selectedCategories.includes(category)}
-                      onClick={() => handleFilterChange(category, selectedCategories, setSelectedCategories, 'category')}
+                      onClick={() =>
+                        handleFilterChange(
+                          category,
+                          selectedCategories,
+                          setSelectedCategories,
+                          'category'
+                        )
+                      }
                     >
                       <FilterButtonContent>
                         <FilterCheckboxWrapper>
@@ -1107,8 +1186,8 @@ const LearnPage: React.FC = () => {
                         {category === 'all' ? 'All Categories' : category}
                       </FilterButtonContent>
                       <FilterCount>
-                        {category === 'all' 
-                          ? learningTopics.length 
+                        {category === 'all'
+                          ? learningTopics.length
                           : learningTopics.filter(t => t.category === category).length}
                       </FilterCount>
                     </FilterButton>
@@ -1120,7 +1199,10 @@ const LearnPage: React.FC = () => {
             </FilterSection>
 
             <FilterSection>
-              <SectionTitle isOpen={isDifficultyOpen} onClick={() => setIsDifficultyOpen(!isDifficultyOpen)}>
+              <SectionTitle
+                isOpen={isDifficultyOpen}
+                onClick={() => setIsDifficultyOpen(!isDifficultyOpen)}
+              >
                 Difficulty
                 <FaChevronDown />
               </SectionTitle>
@@ -1134,7 +1216,14 @@ const LearnPage: React.FC = () => {
                     <FilterButton
                       key={difficulty}
                       active={selectedDifficulties.includes(difficulty)}
-                      onClick={() => handleFilterChange(difficulty, selectedDifficulties, setSelectedDifficulties, 'difficulty')}
+                      onClick={() =>
+                        handleFilterChange(
+                          difficulty,
+                          selectedDifficulties,
+                          setSelectedDifficulties,
+                          'difficulty'
+                        )
+                      }
                     >
                       <FilterButtonContent>
                         <FilterCheckboxWrapper>
@@ -1175,7 +1264,9 @@ const LearnPage: React.FC = () => {
                     <FilterButton
                       key={role}
                       active={selectedRoles.includes(role)}
-                      onClick={() => handleFilterChange(role, selectedRoles, setSelectedRoles, 'role')}
+                      onClick={() =>
+                        handleFilterChange(role, selectedRoles, setSelectedRoles, 'role')
+                      }
                     >
                       <FilterButtonContent>
                         <FilterCheckboxWrapper>
@@ -1206,8 +1297,8 @@ const LearnPage: React.FC = () => {
             <HeaderSection>
               <Title>Learn Frontend Development</Title>
               <Description>
-                Master modern frontend technologies with our comprehensive learning paths.
-                Start with the basics and progress to advanced concepts at your own pace.
+                Master modern frontend technologies with our comprehensive learning paths. Start
+                with the basics and progress to advanced concepts at your own pace.
               </Description>
 
               <SearchBar>
@@ -1215,21 +1306,27 @@ const LearnPage: React.FC = () => {
                 <SearchInput
                   placeholder="Search courses..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={e => setSearchQuery(e.target.value)}
                 />
               </SearchBar>
 
               <StatsBar>
                 <StatItem>
-                  <StatIcon><FaStar /></StatIcon>
+                  <StatIcon>
+                    <FaStar />
+                  </StatIcon>
                   <span>4.8 Average Rating</span>
                 </StatItem>
                 <StatItem>
-                  <StatIcon><FaClock /></StatIcon>
+                  <StatIcon>
+                    <FaClock />
+                  </StatIcon>
                   <span>50+ Hours of Content</span>
                 </StatItem>
                 <StatItem>
-                  <StatIcon><FaUsers /></StatIcon>
+                  <StatIcon>
+                    <FaUsers />
+                  </StatIcon>
                   <span>10k+ Active Learners</span>
                 </StatItem>
               </StatsBar>
@@ -1246,9 +1343,7 @@ const LearnPage: React.FC = () => {
                   return (
                     <CourseRow key={topic.id} isLocked={isLocked}>
                       <CourseImage category={topic.category} isLocked={isLocked}>
-                        <IconWrapper>
-                          {getCategoryIcon(topic.category)}
-                        </IconWrapper>
+                        <IconWrapper>{getCategoryIcon(topic.category)}</IconWrapper>
                       </CourseImage>
                       <CourseContent>
                         <CourseHeader>
@@ -1257,9 +1352,7 @@ const LearnPage: React.FC = () => {
                             <DifficultyBadge difficulty={topic.difficulty}>
                               {topic.difficulty}
                             </DifficultyBadge>
-                            <RoleBadge role={topic.role}>
-                              {topic.role}
-                            </RoleBadge>
+                            <RoleBadge role={topic.role}>{topic.role}</RoleBadge>
                             {isLocked && (
                               <LockedBadge>
                                 <FaLock />
@@ -1271,11 +1364,15 @@ const LearnPage: React.FC = () => {
                         <CourseDescription>{topic.description}</CourseDescription>
                         <CourseMeta>
                           <MetaItem>
-                            <MetaIcon><FaClock /></MetaIcon>
+                            <MetaIcon>
+                              <FaClock />
+                            </MetaIcon>
                             <span>{topic.estimatedTime}</span>
                           </MetaItem>
                           <MetaItem>
-                            <MetaIcon><FaBook /></MetaIcon>
+                            <MetaIcon>
+                              <FaBook />
+                            </MetaIcon>
                             <span>{topic.totalLessons} Lessons</span>
                           </MetaItem>
                           <CategoryBadge>{topic.category}</CategoryBadge>
@@ -1306,4 +1403,4 @@ const LearnPage: React.FC = () => {
   );
 };
 
-export default LearnPage; 
+export default LearnPage;

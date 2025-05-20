@@ -12,7 +12,7 @@ import {
   FormInput,
   SubmitButton,
   AuthForm,
-  ErrorMessage
+  ErrorMessage,
 } from '../components/StyledComponents';
 
 export default function SettingsPage() {
@@ -25,10 +25,10 @@ export default function SettingsPage() {
     notifications: {
       email: true,
       push: true,
-      marketing: false
+      marketing: false,
     },
     theme: 'light',
-    language: 'en'
+    language: 'en',
   });
 
   const [error, setError] = useState('');
@@ -36,20 +36,20 @@ export default function SettingsPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
-    
+
     if (type === 'checkbox') {
       const checkbox = e.target as HTMLInputElement;
       setFormData(prev => ({
         ...prev,
         notifications: {
           ...prev.notifications,
-          [name]: checkbox.checked
-        }
+          [name]: checkbox.checked,
+        },
       }));
     } else {
       setFormData(prev => ({
         ...prev,
-        [name]: value
+        [name]: value,
       }));
     }
   };
@@ -195,4 +195,4 @@ export default function SettingsPage() {
       </MainContent>
     </ClientLayout>
   );
-} 
+}

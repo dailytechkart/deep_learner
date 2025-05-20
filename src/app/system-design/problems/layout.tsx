@@ -18,18 +18,12 @@ const MainContent = styled.main`
   flex: 1;
 `;
 
-function ProblemsLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function ProblemsLayout({ children }: { children: React.ReactNode }) {
   return (
     <LayoutContainer>
-      <MainContent>
-        {children}
-      </MainContent>
+      <MainContent>{children}</MainContent>
     </LayoutContainer>
   );
 }
 
-export default ProblemsLayout; 
+export default ProblemsLayout;

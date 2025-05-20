@@ -4,8 +4,43 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import MainLayout from '@/components/MainLayout';
 import { useTheme } from '@/app/context/ThemeContext';
-import { FaSearch, FaFilter, FaChevronDown, FaStar, FaClock, FaUsers, FaBook, FaReact, FaNodeJs, FaDatabase, FaServer, FaMobile, FaShieldAlt, FaChartLine, FaCode, FaSpinner, FaLock, FaRocket, FaBrain, FaLaptopCode, FaList, FaLaptop, FaQuestionCircle, FaTimes, FaPlus, FaMinus, FaCheck } from 'react-icons/fa';
-import { SiTypescript, SiJavascript, SiNextdotjs, SiTailwindcss, SiRedux, SiWebpack } from 'react-icons/si';
+import {
+  FaSearch,
+  FaFilter,
+  FaChevronDown,
+  FaStar,
+  FaClock,
+  FaUsers,
+  FaBook,
+  FaReact,
+  FaNodeJs,
+  FaDatabase,
+  FaServer,
+  FaMobile,
+  FaShieldAlt,
+  FaChartLine,
+  FaCode,
+  FaSpinner,
+  FaLock,
+  FaRocket,
+  FaBrain,
+  FaLaptopCode,
+  FaList,
+  FaLaptop,
+  FaQuestionCircle,
+  FaTimes,
+  FaPlus,
+  FaMinus,
+  FaCheck,
+} from 'react-icons/fa';
+import {
+  SiTypescript,
+  SiJavascript,
+  SiNextdotjs,
+  SiTailwindcss,
+  SiRedux,
+  SiWebpack,
+} from 'react-icons/si';
 
 const PageContainer = styled.div`
   max-width: 1400px;
@@ -88,7 +123,7 @@ const FilterSectionTitle = styled.h4`
 `;
 
 const FilterSectionContent = styled.div<{ isOpen: boolean }>`
-  max-height: ${props => props.isOpen ? '500px' : '0'};
+  max-height: ${props => (props.isOpen ? '500px' : '0')};
   overflow: hidden;
   transition: max-height 0.3s ease;
 `;
@@ -103,9 +138,10 @@ const FilterChip = styled.button<{ active?: boolean }>`
   margin: 0.25rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid ${props => props.active ? props.theme.colors.primary : props.theme.colors.border};
-  background: ${props => props.active ? props.theme.colors.primary + '15' : 'transparent'};
-  color: ${props => props.active ? props.theme.colors.primary : props.theme.colors.textSecondary};
+  border: 1px solid
+    ${props => (props.active ? props.theme.colors.primary : props.theme.colors.border)};
+  background: ${props => (props.active ? props.theme.colors.primary + '15' : 'transparent')};
+  color: ${props => (props.active ? props.theme.colors.primary : props.theme.colors.textSecondary)};
   position: relative;
   overflow: hidden;
 
@@ -275,8 +311,8 @@ const tagColors = {
     Amazon: { bg: '#FFF7E0', color: '#FF9900' },
     Microsoft: { bg: '#EAF1FB', color: '#0078D4' },
     Apple: { bg: '#F5F5F7', color: '#000000' },
-    default: { bg: '#F3E5F5', color: '#8E24AA' }
-  }
+    default: { bg: '#F3E5F5', color: '#8E24AA' },
+  },
 };
 
 // Helper for company tag colors
@@ -285,7 +321,11 @@ const getCompanyTagColor = (company: string) => {
 };
 
 // Update Tag styled component
-const Tag = styled.span<{ type?: 'beginner' | 'intermediate' | 'advanced' | 'technology' | 'role', color?: string, bgColor?: string }>`
+const Tag = styled.span<{
+  type?: 'beginner' | 'intermediate' | 'advanced' | 'technology' | 'role';
+  color?: string;
+  bgColor?: string;
+}>`
   display: inline-flex;
   align-items: center;
   padding: 0.375rem 0.875rem;
@@ -293,21 +333,33 @@ const Tag = styled.span<{ type?: 'beginner' | 'intermediate' | 'advanced' | 'tec
   font-size: 0.75rem;
   font-weight: 600;
   background: ${({ type, bgColor }) =>
-    bgColor ? bgColor :
-    type === 'beginner' ? tagColors.beginner.bg :
-    type === 'intermediate' ? tagColors.intermediate.bg :
-    type === 'advanced' ? tagColors.advanced.bg :
-    type === 'technology' ? tagColors.technology.bg :
-    type === 'role' ? tagColors.role.bg :
-    tagColors.beginner.bg};
+    bgColor
+      ? bgColor
+      : type === 'beginner'
+        ? tagColors.beginner.bg
+        : type === 'intermediate'
+          ? tagColors.intermediate.bg
+          : type === 'advanced'
+            ? tagColors.advanced.bg
+            : type === 'technology'
+              ? tagColors.technology.bg
+              : type === 'role'
+                ? tagColors.role.bg
+                : tagColors.beginner.bg};
   color: ${({ type, color }) =>
-    color ? color :
-    type === 'beginner' ? tagColors.beginner.color :
-    type === 'intermediate' ? tagColors.intermediate.color :
-    type === 'advanced' ? tagColors.advanced.color :
-    type === 'technology' ? tagColors.technology.color :
-    type === 'role' ? tagColors.role.color :
-    tagColors.beginner.color};
+    color
+      ? color
+      : type === 'beginner'
+        ? tagColors.beginner.color
+        : type === 'intermediate'
+          ? tagColors.intermediate.color
+          : type === 'advanced'
+            ? tagColors.advanced.color
+            : type === 'technology'
+              ? tagColors.technology.color
+              : type === 'role'
+                ? tagColors.role.color
+                : tagColors.beginner.color};
   transition: all 0.2s ease;
   margin-right: 0.25rem;
   margin-bottom: 0.25rem;
@@ -366,16 +418,16 @@ const Tab = styled.button<{ active: boolean }>`
   padding: 1rem 2rem;
   font-size: ${props => props.theme.typography.fontSize.lg};
   font-weight: ${props => props.theme.typography.fontWeight.bold};
-  color: ${props => props.active ? props.theme.colors.primary : props.theme.colors.textSecondary};
-  border-bottom: 3px solid ${props => props.active ? props.theme.colors.primary : 'transparent'};
-  background: ${props => props.active ? props.theme.colors.primary + '08' : 'transparent'};
+  color: ${props => (props.active ? props.theme.colors.primary : props.theme.colors.textSecondary)};
+  border-bottom: 3px solid ${props => (props.active ? props.theme.colors.primary : 'transparent')};
+  background: ${props => (props.active ? props.theme.colors.primary + '08' : 'transparent')};
   border-radius: 1.5rem 1.5rem 0 0;
   transition: all 0.2s;
   display: flex;
   align-items: center;
   gap: 0.75rem;
   cursor: pointer;
-  box-shadow: ${props => props.active ? `0 2px 12px ${props.theme.colors.primary}11` : 'none'};
+  box-shadow: ${props => (props.active ? `0 2px 12px ${props.theme.colors.primary}11` : 'none')};
   &:hover {
     color: ${props => props.theme.colors.primary};
     background: ${props => props.theme.colors.primary + '10'};
@@ -405,8 +457,10 @@ const ListContent = styled.div`
 const CategoryCard = styled.div<{ active?: boolean }>`
   padding: 1rem;
   border-radius: ${props => props.theme.borderRadius.lg};
-  background: ${props => props.active ? props.theme.colors.primary + '15' : props.theme.colors.backgroundAlt};
-  border: 1px solid ${props => props.active ? props.theme.colors.primary : props.theme.colors.border};
+  background: ${props =>
+    props.active ? props.theme.colors.primary + '15' : props.theme.colors.backgroundAlt};
+  border: 1px solid
+    ${props => (props.active ? props.theme.colors.primary : props.theme.colors.border)};
   margin-bottom: 0.75rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -792,7 +846,9 @@ const StartButton = styled.button`
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 2px 8px ${props => props.theme.colors.primary}22;
-  transition: background 0.2s, transform 0.15s;
+  transition:
+    background 0.2s,
+    transform 0.15s;
   &:hover {
     background: ${props => props.theme.colors.secondary};
     transform: translateY(-2px) scale(1.04);
@@ -879,11 +935,12 @@ const interviewTopics: InterviewTopic[] = [
   {
     id: 'frontend-basics',
     title: 'Frontend Fundamentals',
-    description: 'Master essential frontend concepts, HTML, CSS, and JavaScript fundamentals for technical interviews.',
+    description:
+      'Master essential frontend concepts, HTML, CSS, and JavaScript fundamentals for technical interviews.',
     icon: <FaCode />,
     tags: ['beginner'],
     technologies: ['HTML', 'CSS', 'JavaScript'],
-    roles: ['Frontend Developer', 'Web Developer']
+    roles: ['Frontend Developer', 'Web Developer'],
   },
   {
     id: 'react-advanced',
@@ -892,7 +949,7 @@ const interviewTopics: InterviewTopic[] = [
     icon: <FaReact />,
     tags: ['intermediate', 'advanced'],
     technologies: ['React', 'TypeScript', 'Redux'],
-    roles: ['React Developer', 'Frontend Developer']
+    roles: ['React Developer', 'Frontend Developer'],
   },
   {
     id: 'css-architecture',
@@ -901,7 +958,7 @@ const interviewTopics: InterviewTopic[] = [
     icon: <FaCode />,
     tags: ['intermediate'],
     technologies: ['CSS', 'Sass', 'Styled Components'],
-    roles: ['Frontend Developer', 'UI Engineer']
+    roles: ['Frontend Developer', 'UI Engineer'],
   },
   {
     id: 'performance',
@@ -910,7 +967,7 @@ const interviewTopics: InterviewTopic[] = [
     icon: <FaRocket />,
     tags: ['advanced'],
     technologies: ['JavaScript', 'React', 'Webpack'],
-    roles: ['Frontend Developer', 'Performance Engineer']
+    roles: ['Frontend Developer', 'Performance Engineer'],
   },
   {
     id: 'testing',
@@ -919,7 +976,7 @@ const interviewTopics: InterviewTopic[] = [
     icon: <FaShieldAlt />,
     tags: ['intermediate'],
     technologies: ['Jest', 'Cypress', 'React Testing Library'],
-    roles: ['Frontend Developer', 'QA Engineer']
+    roles: ['Frontend Developer', 'QA Engineer'],
   },
   {
     id: 'system-design',
@@ -928,7 +985,7 @@ const interviewTopics: InterviewTopic[] = [
     icon: <FaServer />,
     tags: ['advanced'],
     technologies: ['React', 'Next.js', 'Micro-frontends'],
-    roles: ['Frontend Architect', 'Senior Developer']
+    roles: ['Frontend Architect', 'Senior Developer'],
   },
   // ...add more as needed...
 ];
@@ -938,28 +995,29 @@ const dsaCategories: Category[] = [
   { id: 'linked-lists', title: 'Linked Lists', count: 30 },
   { id: 'trees', title: 'Trees', count: 35 },
   { id: 'graphs', title: 'Graphs', count: 25 },
-  { id: 'dynamic-programming', title: 'Dynamic Programming', count: 20 }
+  { id: 'dynamic-programming', title: 'Dynamic Programming', count: 20 },
 ];
 
 const machineCodingCategories: Category[] = [
   { id: 'react', title: 'React', count: 15 },
   { id: 'javascript', title: 'JavaScript', count: 20 },
   { id: 'css', title: 'CSS', count: 10 },
-  { id: 'typescript', title: 'TypeScript', count: 12 }
+  { id: 'typescript', title: 'TypeScript', count: 12 },
 ];
 
 const quizCategories: Category[] = [
   { id: 'react', title: 'React', count: 8 },
   { id: 'javascript', title: 'JavaScript', count: 10 },
   { id: 'css', title: 'CSS', count: 6 },
-  { id: 'typescript', title: 'TypeScript', count: 7 }
+  { id: 'typescript', title: 'TypeScript', count: 7 },
 ];
 
 const dsaProblems: DSAProblem[] = [
   {
     id: 'two-sum',
     title: 'Two Sum',
-    description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.',
+    description:
+      'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.',
     difficulty: 'easy',
     category: 'arrays',
     acceptance: '85%',
@@ -971,10 +1029,10 @@ const dsaProblems: DSAProblem[] = [
         questions: [
           'How would you implement this in JavaScript?',
           'What is the time complexity of your solution?',
-          'How would you handle edge cases?'
-        ]
-      }
-    ]
+          'How would you handle edge cases?',
+        ],
+      },
+    ],
   },
   // ... rest of the DSA problems ...
 ];
@@ -983,7 +1041,8 @@ const machineCodingProblems: MachineCodingProblem[] = [
   {
     id: 'infinite-scroll',
     title: 'Infinite Scroll Implementation',
-    description: 'Implement an infinite scroll component that loads more content as the user scrolls down.',
+    description:
+      'Implement an infinite scroll component that loads more content as the user scrolls down.',
     difficulty: 'medium',
     category: 'react',
     timeLimit: '45 mins',
@@ -995,10 +1054,10 @@ const machineCodingProblems: MachineCodingProblem[] = [
         questions: [
           'How would you handle loading states?',
           'What is your approach to error handling?',
-          'How would you optimize performance?'
-        ]
-      }
-    ]
+          'How would you optimize performance?',
+        ],
+      },
+    ],
   },
   {
     id: 'autocomplete',
@@ -1014,11 +1073,11 @@ const machineCodingProblems: MachineCodingProblem[] = [
         role: 'Frontend Developer',
         questions: [
           'How would you implement debouncing?',
-          'What\'s your approach to accessibility?',
-          'How would you handle API rate limiting?'
-        ]
-      }
-    ]
+          "What's your approach to accessibility?",
+          'How would you handle API rate limiting?',
+        ],
+      },
+    ],
   },
   {
     id: 'kanban-board',
@@ -1035,10 +1094,10 @@ const machineCodingProblems: MachineCodingProblem[] = [
         questions: [
           'How would you implement drag-and-drop?',
           'How would you persist board state?',
-          'How would you optimize for large boards?'
-        ]
-      }
-    ]
+          'How would you optimize for large boards?',
+        ],
+      },
+    ],
   },
   {
     id: 'file-uploader',
@@ -1055,10 +1114,10 @@ const machineCodingProblems: MachineCodingProblem[] = [
         questions: [
           'How would you show upload progress?',
           'How would you handle file validation?',
-          'How would you handle upload errors?'
-        ]
-      }
-    ]
+          'How would you handle upload errors?',
+        ],
+      },
+    ],
   },
   // ...add more as needed...
 ];
@@ -1067,7 +1126,8 @@ const frontendQuizzes: QuizProblem[] = [
   {
     id: 'react-hooks',
     title: 'React Hooks Quiz',
-    description: 'Test your knowledge of React Hooks including useState, useEffect, and custom hooks.',
+    description:
+      'Test your knowledge of React Hooks including useState, useEffect, and custom hooks.',
     category: 'react',
     questions: 20,
     timeLimit: '15 mins',
@@ -1078,15 +1138,16 @@ const frontendQuizzes: QuizProblem[] = [
         questions: [
           'Explain the difference between useEffect and useLayoutEffect',
           'How would you optimize a custom hook?',
-          'What are the common pitfalls with hooks?'
-        ]
-      }
-    ]
+          'What are the common pitfalls with hooks?',
+        ],
+      },
+    ],
   },
   {
     id: 'css-layout',
     title: 'CSS Layout Quiz',
-    description: 'Challenge yourself with questions about CSS Grid, Flexbox, and modern layout techniques.',
+    description:
+      'Challenge yourself with questions about CSS Grid, Flexbox, and modern layout techniques.',
     category: 'css',
     questions: 15,
     timeLimit: '10 mins',
@@ -1097,10 +1158,10 @@ const frontendQuizzes: QuizProblem[] = [
         questions: [
           'When would you choose Grid over Flexbox?',
           'How would you create a responsive layout?',
-          'What\'s your approach to CSS architecture?'
-        ]
-      }
-    ]
+          "What's your approach to CSS architecture?",
+        ],
+      },
+    ],
   },
   {
     id: 'js-advanced',
@@ -1116,10 +1177,10 @@ const frontendQuizzes: QuizProblem[] = [
         questions: [
           'Explain event delegation in JS.',
           'What is a closure and where would you use it?',
-          'How does the event loop work?'
-        ]
-      }
-    ]
+          'How does the event loop work?',
+        ],
+      },
+    ],
   },
   {
     id: 'typescript-basics',
@@ -1135,17 +1196,19 @@ const frontendQuizzes: QuizProblem[] = [
         questions: [
           'What is the difference between interface and type?',
           'How do you use generics in TS?',
-          'What are type guards?'
-        ]
-      }
-    ]
+          'What are type guards?',
+        ],
+      },
+    ],
   },
   // ...add more as needed...
 ];
 
 const InterviewPage: React.FC = () => {
   const { isDarkMode } = useTheme();
-  const [activeTab, setActiveTab] = useState<'topics' | 'dsa' | 'machine-coding' | 'quizzes'>('topics');
+  const [activeTab, setActiveTab] = useState<'topics' | 'dsa' | 'machine-coding' | 'quizzes'>(
+    'topics'
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string[]>([]);
   const [selectedTechnologies, setSelectedTechnologies] = useState<string[]>([]);
@@ -1155,47 +1218,45 @@ const InterviewPage: React.FC = () => {
   const [openFilterSections, setOpenFilterSections] = useState<Record<string, boolean>>({
     difficulty: true,
     technologies: true,
-    roles: true
+    roles: true,
   });
 
   const allTechnologies = Array.from(new Set(interviewTopics.flatMap(topic => topic.technologies)));
   const allRoles = Array.from(new Set(interviewTopics.flatMap(topic => topic.roles)));
 
   const filteredTopics = interviewTopics.filter(topic => {
-    const matchesDifficulty = selectedDifficulty.length === 0 || topic.tags.some(tag => selectedDifficulty.includes(tag));
-    const matchesTechnology = selectedTechnologies.length === 0 || topic.technologies.some(tech => selectedTechnologies.includes(tech));
-    const matchesRole = selectedRoles.length === 0 || topic.roles.some(role => selectedRoles.includes(role));
+    const matchesDifficulty =
+      selectedDifficulty.length === 0 || topic.tags.some(tag => selectedDifficulty.includes(tag));
+    const matchesTechnology =
+      selectedTechnologies.length === 0 ||
+      topic.technologies.some(tech => selectedTechnologies.includes(tech));
+    const matchesRole =
+      selectedRoles.length === 0 || topic.roles.some(role => selectedRoles.includes(role));
     return matchesDifficulty && matchesTechnology && matchesRole;
   });
 
   const toggleDifficulty = (difficulty: string) => {
-    setSelectedDifficulty(prev => 
-      prev.includes(difficulty) 
-        ? prev.filter(d => d !== difficulty)
-        : [...prev, difficulty]
+    setSelectedDifficulty(prev =>
+      prev.includes(difficulty) ? prev.filter(d => d !== difficulty) : [...prev, difficulty]
     );
   };
 
   const toggleTechnology = (tech: string) => {
-    setSelectedTechnologies(prev => 
-      prev.includes(tech) 
-        ? prev.filter(t => t !== tech)
-        : [...prev, tech]
+    setSelectedTechnologies(prev =>
+      prev.includes(tech) ? prev.filter(t => t !== tech) : [...prev, tech]
     );
   };
 
   const toggleRole = (role: string) => {
-    setSelectedRoles(prev => 
-      prev.includes(role) 
-        ? prev.filter(r => r !== role)
-        : [...prev, role]
+    setSelectedRoles(prev =>
+      prev.includes(role) ? prev.filter(r => r !== role) : [...prev, role]
     );
   };
 
   const toggleFilterSection = (section: string) => {
     setOpenFilterSections(prev => ({
       ...prev,
-      [section]: !prev[section]
+      [section]: !prev[section],
     }));
   };
 
@@ -1248,30 +1309,40 @@ const InterviewPage: React.FC = () => {
   };
 
   const renderListContent = (type: 'dsa' | 'machine-coding' | 'quizzes') => {
-    const categories = type === 'dsa' ? dsaCategories : 
-                      type === 'machine-coding' ? machineCodingCategories : 
-                      quizCategories;
+    const categories =
+      type === 'dsa'
+        ? dsaCategories
+        : type === 'machine-coding'
+          ? machineCodingCategories
+          : quizCategories;
 
-    const items = type === 'dsa' ? dsaProblems :
-                 type === 'machine-coding' ? machineCodingProblems :
-                 frontendQuizzes;
+    const items =
+      type === 'dsa'
+        ? dsaProblems
+        : type === 'machine-coding'
+          ? machineCodingProblems
+          : frontendQuizzes;
 
-    const filteredItems = items.filter((item: ProblemItem) => 
-      selectedCategory === 'all' || item.category.toLowerCase() === selectedCategory
+    const filteredItems = items.filter(
+      (item: ProblemItem) =>
+        selectedCategory === 'all' || item.category.toLowerCase() === selectedCategory
     );
 
     return (
       <ListContainer>
         <ListSidebar>
-          <CategoryCard 
+          <CategoryCard
             active={selectedCategory === 'all'}
             onClick={() => setSelectedCategory('all')}
           >
-            <CategoryTitle>All {type === 'dsa' ? 'Problems' : type === 'machine-coding' ? 'Challenges' : 'Quizzes'}</CategoryTitle>
+            <CategoryTitle>
+              All{' '}
+              {type === 'dsa' ? 'Problems' : type === 'machine-coding' ? 'Challenges' : 'Quizzes'}
+            </CategoryTitle>
             <CategoryCount>{items.length} items</CategoryCount>
           </CategoryCard>
           {categories.map((category: Category) => (
-            <CategoryCard 
+            <CategoryCard
               key={category.id}
               active={selectedCategory === category.id}
               onClick={() => setSelectedCategory(category.id)}
@@ -1284,13 +1355,17 @@ const InterviewPage: React.FC = () => {
 
         <ListContent>
           <SearchBar>
-            <SearchIcon><FaSearch /></SearchIcon>
-            <SearchInput 
+            <SearchIcon>
+              <FaSearch />
+            </SearchIcon>
+            <SearchInput
               placeholder={`Search ${type === 'dsa' ? 'DSA problems' : type === 'machine-coding' ? 'machine coding problems' : 'quizzes'}...`}
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
             />
-            <SortButton onClick={() => setSortBy(sortBy === 'difficulty' ? 'popularity' : 'difficulty')}>
+            <SortButton
+              onClick={() => setSortBy(sortBy === 'difficulty' ? 'popularity' : 'difficulty')}
+            >
               <FaChevronDown />
               Sort by {sortBy === 'difficulty' ? 'Difficulty' : 'Popularity'}
             </SortButton>
@@ -1300,9 +1375,13 @@ const InterviewPage: React.FC = () => {
             <ProblemCard key={item.id}>
               <ProblemHeader>
                 <ProblemIcon className="problem-icon">
-                  {type === 'dsa' ? <FaCode /> : 
-                   type === 'machine-coding' ? <FaLaptop /> : 
-                   <FaQuestionCircle />}
+                  {type === 'dsa' ? (
+                    <FaCode />
+                  ) : type === 'machine-coding' ? (
+                    <FaLaptop />
+                  ) : (
+                    <FaQuestionCircle />
+                  )}
                 </ProblemIcon>
                 <ProblemInfo>
                   <ProblemTitle>
@@ -1314,7 +1393,7 @@ const InterviewPage: React.FC = () => {
                     )}
                   </ProblemTitle>
                   <ProblemDescription>{item.description}</ProblemDescription>
-                  
+
                   {item.companies && item.companies.length > 0 && (
                     <TagGroup style={{ marginTop: '1rem' }}>
                       {item.companies.map((company: string) => (
@@ -1325,21 +1404,20 @@ const InterviewPage: React.FC = () => {
                     </TagGroup>
                   )}
 
-                  {item.roleSpecific && item.roleSpecific.map((roleInfo: { role: string; questions: string[] }) => (
-                    <RoleSpecificSection key={roleInfo.role}>
-                      <RoleSpecificTitle>
-                        <FaUsers size={14} />
-                        {roleInfo.role} Questions
-                      </RoleSpecificTitle>
-                      <RoleSpecificList>
-                        {roleInfo.questions.map((question: string, index: number) => (
-                          <RoleSpecificItem key={index}>
-                            {question}
-                          </RoleSpecificItem>
-                        ))}
-                      </RoleSpecificList>
-                    </RoleSpecificSection>
-                  ))}
+                  {item.roleSpecific &&
+                    item.roleSpecific.map((roleInfo: { role: string; questions: string[] }) => (
+                      <RoleSpecificSection key={roleInfo.role}>
+                        <RoleSpecificTitle>
+                          <FaUsers size={14} />
+                          {roleInfo.role} Questions
+                        </RoleSpecificTitle>
+                        <RoleSpecificList>
+                          {roleInfo.questions.map((question: string, index: number) => (
+                            <RoleSpecificItem key={index}>{question}</RoleSpecificItem>
+                          ))}
+                        </RoleSpecificList>
+                      </RoleSpecificSection>
+                    ))}
                 </ProblemInfo>
               </ProblemHeader>
 
@@ -1347,11 +1425,15 @@ const InterviewPage: React.FC = () => {
                 {type === 'dsa' && 'acceptance' in item && (
                   <>
                     <StatItem>
-                      <StatIcon><FaUsers /></StatIcon>
+                      <StatIcon>
+                        <FaUsers />
+                      </StatIcon>
                       <span>Acceptance: {item.acceptance}</span>
                     </StatItem>
                     <StatItem>
-                      <StatIcon><FaCode /></StatIcon>
+                      <StatIcon>
+                        <FaCode />
+                      </StatIcon>
                       <span>Submissions: {item.submissions}</span>
                     </StatItem>
                   </>
@@ -1359,37 +1441,57 @@ const InterviewPage: React.FC = () => {
                 {type === 'machine-coding' && 'timeLimit' in item && (
                   <>
                     <StatItem>
-                      <StatIcon><FaClock /></StatIcon>
+                      <StatIcon>
+                        <FaClock />
+                      </StatIcon>
                       <span>Time Limit: {item.timeLimit}</span>
                     </StatItem>
                     <StatItem>
-                      <StatIcon><FaCode /></StatIcon>
-                      <span>Tech Stack: {'techStack' in item ? item.techStack.join(', ') : ''}</span>
+                      <StatIcon>
+                        <FaCode />
+                      </StatIcon>
+                      <span>
+                        Tech Stack: {'techStack' in item ? item.techStack.join(', ') : ''}
+                      </span>
                     </StatItem>
                   </>
                 )}
                 {type === 'quizzes' && 'questions' in item && (
                   <>
                     <StatItem>
-                      <StatIcon><FaQuestionCircle /></StatIcon>
+                      <StatIcon>
+                        <FaQuestionCircle />
+                      </StatIcon>
                       <span>{item.questions} Questions</span>
                     </StatItem>
                     <StatItem>
-                      <StatIcon><FaClock /></StatIcon>
+                      <StatIcon>
+                        <FaClock />
+                      </StatIcon>
                       <span>Time Limit: {item.timeLimit}</span>
                     </StatItem>
                     <StatItem>
-                      <StatIcon><FaBook /></StatIcon>
+                      <StatIcon>
+                        <FaBook />
+                      </StatIcon>
                       <span>Category: {item.category}</span>
                     </StatItem>
                   </>
                 )}
               </ProblemMeta>
               <ActionBar>
-                <StartButton>{type === 'quizzes' ? 'Start Quiz' : type === 'machine-coding' ? 'Solve' : 'Solve'}</StartButton>
+                <StartButton>
+                  {type === 'quizzes'
+                    ? 'Start Quiz'
+                    : type === 'machine-coding'
+                      ? 'Solve'
+                      : 'Solve'}
+                </StartButton>
                 {/* Mocked completed badge for demo; replace with real logic if available */}
                 {Math.random() > 0.7 && (
-                  <CompletedBadge><FaCheck /> Completed</CompletedBadge>
+                  <CompletedBadge>
+                    <FaCheck /> Completed
+                  </CompletedBadge>
                 )}
               </ActionBar>
             </ProblemCard>
@@ -1404,29 +1506,32 @@ const InterviewPage: React.FC = () => {
       case 'topics':
         return (
           <>
-            <SectionHeading><FaBook /> Interview Topics</SectionHeading>
+            <SectionHeading>
+              <FaBook /> Interview Topics
+            </SectionHeading>
             <SectionDescription>
-              Explore all the essential frontend interview topics. Click a topic to start learning or practicing questions.
+              Explore all the essential frontend interview topics. Click a topic to start learning
+              or practicing questions.
             </SectionDescription>
             <TopicsGrid>
-              {filteredTopics.map((topic) => (
+              {filteredTopics.map(topic => (
                 <TopicCard key={topic.id}>
                   <TopicIcon className="topic-icon">{topic.icon}</TopicIcon>
                   <TopicTitle>{topic.title}</TopicTitle>
                   <TopicDescription>{topic.description}</TopicDescription>
                   <TagGroup>
-                    {topic.tags.map((tag) => (
+                    {topic.tags.map(tag => (
                       <Tag key={tag} type={tag as 'beginner' | 'intermediate' | 'advanced'}>
                         {tag.charAt(0).toUpperCase() + tag.slice(1)}
                       </Tag>
                     ))}
-                    {topic.technologies.map((tech) => (
+                    {topic.technologies.map(tech => (
                       <Tag key={tech} type="technology">
                         <TechIcon>{getTechIcon(tech)}</TechIcon>
                         {tech}
                       </Tag>
                     ))}
-                    {topic.roles.map((role) => (
+                    {topic.roles.map(role => (
                       <Tag key={role} type="role">
                         {role}
                       </Tag>
@@ -1443,9 +1548,12 @@ const InterviewPage: React.FC = () => {
       case 'dsa':
         return (
           <>
-            <SectionHeading><FaList /> DSA Blind 75</SectionHeading>
+            <SectionHeading>
+              <FaList /> DSA Blind 75
+            </SectionHeading>
             <SectionDescription>
-              Practice the most frequently asked DSA problems for frontend interviews. Click a problem to solve it!
+              Practice the most frequently asked DSA problems for frontend interviews. Click a
+              problem to solve it!
             </SectionDescription>
             {renderListContent('dsa')}
           </>
@@ -1453,9 +1561,12 @@ const InterviewPage: React.FC = () => {
       case 'machine-coding':
         return (
           <>
-            <SectionHeading><FaLaptop /> Machine Coding Rounds</SectionHeading>
+            <SectionHeading>
+              <FaLaptop /> Machine Coding Rounds
+            </SectionHeading>
             <SectionDescription>
-              Tackle real-world frontend machine coding challenges. Click a challenge to get started.
+              Tackle real-world frontend machine coding challenges. Click a challenge to get
+              started.
             </SectionDescription>
             {renderListContent('machine-coding')}
           </>
@@ -1463,9 +1574,12 @@ const InterviewPage: React.FC = () => {
       case 'quizzes':
         return (
           <>
-            <SectionHeading><FaQuestionCircle /> Frontend Quizzes</SectionHeading>
+            <SectionHeading>
+              <FaQuestionCircle /> Frontend Quizzes
+            </SectionHeading>
             <SectionDescription>
-              Test your knowledge with quick quizzes on frontend topics, frameworks, and best practices.
+              Test your knowledge with quick quizzes on frontend topics, frameworks, and best
+              practices.
             </SectionDescription>
             {renderListContent('quizzes')}
           </>
@@ -1534,21 +1648,28 @@ const InterviewPage: React.FC = () => {
           <Header>
             <Title>Frontend Interview Prep</Title>
             <Description>
-              Master frontend interview preparation with our comprehensive collection of topics, questions, and best practices.
-              From fundamentals to advanced concepts, we've got you covered.
+              Master frontend interview preparation with our comprehensive collection of topics,
+              questions, and best practices. From fundamentals to advanced concepts, we've got you
+              covered.
             </Description>
 
             <StatsBar>
               <StatItem>
-                <StatIcon><FaStar /></StatIcon>
+                <StatIcon>
+                  <FaStar />
+                </StatIcon>
                 <span>500+ Interview Questions</span>
               </StatItem>
               <StatItem>
-                <StatIcon><FaClock /></StatIcon>
+                <StatIcon>
+                  <FaClock />
+                </StatIcon>
                 <span>50+ Hours of Content</span>
               </StatItem>
               <StatItem>
-                <StatIcon><FaUsers /></StatIcon>
+                <StatIcon>
+                  <FaUsers />
+                </StatIcon>
                 <span>10k+ Success Stories</span>
               </StatItem>
             </StatsBar>
@@ -1558,44 +1679,33 @@ const InterviewPage: React.FC = () => {
 
           <TabContainer>
             <TabList>
-              <Tab 
-                active={activeTab === 'topics'} 
-                onClick={() => setActiveTab('topics')}
-              >
+              <Tab active={activeTab === 'topics'} onClick={() => setActiveTab('topics')}>
                 <FaBook />
                 Topics
               </Tab>
-              <Tab 
-                active={activeTab === 'dsa'} 
-                onClick={() => setActiveTab('dsa')}
-              >
+              <Tab active={activeTab === 'dsa'} onClick={() => setActiveTab('dsa')}>
                 <FaList />
                 DSA Blind 75
               </Tab>
-              <Tab 
-                active={activeTab === 'machine-coding'} 
+              <Tab
+                active={activeTab === 'machine-coding'}
                 onClick={() => setActiveTab('machine-coding')}
               >
                 <FaLaptop />
                 Machine Coding
               </Tab>
-              <Tab 
-                active={activeTab === 'quizzes'} 
-                onClick={() => setActiveTab('quizzes')}
-              >
+              <Tab active={activeTab === 'quizzes'} onClick={() => setActiveTab('quizzes')}>
                 <FaQuestionCircle />
                 Quizzes
               </Tab>
             </TabList>
           </TabContainer>
 
-          <TabContent>
-            {renderTabContent()}
-          </TabContent>
+          <TabContent>{renderTabContent()}</TabContent>
         </ContentSection>
       </PageContainer>
     </MainLayout>
   );
 };
 
-export default InterviewPage; 
+export default InterviewPage;

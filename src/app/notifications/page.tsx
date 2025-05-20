@@ -16,14 +16,14 @@ import {
   CategoryList,
   CategoryButton,
   UserAvatar,
-  UserName
+  UserName,
 } from '../components/StyledComponents';
 
 const categories = [
   { id: 'all', name: 'All Notifications', count: 15 },
   { id: 'unread', name: 'Unread', count: 5 },
   { id: 'mentions', name: 'Mentions', count: 3 },
-  { id: 'updates', name: 'Updates', count: 7 }
+  { id: 'updates', name: 'Updates', count: 7 },
 ];
 
 const notifications = [
@@ -34,10 +34,10 @@ const notifications = [
     content: 'Jane Smith mentioned you in a discussion about React performance.',
     author: {
       name: 'Jane Smith',
-      avatar: '/default-avatar.svg'
+      avatar: '/default-avatar.svg',
     },
     timestamp: '2 hours ago',
-    read: false
+    read: false,
   },
   {
     id: 2,
@@ -46,33 +46,34 @@ const notifications = [
     content: 'New content has been added to your "React Fundamentals" course.',
     author: {
       name: 'System',
-      avatar: '/default-avatar.svg'
+      avatar: '/default-avatar.svg',
     },
     timestamp: '5 hours ago',
-    read: true
+    read: true,
   },
   {
     id: 3,
     type: 'achievement',
     title: 'New achievement unlocked',
-    content: 'Congratulations! You\'ve completed 10 coding challenges.',
+    content: "Congratulations! You've completed 10 coding challenges.",
     author: {
       name: 'System',
-      avatar: '/default-avatar.svg'
+      avatar: '/default-avatar.svg',
     },
     timestamp: '1 day ago',
-    read: true
-  }
+    read: true,
+  },
 ];
 
 export default function NotificationsPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
 
-  const filteredNotifications = selectedCategory === 'all'
-    ? notifications
-    : selectedCategory === 'unread'
-    ? notifications.filter(n => !n.read)
-    : notifications.filter(n => n.type === selectedCategory);
+  const filteredNotifications =
+    selectedCategory === 'all'
+      ? notifications
+      : selectedCategory === 'unread'
+        ? notifications.filter(n => !n.read)
+        : notifications.filter(n => n.type === selectedCategory);
 
   const markAsRead = (id: number) => {
     // Here you would typically make an API call to mark the notification as read
@@ -90,9 +91,7 @@ export default function NotificationsPage() {
         <Section>
           <SectionHeader>
             <SectionTitle>Notifications</SectionTitle>
-            <TopicCardAction onClick={markAllAsRead}>
-              Mark all as read
-            </TopicCardAction>
+            <TopicCardAction onClick={markAllAsRead}>Mark all as read</TopicCardAction>
           </SectionHeader>
           <CategoryList>
             {categories.map(category => (
@@ -143,4 +142,4 @@ export default function NotificationsPage() {
       </MainContent>
     </PageContainer>
   );
-} 
+}

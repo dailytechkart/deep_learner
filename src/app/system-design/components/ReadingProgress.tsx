@@ -47,4 +47,4 @@ export default function ReadingProgress({ targetRef }: ReadingProgressProps) {
       <ProgressBar $progress={progress} />
     </ProgressContainer>
   );
-} 
+}

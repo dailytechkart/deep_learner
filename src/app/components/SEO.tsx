@@ -16,7 +16,7 @@ export default function SEO({
   keywords = [],
   ogImage = '/images/og-image.jpg',
   ogType = 'website',
-  twitterCard = 'summary_large_image'
+  twitterCard = 'summary_large_image',
 }: SEOProps) {
   const fullTitle = `${title} | Frontend School`;
 
@@ -24,9 +24,7 @@ export default function SEO({
     <Head>
       <title>{fullTitle}</title>
       <meta name="description" content={description} />
-      {keywords.length > 0 && (
-        <meta name="keywords" content={keywords.join(', ')} />
-      )}
+      {keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
 
       {/* Open Graph */}
       <meta property="og:title" content={fullTitle} />
@@ -45,4 +43,4 @@ export default function SEO({
       <meta charSet="utf-8" />
     </Head>
   );
-} 
+}

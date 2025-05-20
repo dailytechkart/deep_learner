@@ -8,7 +8,12 @@ const MDXContainer = styled.div`
   line-height: 1.6;
   font-size: ${props => props.theme.typography.body1.fontSize};
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: ${props => props.theme.colors.text};
     margin: ${props => props.theme.spacing.lg} 0 ${props => props.theme.spacing.md};
     font-weight: ${props => props.theme.typography.fontWeight.bold};
@@ -45,7 +50,8 @@ const MDXContainer = styled.div`
     color: ${props => props.theme.colors.textSecondary};
   }
 
-  ul, ol {
+  ul,
+  ol {
     margin: ${props => props.theme.spacing.md} 0;
     padding-left: ${props => props.theme.spacing.xl};
     color: ${props => props.theme.colors.text};
@@ -67,7 +73,8 @@ const MDXContainer = styled.div`
     margin: ${props => props.theme.spacing.md} 0;
   }
 
-  th, td {
+  th,
+  td {
     padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
     border: 1px solid ${props => props.theme.colors.border};
     text-align: left;
@@ -111,4 +118,4 @@ export default function MDXContent({ source }: MDXContentProps) {
       <MDXRemote source={source} />
     </MDXContainer>
   );
-} 
+}

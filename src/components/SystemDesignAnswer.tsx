@@ -22,7 +22,16 @@ export interface SystemDesignAnswerProps {
 
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
   <section style={{ marginBottom: '2.5rem' }}>
-    <h2 style={{ fontSize: '1.35rem', fontWeight: 600, marginBottom: '1rem', color: 'var(--primary-color)' }}>{title}</h2>
+    <h2
+      style={{
+        fontSize: '1.35rem',
+        fontWeight: 600,
+        marginBottom: '1rem',
+        color: 'var(--primary-color)',
+      }}
+    >
+      {title}
+    </h2>
     <div>{children}</div>
   </section>
 );
@@ -32,7 +41,9 @@ const CenteredDiagram: React.FC<{ chart: string; caption: string }> = ({ chart, 
     <div style={{ maxWidth: 700, width: '100%' }}>
       <Mermaid chart={chart} />
     </div>
-    <div style={{ color: '#64748B', fontSize: '0.95rem', marginTop: 8, textAlign: 'center' }}>{caption}</div>
+    <div style={{ color: '#64748B', fontSize: '0.95rem', marginTop: 8, textAlign: 'center' }}>
+      {caption}
+    </div>
   </div>
 );
 
@@ -61,13 +72,17 @@ const SystemDesignAnswer: React.FC<SystemDesignAnswerProps> = ({
     {components && <Section title="4. Component Breakdown">{components}</Section>}
     {(dataModelDiagram || dataModelExplanation) && (
       <Section title="5. Data Model">
-        {dataModelDiagram && <CenteredDiagram chart={dataModelDiagram} caption="Data Model / ER Diagram" />}
+        {dataModelDiagram && (
+          <CenteredDiagram chart={dataModelDiagram} caption="Data Model / ER Diagram" />
+        )}
         {dataModelExplanation}
       </Section>
     )}
     {(keyFlowsDiagram || keyFlowsExplanation) && (
       <Section title="6. Key Flows">
-        {keyFlowsDiagram && <CenteredDiagram chart={keyFlowsDiagram} caption="Key User/Data Flows" />}
+        {keyFlowsDiagram && (
+          <CenteredDiagram chart={keyFlowsDiagram} caption="Key User/Data Flows" />
+        )}
         {keyFlowsExplanation}
       </Section>
     )}
@@ -76,4 +91,4 @@ const SystemDesignAnswer: React.FC<SystemDesignAnswerProps> = ({
   </article>
 );
 
-export default SystemDesignAnswer; 
+export default SystemDesignAnswer;

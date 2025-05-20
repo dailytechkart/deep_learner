@@ -36,16 +36,16 @@ const FilterSection = styled.div`
 
 const FilterButton = styled.button<{ active: boolean }>`
   padding: 0.5rem 1rem;
-  border: 2px solid ${props => props.active ? '#007bff' : '#e0e0e0'};
+  border: 2px solid ${props => (props.active ? '#007bff' : '#e0e0e0')};
   border-radius: 6px;
-  background: ${props => props.active ? '#007bff' : 'white'};
-  color: ${props => props.active ? 'white' : '#666'};
+  background: ${props => (props.active ? '#007bff' : 'white')};
+  color: ${props => (props.active ? 'white' : '#666')};
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
   &:hover {
     border-color: #007bff;
-    color: ${props => props.active ? 'white' : '#007bff'};
+    color: ${props => (props.active ? 'white' : '#007bff')};
   }
 `;
 
@@ -56,12 +56,10 @@ const CoursesPage: React.FC = () => {
   const filteredCourses = React.useMemo(() => {
     if (activeFilter === 'all') return courses;
     if (activeFilter === 'enrolled') {
-      return courses.filter(course => 
-        userCourses.some(uc => uc.courseId === course.id)
-      );
+      return courses.filter(course => userCourses.some(uc => uc.courseId === course.id));
     }
     if (activeFilter === 'completed') {
-      return courses.filter(course => 
+      return courses.filter(course =>
         userCourses.some(uc => uc.courseId === course.id && uc.status === 'completed')
       );
     }
@@ -81,16 +79,13 @@ const CoursesPage: React.FC = () => {
       <CoursesHeader>
         <Title>Explore Courses</Title>
         <Subtitle>
-          Discover a wide range of courses designed to help you master new skills
-          and advance your career.
+          Discover a wide range of courses designed to help you master new skills and advance your
+          career.
         </Subtitle>
       </CoursesHeader>
 
       <FilterSection>
-        <FilterButton
-          active={activeFilter === 'all'}
-          onClick={() => setActiveFilter('all')}
-        >
+        <FilterButton active={activeFilter === 'all'} onClick={() => setActiveFilter('all')}>
           All Courses
         </FilterButton>
         <FilterButton
@@ -112,4 +107,4 @@ const CoursesPage: React.FC = () => {
   );
 };
 
-export default CoursesPage; 
+export default CoursesPage;

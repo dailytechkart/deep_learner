@@ -40,4 +40,4 @@ export default function LoadingSpinner({ text = 'Loading...' }: LoadingSpinnerPr
       <LoadingText>{text}</LoadingText>
     </SpinnerContainer>
   );
-} 
+}

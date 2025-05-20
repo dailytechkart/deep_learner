@@ -67,14 +67,17 @@ const ActionButton = styled.button<{ $variant?: 'primary' | 'secondary' }>`
   align-items: center;
   gap: ${props => props.theme.spacing.sm};
 
-  ${props => props.$variant === 'primary' ? `
+  ${props =>
+    props.$variant === 'primary'
+      ? `
     background: ${props.theme.colors.primary};
     color: white;
 
     &:hover {
       background: ${props.theme.colors.primaryDark};
     }
-  ` : `
+  `
+      : `
     background: ${props.theme.colors.background};
     color: ${props.theme.colors.text};
     border: 1px solid ${props.theme.colors.border};
@@ -150,17 +153,19 @@ interface PageProps {
 }
 
 export default function PracticeProblemPage({ params }: PageProps) {
-  const [testResults, setTestResults] = useState<Array<{
-    status: 'success' | 'error' | 'pending';
-    message: string;
-  }>>([]);
+  const [testResults, setTestResults] = useState<
+    Array<{
+      status: 'success' | 'error' | 'pending';
+      message: string;
+    }>
+  >([]);
 
   const handleRunTests = () => {
     // Mock test results
     setTestResults([
       { status: 'success', message: 'Test case 1 passed: Basic functionality' },
       { status: 'error', message: 'Test case 2 failed: Edge case not handled' },
-      { status: 'pending', message: 'Running test case 3...' }
+      { status: 'pending', message: 'Running test case 3...' },
     ]);
   };
 
@@ -197,8 +202,7 @@ export default function PracticeProblemPage({ params }: PageProps) {
             {testResults.map((result, index) => (
               <TestResultItem key={index} $status={result.status}>
                 <StatusIcon $status={result.status}>
-                  {result.status === 'success' ? '✅' : 
-                   result.status === 'error' ? '❌' : '⏳'}
+                  {result.status === 'success' ? '✅' : result.status === 'error' ? '❌' : '⏳'}
                 </StatusIcon>
                 {result.message}
               </TestResultItem>
@@ -208,4 +212,4 @@ export default function PracticeProblemPage({ params }: PageProps) {
       </MainContent>
     </PracticeContainer>
   );
-} 
+}

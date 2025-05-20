@@ -20,12 +20,13 @@ const BreadcrumbItem = styled.div`
 `;
 
 const StyledLink = styled(Link)<{ $isActive: boolean }>`
-  color: ${props => props.$isActive ? props.theme.colors.text : props.theme.colors.textSecondary};
-  font-weight: ${props => props.$isActive ? '500' : '400'};
+  color: ${props => (props.$isActive ? props.theme.colors.text : props.theme.colors.textSecondary)};
+  font-weight: ${props => (props.$isActive ? '500' : '400')};
   text-decoration: none;
-  
+
   &:hover {
-    color: ${props => props.$isActive ? props.theme.colors.text : props.theme.colors.textSecondary};
+    color: ${props =>
+      props.$isActive ? props.theme.colors.text : props.theme.colors.textSecondary};
   }
 `;
 
@@ -38,7 +39,7 @@ const Separator = styled(ChevronRight)`
 
 export const Breadcrumb = ({ className }: BreadcrumbProps) => {
   const pathname = usePathname();
-  
+
   const generateBreadcrumbs = () => {
     const paths = pathname.split('/').filter(Boolean);
     const breadcrumbs = paths.map((path, index) => {
@@ -57,14 +58,11 @@ export const Breadcrumb = ({ className }: BreadcrumbProps) => {
       {breadcrumbs.map((breadcrumb, index) => (
         <BreadcrumbItem key={breadcrumb.href}>
           {index > 0 && <Separator />}
-          <StyledLink
-            href={breadcrumb.href}
-            $isActive={index === breadcrumbs.length - 1}
-          >
+          <StyledLink href={breadcrumb.href} $isActive={index === breadcrumbs.length - 1}>
             {breadcrumb.label}
           </StyledLink>
         </BreadcrumbItem>
       ))}
     </Nav>
   );
-}; 
+};

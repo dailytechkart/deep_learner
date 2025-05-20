@@ -73,11 +73,11 @@ export async function revokeSessionCookie(): Promise<void> {
 
 export async function requireAuth(request: NextRequest): Promise<ServerSession> {
   const session = await getServerSession();
-  
+
   if (!session) {
     throw new Error('Authentication required');
   }
-  
+
   return session;
 }
 
@@ -87,10 +87,7 @@ export async function withAuth(handler: (session: ServerSession) => Promise<Next
       const session = await requireAuth(request);
       return await handler(session);
     } catch (error) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
   };
-} 
+}

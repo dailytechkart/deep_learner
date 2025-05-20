@@ -27,7 +27,7 @@ const Mermaid: React.FC<MermaidProps> = ({ chart, id }) => {
           setError(null);
         }
       })
-      .catch((err) => {
+      .catch(err => {
         if (isMounted) {
           setError('Failed to render diagram.');
           setSvg('');
@@ -51,4 +51,4 @@ const Mermaid: React.FC<MermaidProps> = ({ chart, id }) => {
   );
 };
 
-export default Mermaid; 
+export default Mermaid;

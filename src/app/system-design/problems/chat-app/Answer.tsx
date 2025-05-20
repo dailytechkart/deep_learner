@@ -109,7 +109,7 @@ function CustomUl({ children }: { children: ReactNode }) {
                 </>
               ),
             })
-          : li,
+          : li
       )}
     </ul>
   );
@@ -150,17 +150,14 @@ const ChatAppAnswer = () => (
             fontFamily: 'inherit',
           }}
         >
-          A modern, production-grade chat application architecture for web and
-          mobile, with a focus on frontend engineering, real-time UX, and
-          scalable state management.
+          A modern, production-grade chat application architecture for web and mobile, with a focus
+          on frontend engineering, real-time UX, and scalable state management.
         </p>
       </header>
       {section(
         '1. Clarifying Questions',
         <CustomUl>
-          <li>
-            What browsers/devices must be supported? (mobile, desktop, PWA?)
-          </li>
+          <li>What browsers/devices must be supported? (mobile, desktop, PWA?)</li>
           <li>Should the app work offline or with flaky connections?</li>
           <li>What accessibility (a11y) standards are required?</li>
           <li>What is the expected message volume per user/session?</li>
@@ -168,16 +165,14 @@ const ChatAppAnswer = () => (
           <li>What are the branding/theming requirements?</li>
           <li>Should the UI support dark mode and localization?</li>
           <li>What analytics/tracking is needed?</li>
-        </CustomUl>,
+        </CustomUl>
       )}
       {section(
         '2. Requirements',
         <>
           <strong>Frontend Functional:</strong>
           <CustomUl>
-            <li>
-              Real-time chat UI (1:1, group, unread badges, typing indicators)
-            </li>
+            <li>Real-time chat UI (1:1, group, unread badges, typing indicators)</li>
             <li>Optimistic UI for sending messages</li>
             <li>File/image upload with preview and progress</li>
             <li>Emoji/reactions, message editing/deleting</li>
@@ -187,13 +182,9 @@ const ChatAppAnswer = () => (
             <li>Push notifications, sound/vibration alerts</li>
             <li>Offline support (PWA, service worker, local cache)</li>
           </CustomUl>
-          <strong style={{ display: 'block', marginTop: 18 }}>
-            Frontend Non-Functional:
-          </strong>
+          <strong style={{ display: 'block', marginTop: 18 }}>Frontend Non-Functional:</strong>
           <CustomUl>
-            <li>
-              Fast load time, smooth transitions, &lt;100ms message latency
-            </li>
+            <li>Fast load time, smooth transitions, &lt;100ms message latency</li>
             <li>Works on all major browsers/devices</li>
             <li>WCAG 2.1 accessibility, keyboard navigation</li>
             <li>Secure against XSS, CSRF, input validation</li>
@@ -205,7 +196,7 @@ const ChatAppAnswer = () => (
             <li>REST endpoints for auth, chat, file upload</li>
             <li>WebSocket events for real-time messaging</li>
           </CustomUl>
-        </>,
+        </>
       )}
       {section(
         '3. High-Level Frontend Architecture',
@@ -230,67 +221,52 @@ const ChatAppAnswer = () => (
                 fontFamily: 'inherit',
               }}
             >
-              Frontend app structure: SPA, state, service layer, WebSocket/API
-              clients, theming, routing.
+              Frontend app structure: SPA, state, service layer, WebSocket/API clients, theming,
+              routing.
             </div>
           </div>
           <p style={{ margin: 0 }}>
-            The frontend is a React SPA using state management
-            (Redux/Zustand/Context), a service layer for API/WebSocket, and
-            local cache for offline support. UI is modular, themeable, and
-            responsive. All real-time events are handled via WebSocket client,
-            with optimistic UI and error handling.
+            The frontend is a React SPA using state management (Redux/Zustand/Context), a service
+            layer for API/WebSocket, and local cache for offline support. UI is modular, themeable,
+            and responsive. All real-time events are handled via WebSocket client, with optimistic
+            UI and error handling.
           </p>
-        </>,
+        </>
       )}
       {section(
         '4. Component Breakdown',
         <>
           <p style={{ margin: '0 0 2.2rem 0' }}>
-            The UI follows a modern messenger-style layout with a three-panel
-            design: sidebar, chat list, and chat thread. Each component is built
-            for performance, accessibility, and real-time updates.
+            The UI follows a modern messenger-style layout with a three-panel design: sidebar, chat
+            list, and chat thread. Each component is built for performance, accessibility, and
+            real-time updates.
           </p>
           <CustomUl>
             <li>
               <strong>Sidebar:</strong>
               <ul style={{ ...listStyles, marginTop: 12 }}>
-                <li style={liStyles}>
-                  User profile with avatar, status, and quick actions
-                </li>
+                <li style={liStyles}>User profile with avatar, status, and quick actions</li>
                 <li style={liStyles}>Navigation menu with icons and labels</li>
                 <li style={liStyles}>Theme switcher and settings access</li>
-                <li style={liStyles}>
-                  Collapsible on mobile with smooth transitions
-                </li>
+                <li style={liStyles}>Collapsible on mobile with smooth transitions</li>
               </ul>
             </li>
             <li>
               <strong>Chat List:</strong>
               <ul style={{ ...listStyles, marginTop: 12 }}>
                 <li style={liStyles}>Search bar with instant filtering</li>
-                <li style={liStyles}>
-                  Chat preview cards with avatar, name, last message
-                </li>
+                <li style={liStyles}>Chat preview cards with avatar, name, last message</li>
                 <li style={liStyles}>Unread badge with count and highlight</li>
-                <li style={liStyles}>
-                  Online status indicators and typing status
-                </li>
+                <li style={liStyles}>Online status indicators and typing status</li>
                 <li style={liStyles}>Virtualized list for performance</li>
               </ul>
             </li>
             <li>
               <strong>Chat Thread:</strong>
               <ul style={{ ...listStyles, marginTop: 12 }}>
-                <li style={liStyles}>
-                  Header with chat info, actions, and participants
-                </li>
-                <li style={liStyles}>
-                  Message bubbles with timestamps and status
-                </li>
-                <li style={liStyles}>
-                  Support for text, images, files, and emoji
-                </li>
+                <li style={liStyles}>Header with chat info, actions, and participants</li>
+                <li style={liStyles}>Message bubbles with timestamps and status</li>
+                <li style={liStyles}>Support for text, images, files, and emoji</li>
                 <li style={liStyles}>Message reactions and reply threads</li>
                 <li style={liStyles}>Infinite scroll with loading states</li>
               </ul>
@@ -326,7 +302,7 @@ const ChatAppAnswer = () => (
               <li>Touch-friendly interactions and gestures</li>
             </CustomUl>
           </div>
-        </>,
+        </>
       )}
       {section(
         '5. Frontend State Model',
@@ -351,17 +327,15 @@ const ChatAppAnswer = () => (
                 fontFamily: 'inherit',
               }}
             >
-              Frontend state shape: chat list, messages, typing, unread,
-              uploads, user info.
+              Frontend state shape: chat list, messages, typing, unread, uploads, user info.
             </div>
           </div>
           <p style={{ margin: 0 }}>
-            State is managed globally (Redux/Zustand/Context) and locally
-            (component state). All chat, message, typing, unread, and file
-            upload data is normalized for fast updates and rendering. Local
-            cache (IndexedDB) is used for offline support.
+            State is managed globally (Redux/Zustand/Context) and locally (component state). All
+            chat, message, typing, unread, and file upload data is normalized for fast updates and
+            rendering. Local cache (IndexedDB) is used for offline support.
           </p>
-        </>,
+        </>
       )}
       {section(
         '6. Key UI Flows',
@@ -386,26 +360,19 @@ const ChatAppAnswer = () => (
                 fontFamily: 'inherit',
               }}
             >
-              UI flow: send/receive message, optimistic update, unread badge,
-              typing, real-time events.
+              UI flow: send/receive message, optimistic update, unread badge, typing, real-time
+              events.
             </div>
           </div>
           <ol style={olStyles}>
+            <li style={liStyles}>User types and sends a message; UI updates optimistically.</li>
+            <li style={liStyles}>WebSocket emits event; backend acks and updates status.</li>
+            <li style={liStyles}>Incoming messages update state and UI in real time.</li>
             <li style={liStyles}>
-              User types and sends a message; UI updates optimistically.
-            </li>
-            <li style={liStyles}>
-              WebSocket emits event; backend acks and updates status.
-            </li>
-            <li style={liStyles}>
-              Incoming messages update state and UI in real time.
-            </li>
-            <li style={liStyles}>
-              Unread badges, typing indicators, and notifications update
-              instantly.
+              Unread badges, typing indicators, and notifications update instantly.
             </li>
           </ol>
-        </>,
+        </>
       )}
       {section(
         '7. Bottlenecks & Tradeoffs',
@@ -417,7 +384,7 @@ const ChatAppAnswer = () => (
           <li>Accessibility for all interactive elements</li>
           <li>State sync between tabs/devices</li>
           <li>Security: XSS, CSRF, input validation</li>
-        </CustomUl>,
+        </CustomUl>
       )}
       {section(
         '8. Advanced/Optional Considerations',
@@ -427,10 +394,8 @@ const ChatAppAnswer = () => (
           <li>Analytics: user engagement, error tracking</li>
           <li>Testing: unit, integration, E2E (Jest, Cypress, Playwright)</li>
           <li>Frontend monitoring: Sentry, LogRocket, performance metrics</li>
-          <li>
-            Minimal backend: API/WebSocket contract, auth, file upload endpoint
-          </li>
-        </CustomUl>,
+          <li>Minimal backend: API/WebSocket contract, auth, file upload endpoint</li>
+        </CustomUl>
       )}
       {section(
         '9. Example Code Block',
@@ -443,7 +408,7 @@ const handleSend = (content) => {
     updateMessageStatus(tempId, ack.status);
   });
 };
-        `}</CustomCodeBlock>,
+        `}</CustomCodeBlock>
       )}
     </div>
   </article>

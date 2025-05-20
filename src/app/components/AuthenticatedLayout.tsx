@@ -6,11 +6,7 @@ import { useRouter } from 'next/navigation';
 import Header from './Header';
 import { PageContainer } from './StyledComponents';
 
-export default function AuthenticatedLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
@@ -31,11 +27,8 @@ export default function AuthenticatedLayout({
 
   return (
     <PageContainer>
-      <Header
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-      />
+      <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} />
       {children}
     </PageContainer>
   );
-} 
+}

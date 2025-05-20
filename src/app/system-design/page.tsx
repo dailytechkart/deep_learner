@@ -4,8 +4,32 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import MainLayout from '@/components/MainLayout';
 import { useTheme } from '@/app/context/ThemeContext';
-import { FaServer, FaDatabase, FaNetworkWired, FaCloud, FaShieldAlt, FaChartLine, FaCogs, FaUsers, FaCode, FaLaptopCode, FaMobile, FaGlobe, FaReact, FaNodeJs, FaAws, FaFilter } from 'react-icons/fa';
-import { SiTypescript, SiJavascript, SiNextdotjs, SiTailwindcss, SiRedux, SiWebpack } from 'react-icons/si';
+import {
+  FaServer,
+  FaDatabase,
+  FaNetworkWired,
+  FaCloud,
+  FaShieldAlt,
+  FaChartLine,
+  FaCogs,
+  FaUsers,
+  FaCode,
+  FaLaptopCode,
+  FaMobile,
+  FaGlobe,
+  FaReact,
+  FaNodeJs,
+  FaAws,
+  FaFilter,
+} from 'react-icons/fa';
+import {
+  SiTypescript,
+  SiJavascript,
+  SiNextdotjs,
+  SiTailwindcss,
+  SiRedux,
+  SiWebpack,
+} from 'react-icons/si';
 
 const PageContainer = styled.div`
   max-width: 1400px;
@@ -90,9 +114,10 @@ const FilterChip = styled.button<{ active?: boolean }>`
   margin: 0.25rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid ${props => props.active ? props.theme.colors.primary : props.theme.colors.border};
-  background: ${props => props.active ? props.theme.colors.primary + '15' : 'transparent'};
-  color: ${props => props.active ? props.theme.colors.primary : props.theme.colors.textSecondary};
+  border: 1px solid
+    ${props => (props.active ? props.theme.colors.primary : props.theme.colors.border)};
+  background: ${props => (props.active ? props.theme.colors.primary + '15' : 'transparent')};
+  color: ${props => (props.active ? props.theme.colors.primary : props.theme.colors.textSecondary)};
   position: relative;
   overflow: hidden;
 
@@ -279,15 +304,19 @@ const tagColors = {
     Amazon: { bg: '#FFF7E0', color: '#FF9900' },
     Microsoft: { bg: '#EAF1FB', color: '#0078D4' },
     Apple: { bg: '#F5F5F7', color: '#000000' },
-    default: { bg: '#F3E5F5', color: '#8E24AA' }
-  }
+    default: { bg: '#F3E5F5', color: '#8E24AA' },
+  },
 };
 
 const getCompanyTagColor = (company: string) => {
   return tagColors.company[company as keyof typeof tagColors.company] || tagColors.company.default;
 };
 
-const Tag = styled.span<{ type?: 'beginner' | 'intermediate' | 'advanced' | 'technology' | 'role', color?: string, bgColor?: string }>`
+const Tag = styled.span<{
+  type?: 'beginner' | 'intermediate' | 'advanced' | 'technology' | 'role';
+  color?: string;
+  bgColor?: string;
+}>`
   display: inline-flex;
   align-items: center;
   padding: 0.375rem 0.875rem;
@@ -295,21 +324,33 @@ const Tag = styled.span<{ type?: 'beginner' | 'intermediate' | 'advanced' | 'tec
   font-size: 0.75rem;
   font-weight: 600;
   background: ${({ type, bgColor }) =>
-    bgColor ? bgColor :
-    type === 'beginner' ? tagColors.beginner.bg :
-    type === 'intermediate' ? tagColors.intermediate.bg :
-    type === 'advanced' ? tagColors.advanced.bg :
-    type === 'technology' ? tagColors.technology.bg :
-    type === 'role' ? tagColors.role.bg :
-    tagColors.beginner.bg};
+    bgColor
+      ? bgColor
+      : type === 'beginner'
+        ? tagColors.beginner.bg
+        : type === 'intermediate'
+          ? tagColors.intermediate.bg
+          : type === 'advanced'
+            ? tagColors.advanced.bg
+            : type === 'technology'
+              ? tagColors.technology.bg
+              : type === 'role'
+                ? tagColors.role.bg
+                : tagColors.beginner.bg};
   color: ${({ type, color }) =>
-    color ? color :
-    type === 'beginner' ? tagColors.beginner.color :
-    type === 'intermediate' ? tagColors.intermediate.color :
-    type === 'advanced' ? tagColors.advanced.color :
-    type === 'technology' ? tagColors.technology.color :
-    type === 'role' ? tagColors.role.color :
-    tagColors.beginner.color};
+    color
+      ? color
+      : type === 'beginner'
+        ? tagColors.beginner.color
+        : type === 'intermediate'
+          ? tagColors.intermediate.color
+          : type === 'advanced'
+            ? tagColors.advanced.color
+            : type === 'technology'
+              ? tagColors.technology.color
+              : type === 'role'
+                ? tagColors.role.color
+                : tagColors.beginner.color};
   transition: all 0.2s ease;
   margin-right: 0.25rem;
   margin-bottom: 0.25rem;
@@ -339,99 +380,111 @@ const frontendTopics = [
   {
     id: 'react-architecture',
     title: 'React Architecture',
-    description: 'Learn advanced React patterns, component design, state management, and performance optimization techniques.',
+    description:
+      'Learn advanced React patterns, component design, state management, and performance optimization techniques.',
     icon: <FaReact />,
     tags: ['intermediate'],
-    technologies: ['React', 'TypeScript', 'Redux']
+    technologies: ['React', 'TypeScript', 'Redux'],
   },
   {
     id: 'nextjs',
     title: 'Next.js & SSR',
-    description: 'Master server-side rendering, static generation, and advanced Next.js features for production applications.',
+    description:
+      'Master server-side rendering, static generation, and advanced Next.js features for production applications.',
     icon: <SiNextdotjs />,
     tags: ['intermediate'],
-    technologies: ['Next.js', 'React', 'TypeScript']
+    technologies: ['Next.js', 'React', 'TypeScript'],
   },
   {
     id: 'state-management',
     title: 'State Management',
-    description: 'Explore different state management solutions, from local state to global state management patterns.',
+    description:
+      'Explore different state management solutions, from local state to global state management patterns.',
     icon: <SiRedux />,
     tags: ['intermediate'],
-    technologies: ['Redux', 'Context', 'Zustand']
+    technologies: ['Redux', 'Context', 'Zustand'],
   },
   {
     id: 'typescript',
     title: 'TypeScript Patterns',
-    description: 'Learn TypeScript best practices, type system, and advanced patterns for robust frontend development.',
+    description:
+      'Learn TypeScript best practices, type system, and advanced patterns for robust frontend development.',
     icon: <SiTypescript />,
     tags: ['intermediate'],
-    technologies: ['TypeScript', 'React', 'Node.js']
+    technologies: ['TypeScript', 'React', 'Node.js'],
   },
   {
     id: 'performance',
     title: 'Frontend Performance',
-    description: 'Master performance optimization techniques, code splitting, and bundle optimization strategies.',
+    description:
+      'Master performance optimization techniques, code splitting, and bundle optimization strategies.',
     icon: <SiWebpack />,
     tags: ['advanced'],
-    technologies: ['Webpack', 'React', 'JavaScript']
+    technologies: ['Webpack', 'React', 'JavaScript'],
   },
   {
     id: 'styling',
     title: 'CSS & Styling',
-    description: 'Learn modern CSS techniques, styling patterns, and best practices for maintainable styles.',
+    description:
+      'Learn modern CSS techniques, styling patterns, and best practices for maintainable styles.',
     icon: <SiTailwindcss />,
     tags: ['intermediate'],
-    technologies: ['Tailwind', 'CSS', 'Styled Components']
+    technologies: ['Tailwind', 'CSS', 'Styled Components'],
   },
   {
     id: 'testing',
     title: 'Testing Strategies',
-    description: 'Master frontend testing techniques, from unit tests to end-to-end testing approaches.',
+    description:
+      'Master frontend testing techniques, from unit tests to end-to-end testing approaches.',
     icon: <FaCode />,
     tags: ['intermediate'],
-    technologies: ['Jest', 'React Testing', 'Cypress']
+    technologies: ['Jest', 'React Testing', 'Cypress'],
   },
   {
     id: 'security',
     title: 'Frontend Security',
-    description: 'Learn about frontend security best practices, authentication, and data protection.',
+    description:
+      'Learn about frontend security best practices, authentication, and data protection.',
     icon: <FaShieldAlt />,
     tags: ['advanced'],
-    technologies: ['JWT', 'OAuth', 'CORS']
+    technologies: ['JWT', 'OAuth', 'CORS'],
   },
   {
     id: 'deployment',
     title: 'Deployment & CI/CD',
-    description: 'Master deployment strategies, CI/CD pipelines, and cloud hosting for frontend applications.',
+    description:
+      'Master deployment strategies, CI/CD pipelines, and cloud hosting for frontend applications.',
     icon: <FaAws />,
     tags: ['intermediate'],
-    technologies: ['AWS', 'Vercel', 'Netlify']
+    technologies: ['AWS', 'Vercel', 'Netlify'],
   },
   {
     id: 'mobile',
     title: 'Mobile-First Design',
-    description: 'Learn responsive design patterns, mobile optimization, and progressive web app development.',
+    description:
+      'Learn responsive design patterns, mobile optimization, and progressive web app development.',
     icon: <FaMobile />,
     tags: ['intermediate'],
-    technologies: ['PWA', 'Responsive', 'Mobile']
+    technologies: ['PWA', 'Responsive', 'Mobile'],
   },
   {
     id: 'accessibility',
     title: 'Accessibility',
-    description: 'Master web accessibility standards, ARIA patterns, and inclusive design practices.',
+    description:
+      'Master web accessibility standards, ARIA patterns, and inclusive design practices.',
     icon: <FaUsers />,
     tags: ['intermediate'],
-    technologies: ['WCAG', 'ARIA', 'Semantic HTML']
+    technologies: ['WCAG', 'ARIA', 'Semantic HTML'],
   },
   {
     id: 'architecture',
     title: 'Frontend Architecture',
-    description: 'Learn about frontend architecture patterns, micro-frontends, and scalable application design.',
+    description:
+      'Learn about frontend architecture patterns, micro-frontends, and scalable application design.',
     icon: <FaLaptopCode />,
     tags: ['advanced'],
-    technologies: ['Micro-frontends', 'Monorepo', 'Architecture']
-  }
+    technologies: ['Micro-frontends', 'Monorepo', 'Architecture'],
+  },
 ];
 
 const getTechIcon = (tech: string) => {
@@ -463,24 +516,23 @@ const SystemDesignPage: React.FC = () => {
   const allTechnologies = Array.from(new Set(frontendTopics.flatMap(topic => topic.technologies)));
 
   const filteredTopics = frontendTopics.filter(topic => {
-    const matchesDifficulty = selectedDifficulty.length === 0 || topic.tags.some(tag => selectedDifficulty.includes(tag));
-    const matchesTechnology = selectedTechnologies.length === 0 || topic.technologies.some(tech => selectedTechnologies.includes(tech));
+    const matchesDifficulty =
+      selectedDifficulty.length === 0 || topic.tags.some(tag => selectedDifficulty.includes(tag));
+    const matchesTechnology =
+      selectedTechnologies.length === 0 ||
+      topic.technologies.some(tech => selectedTechnologies.includes(tech));
     return matchesDifficulty && matchesTechnology;
   });
 
   const toggleDifficulty = (difficulty: string) => {
-    setSelectedDifficulty(prev => 
-      prev.includes(difficulty) 
-        ? prev.filter(d => d !== difficulty)
-        : [...prev, difficulty]
+    setSelectedDifficulty(prev =>
+      prev.includes(difficulty) ? prev.filter(d => d !== difficulty) : [...prev, difficulty]
     );
   };
 
   const toggleTechnology = (tech: string) => {
-    setSelectedTechnologies(prev => 
-      prev.includes(tech) 
-        ? prev.filter(t => t !== tech)
-        : [...prev, tech]
+    setSelectedTechnologies(prev =>
+      prev.includes(tech) ? prev.filter(t => t !== tech) : [...prev, tech]
     );
   };
 
@@ -492,23 +544,23 @@ const SystemDesignPage: React.FC = () => {
             <FaFilter />
             Filters
           </FilterTitle>
-          
+
           <FilterSection>
             <FilterSectionTitle>Difficulty Level</FilterSectionTitle>
             <FilterChipGroup>
-              <FilterChip 
+              <FilterChip
                 active={selectedDifficulty.includes('beginner')}
                 onClick={() => toggleDifficulty('beginner')}
               >
                 <span>Beginner</span>
               </FilterChip>
-              <FilterChip 
+              <FilterChip
                 active={selectedDifficulty.includes('intermediate')}
                 onClick={() => toggleDifficulty('intermediate')}
               >
                 <span>Intermediate</span>
               </FilterChip>
-              <FilterChip 
+              <FilterChip
                 active={selectedDifficulty.includes('advanced')}
                 onClick={() => toggleDifficulty('advanced')}
               >
@@ -521,7 +573,7 @@ const SystemDesignPage: React.FC = () => {
             <FilterSectionTitle>Technologies</FilterSectionTitle>
             <FilterChipGroup>
               {allTechnologies.map(tech => (
-                <FilterChip 
+                <FilterChip
                   key={tech}
                   active={selectedTechnologies.includes(tech)}
                   onClick={() => toggleTechnology(tech)}
@@ -533,10 +585,12 @@ const SystemDesignPage: React.FC = () => {
           </FilterSection>
 
           {(selectedDifficulty.length > 0 || selectedTechnologies.length > 0) && (
-            <ClearFiltersButton onClick={() => {
-              setSelectedDifficulty([]);
-              setSelectedTechnologies([]);
-            }}>
+            <ClearFiltersButton
+              onClick={() => {
+                setSelectedDifficulty([]);
+                setSelectedTechnologies([]);
+              }}
+            >
               Clear All Filters
             </ClearFiltersButton>
           )}
@@ -546,24 +600,25 @@ const SystemDesignPage: React.FC = () => {
           <Header>
             <Title>Frontend System Design</Title>
             <Description>
-              Master the art of designing scalable, maintainable, and performant frontend applications. Learn from real-world examples
-              and best practices used by top tech companies.
+              Master the art of designing scalable, maintainable, and performant frontend
+              applications. Learn from real-world examples and best practices used by top tech
+              companies.
             </Description>
           </Header>
 
           <TopicsGrid>
-            {filteredTopics.map((topic) => (
+            {filteredTopics.map(topic => (
               <TopicCard key={topic.id}>
                 <TopicIcon>{topic.icon}</TopicIcon>
                 <TopicTitle>{topic.title}</TopicTitle>
                 <TopicDescription>{topic.description}</TopicDescription>
                 <TagGroup>
-                  {topic.tags.map((tag) => (
+                  {topic.tags.map(tag => (
                     <Tag key={tag} type={tag as 'beginner' | 'intermediate' | 'advanced'}>
                       {tag.charAt(0).toUpperCase() + tag.slice(1)}
                     </Tag>
                   ))}
-                  {topic.technologies.map((tech) => (
+                  {topic.technologies.map(tech => (
                     <Tag key={tech} type="technology">
                       <TechIcon>{getTechIcon(tech)}</TechIcon>
                       {tech}
@@ -579,4 +634,4 @@ const SystemDesignPage: React.FC = () => {
   );
 };
 
-export default SystemDesignPage; 
+export default SystemDesignPage;

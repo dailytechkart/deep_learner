@@ -25,11 +25,7 @@ const MainContent = styled.main`
   padding: 1.5rem;
 `;
 
-export const PageLayout = ({
-  children,
-  className,
-  showBreadcrumb = true,
-}: PageLayoutProps) => {
+export const PageLayout = ({ children, className, showBreadcrumb = true }: PageLayoutProps) => {
   return (
     <PageContainer>
       <ContentWrapper>

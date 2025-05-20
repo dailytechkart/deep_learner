@@ -125,10 +125,10 @@ const UserDropdown = styled.div<{ isOpen: boolean }>`
   box-shadow: ${props => props.theme.shadows.md};
   padding: 0.5rem;
   min-width: 200px;
-  display: ${props => props.isOpen ? 'block' : 'none'};
+  display: ${props => (props.isOpen ? 'block' : 'none')};
   margin-top: 0.5rem;
   border: 1px solid ${props => props.theme.colors.border};
-  animation: ${props => props.isOpen ? 'slideDown' : 'slideUp'} 0.2s ease;
+  animation: ${props => (props.isOpen ? 'slideDown' : 'slideUp')} 0.2s ease;
 
   @keyframes slideDown {
     from {
@@ -221,7 +221,7 @@ const MobileNav = styled.div<{ isOpen: boolean }>`
   background: ${props => props.theme.colors.background};
   padding: 1rem;
   border-bottom: 1px solid ${props => props.theme.colors.border};
-  transform: translateY(${props => props.isOpen ? '0' : '-100%'});
+  transform: translateY(${props => (props.isOpen ? '0' : '-100%')});
   transition: transform 0.3s ease;
 
   @media (max-width: 768px) {
@@ -275,31 +275,39 @@ const Header: React.FC = () => {
 
         <Nav>
           <NavLink href="/learn">
-            <NavIcon><FaBook /></NavIcon>
+            <NavIcon>
+              <FaBook />
+            </NavIcon>
             Learn
           </NavLink>
           <NavLink href="/practice">
-            <NavIcon><FaRocket /></NavIcon>
+            <NavIcon>
+              <FaRocket />
+            </NavIcon>
             Practice
           </NavLink>
           <NavLink href="/roadmap">
-            <NavIcon><FaShieldAlt /></NavIcon>
+            <NavIcon>
+              <FaShieldAlt />
+            </NavIcon>
             Roadmap
           </NavLink>
           <NavLink href="/system-design">
-            <NavIcon><FaChartLine /></NavIcon>
+            <NavIcon>
+              <FaChartLine />
+            </NavIcon>
             System Design
           </NavLink>
           <NavLink href="/interview">
-            <NavIcon><FaChartLine /></NavIcon>
+            <NavIcon>
+              <FaChartLine />
+            </NavIcon>
             Interview
           </NavLink>
         </Nav>
 
         <RightSection>
-          <ThemeToggle onClick={toggleTheme}>
-            {isDarkMode ? '🌞' : '🌙'}
-          </ThemeToggle>
+          <ThemeToggle onClick={toggleTheme}>{isDarkMode ? '🌞' : '🌙'}</ThemeToggle>
           {user ? (
             <UserMenu className="user-menu">
               <UserAvatar onClick={handleUserMenuClick}>
@@ -330,31 +338,39 @@ const Header: React.FC = () => {
               <NavLink href="/signup">Sign Up</NavLink>
             </>
           )}
-          <MobileMenuButton onClick={toggleMobileMenu}>
-            ☰
-          </MobileMenuButton>
+          <MobileMenuButton onClick={toggleMobileMenu}>☰</MobileMenuButton>
         </RightSection>
       </HeaderContent>
 
       <MobileNav isOpen={isMobileMenuOpen}>
         <NavLink href="/learn">
-          <NavIcon><FaBook /></NavIcon>
+          <NavIcon>
+            <FaBook />
+          </NavIcon>
           Learn
         </NavLink>
         <NavLink href="/practice">
-          <NavIcon><FaRocket /></NavIcon>
+          <NavIcon>
+            <FaRocket />
+          </NavIcon>
           Practice
         </NavLink>
         <NavLink href="/roadmap">
-          <NavIcon><FaShieldAlt /></NavIcon>
+          <NavIcon>
+            <FaShieldAlt />
+          </NavIcon>
           Roadmap
         </NavLink>
         <NavLink href="/system-design">
-          <NavIcon><FaChartLine /></NavIcon>
+          <NavIcon>
+            <FaChartLine />
+          </NavIcon>
           System Design
         </NavLink>
         <NavLink href="/interview">
-          <NavIcon><FaChartLine /></NavIcon>
+          <NavIcon>
+            <FaChartLine />
+          </NavIcon>
           Interview
         </NavLink>
         {!user && (
@@ -368,4 +384,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header; 
+export default Header;

@@ -3,20 +3,20 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { 
-  FaFilter, 
-  FaSearch, 
-  FaTimes, 
-  FaClock, 
-  FaCode, 
-  FaServer, 
+import {
+  FaFilter,
+  FaSearch,
+  FaTimes,
+  FaClock,
+  FaCode,
+  FaServer,
   FaLaptopCode,
   FaGoogle,
   FaAmazon,
   FaMicrosoft,
   FaFacebook,
   FaApple,
-  FaPlay
+  FaPlay,
 } from 'react-icons/fa';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import SEO from '@/components/SEO';
@@ -66,8 +66,8 @@ const tagColors = {
     Amazon: { bg: '#FFF7E0', color: '#FF9900' },
     Microsoft: { bg: '#EAF1FB', color: '#0078D4' },
     Apple: { bg: '#F5F5F7', color: '#000000' },
-    default: { bg: '#F3E5F5', color: '#8E24AA' }
-  }
+    default: { bg: '#F3E5F5', color: '#8E24AA' },
+  },
 };
 
 const getCompanyTagColor = (company: string) => {
@@ -154,7 +154,7 @@ const FilterOption = styled.label<{ theme: Theme }>`
   border-radius: 6px;
   transition: all 0.2s;
   color: ${props => props.theme.colors.text.secondary};
-  
+
   &:hover {
     background: ${props => props.theme.colors.background.hover};
     color: ${props => props.theme.colors.text.primary};
@@ -267,7 +267,11 @@ const CardFooter = styled.div`
   gap: 0.75rem;
 `;
 
-const Tag = styled.span<{ type?: 'beginner' | 'intermediate' | 'advanced' | 'technology' | 'role', color?: string, bgColor?: string }>`
+const Tag = styled.span<{
+  type?: 'beginner' | 'intermediate' | 'advanced' | 'technology' | 'role';
+  color?: string;
+  bgColor?: string;
+}>`
   display: inline-flex;
   align-items: center;
   padding: 0.375rem 0.875rem;
@@ -275,21 +279,33 @@ const Tag = styled.span<{ type?: 'beginner' | 'intermediate' | 'advanced' | 'tec
   font-size: 0.8rem;
   font-weight: 600;
   background: ${({ type, bgColor }) =>
-    bgColor ? bgColor :
-    type === 'beginner' ? tagColors.beginner.bg :
-    type === 'intermediate' ? tagColors.intermediate.bg :
-    type === 'advanced' ? tagColors.advanced.bg :
-    type === 'technology' ? tagColors.technology.bg :
-    type === 'role' ? tagColors.role.bg :
-    tagColors.beginner.bg};
+    bgColor
+      ? bgColor
+      : type === 'beginner'
+        ? tagColors.beginner.bg
+        : type === 'intermediate'
+          ? tagColors.intermediate.bg
+          : type === 'advanced'
+            ? tagColors.advanced.bg
+            : type === 'technology'
+              ? tagColors.technology.bg
+              : type === 'role'
+                ? tagColors.role.bg
+                : tagColors.beginner.bg};
   color: ${({ type, color }) =>
-    color ? color :
-    type === 'beginner' ? tagColors.beginner.color :
-    type === 'intermediate' ? tagColors.intermediate.color :
-    type === 'advanced' ? tagColors.advanced.color :
-    type === 'technology' ? tagColors.technology.color :
-    type === 'role' ? tagColors.role.color :
-    tagColors.beginner.color};
+    color
+      ? color
+      : type === 'beginner'
+        ? tagColors.beginner.color
+        : type === 'intermediate'
+          ? tagColors.intermediate.color
+          : type === 'advanced'
+            ? tagColors.advanced.color
+            : type === 'technology'
+              ? tagColors.technology.color
+              : type === 'role'
+                ? tagColors.role.color
+                : tagColors.beginner.color};
   transition: all 0.2s ease;
   margin-right: 0.25rem;
   margin-bottom: 0.25rem;
@@ -313,15 +329,21 @@ const Badge = styled.span<{ difficulty: string }>`
   font-size: 0.8rem;
   font-weight: 500;
   background: ${({ difficulty }) =>
-    difficulty === 'Easy' ? tagColors.beginner.bg :
-    difficulty === 'Medium' ? tagColors.intermediate.bg :
-    difficulty === 'Hard' ? tagColors.advanced.bg :
-    tagColors.beginner.bg};
+    difficulty === 'Easy'
+      ? tagColors.beginner.bg
+      : difficulty === 'Medium'
+        ? tagColors.intermediate.bg
+        : difficulty === 'Hard'
+          ? tagColors.advanced.bg
+          : tagColors.beginner.bg};
   color: ${({ difficulty }) =>
-    difficulty === 'Easy' ? tagColors.beginner.color :
-    difficulty === 'Medium' ? tagColors.intermediate.color :
-    difficulty === 'Hard' ? tagColors.advanced.color :
-    tagColors.beginner.color};
+    difficulty === 'Easy'
+      ? tagColors.beginner.color
+      : difficulty === 'Medium'
+        ? tagColors.intermediate.color
+        : difficulty === 'Hard'
+          ? tagColors.advanced.color
+          : tagColors.beginner.color};
 `;
 
 const TagList = styled.div`
@@ -355,35 +377,38 @@ const problems: Problem[] = [
   {
     id: '1',
     title: 'Design a Real-time Dashboard',
-    description: 'Create a system for displaying real-time data with live updates, data visualization, and performance optimization.',
+    description:
+      'Create a system for displaying real-time data with live updates, data visualization, and performance optimization.',
     difficulty: 'Medium',
     tags: ['Real-time', 'Data Visualization', 'WebSocket', 'Performance'],
     category: 'Frontend',
     estimatedTime: '45-60 mins',
     link: '/system-design/problems/real-time-dashboard',
-    companies: ['Google', 'Meta', 'Netflix']
+    companies: ['Google', 'Meta', 'Netflix'],
   },
   {
     id: '2',
     title: 'Design a Micro Frontend Architecture',
-    description: 'Design a scalable micro frontend architecture for a large e-commerce application with multiple teams.',
+    description:
+      'Design a scalable micro frontend architecture for a large e-commerce application with multiple teams.',
     difficulty: 'Hard',
     tags: ['Micro Frontends', 'Module Federation', 'Team Collaboration'],
     category: 'Frontend',
     estimatedTime: '60-90 mins',
     link: '/system-design/problems/micro-frontend',
-    companies: ['Amazon', 'Microsoft']
+    companies: ['Amazon', 'Microsoft'],
   },
   {
     id: '3',
     title: 'Design a Frontend Caching System',
-    description: 'Implement an efficient caching strategy for a content-heavy web application with dynamic content.',
+    description:
+      'Implement an efficient caching strategy for a content-heavy web application with dynamic content.',
     difficulty: 'Medium',
     tags: ['Caching', 'Performance', 'State Management'],
     category: 'Frontend',
     estimatedTime: '30-45 mins',
     link: '/system-design/problems/frontend-caching',
-    companies: ['Google', 'Apple']
+    companies: ['Google', 'Apple'],
   },
   {
     id: '4',
@@ -394,18 +419,19 @@ const problems: Problem[] = [
     category: 'Frontend',
     estimatedTime: '45-60 mins',
     link: '/system-design/problems/pwa',
-    companies: ['Google', 'Microsoft']
+    companies: ['Google', 'Microsoft'],
   },
   {
     id: '5',
     title: 'Design a Scalable API Gateway',
-    description: 'Create an API gateway that can handle high traffic, rate limiting, and service discovery.',
+    description:
+      'Create an API gateway that can handle high traffic, rate limiting, and service discovery.',
     difficulty: 'Hard',
     tags: ['API Gateway', 'Load Balancing', 'Rate Limiting'],
     category: 'Backend',
     estimatedTime: '60-90 mins',
     link: '/system-design/problems/api-gateway',
-    companies: ['Amazon', 'Netflix']
+    companies: ['Amazon', 'Netflix'],
   },
   {
     id: '6',
@@ -416,8 +442,8 @@ const problems: Problem[] = [
     category: 'Backend',
     estimatedTime: '60-90 mins',
     link: '/system-design/problems/distributed-cache',
-    companies: ['Amazon', 'Meta']
-  }
+    companies: ['Amazon', 'Meta'],
+  },
 ];
 
 const getCompanyIcon = (company: string) => {
@@ -461,19 +487,29 @@ export default function SystemDesignProblemsPage() {
   const allTags = Array.from(new Set(problems.flatMap(p => p.tags)));
 
   const filteredProblems = problems.filter(problem => {
-    const matchesSearch = problem.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         problem.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesDifficulty = selectedDifficulties.length === 0 || selectedDifficulties.includes(problem.difficulty);
-    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(problem.category);
-    const matchesTags = selectedTags.length === 0 || selectedTags.some(tag => problem.tags.includes(tag));
+    const matchesSearch =
+      problem.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      problem.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesDifficulty =
+      selectedDifficulties.length === 0 || selectedDifficulties.includes(problem.difficulty);
+    const matchesCategory =
+      selectedCategories.length === 0 || selectedCategories.includes(problem.category);
+    const matchesTags =
+      selectedTags.length === 0 || selectedTags.some(tag => problem.tags.includes(tag));
 
     return matchesSearch && matchesDifficulty && matchesCategory && matchesTags;
   });
 
-  const toggleFilter = (filter: string, currentFilters: string[], setFilters: React.Dispatch<React.SetStateAction<string[]>>) => {
-    setFilters(currentFilters.includes(filter)
-      ? currentFilters.filter(f => f !== filter)
-      : [...currentFilters, filter]);
+  const toggleFilter = (
+    filter: string,
+    currentFilters: string[],
+    setFilters: React.Dispatch<React.SetStateAction<string[]>>
+  ) => {
+    setFilters(
+      currentFilters.includes(filter)
+        ? currentFilters.filter(f => f !== filter)
+        : [...currentFilters, filter]
+    );
   };
 
   return (
@@ -488,7 +524,7 @@ export default function SystemDesignProblemsPage() {
           'backend architecture',
           'scalability',
           'performance',
-          'interview preparation'
+          'interview preparation',
         ]}
       />
       <BreadcrumbWrapper>
@@ -496,7 +532,7 @@ export default function SystemDesignProblemsPage() {
           <Breadcrumbs
             items={[
               { label: 'System Design', href: '/system-design' },
-              { label: 'Practice Problems' }
+              { label: 'Practice Problems' },
             ]}
           />
         </Container>
@@ -509,10 +545,10 @@ export default function SystemDesignProblemsPage() {
               type="text"
               placeholder="Search problems..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
             />
           </SearchBar>
-          
+
           <FilterGroup>
             <FilterTitle>
               <FaFilter />
@@ -523,7 +559,9 @@ export default function SystemDesignProblemsPage() {
                 <input
                   type="checkbox"
                   checked={selectedDifficulties.includes(difficulty)}
-                  onChange={() => toggleFilter(difficulty, selectedDifficulties, setSelectedDifficulties)}
+                  onChange={() =>
+                    toggleFilter(difficulty, selectedDifficulties, setSelectedDifficulties)
+                  }
                 />
                 {difficulty}
               </FilterOption>
@@ -572,7 +610,7 @@ export default function SystemDesignProblemsPage() {
               <Card
                 key={problem.id}
                 whileHover={{ y: -5 }}
-                onClick={() => window.location.href = problem.link}
+                onClick={() => (window.location.href = problem.link)}
               >
                 <CardTitle>{problem.title}</CardTitle>
                 <CardDescription>{problem.description}</CardDescription>
@@ -610,4 +648,4 @@ export default function SystemDesignProblemsPage() {
       </Container>
     </>
   );
-} 
+}

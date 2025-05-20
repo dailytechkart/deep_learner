@@ -1,18 +1,20 @@
 ---
-title: "Chat Application (Messenger) System Design"
-difficulty: "Hard"
-timeEstimate: "60 minutes"
-category: "System Design"
+title: 'Chat Application (Messenger) System Design'
+difficulty: 'Hard'
+timeEstimate: '60 minutes'
+category: 'System Design'
 ---
 
 # Chat Application (Messenger) System Design
 
 ## Problem Statement
+
 Design a real-time chat application similar to Facebook Messenger that can handle millions of users, support various message types (text, images, videos), and provide features like message delivery status, typing indicators, and group chats.
 
 ## High-Level Design (HLD)
 
 ### System Requirements
+
 - Support millions of concurrent users
 - Real-time message delivery
 - Message persistence
@@ -27,22 +29,26 @@ Design a real-time chat application similar to Facebook Messenger that can handl
 ### Components
 
 1. **Client Applications**
+
    - Web application
    - Mobile applications (iOS, Android)
    - Desktop applications
 
 2. **Load Balancer**
+
    - Distributes incoming requests across multiple servers
    - Handles SSL termination
    - Implements health checks
 
 3. **WebSocket Servers**
+
    - Maintains persistent connections with clients
    - Handles real-time message delivery
    - Manages user presence
    - Implements typing indicators
 
 4. **Application Servers**
+
    - Handles HTTP requests
    - Manages user authentication
    - Processes message storage
@@ -50,12 +56,14 @@ Design a real-time chat application similar to Facebook Messenger that can handl
    - Implements business logic
 
 5. **Message Queue**
+
    - Decouples message processing from delivery
    - Handles message persistence
    - Manages offline message delivery
    - Implements retry mechanisms
 
 6. **Database Layer**
+
    - User data (PostgreSQL)
    - Message data (MongoDB)
    - Media storage (Object Storage)
@@ -69,11 +77,13 @@ Design a real-time chat application similar to Facebook Messenger that can handl
 ### Data Flow
 
 1. **Message Sending**
+
    ```
    Client -> Load Balancer -> WebSocket Server -> Message Queue -> Application Server -> Database
    ```
 
 2. **Message Receiving**
+
    ```
    Database -> Application Server -> Message Queue -> WebSocket Server -> Client
    ```
@@ -88,6 +98,7 @@ Design a real-time chat application similar to Facebook Messenger that can handl
 ### Database Schema
 
 #### Users Table
+
 ```sql
 CREATE TABLE users (
     user_id UUID PRIMARY KEY,
@@ -101,6 +112,7 @@ CREATE TABLE users (
 ```
 
 #### Messages Table
+
 ```sql
 CREATE TABLE messages (
     message_id UUID PRIMARY KEY,
@@ -117,6 +129,7 @@ CREATE TABLE messages (
 ```
 
 #### Group Chats Table
+
 ```sql
 CREATE TABLE group_chats (
     group_id UUID PRIMARY KEY,
@@ -127,6 +140,7 @@ CREATE TABLE group_chats (
 ```
 
 #### Group Members Table
+
 ```sql
 CREATE TABLE group_members (
     group_id UUID REFERENCES group_chats(group_id),
@@ -140,14 +154,16 @@ CREATE TABLE group_members (
 ### API Endpoints
 
 #### Authentication
+
 ```typescript
-POST /api/auth/register
-POST /api/auth/login
-POST /api/auth/logout
-GET /api/auth/me
+POST / api / auth / register;
+POST / api / auth / login;
+POST / api / auth / logout;
+GET / api / auth / me;
 ```
 
 #### Messages
+
 ```typescript
 POST /api/messages
 GET /api/messages/:conversationId
@@ -156,6 +172,7 @@ DELETE /api/messages/:messageId
 ```
 
 #### Groups
+
 ```typescript
 POST /api/groups
 GET /api/groups
@@ -165,6 +182,7 @@ DELETE /api/groups/:groupId
 ```
 
 #### Users
+
 ```typescript
 GET /api/users
 GET /api/users/:userId
@@ -188,20 +206,22 @@ interface ServerEvents {
   'message:new': (data: MessageData) => void;
   'message:delivered': (data: { messageId: string }) => void;
   'message:read': (data: { messageId: string }) => void;
-  'typing:start': (data: { userId: string, conversationId: string }) => void;
-  'typing:stop': (data: { userId: string, conversationId: string }) => void;
-  'presence:update': (data: { userId: string, status: UserStatus }) => void;
+  'typing:start': (data: { userId: string; conversationId: string }) => void;
+  'typing:stop': (data: { userId: string; conversationId: string }) => void;
+  'presence:update': (data: { userId: string; status: UserStatus }) => void;
 }
 ```
 
 ### Security Considerations
 
 1. **Message Encryption**
+
    - End-to-end encryption for messages
    - TLS for all communications
    - Secure WebSocket connections
 
 2. **Authentication**
+
    - JWT-based authentication
    - Refresh token rotation
    - Rate limiting
@@ -216,12 +236,14 @@ interface ServerEvents {
 ### Scalability Considerations
 
 1. **Horizontal Scaling**
+
    - Stateless application servers
    - Database sharding
    - Read replicas
    - CDN for media delivery
 
 2. **Caching Strategy**
+
    - Redis for session data
    - CDN for static assets
    - In-memory caching for frequent queries
@@ -236,12 +258,14 @@ interface ServerEvents {
 ### Monitoring and Logging
 
 1. **Metrics**
+
    - Response times
    - Error rates
    - User engagement
    - System resource usage
 
 2. **Logging**
+
    - Application logs
    - Error logs
    - Access logs
@@ -260,12 +284,14 @@ This system design provides a scalable and maintainable architecture for a chat 
 ## Additional Considerations
 
 1. **Future Scalability**
+
    - Support for voice and video calls
    - Message reactions and replies
    - Message editing
    - Message forwarding
 
 2. **Performance Optimization**
+
    - Message compression
    - Image optimization
    - Connection pooling
@@ -275,4 +301,4 @@ This system design provides a scalable and maintainable architecture for a chat 
    - Offline support
    - Message synchronization
    - Push notifications
-   - Message search 
+   - Message search

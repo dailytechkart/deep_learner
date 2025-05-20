@@ -19,10 +19,7 @@ export const GET = withAuth(async (session: ServerSession) => {
     return NextResponse.json(data);
   } catch (error) {
     console.error('Error in protected GET:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 });
 
@@ -42,9 +39,6 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json(data);
   } catch (error) {
     console.error('Error in protected POST:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-}; 
+};

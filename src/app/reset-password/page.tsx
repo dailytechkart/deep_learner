@@ -83,7 +83,8 @@ const Button = styled.button`
 const Message = styled.p<{ type: 'success' | 'error' }>`
   margin-top: 1rem;
   text-align: center;
-  color: ${props => props.type === 'success' ? props.theme.colors.success : props.theme.colors.error};
+  color: ${props =>
+    props.type === 'success' ? props.theme.colors.success : props.theme.colors.error};
 `;
 
 const LoginLink = styled.p`
@@ -120,7 +121,7 @@ export default function ResetPasswordPage() {
     if (password !== confirmPassword) {
       setMessage({
         type: 'error',
-        text: 'Passwords do not match'
+        text: 'Passwords do not match',
       });
       setLoading(false);
       return;
@@ -141,7 +142,7 @@ export default function ResetPasswordPage() {
 
       setMessage({
         type: 'success',
-        text: 'Password has been reset successfully'
+        text: 'Password has been reset successfully',
       });
 
       // Redirect to login page after 3 seconds
@@ -151,7 +152,7 @@ export default function ResetPasswordPage() {
     } catch (error) {
       setMessage({
         type: 'error',
-        text: error instanceof Error ? error.message : 'An error occurred'
+        text: error instanceof Error ? error.message : 'An error occurred',
       });
     } finally {
       setLoading(false);
@@ -163,9 +164,7 @@ export default function ResetPasswordPage() {
       <ResetPasswordContainer>
         <ResetPasswordForm>
           <Title>Invalid Reset Link</Title>
-          <Message type="error">
-            This password reset link is invalid or has expired.
-          </Message>
+          <Message type="error">This password reset link is invalid or has expired.</Message>
           <LoginLink>
             <a href="/forgot-password">Request a new reset link</a>
           </LoginLink>
@@ -184,7 +183,7 @@ export default function ResetPasswordPage() {
             id="password"
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             required
             minLength={8}
             placeholder="Enter new password"
@@ -196,25 +195,20 @@ export default function ResetPasswordPage() {
             id="confirmPassword"
             type="password"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={e => setConfirmPassword(e.target.value)}
             required
             minLength={8}
             placeholder="Confirm new password"
           />
         </FormGroup>
-        {message && (
-          <Message type={message.type}>
-            {message.text}
-          </Message>
-        )}
+        {message && <Message type={message.type}>{message.text}</Message>}
         <Button type="submit" disabled={loading}>
           {loading ? 'Resetting...' : 'Reset Password'}
         </Button>
         <LoginLink>
-          Remember your password?{' '}
-          <a href="/login">Log in here</a>
+          Remember your password? <a href="/login">Log in here</a>
         </LoginLink>
       </ResetPasswordForm>
     </ResetPasswordContainer>
   );
-} 
+}

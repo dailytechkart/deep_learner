@@ -1,10 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { provider: string } }
-) {
+export async function POST(request: NextRequest, { params }: { params: { provider: string } }) {
   try {
     const { provider } = params;
 
@@ -21,9 +18,6 @@ export async function POST(
     return NextResponse.json({ token: mockToken });
   } catch (error) {
     console.error('Sign-up error:', error);
-    return NextResponse.json(
-      { error: 'Failed to sign up' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to sign up' }, { status: 500 });
   }
-} 
+}

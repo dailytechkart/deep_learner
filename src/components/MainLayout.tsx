@@ -29,22 +29,20 @@ const Main = styled.main`
   flex: 1;
 `;
 
-export const MainLayout: React.FC<MainLayoutProps> = ({ 
-  children, 
+export const MainLayout: React.FC<MainLayoutProps> = ({
+  children,
   className,
-  showBreadcrumb = true 
+  showBreadcrumb = true,
 }) => {
   return (
     <LayoutContainer>
       <Header />
       <ContentWrapper>
-        <Main>
-          {children}
-        </Main>
+        <Main>{children}</Main>
       </ContentWrapper>
       <AppFooter />
     </LayoutContainer>
   );
 };
 
-export default MainLayout; 
+export default MainLayout;

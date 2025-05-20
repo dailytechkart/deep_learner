@@ -7,8 +7,8 @@ export async function GET() {
     { name: 'CSS', value: 75 },
     { name: 'JavaScript', value: 65 },
     { name: 'React', value: 55 },
-    { name: 'TypeScript', value: 45 }
+    { name: 'TypeScript', value: 45 },
   ];
 
   return NextResponse.json(skills);
-} 
+}

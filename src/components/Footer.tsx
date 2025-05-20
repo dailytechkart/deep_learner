@@ -121,20 +121,40 @@ export const AppFooter: React.FC = () => {
         <FooterSection>
           <FooterTitle>Frontend School</FooterTitle>
           <FooterText>
-            Empowering developers with comprehensive frontend development courses.
-            Master modern technologies and advance your career with our expert-led learning paths.
+            Empowering developers with comprehensive frontend development courses. Master modern
+            technologies and advance your career with our expert-led learning paths.
           </FooterText>
           <SocialLinks>
-            <SocialLink href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <SocialLink
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+            >
               <FaGithub />
             </SocialLink>
-            <SocialLink href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+            <SocialLink
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Twitter"
+            >
               <FaTwitter />
             </SocialLink>
-            <SocialLink href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <SocialLink
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+            >
               <FaLinkedin />
             </SocialLink>
-            <SocialLink href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <SocialLink
+              href="https://youtube.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="YouTube"
+            >
               <FaYoutube />
             </SocialLink>
           </SocialLinks>
@@ -142,20 +162,40 @@ export const AppFooter: React.FC = () => {
 
         <FooterSection>
           <FooterTitle>Learning Paths</FooterTitle>
-          <FooterLink href="/learn/javascript" rel="noopener">JavaScript Fundamentals</FooterLink>
-          <FooterLink href="/learn/react" rel="noopener">React Development</FooterLink>
-          <FooterLink href="/learn/css" rel="noopener">Advanced CSS</FooterLink>
-          <FooterLink href="/learn/testing" rel="noopener">Frontend Testing</FooterLink>
-          <FooterLink href="/learn/performance" rel="noopener">Performance Optimization</FooterLink>
+          <FooterLink href="/learn/javascript" rel="noopener">
+            JavaScript Fundamentals
+          </FooterLink>
+          <FooterLink href="/learn/react" rel="noopener">
+            React Development
+          </FooterLink>
+          <FooterLink href="/learn/css" rel="noopener">
+            Advanced CSS
+          </FooterLink>
+          <FooterLink href="/learn/testing" rel="noopener">
+            Frontend Testing
+          </FooterLink>
+          <FooterLink href="/learn/performance" rel="noopener">
+            Performance Optimization
+          </FooterLink>
         </FooterSection>
 
         <FooterSection>
           <FooterTitle>Resources</FooterTitle>
-          <FooterLink href="/blog" rel="noopener">Blog & Articles</FooterLink>
-          <FooterLink href="/docs" rel="noopener">Documentation</FooterLink>
-          <FooterLink href="/community" rel="noopener">Community</FooterLink>
-          <FooterLink href="/faq" rel="noopener">FAQ</FooterLink>
-          <FooterLink href="/support" rel="noopener">Support</FooterLink>
+          <FooterLink href="/blog" rel="noopener">
+            Blog & Articles
+          </FooterLink>
+          <FooterLink href="/docs" rel="noopener">
+            Documentation
+          </FooterLink>
+          <FooterLink href="/community" rel="noopener">
+            Community
+          </FooterLink>
+          <FooterLink href="/faq" rel="noopener">
+            FAQ
+          </FooterLink>
+          <FooterLink href="/support" rel="noopener">
+            Support
+          </FooterLink>
         </FooterSection>
 
         <FooterSection>
@@ -164,19 +204,17 @@ export const AppFooter: React.FC = () => {
             <FaEnvelope /> contact@deeplearner.com
           </FooterLink>
           <FooterText>
-            Have questions? We're here to help you succeed in your learning journey.
+            Have questions? We&apos;re here to help you succeed in your learning journey.
           </FooterText>
         </FooterSection>
       </FooterContent>
 
       <FooterBottom>
-        <Copyright>
-          © {new Date().getFullYear()} Frontend School. All rights reserved.
-        </Copyright>
+        <Copyright>© {new Date().getFullYear()} Frontend School. All rights reserved.</Copyright>
         <MadeWithLove>
           Made with <FaHeart /> for developers
         </MadeWithLove>
       </FooterBottom>
     </Footer>
   );
-}; 
+};

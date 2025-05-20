@@ -84,7 +84,8 @@ const Button = styled.button`
 const Message = styled.p<{ type: 'success' | 'error' }>`
   margin-top: 1rem;
   text-align: center;
-  color: ${props => props.type === 'success' ? props.theme.colors.success : props.theme.colors.error};
+  color: ${props =>
+    props.type === 'success' ? props.theme.colors.success : props.theme.colors.error};
 `;
 
 const LoginLink = styled.p`
@@ -121,7 +122,7 @@ export default function RegisterPage() {
     if (password !== confirmPassword) {
       setMessage({
         type: 'error',
-        text: 'Passwords do not match'
+        text: 'Passwords do not match',
       });
       setLoading(false);
       return;
@@ -131,12 +132,12 @@ export default function RegisterPage() {
       await register(name, email, password);
       setMessage({
         type: 'success',
-        text: 'Registration successful! Redirecting...'
+        text: 'Registration successful! Redirecting...',
       });
     } catch (error) {
       setMessage({
         type: 'error',
-        text: error instanceof Error ? error.message : 'Failed to register'
+        text: error instanceof Error ? error.message : 'Failed to register',
       });
     } finally {
       setLoading(false);
@@ -153,7 +154,7 @@ export default function RegisterPage() {
             id="name"
             type="text"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={e => setName(e.target.value)}
             required
             placeholder="Enter your name"
           />
@@ -164,7 +165,7 @@ export default function RegisterPage() {
             id="email"
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
             required
             placeholder="Enter your email"
           />
@@ -175,7 +176,7 @@ export default function RegisterPage() {
             id="password"
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             required
             minLength={6}
             placeholder="Enter your password"
@@ -187,25 +188,20 @@ export default function RegisterPage() {
             id="confirmPassword"
             type="password"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={e => setConfirmPassword(e.target.value)}
             required
             minLength={6}
             placeholder="Confirm your password"
           />
         </FormGroup>
-        {message && (
-          <Message type={message.type}>
-            {message.text}
-          </Message>
-        )}
+        {message && <Message type={message.type}>{message.text}</Message>}
         <Button type="submit" disabled={loading}>
           {loading ? 'Registering...' : 'Register'}
         </Button>
         <LoginLink>
-          Already have an account?{' '}
-          <a href="/login">Login here</a>
+          Already have an account? <a href="/login">Login here</a>
         </LoginLink>
       </RegisterForm>
     </RegisterContainer>
   );
-} 
+}

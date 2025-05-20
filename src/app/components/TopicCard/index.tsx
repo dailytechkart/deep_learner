@@ -41,7 +41,7 @@ import {
   FaInfoCircle,
   FaClipboardList,
   FaClipboardCheck,
-  FaClipboard
+  FaClipboard,
 } from 'react-icons/fa';
 
 interface TopicCardProps {
@@ -154,7 +154,7 @@ const CardImage = styled.div<{ category: string }>`
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.1) 100%);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 100%);
   }
 `;
 
@@ -416,9 +416,7 @@ export const TopicCard: React.FC<TopicCardProps> = ({ topic }) => {
           <div>
             <CardHeader>
               <Title>{topic.title}</Title>
-              <DifficultyBadge difficulty={topic.difficulty}>
-                {topic.difficulty}
-              </DifficultyBadge>
+              <DifficultyBadge difficulty={topic.difficulty}>{topic.difficulty}</DifficultyBadge>
             </CardHeader>
             <Description>{topic.description}</Description>
           </div>
@@ -451,4 +449,4 @@ export const TopicCard: React.FC<TopicCardProps> = ({ topic }) => {
       </Card>
     </Link>
   );
-}; 
+};

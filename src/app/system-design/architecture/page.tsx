@@ -8,7 +8,7 @@ import {
   Description,
   Section,
   SectionTitle,
-  Content
+  Content,
 } from '../../components/StyledComponents';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import SEO from '@/components/SEO';
@@ -26,29 +26,26 @@ export default function SystemDesignArchitecturePage() {
           'microservices',
           'monolithic',
           'serverless',
-          'cloud architecture'
+          'cloud architecture',
         ]}
       />
       <PageContainer>
         <MainContent>
           <Breadcrumbs
-            items={[
-              { label: 'System Design', href: '/system-design' },
-              { label: 'Architecture' }
-            ]}
+            items={[{ label: 'System Design', href: '/system-design' }, { label: 'Architecture' }]}
           />
           <Title>System Design Architecture</Title>
           <Description>
-            Learn about different system design architectures and their applications. Understand
-            how to choose and implement the right architecture for your system.
+            Learn about different system design architectures and their applications. Understand how
+            to choose and implement the right architecture for your system.
           </Description>
 
           <Section>
             <SectionTitle>Monolithic Architecture</SectionTitle>
             <Content>
               <p>
-                A traditional approach where all components of an application are tightly
-                coupled and deployed as a single unit.
+                A traditional approach where all components of an application are tightly coupled
+                and deployed as a single unit.
               </p>
               <h3>Characteristics</h3>
               <ul>
@@ -71,8 +68,8 @@ export default function SystemDesignArchitecturePage() {
             <SectionTitle>Microservices Architecture</SectionTitle>
             <Content>
               <p>
-                An architectural style that structures an application as a collection of
-                small, independent services.
+                An architectural style that structures an application as a collection of small,
+                independent services.
               </p>
               <h3>Key Features</h3>
               <ul>
@@ -119,8 +116,8 @@ export default function SystemDesignArchitecturePage() {
             <SectionTitle>Event-Driven Architecture</SectionTitle>
             <Content>
               <p>
-                A software architecture pattern promoting the production, detection,
-                consumption of, and reaction to events.
+                A software architecture pattern promoting the production, detection, consumption of,
+                and reaction to events.
               </p>
               <h3>Components</h3>
               <ul>
@@ -142,4 +139,4 @@ export default function SystemDesignArchitecturePage() {
       </PageContainer>
     </>
   );
-} 
+}

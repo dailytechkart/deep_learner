@@ -20,9 +20,7 @@ export const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial })
     return Array.from({ length: 5 }).map((_, index) => (
       <span
         key={index}
-        className={`text-lg ${
-          index < rating ? 'text-yellow-400' : 'text-gray-300'
-        }`}
+        className={`text-lg ${index < rating ? 'text-yellow-400' : 'text-gray-300'}`}
       >
         ★
       </span>
@@ -34,14 +32,10 @@ export const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial })
       <CardContent className="p-6">
         <div className="flex flex-col h-full">
           {/* Rating */}
-          <div className="flex mb-4">
-            {renderStars(testimonial.rating)}
-          </div>
+          <div className="flex mb-4">{renderStars(testimonial.rating)}</div>
 
           {/* Content */}
-          <p className="text-gray-600 mb-6 flex-grow">
-            "{testimonial.content}"
-          </p>
+          <p className="text-gray-600 mb-6 flex-grow">&ldquo;{testimonial.content}&rdquo;</p>
 
           {/* Author */}
           <div className="flex items-center">
@@ -67,4 +61,4 @@ export const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial })
       </CardContent>
     </Card>
   );
-}; 
+};

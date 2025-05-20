@@ -84,7 +84,8 @@ const SectionContent = styled.div`
     margin-bottom: ${props => props.theme.spacing.md};
   }
 
-  ul, ol {
+  ul,
+  ol {
     margin-bottom: ${props => props.theme.spacing.md};
     padding-left: ${props => props.theme.spacing.xl};
   }
@@ -113,11 +114,7 @@ interface LayoutProps {
   description?: string;
 }
 
-export const Layout: React.FC<LayoutProps> = ({ 
-  children, 
-  title, 
-  description 
-}) => {
+export const Layout: React.FC<LayoutProps> = ({ children, title, description }) => {
   const { isDarkMode, toggleTheme } = useTheme();
   const { searchQuery, setSearchQuery } = useSearch();
 
@@ -140,10 +137,4 @@ export const Layout: React.FC<LayoutProps> = ({
   );
 };
 
-export {
-  Section,
-  SectionHeader,
-  SectionTitle,
-  SectionContent,
-  Grid
-}; 
+export { Section, SectionHeader, SectionTitle, SectionContent, Grid };

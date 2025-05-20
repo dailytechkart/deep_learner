@@ -67,14 +67,10 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
         <React.Fragment key={index}>
           <Separator />
           <BreadcrumbItem>
-            {item.href ? (
-              <StyledLink href={item.href}>{item.label}</StyledLink>
-            ) : (
-              item.label
-            )}
+            {item.href ? <StyledLink href={item.href}>{item.label}</StyledLink> : item.label}
           </BreadcrumbItem>
         </React.Fragment>
       ))}
     </BreadcrumbsContainer>
   );
-} 
+}

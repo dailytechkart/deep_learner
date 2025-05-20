@@ -14,7 +14,7 @@ const pool = mysql.createPool({
   database: process.env.DB_NAME || 'de',
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
 });
 
 // Topic interface
@@ -61,7 +61,7 @@ const TopicModel = {
         topic.category,
         JSON.stringify(topic.examples || []),
         JSON.stringify(topic.practice || []),
-        JSON.stringify(topic.quiz || null)
+        JSON.stringify(topic.quiz || null),
       ]
     );
     return { id: (result as any).insertId, ...topic };
@@ -77,7 +77,7 @@ const TopicModel = {
         JSON.stringify(topic.examples || []),
         JSON.stringify(topic.practice || []),
         JSON.stringify(topic.quiz || null),
-        id
+        id,
       ]
     );
     return (result as any).affectedRows > 0;
@@ -86,7 +86,7 @@ const TopicModel = {
   async delete(id: string): Promise<boolean> {
     const [result] = await pool.query('DELETE FROM topics WHERE id = ?', [id]);
     return (result as any).affectedRows > 0;
-  }
+  },
 };
 
 // Create Express app
@@ -97,13 +97,13 @@ app.use(express.json());
 // API Routes
 export async function GET(request: NextRequest) {
   const path = request.nextUrl.pathname.replace('/api', '');
-  
+
   try {
     if (path === '/topics') {
       const topics = await TopicModel.getAll();
       return NextResponse.json(topics);
     }
-    
+
     if (path.match(/^\/topics\/\d+$/)) {
       const id = path.split('/').pop();
       const topic = await TopicModel.getById(id!);
@@ -112,13 +112,13 @@ export async function GET(request: NextRequest) {
       }
       return NextResponse.json(topic);
     }
-    
+
     if (path.match(/^\/topics\/category\/\w+$/)) {
       const category = path.split('/').pop();
       const topics = await TopicModel.getByCategory(category!);
       return NextResponse.json(topics);
     }
-    
+
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   } catch (error) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -127,7 +127,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   const path = request.nextUrl.pathname.replace('/api', '');
-  
+
   if (path === '/topics') {
     try {
       const body = await request.json();
@@ -137,13 +137,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to create topic' }, { status: 500 });
     }
   }
-  
+
   return NextResponse.json({ error: 'Not found' }, { status: 404 });
 }
 
 export async function PUT(request: NextRequest) {
   const path = request.nextUrl.pathname.replace('/api', '');
-  
+
   if (path.match(/^\/topics\/\d+$/)) {
     try {
       const id = path.split('/').pop();
@@ -157,13 +157,13 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to update topic' }, { status: 500 });
     }
   }
-  
+
   return NextResponse.json({ error: 'Not found' }, { status: 404 });
 }
 
 export async function DELETE(request: NextRequest) {
   const path = request.nextUrl.pathname.replace('/api', '');
-  
+
   if (path.match(/^\/topics\/\d+$/)) {
     try {
       const id = path.split('/').pop();
@@ -176,6 +176,6 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to delete topic' }, { status: 500 });
     }
   }
-  
+
   return NextResponse.json({ error: 'Not found' }, { status: 404 });
-} 
+}

@@ -1,9 +1,11 @@
 # Chat App (Messenger Clone)
 
 ## Problem Statement
+
 Design and implement a real-time chat application similar to Facebook Messenger or WhatsApp. The application should support:
 
 ### Core Features
+
 - Real-time messaging between users
 - Message history
 - Typing indicators
@@ -12,6 +14,7 @@ Design and implement a real-time chat application similar to Facebook Messenger 
 - Unread message count badges
 
 ### Additional Features
+
 - Message reactions
 - Message editing
 - Message deletion
@@ -22,7 +25,9 @@ Design and implement a real-time chat application similar to Facebook Messenger 
 ## System Requirements
 
 ### Functional Requirements
+
 1. **User Management**
+
    - User registration and authentication
    - User profiles with avatars
    - Online/offline status
@@ -31,6 +36,7 @@ Design and implement a real-time chat application similar to Facebook Messenger 
    - User reporting
 
 2. **Messaging Features**
+
    - One-to-one chat
    - Group chat support
    - Real-time message delivery
@@ -52,7 +58,9 @@ Design and implement a real-time chat application similar to Facebook Messenger 
    - Vibration alerts
 
 ### Non-Functional Requirements
+
 1. **Performance**
+
    - Message delivery latency < 100ms
    - Support for 1M+ concurrent users
    - 99.9% uptime
@@ -60,6 +68,7 @@ Design and implement a real-time chat application similar to Facebook Messenger 
    - Efficient data usage
 
 2. **Scalability**
+
    - Horizontal scaling
    - Load balancing
    - Database sharding
@@ -77,13 +86,16 @@ Design and implement a real-time chat application similar to Facebook Messenger 
 ## High-Level Architecture
 
 ### Components
+
 1. **Client Applications**
+
    - Web client (React)
    - Mobile clients (iOS/Android)
    - Desktop client (Electron)
    - Progressive Web App (PWA)
 
 2. **Backend Services**
+
    - API Gateway
    - Authentication Service
    - Chat Service
@@ -93,6 +105,7 @@ Design and implement a real-time chat application similar to Facebook Messenger 
    - Analytics Service
 
 3. **Data Storage**
+
    - User Database (PostgreSQL)
    - Message Database (MongoDB)
    - File Storage (S3)
@@ -108,6 +121,7 @@ Design and implement a real-time chat application similar to Facebook Messenger 
 ## Detailed Design
 
 ### 1. Real-time Communication
+
 ```mermaid
 sequenceDiagram
     Client A->>WebSocket Server: Connect
@@ -119,7 +133,9 @@ sequenceDiagram
 ```
 
 ### 2. Message Flow
+
 1. **Message Sending**
+
    - Client sends message to WebSocket server
    - Server acknowledges receipt
    - Message is stored in database
@@ -133,7 +149,9 @@ sequenceDiagram
    - Pagination for history loading
 
 ### 3. File Sharing
+
 1. **Upload Process**
+
    - Client uploads file to S3
    - File metadata stored in database
    - File URL sent in chat message
@@ -145,7 +163,9 @@ sequenceDiagram
    - Videos (streaming support)
 
 ### 4. Group Chat
+
 1. **Group Management**
+
    - Create/delete groups
    - Add/remove members
    - Group roles (admin, member)
@@ -159,6 +179,7 @@ sequenceDiagram
 ## Database Schema
 
 ### Users Collection
+
 ```json
 {
   "userId": "string",
@@ -172,6 +193,7 @@ sequenceDiagram
 ```
 
 ### Messages Collection
+
 ```json
 {
   "messageId": "string",
@@ -186,6 +208,7 @@ sequenceDiagram
 ```
 
 ### Chats Collection
+
 ```json
 {
   "chatId": "string",
@@ -200,6 +223,7 @@ sequenceDiagram
 ## API Endpoints
 
 ### Authentication
+
 ```
 POST /api/auth/register
 POST /api/auth/login
@@ -208,6 +232,7 @@ GET /api/auth/me
 ```
 
 ### Chats
+
 ```
 GET /api/chats
 POST /api/chats
@@ -217,6 +242,7 @@ GET /api/chats/:chatId/messages
 ```
 
 ### Users
+
 ```
 GET /api/users
 GET /api/users/:userId
@@ -224,6 +250,7 @@ PUT /api/users/:userId
 ```
 
 ### Files
+
 ```
 POST /api/files/upload
 GET /api/files/:fileId
@@ -232,6 +259,7 @@ GET /api/files/:fileId
 ## WebSocket Events
 
 ### Client to Server
+
 ```typescript
 interface ClientEvents {
   'message:send': (message: Message) => void;
@@ -242,6 +270,7 @@ interface ClientEvents {
 ```
 
 ### Server to Client
+
 ```typescript
 interface ServerEvents {
   'message:new': (message: Message) => void;
@@ -254,18 +283,21 @@ interface ServerEvents {
 ## Implementation Considerations
 
 ### 1. Real-time Features
+
 - Use WebSocket for real-time communication
 - Implement heartbeat mechanism
 - Handle connection drops and reconnection
 - Implement message queuing for offline users
 
 ### 2. Performance Optimization
+
 - Implement message pagination
 - Use Redis for caching
 - Implement message batching
 - Use CDN for static assets
 
 ### 3. Security Measures
+
 - Implement rate limiting
 - Use JWT for authentication
 - Encrypt sensitive data
@@ -273,6 +305,7 @@ interface ServerEvents {
 - Use HTTPS for all communications
 
 ### 4. Monitoring and Logging
+
 - Track message delivery latency
 - Monitor WebSocket connections
 - Log error rates
@@ -281,21 +314,25 @@ interface ServerEvents {
 ## Testing Strategy
 
 ### 1. Unit Tests
+
 - Message formatting
 - User authentication
 - File handling
 
 ### 2. Integration Tests
+
 - Message flow
 - Real-time updates
 - File upload/download
 
 ### 3. Load Tests
+
 - Concurrent users
 - Message throughput
 - File transfer performance
 
 ### 4. Security Tests
+
 - Authentication
 - Authorization
 - Data encryption
@@ -303,12 +340,14 @@ interface ServerEvents {
 ## Deployment Strategy
 
 ### 1. Infrastructure
+
 - Use Kubernetes for container orchestration
 - Implement auto-scaling
 - Use multiple availability zones
 - Implement disaster recovery
 
 ### 2. CI/CD
+
 - Automated testing
 - Blue-green deployment
 - Rollback capability
@@ -317,6 +356,7 @@ interface ServerEvents {
 ## Future Enhancements
 
 1. **Advanced Features**
+
    - Voice messages
    - Video calls
    - Message reactions
@@ -324,6 +364,7 @@ interface ServerEvents {
    - Message deletion
 
 2. **AI Features**
+
    - Smart replies
    - Message translation
    - Content moderation
@@ -336,11 +377,13 @@ interface ServerEvents {
    - Business insights
 
 ## Conclusion
+
 This system design provides a scalable and maintainable architecture for a real-time chat application. The design focuses on:
+
 - Real-time communication
 - Scalability
 - Security
 - Performance
 - User experience
 
-The implementation should be done in phases, starting with core features and gradually adding more complex functionality. 
+The implementation should be done in phases, starting with core features and gradually adding more complex functionality.

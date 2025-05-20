@@ -6,8 +6,8 @@ export async function GET() {
     totalCourses: 12,
     completedCourses: 4,
     inProgressCourses: 3,
-    totalHours: 45
+    totalHours: 45,
   };
 
   return NextResponse.json(stats);
-} 
+}

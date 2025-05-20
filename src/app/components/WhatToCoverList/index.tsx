@@ -19,12 +19,8 @@ export const WhatToCoverList: React.FC<WhatToCoverListProps> = ({ points }) => {
         <div className="space-y-6">
           {points.map((point, index) => (
             <div key={index} className="border-l-4 border-primary pl-4">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                {point.title}
-              </h3>
-              <p className="text-gray-600 mb-3">
-                {point.description}
-              </p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">{point.title}</h3>
+              <p className="text-gray-600 mb-3">{point.description}</p>
               {point.examples.length > 0 && (
                 <div className="bg-gray-50 rounded-md p-4">
                   <h4 className="text-sm font-medium text-gray-700 mb-2">Examples:</h4>
@@ -43,4 +39,4 @@ export const WhatToCoverList: React.FC<WhatToCoverListProps> = ({ points }) => {
       </CardContent>
     </Card>
   );
-}; 
+};

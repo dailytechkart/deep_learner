@@ -29,8 +29,7 @@ const challenges = [
   {
     id: 1,
     title: 'Weekly Algorithm Challenge',
-    description:
-      'Solve 5 algorithm problems in 24 hours. Compete with other developers!',
+    description: 'Solve 5 algorithm problems in 24 hours. Compete with other developers!',
     status: 'ongoing',
     participants: 150,
     prize: '$500',
@@ -62,7 +61,7 @@ export default function ChallengesPage() {
   const filteredChallenges =
     selectedCategory === 'all'
       ? challenges
-      : challenges.filter((challenge) => challenge.status === selectedCategory);
+      : challenges.filter(challenge => challenge.status === selectedCategory);
 
   return (
     <ClientLayout>
@@ -72,7 +71,7 @@ export default function ChallengesPage() {
             <SectionTitle>Coding Challenges</SectionTitle>
           </SectionHeader>
           <CategoryList>
-            {categories.map((category) => (
+            {categories.map(category => (
               <CategoryButton
                 key={category.id}
                 active={selectedCategory === category.id}
@@ -90,7 +89,7 @@ export default function ChallengesPage() {
             <SectionTitle>Available Challenges</SectionTitle>
           </SectionHeader>
           <TopicCardGrid>
-            {filteredChallenges.map((challenge) => (
+            {filteredChallenges.map(challenge => (
               <TopicCard key={challenge.id}>
                 <TopicCardHeader>
                   <span>{challenge.status}</span>
@@ -105,17 +104,15 @@ export default function ChallengesPage() {
                     <span>Participants: {challenge.participants}</span>
                     <span>
                       {challenge.status === 'ongoing' ? 'Ends: ' : 'Starts: '}
-                      {challenge.status === 'ongoing'
-                        ? challenge.endDate
-                        : challenge.startDate}
+                      {challenge.status === 'ongoing' ? challenge.endDate : challenge.startDate}
                     </span>
                   </TopicCardStats>
                   <TopicCardAction>
                     {challenge.status === 'ongoing'
                       ? 'Join Challenge'
                       : challenge.status === 'upcoming'
-                      ? 'Set Reminder'
-                      : 'View Results'}
+                        ? 'Set Reminder'
+                        : 'View Results'}
                   </TopicCardAction>
                 </TopicCardFooter>
               </TopicCard>

@@ -54,4 +54,4 @@ export default function ProgressBar({ progress, label, className }: ProgressBarP
       </ProgressTrack>
     </ProgressContainer>
   );
-} 
+}

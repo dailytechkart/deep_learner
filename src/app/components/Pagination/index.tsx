@@ -40,7 +40,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         Previous
       </button>
 
-      {getPageNumbers().map((page) => (
+      {getPageNumbers().map(page => (
         <button
           key={page}
           onClick={() => onPageChange(page)}
@@ -63,4 +63,4 @@ export const Pagination: React.FC<PaginationProps> = ({
       </button>
     </div>
   );
-}; 
+};

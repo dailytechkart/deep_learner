@@ -8,7 +8,8 @@ import { initializeApp, getApps, cert } from 'firebase-admin/app';
 if (!getApps().length) {
   initializeApp({
     credential: cert({
-      projectId: process.env.FIREBASE_ADMIN_PROJECT_ID || process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+      projectId:
+        process.env.FIREBASE_ADMIN_PROJECT_ID || process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
       clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
       privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY?.replace(/\\n/g, '\n'),
     }),
@@ -23,8 +24,8 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
+        email: { label: 'Email', type: 'email' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
@@ -34,7 +35,7 @@ export const authOptions: NextAuthOptions = {
         try {
           // Get user from Firebase Auth
           const userRecord = await auth.getUserByEmail(credentials.email);
-          
+
           // Get additional user data from Firestore
           const userDoc = await db.collection('users').doc(userRecord.uid).get();
           const userData = userDoc.data();
@@ -52,7 +53,7 @@ export const authOptions: NextAuthOptions = {
 
           // Update last login in Firestore
           await db.collection('users').doc(userRecord.uid).update({
-            lastLogin: new Date()
+            lastLogin: new Date(),
           });
 
           return {
@@ -60,14 +61,14 @@ export const authOptions: NextAuthOptions = {
             email: userRecord.email || '',
             name: userData.name || '',
             role: userData.role || 'user',
-            progress: userData.progress || {}
+            progress: userData.progress || {},
           };
         } catch (error) {
           console.error('Auth error:', error);
           throw new Error('Authentication failed');
         }
-      }
-    })
+      },
+    }),
   ],
   callbacks: {
     async jwt({ token, user }) {
@@ -85,17 +86,17 @@ export const authOptions: NextAuthOptions = {
         session.user.progress = token.progress;
       }
       return session;
-    }
+    },
   },
   pages: {
     signIn: '/login',
-    error: '/login'
+    error: '/login',
   },
   session: {
-    strategy: 'jwt'
+    strategy: 'jwt',
   },
-  secret: process.env.NEXTAUTH_SECRET
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST }; 
+export { handler as GET, handler as POST };

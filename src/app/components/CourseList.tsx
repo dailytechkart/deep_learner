@@ -16,7 +16,8 @@ const CourseCard = styled.div<{ isEnrolled: boolean }>`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.2s ease-in-out;
-  border: 2px solid ${(props) => (props.isEnrolled ? props.theme.colors.status.success : 'transparent')};
+  border: 2px solid
+    ${props => (props.isEnrolled ? props.theme.colors.status.success : 'transparent')};
 
   &:hover {
     transform: translateY(-4px);
@@ -70,7 +71,7 @@ const ProgressBar = styled.div<{ progress: number }>`
     content: '';
     display: block;
     height: 100%;
-    width: ${(props) => props.progress}%;
+    width: ${props => props.progress}%;
     background: #4caf50;
     transition: width 0.3s ease-in-out;
   }
@@ -81,14 +82,16 @@ const EnrollButton = styled.button<{ isEnrolled: boolean }>`
   padding: 0.75rem;
   border: none;
   border-radius: 6px;
-  background: ${(props) => (props.isEnrolled ? props.theme.colors.status.success : props.theme.colors.primary)};
+  background: ${props =>
+    props.isEnrolled ? props.theme.colors.status.success : props.theme.colors.primary};
   color: white;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
 
   &:hover {
-    background: ${(props) => (props.isEnrolled ? props.theme.colors.status.success : props.theme.colors.primaryDark)};
+    background: ${props =>
+      props.isEnrolled ? props.theme.colors.status.success : props.theme.colors.primaryDark};
   }
 
   &:disabled {
@@ -105,12 +108,12 @@ const CourseList: React.FC<CourseListProps> = ({ courses }) => {
   const { userCourses, enrollInCourse } = useCourses();
 
   const getUserCourse = (courseId: string): UserCourse | undefined => {
-    return userCourses.find((uc) => uc.courseId === courseId);
+    return userCourses.find(uc => uc.courseId === courseId);
   };
 
   return (
     <CourseGrid>
-      {courses.map((course) => {
+      {courses.map(course => {
         const userCourse = getUserCourse(course.id);
         const isEnrolled = !!userCourse;
 
@@ -124,9 +127,7 @@ const CourseList: React.FC<CourseListProps> = ({ courses }) => {
                 <span>{course.duration} hours</span>
                 <span>{course.level}</span>
               </CourseMeta>
-              {isEnrolled && userCourse && (
-                <ProgressBar progress={userCourse.progress} />
-              )}
+              {isEnrolled && userCourse && <ProgressBar progress={userCourse.progress} />}
               <EnrollButton
                 isEnrolled={isEnrolled}
                 onClick={() => enrollInCourse(course.id)}

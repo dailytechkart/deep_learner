@@ -23,16 +23,18 @@ const FiltersContainer = styled.div`
 
 const FilterButton = styled.button<{ active: boolean }>`
   padding: 0.5rem 1rem;
-  border: 1px solid ${props => props.active ? props.theme.colors.primary : props.theme.colors.border};
+  border: 1px solid
+    ${props => (props.active ? props.theme.colors.primary : props.theme.colors.border)};
   border-radius: ${props => props.theme.borderRadius.md};
-  background: ${props => props.active ? props.theme.colors.primary : 'transparent'};
-  color: ${props => props.active ? '#fff' : props.theme.colors.text};
+  background: ${props => (props.active ? props.theme.colors.primary : 'transparent')};
+  color: ${props => (props.active ? '#fff' : props.theme.colors.text)};
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 0.875rem;
 
   &:hover {
-    background: ${props => props.active ? props.theme.colors.primaryDark : props.theme.colors.backgroundHover};
+    background: ${props =>
+      props.active ? props.theme.colors.primaryDark : props.theme.colors.backgroundHover};
     border-color: ${props => props.theme.colors.primary};
   }
 `;
@@ -125,7 +127,18 @@ const Blind75Badge = styled.span`
   font-weight: 500;
 `;
 
-const categories = ['All', 'Arrays', 'Strings', 'Linked Lists', 'Trees', 'Graphs', 'Dynamic Programming', 'JavaScript', 'React', 'Frontend'];
+const categories = [
+  'All',
+  'Arrays',
+  'Strings',
+  'Linked Lists',
+  'Trees',
+  'Graphs',
+  'Dynamic Programming',
+  'JavaScript',
+  'React',
+  'Frontend',
+];
 const difficulties = ['All', 'Easy', 'Medium', 'Hard'];
 
 const questions = [
@@ -138,7 +151,7 @@ const questions = [
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '85%',
     href: '/interview/practice/two-sum',
-    isBlind75: true
+    isBlind75: true,
   },
   {
     id: '2',
@@ -148,7 +161,7 @@ const questions = [
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '75%',
     href: '/interview/practice/valid-parentheses',
-    isBlind75: true
+    isBlind75: true,
   },
   {
     id: '3',
@@ -158,7 +171,7 @@ const questions = [
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '65%',
     href: '/interview/practice/merge-intervals',
-    isBlind75: true
+    isBlind75: true,
   },
   {
     id: '4',
@@ -168,7 +181,7 @@ const questions = [
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '55%',
     href: '/interview/practice/longest-substring',
-    isBlind75: true
+    isBlind75: true,
   },
   // Linked Lists
   {
@@ -179,7 +192,7 @@ const questions = [
     companies: ['Amazon', 'Microsoft', 'Facebook'],
     acceptanceRate: '80%',
     href: '/interview/practice/reverse-linked-list',
-    isBlind75: true
+    isBlind75: true,
   },
   {
     id: '6',
@@ -189,7 +202,7 @@ const questions = [
     companies: ['Amazon', 'Microsoft', 'Facebook'],
     acceptanceRate: '70%',
     href: '/interview/practice/linked-list-cycle',
-    isBlind75: true
+    isBlind75: true,
   },
   // Trees
   {
@@ -200,7 +213,7 @@ const questions = [
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '75%',
     href: '/interview/practice/maximum-depth-binary-tree',
-    isBlind75: true
+    isBlind75: true,
   },
   {
     id: '8',
@@ -210,7 +223,7 @@ const questions = [
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '60%',
     href: '/interview/practice/validate-bst',
-    isBlind75: true
+    isBlind75: true,
   },
   // Dynamic Programming
   {
@@ -221,7 +234,7 @@ const questions = [
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '70%',
     href: '/interview/practice/climbing-stairs',
-    isBlind75: true
+    isBlind75: true,
   },
   {
     id: '10',
@@ -231,7 +244,7 @@ const questions = [
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '45%',
     href: '/interview/practice/coin-change',
-    isBlind75: true
+    isBlind75: true,
   },
   // Graphs
   {
@@ -242,7 +255,7 @@ const questions = [
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '65%',
     href: '/interview/practice/number-of-islands',
-    isBlind75: true
+    isBlind75: true,
   },
   {
     id: '12',
@@ -252,7 +265,7 @@ const questions = [
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '55%',
     href: '/interview/practice/course-schedule',
-    isBlind75: true
+    isBlind75: true,
   },
   // Frontend - JavaScript
   {
@@ -263,7 +276,7 @@ const questions = [
     companies: ['Google', 'Amazon', 'Atlassian'],
     acceptanceRate: '60%',
     href: '/interview/practice/javascript/implement-promise-all',
-    isBlind75: false
+    isBlind75: false,
   },
   {
     id: '14',
@@ -273,7 +286,7 @@ const questions = [
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '45%',
     href: '/interview/practice/javascript/event-loop',
-    isBlind75: false
+    isBlind75: false,
   },
   {
     id: '15',
@@ -283,7 +296,7 @@ const questions = [
     companies: ['Google', 'Amazon', 'Atlassian'],
     acceptanceRate: '70%',
     href: '/interview/practice/javascript/implement-debounce',
-    isBlind75: false
+    isBlind75: false,
   },
   // Frontend - React
   {
@@ -294,7 +307,7 @@ const questions = [
     companies: ['Google', 'Amazon', 'Atlassian'],
     acceptanceRate: '65%',
     href: '/interview/practice/react/custom-hook',
-    isBlind75: false
+    isBlind75: false,
   },
   {
     id: '17',
@@ -304,7 +317,7 @@ const questions = [
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '50%',
     href: '/interview/practice/react/performance',
-    isBlind75: false
+    isBlind75: false,
   },
   {
     id: '18',
@@ -314,7 +327,7 @@ const questions = [
     companies: ['Google', 'Amazon', 'Atlassian'],
     acceptanceRate: '60%',
     href: '/interview/practice/react/state-management',
-    isBlind75: false
+    isBlind75: false,
   },
   // Frontend - General
   {
@@ -325,7 +338,7 @@ const questions = [
     companies: ['Google', 'Amazon', 'Atlassian'],
     acceptanceRate: '75%',
     href: '/interview/practice/frontend/css-grid',
-    isBlind75: false
+    isBlind75: false,
   },
   {
     id: '20',
@@ -335,7 +348,7 @@ const questions = [
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '65%',
     href: '/interview/practice/frontend/web-accessibility',
-    isBlind75: false
+    isBlind75: false,
   },
   {
     id: '21',
@@ -345,8 +358,8 @@ const questions = [
     companies: ['Google', 'Amazon', 'Microsoft'],
     acceptanceRate: '40%',
     href: '/interview/practice/frontend/browser-rendering',
-    isBlind75: false
-  }
+    isBlind75: false,
+  },
 ];
 
 export const PracticeQuestions: React.FC = () => {
@@ -364,10 +377,7 @@ export const PracticeQuestions: React.FC = () => {
   return (
     <QuestionsContainer>
       <FiltersContainer>
-        <FilterButton
-          active={showBlind75Only}
-          onClick={() => setShowBlind75Only(!showBlind75Only)}
-        >
+        <FilterButton active={showBlind75Only} onClick={() => setShowBlind75Only(!showBlind75Only)}>
           Blind 75 Only
         </FilterButton>
         {categories.map(category => (
@@ -421,4 +431,4 @@ export const PracticeQuestions: React.FC = () => {
       </QuestionsList>
     </QuestionsContainer>
   );
-}; 
+};

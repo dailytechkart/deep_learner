@@ -49,7 +49,7 @@ const CompanyName = styled.span`
 export const CompanyBadges = ({ companies, className }: CompanyBadgesProps) => {
   return (
     <BadgesContainer className={className}>
-      {companies.map((company) => (
+      {companies.map(company => (
         <Badge key={company.name}>
           <LogoContainer>
             <Image
@@ -64,4 +64,4 @@ export const CompanyBadges = ({ companies, className }: CompanyBadgesProps) => {
       ))}
     </BadgesContainer>
   );
-}; 
+};

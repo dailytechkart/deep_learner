@@ -33,15 +33,15 @@ const Filters = styled.div`
 
 const FilterButton = styled.button<{ active?: boolean }>`
   padding: 8px 16px;
-  border: 2px solid ${props => props.active ? '#2196F3' : '#e0e0e0'};
+  border: 2px solid ${props => (props.active ? '#2196F3' : '#e0e0e0')};
   border-radius: 6px;
-  background: ${props => props.active ? '#E3F2FD' : 'white'};
-  color: ${props => props.active ? '#2196F3' : '#666'};
+  background: ${props => (props.active ? '#E3F2FD' : 'white')};
+  color: ${props => (props.active ? '#2196F3' : '#666')};
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: ${props => props.active ? '#2196F3' : '#bdbdbd'};
+    border-color: ${props => (props.active ? '#2196F3' : '#bdbdbd')};
   }
 `;
 
@@ -185,4 +185,4 @@ export const PracticeQuestionsList: React.FC = () => {
       ))}
     </Container>
   );
-}; 
+};

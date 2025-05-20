@@ -2,14 +2,21 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { Layout, Section, SectionHeader, SectionTitle, SectionContent, Grid } from '../../components/Layout';
+import {
+  Layout,
+  Section,
+  SectionHeader,
+  SectionTitle,
+  SectionContent,
+  Grid,
+} from '../../components/Layout';
 import Link from 'next/link';
 import {
   PageContainer,
   MainContent,
   Title,
   Description,
-  Content
+  Content,
 } from '../../components/StyledComponents';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import SEO from '@/components/SEO';
@@ -75,58 +82,67 @@ export default function SystemDesignPatternsPage() {
   const patterns = [
     {
       title: 'Component Architecture',
-      description: 'Design reusable, maintainable, and scalable component hierarchies for modern web applications.',
+      description:
+        'Design reusable, maintainable, and scalable component hierarchies for modern web applications.',
       category: 'Frontend',
-      link: '/system-design/patterns/component-architecture'
+      link: '/system-design/patterns/component-architecture',
     },
     {
       title: 'State Management',
-      description: 'Implement efficient state management patterns for complex frontend applications.',
+      description:
+        'Implement efficient state management patterns for complex frontend applications.',
       category: 'Frontend',
-      link: '/system-design/patterns/state-management'
+      link: '/system-design/patterns/state-management',
     },
     {
       title: 'Micro Frontends',
-      description: 'Break down frontend monoliths into smaller, independently deployable applications.',
+      description:
+        'Break down frontend monoliths into smaller, independently deployable applications.',
       category: 'Frontend',
-      link: '/system-design/patterns/micro-frontends'
+      link: '/system-design/patterns/micro-frontends',
     },
     {
       title: 'Load Balancer Pattern',
-      description: 'Distribute incoming network traffic across multiple servers to ensure high availability and reliability.',
+      description:
+        'Distribute incoming network traffic across multiple servers to ensure high availability and reliability.',
       category: 'Backend',
-      link: '/system-design/patterns/load-balancer'
+      link: '/system-design/patterns/load-balancer',
     },
     {
       title: 'Caching Pattern',
-      description: 'Store frequently accessed data in memory to improve response time and reduce database load.',
+      description:
+        'Store frequently accessed data in memory to improve response time and reduce database load.',
       category: 'Backend',
-      link: '/system-design/patterns/caching'
+      link: '/system-design/patterns/caching',
     },
     {
       title: 'Circuit Breaker Pattern',
-      description: 'Prevent cascading failures by detecting and handling faults in distributed systems.',
+      description:
+        'Prevent cascading failures by detecting and handling faults in distributed systems.',
       category: 'Backend',
-      link: '/system-design/patterns/circuit-breaker'
+      link: '/system-design/patterns/circuit-breaker',
     },
     {
       title: 'Event-Driven Architecture',
-      description: 'Design systems that communicate through events, enabling loose coupling and scalability.',
+      description:
+        'Design systems that communicate through events, enabling loose coupling and scalability.',
       category: 'Architecture',
-      link: '/system-design/patterns/event-driven'
+      link: '/system-design/patterns/event-driven',
     },
     {
       title: 'Microservices Pattern',
-      description: 'Break down applications into small, independent services that can be developed and deployed separately.',
+      description:
+        'Break down applications into small, independent services that can be developed and deployed separately.',
       category: 'Architecture',
-      link: '/system-design/patterns/microservices'
+      link: '/system-design/patterns/microservices',
     },
     {
       title: 'Database Sharding',
-      description: 'Split a database into smaller, more manageable pieces to improve performance and scalability.',
+      description:
+        'Split a database into smaller, more manageable pieces to improve performance and scalability.',
       category: 'Backend',
-      link: '/system-design/patterns/sharding'
-    }
+      link: '/system-design/patterns/sharding',
+    },
   ];
 
   return (
@@ -141,29 +157,26 @@ export default function SystemDesignPatternsPage() {
           'scalability patterns',
           'distributed systems',
           'microservices',
-          'event-driven architecture'
+          'event-driven architecture',
         ]}
       />
       <PageContainer>
         <MainContent>
           <Breadcrumbs
-            items={[
-              { label: 'System Design', href: '/system-design' },
-              { label: 'Patterns' }
-            ]}
+            items={[{ label: 'System Design', href: '/system-design' }, { label: 'Patterns' }]}
           />
           <Title>System Design Patterns</Title>
           <Description>
-            Learn about common system design patterns and architectural solutions. Understand
-            how to apply these patterns to build scalable and maintainable systems.
+            Learn about common system design patterns and architectural solutions. Understand how to
+            apply these patterns to build scalable and maintainable systems.
           </Description>
 
           <Section>
             <SectionTitle>Microservices Architecture</SectionTitle>
             <Content>
               <p>
-                Breaking down applications into small, independent services that communicate
-                through APIs. Benefits include:
+                Breaking down applications into small, independent services that communicate through
+                APIs. Benefits include:
               </p>
               <ul>
                 <li>Independent deployment and scaling</li>
@@ -193,8 +206,8 @@ export default function SystemDesignPatternsPage() {
             <SectionTitle>Circuit Breaker Pattern</SectionTitle>
             <Content>
               <p>
-                Preventing cascading failures in distributed systems by monitoring for failures
-                and stopping the flow of requests when necessary.
+                Preventing cascading failures in distributed systems by monitoring for failures and
+                stopping the flow of requests when necessary.
               </p>
               <h3>States</h3>
               <ul>
@@ -209,8 +222,8 @@ export default function SystemDesignPatternsPage() {
             <SectionTitle>CQRS Pattern</SectionTitle>
             <Content>
               <p>
-                Command Query Responsibility Segregation separates read and write operations
-                for better scalability and performance.
+                Command Query Responsibility Segregation separates read and write operations for
+                better scalability and performance.
               </p>
               <h3>Components</h3>
               <ul>
@@ -226,8 +239,8 @@ export default function SystemDesignPatternsPage() {
             <SectionTitle>Load Balancing Patterns</SectionTitle>
             <Content>
               <p>
-                Distributing incoming network traffic across multiple servers to ensure
-                reliability and performance.
+                Distributing incoming network traffic across multiple servers to ensure reliability
+                and performance.
               </p>
               <h3>Strategies</h3>
               <ul>
@@ -242,4 +255,4 @@ export default function SystemDesignPatternsPage() {
       </PageContainer>
     </>
   );
-} 
+}

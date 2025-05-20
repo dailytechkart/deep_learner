@@ -9,11 +9,15 @@ const protectedRoutes = ['/dashboard', '/profile', '/settings', '/practice', '/l
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  
+
   // Check if the route is public or protected
-  const isPublicRoute = publicRoutes.some(route => pathname === route || pathname.startsWith(route + '/'));
-  const isProtectedRoute = protectedRoutes.some(route => pathname === route || pathname.startsWith(route + '/'));
-  
+  const isPublicRoute = publicRoutes.some(
+    route => pathname === route || pathname.startsWith(route + '/')
+  );
+  const isProtectedRoute = protectedRoutes.some(
+    route => pathname === route || pathname.startsWith(route + '/')
+  );
+
   // Get the token from cookies
   const token = request.cookies.get('auth_token')?.value;
 
@@ -44,4 +48,4 @@ export const config = {
      */
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
-}; 
+};

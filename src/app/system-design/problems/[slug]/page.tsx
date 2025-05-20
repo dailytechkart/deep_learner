@@ -219,13 +219,7 @@ const problemsList = [
     time_limit: 120,
     difficulty: 'Hard',
     roles: ['SDE2', 'SDE3'],
-    tags: [
-      'Pagination',
-      'Virtualization',
-      'React',
-      'Feed System',
-      'Infinite Scroll',
-    ],
+    tags: ['Pagination', 'Virtualization', 'React', 'Feed System', 'Infinite Scroll'],
     description:
       'Create a responsive, paginated news feed with likes, comments, and post creation.',
     twist: 'Add real-time update for new posts and optimistic UI.',
@@ -239,8 +233,7 @@ const problemsList = [
     difficulty: 'Medium',
     roles: ['SDE1', 'SDE2'],
     tags: ['Filters', 'Sorting', 'Pagination', 'React', 'UI Performance'],
-    description:
-      'Build a product list page with filters, sorting, and lazy loading of images.',
+    description: 'Build a product list page with filters, sorting, and lazy loading of images.',
     twist: 'Support comparison view and wishlist functionality.',
     icon: <FaClipboardList />,
   },
@@ -278,8 +271,7 @@ const problemsList = [
     difficulty: 'Hard',
     roles: ['SDE2', 'SDE3'],
     tags: ['Drag and Drop', 'React', 'State Sync', 'UX'],
-    description:
-      'Build a board with draggable cards across columns with editable tasks.',
+    description: 'Build a board with draggable cards across columns with editable tasks.',
     twist: 'Support offline mode and sync when back online.',
     icon: <FaLayerGroup />,
   },
@@ -291,8 +283,7 @@ const problemsList = [
     difficulty: 'Medium',
     roles: ['SDE1'],
     tags: ['Form Validation', 'React', 'Step Navigation', 'UX'],
-    description:
-      'Create a multi-step form with validation, progress indicator, and summary view.',
+    description: 'Create a multi-step form with validation, progress indicator, and summary view.',
     twist: 'Add auto-save and form state recovery after refresh.',
     icon: <FaBolt />,
   },
@@ -304,8 +295,7 @@ const problemsList = [
     difficulty: 'Easy',
     roles: ['SDE1'],
     tags: ['Debounce', 'Fetch', 'React', 'UX'],
-    description:
-      'Implement a search bar that shows suggestions with debounce and highlight.',
+    description: 'Implement a search bar that shows suggestions with debounce and highlight.',
     twist: 'Group results by category and support keyboard navigation.',
     icon: <FaSearch />,
   },
@@ -316,8 +306,7 @@ const Layout = styled.div`
   height: 100vh;
   min-height: 100vh;
   background: ${({ theme }) => theme.colors.background};
-  font-family: 'Charter', 'Georgia', 'Cambria', 'Times New Roman', 'Times',
-    serif;
+  font-family: 'Charter', 'Georgia', 'Cambria', 'Times New Roman', 'Times', serif;
 `;
 
 const LeftPanel = styled.nav<{ isOpen?: boolean }>`
@@ -407,18 +396,15 @@ const ProblemCard = styled.li<{ selected: boolean; isDisabled?: boolean }>`
   background: ${({ selected, theme }) =>
     selected ? theme.colors.background : theme.colors.backgroundAlt};
   border: 1px solid
-    ${({ selected, theme }) =>
-      selected ? theme.colors.primary : theme.colors.border};
+    ${({ selected, theme }) => (selected ? theme.colors.primary : theme.colors.border)};
   border-radius: 10px;
   margin-bottom: 12px;
   padding: 16px;
-  color: ${({ selected, theme }) =>
-    selected ? theme.colors.primary : theme.colors.text};
+  color: ${({ selected, theme }) => (selected ? theme.colors.primary : theme.colors.text)};
   font-weight: ${({ selected }) => (selected ? 600 : 400)};
   cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
   opacity: ${({ isDisabled }) => (isDisabled ? 0.7 : 1)};
-  box-shadow: ${({ selected }) =>
-    selected ? '0 4px 12px rgba(0,0,0,0.08)' : 'none'};
+  box-shadow: ${({ selected }) => (selected ? '0 4px 12px rgba(0,0,0,0.08)' : 'none')};
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
@@ -427,14 +413,10 @@ const ProblemCard = styled.li<{ selected: boolean; isDisabled?: boolean }>`
   overflow: hidden;
 
   &:hover {
-    background: ${({ theme, isDisabled }) =>
-      isDisabled ? 'inherit' : theme.colors.background};
-    border-color: ${({ theme, isDisabled }) =>
-      isDisabled ? 'inherit' : theme.colors.primary};
-    box-shadow: ${({ isDisabled }) =>
-      isDisabled ? 'none' : '0 4px 12px rgba(0,0,0,0.08)'};
-    transform: ${({ isDisabled }) =>
-      isDisabled ? 'none' : 'translateY(-1px)'};
+    background: ${({ theme, isDisabled }) => (isDisabled ? 'inherit' : theme.colors.background)};
+    border-color: ${({ theme, isDisabled }) => (isDisabled ? 'inherit' : theme.colors.primary)};
+    box-shadow: ${({ isDisabled }) => (isDisabled ? 'none' : '0 4px 12px rgba(0,0,0,0.08)')};
+    transform: ${({ isDisabled }) => (isDisabled ? 'none' : 'translateY(-1px)')};
   }
 
   &::after {
@@ -444,8 +426,7 @@ const ProblemCard = styled.li<{ selected: boolean; isDisabled?: boolean }>`
     left: 0;
     width: 3px;
     height: 100%;
-    background: ${({ selected, theme }) =>
-      selected ? theme.colors.primary : 'transparent'};
+    background: ${({ selected, theme }) => (selected ? theme.colors.primary : 'transparent')};
     transition: background 0.2s ease;
   }
 `;
@@ -525,8 +506,7 @@ const MainTitle = styled.h1`
   font-weight: 500;
   margin: 0 0 1.5rem 0;
   color: ${({ theme }) => theme.colors.text};
-  font-family: 'Charter', 'Georgia', 'Cambria', 'Times New Roman', 'Times',
-    serif;
+  font-family: 'Charter', 'Georgia', 'Cambria', 'Times New Roman', 'Times', serif;
   letter-spacing: -0.018em;
   line-height: 1.16;
   text-align: left;
@@ -655,9 +635,7 @@ const DropdownFilter = styled.div`
 const DropdownButton = styled.button<{ isOpen: boolean }>`
   width: 100%;
   padding: 10px 14px;
-  border: 1px solid
-    ${({ isOpen, theme }) =>
-      isOpen ? theme.colors.primary : theme.colors.border};
+  border: 1px solid ${({ isOpen, theme }) => (isOpen ? theme.colors.primary : theme.colors.border)};
   border-radius: 8px;
   background: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
@@ -705,10 +683,8 @@ const DropdownOption = styled.div<{ selected: boolean }>`
   display: flex;
   align-items: center;
   gap: 8px;
-  color: ${({ selected, theme }) =>
-    selected ? theme.colors.primary : theme.colors.text};
-  background: ${({ selected, theme }) =>
-    selected ? `${theme.colors.primary}10` : 'transparent'};
+  color: ${({ selected, theme }) => (selected ? theme.colors.primary : theme.colors.text)};
+  background: ${({ selected, theme }) => (selected ? `${theme.colors.primary}10` : 'transparent')};
   font-weight: ${({ selected }) => (selected ? '500' : '400')};
   font-size: 0.9em;
 
@@ -787,11 +763,8 @@ const FilterOptions = styled.div`
 const FilterChip = styled.button<{ active: boolean }>`
   padding: 8px 16px;
   border-radius: 999px;
-  border: 2px solid
-    ${({ active, theme }) =>
-      active ? theme.colors.primary : theme.colors.border};
-  background: ${({ active, theme }) =>
-    active ? theme.colors.primary : 'transparent'};
+  border: 2px solid ${({ active, theme }) => (active ? theme.colors.primary : theme.colors.border)};
+  background: ${({ active, theme }) => (active ? theme.colors.primary : 'transparent')};
   color: ${({ active, theme }) => (active ? '#fff' : theme.colors.text)};
   font-size: 0.85em;
   font-weight: ${({ active }) => (active ? '600' : '500')};
@@ -1299,8 +1272,7 @@ const CodeBlock = styled.pre`
   margin: 1.8em 0;
   border: 1px solid ${({ theme }) => theme.colors.border};
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
-    monospace;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
   font-size: 0.9em;
   line-height: 1.6;
 `;
@@ -1518,8 +1490,7 @@ const MDXContent = styled.div`
     font-weight: 600;
     margin: 2em 0 1em;
     color: ${({ theme }) => theme.colors.text};
-    font-family: 'GT Alpina', 'Georgia', 'Cambria', 'Times New Roman', 'Times',
-      serif;
+    font-family: 'GT Alpina', 'Georgia', 'Cambria', 'Times New Roman', 'Times', serif;
     letter-spacing: -0.016em;
     line-height: 1.3;
     position: relative;
@@ -1542,8 +1513,7 @@ const MDXContent = styled.div`
     font-weight: 600;
     margin: 1.8em 0 1em;
     color: ${({ theme }) => theme.colors.text};
-    font-family: 'GT Alpina', 'Georgia', 'Cambria', 'Times New Roman', 'Times',
-      serif;
+    font-family: 'GT Alpina', 'Georgia', 'Cambria', 'Times New Roman', 'Times', serif;
     letter-spacing: -0.016em;
     line-height: 1.4;
   }
@@ -1578,8 +1548,7 @@ const MDXContent = styled.div`
   }
 
   code {
-    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
-      monospace;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
     font-size: 0.9em;
     background: ${({ theme }) => theme.colors.backgroundAlt};
     padding: 0.2em 0.4em;
@@ -1910,7 +1879,9 @@ const WhatToCoverTab = styled.button<{ active: boolean }>`
   border-bottom: 2.5px solid
     ${({ active, theme }) => (active ? theme.colors.primary : 'transparent')};
   padding: 0.2em 0.5em 0.4em 0.5em;
-  transition: color 0.2s, border-bottom 0.2s;
+  transition:
+    color 0.2s,
+    border-bottom 0.2s;
 `;
 
 const WhatToCoverList = styled.ul`
@@ -1923,16 +1894,16 @@ const WhatToCoverItem = styled.li<{ active?: boolean }>`
   margin-bottom: 0.7rem;
   padding-left: 2.2em;
   position: relative;
-  color: ${({ active, theme }) =>
-    active ? theme.colors.primary : theme.colors.text};
+  color: ${({ active, theme }) => (active ? theme.colors.primary : theme.colors.text)};
   font-weight: ${({ active }) => (active ? 600 : 400)};
   display: flex;
   align-items: center;
   min-height: 2.2em;
-  transition: background 0.2s, color 0.2s;
+  transition:
+    background 0.2s,
+    color 0.2s;
   border-radius: 6px;
-  background: ${({ active, theme }) =>
-    active ? `${theme.colors.primary}08` : 'transparent'};
+  background: ${({ active, theme }) => (active ? `${theme.colors.primary}08` : 'transparent')};
   &:hover {
     background: ${({ theme }) => `${theme.colors.primary}10`};
   }
@@ -1944,8 +1915,7 @@ const WhatToCoverItem = styled.li<{ active?: boolean }>`
     width: 0.6em;
     height: 0.6em;
     border-radius: 50%;
-    background: ${({ active, theme }) =>
-      active ? theme.colors.primary : '#bbb'};
+    background: ${({ active, theme }) => (active ? theme.colors.primary : '#bbb')};
     display: inline-block;
   }
 `;
@@ -1957,14 +1927,12 @@ export default function ProblemPage() {
   const [error, setError] = useState<string | null>(null);
   const [selectedProblem, setSelectedProblem] = useState(() => {
     const initialSlug = params?.slug as string;
-    return problemsList.find((p) => p.slug === initialSlug) || problemsList[0];
+    return problemsList.find(p => p.slug === initialSlug) || problemsList[0];
   });
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-  const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>(
-    [],
-  );
+  const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
   const [selectedTimeLimits, setSelectedTimeLimits] = useState<number[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);

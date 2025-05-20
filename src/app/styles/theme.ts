@@ -3,7 +3,7 @@ import { DefaultTheme } from 'styled-components';
 const baseTheme = {
   fonts: {
     body: 'Segoe UI, system-ui, -apple-system, sans-serif',
-    heading: 'Segoe UI, system-ui, -apple-system, sans-serif'
+    heading: 'Segoe UI, system-ui, -apple-system, sans-serif',
   },
   typography: {
     h1: '2.5rem',
@@ -17,8 +17,8 @@ const baseTheme = {
       sm: '0.875rem',
       md: '1rem',
       lg: '1.125rem',
-      xl: '1.25rem'
-    }
+      xl: '1.25rem',
+    },
   },
   spacing: {
     xs: '0.25rem',
@@ -26,27 +26,27 @@ const baseTheme = {
     md: '1rem',
     lg: '1.5rem',
     xl: '2rem',
-    xxl: '3rem'
+    xxl: '3rem',
   },
   borderRadius: {
     sm: '0.25rem',
     md: '0.5rem',
     lg: '1rem',
-    xl: '1.5rem'
+    xl: '1.5rem',
   },
   shadows: {
     sm: '0 2px 4px rgba(0, 0, 0, 0.05)',
     md: '0 4px 8px rgba(0, 0, 0, 0.05)',
-    lg: '0 8px 16px rgba(0, 0, 0, 0.05)'
+    lg: '0 8px 16px rgba(0, 0, 0, 0.05)',
   },
   transitions: {
-    default: '0.2s ease-in-out'
+    default: '0.2s ease-in-out',
   },
   breakpoints: {
     mobile: '640px',
     tablet: '768px',
-    desktop: '1024px'
-  }
+    desktop: '1024px',
+  },
 };
 
 // Microsoft Fluent Design System colors
@@ -63,7 +63,7 @@ export const lightTheme: Theme = {
     success: '#34C759',
     error: '#FF3B30',
     warning: '#FF9500',
-    info: '#5856D6'
+    info: '#5856D6',
   },
   spacing: {
     xs: '0.25rem',
@@ -71,7 +71,7 @@ export const lightTheme: Theme = {
     md: '1rem',
     lg: '1.5rem',
     xl: '2rem',
-    xxl: '3rem'
+    xxl: '3rem',
   },
   typography: {
     fontSize: {
@@ -79,81 +79,81 @@ export const lightTheme: Theme = {
       sm: '0.875rem',
       md: '1rem',
       lg: '1.125rem',
-      xl: '1.25rem'
+      xl: '1.25rem',
     },
     fontWeight: {
       normal: 400,
       medium: 500,
       semibold: 600,
-      bold: 700
+      bold: 700,
     },
     h1: {
       fontSize: '2.5rem',
       fontWeight: 700,
-      lineHeight: 1.2
+      lineHeight: 1.2,
     },
     h2: {
       fontSize: '2rem',
       fontWeight: 700,
-      lineHeight: 1.3
+      lineHeight: 1.3,
     },
     h3: {
       fontSize: '1.75rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     h4: {
       fontSize: '1.5rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     h5: {
       fontSize: '1.25rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     h6: {
       fontSize: '1rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     body1: {
       fontSize: '1rem',
       fontWeight: 400,
-      lineHeight: 1.5
+      lineHeight: 1.5,
     },
     body2: {
       fontSize: '0.875rem',
       fontWeight: 400,
-      lineHeight: 1.5
+      lineHeight: 1.5,
     },
     caption: {
       fontSize: '0.75rem',
       fontWeight: 400,
-      lineHeight: 1.5
-    }
+      lineHeight: 1.5,
+    },
   },
   shadows: {
     sm: '0 1px 2px rgba(0, 0, 0, 0.05)',
     md: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    lg: '0 10px 15px rgba(0, 0, 0, 0.1)'
+    lg: '0 10px 15px rgba(0, 0, 0, 0.1)',
   },
   transitions: {
     default: '0.3s ease',
     fast: '0.15s ease',
-    slow: '0.5s ease'
+    slow: '0.5s ease',
   },
   borderRadius: {
     sm: '0.25rem',
     md: '0.5rem',
     lg: '1rem',
-    full: '9999px'
+    full: '9999px',
   },
   breakpoints: {
     mobile: '640px',
     tablet: '768px',
-    desktop: '1024px'
-  }
+    desktop: '1024px',
+  },
 };
 
 export const darkTheme: Theme = {
@@ -169,7 +169,7 @@ export const darkTheme: Theme = {
     success: '#30D158',
     error: '#FF453A',
     warning: '#FF9F0A',
-    info: '#5E5CE6'
+    info: '#5E5CE6',
   },
   spacing: {
     xs: '0.25rem',
@@ -177,7 +177,7 @@ export const darkTheme: Theme = {
     md: '1rem',
     lg: '1.5rem',
     xl: '2rem',
-    xxl: '3rem'
+    xxl: '3rem',
   },
   typography: {
     fontSize: {
@@ -185,81 +185,81 @@ export const darkTheme: Theme = {
       sm: '0.875rem',
       md: '1rem',
       lg: '1.125rem',
-      xl: '1.25rem'
+      xl: '1.25rem',
     },
     fontWeight: {
       normal: 400,
       medium: 500,
       semibold: 600,
-      bold: 700
+      bold: 700,
     },
     h1: {
       fontSize: '2.5rem',
       fontWeight: 700,
-      lineHeight: 1.2
+      lineHeight: 1.2,
     },
     h2: {
       fontSize: '2rem',
       fontWeight: 700,
-      lineHeight: 1.3
+      lineHeight: 1.3,
     },
     h3: {
       fontSize: '1.75rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     h4: {
       fontSize: '1.5rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     h5: {
       fontSize: '1.25rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     h6: {
       fontSize: '1rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     body1: {
       fontSize: '1rem',
       fontWeight: 400,
-      lineHeight: 1.5
+      lineHeight: 1.5,
     },
     body2: {
       fontSize: '0.875rem',
       fontWeight: 400,
-      lineHeight: 1.5
+      lineHeight: 1.5,
     },
     caption: {
       fontSize: '0.75rem',
       fontWeight: 400,
-      lineHeight: 1.5
-    }
+      lineHeight: 1.5,
+    },
   },
   shadows: {
     sm: '0 1px 2px rgba(0, 0, 0, 0.3)',
     md: '0 4px 6px rgba(0, 0, 0, 0.4)',
-    lg: '0 10px 15px rgba(0, 0, 0, 0.4)'
+    lg: '0 10px 15px rgba(0, 0, 0, 0.4)',
   },
   transitions: {
     default: '0.3s ease',
     fast: '0.15s ease',
-    slow: '0.5s ease'
+    slow: '0.5s ease',
   },
   borderRadius: {
     sm: '0.25rem',
     md: '0.5rem',
     lg: '1rem',
-    full: '9999px'
+    full: '9999px',
   },
   breakpoints: {
     mobile: '640px',
     tablet: '768px',
-    desktop: '1024px'
-  }
+    desktop: '1024px',
+  },
 };
 
 export interface Theme {
@@ -381,7 +381,7 @@ export const theme: Theme = {
     success: '#34C759',
     error: '#FF3B30',
     warning: '#FF9500',
-    info: '#5856D6'
+    info: '#5856D6',
   },
   spacing: {
     xs: '0.25rem',
@@ -389,7 +389,7 @@ export const theme: Theme = {
     md: '1rem',
     lg: '1.5rem',
     xl: '2rem',
-    xxl: '3rem'
+    xxl: '3rem',
   },
   typography: {
     fontSize: {
@@ -397,79 +397,79 @@ export const theme: Theme = {
       sm: '0.875rem',
       md: '1rem',
       lg: '1.125rem',
-      xl: '1.25rem'
+      xl: '1.25rem',
     },
     fontWeight: {
       normal: 400,
       medium: 500,
       semibold: 600,
-      bold: 700
+      bold: 700,
     },
     h1: {
       fontSize: '2.5rem',
       fontWeight: 700,
-      lineHeight: 1.2
+      lineHeight: 1.2,
     },
     h2: {
       fontSize: '2rem',
       fontWeight: 700,
-      lineHeight: 1.3
+      lineHeight: 1.3,
     },
     h3: {
       fontSize: '1.75rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     h4: {
       fontSize: '1.5rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     h5: {
       fontSize: '1.25rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     h6: {
       fontSize: '1rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     body1: {
       fontSize: '1rem',
       fontWeight: 400,
-      lineHeight: 1.5
+      lineHeight: 1.5,
     },
     body2: {
       fontSize: '0.875rem',
       fontWeight: 400,
-      lineHeight: 1.5
+      lineHeight: 1.5,
     },
     caption: {
       fontSize: '0.75rem',
       fontWeight: 400,
-      lineHeight: 1.5
-    }
+      lineHeight: 1.5,
+    },
   },
   shadows: {
     sm: '0 1px 2px rgba(0, 0, 0, 0.05)',
     md: '0 4px 6px rgba(0, 0, 0, 0.1)',
-    lg: '0 10px 15px rgba(0, 0, 0, 0.1)'
+    lg: '0 10px 15px rgba(0, 0, 0, 0.1)',
   },
   transitions: {
     default: '0.3s ease',
     fast: '0.15s ease',
-    slow: '0.5s ease'
+    slow: '0.5s ease',
   },
   borderRadius: {
     sm: '0.25rem',
     md: '0.5rem',
     lg: '1rem',
-    full: '9999px'
+    full: '9999px',
   },
   breakpoints: {
     mobile: '640px',
     tablet: '768px',
-    desktop: '1024px'
-  }
-}; 
+    desktop: '1024px',
+  },
+};

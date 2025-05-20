@@ -8,7 +8,7 @@ import {
   Description,
   Section,
   SectionTitle,
-  Content
+  Content,
 } from '../../components/StyledComponents';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import SEO from '@/components/SEO';
@@ -26,21 +26,18 @@ export default function SystemDesignBasicsPage() {
           'performance',
           'architecture',
           'distributed systems',
-          'design principles'
+          'design principles',
         ]}
       />
       <PageContainer>
         <MainContent>
           <Breadcrumbs
-            items={[
-              { label: 'System Design', href: '/system-design' },
-              { label: 'Basics' }
-            ]}
+            items={[{ label: 'System Design', href: '/system-design' }, { label: 'Basics' }]}
           />
           <Title>System Design Basics</Title>
           <Description>
-            Learn the fundamental concepts and principles of system design. Understand how to
-            create scalable, reliable, and efficient systems.
+            Learn the fundamental concepts and principles of system design. Understand how to create
+            scalable, reliable, and efficient systems.
           </Description>
 
           <Section>
@@ -59,8 +56,8 @@ export default function SystemDesignBasicsPage() {
             <Content>
               <h3>Scalability</h3>
               <p>
-                The ability of a system to handle growing amounts of work by adding resources
-                to the system. This can be achieved through:
+                The ability of a system to handle growing amounts of work by adding resources to the
+                system. This can be achieved through:
               </p>
               <ul>
                 <li>Horizontal scaling (adding more machines)</li>
@@ -83,7 +80,8 @@ export default function SystemDesignBasicsPage() {
 
               <h3>Performance</h3>
               <p>
-                The speed and efficiency with which a system processes requests. Key factors include:
+                The speed and efficiency with which a system processes requests. Key factors
+                include:
               </p>
               <ul>
                 <li>Response time</li>
@@ -117,8 +115,19 @@ export default function SystemDesignBasicsPage() {
 
               <h3>High Cohesion</h3>
               <p>
-                Keeping related functionality together in the same component, making the system
-                more maintainable and easier to understand.
+                Keeping related functionality together in the same component, making the system more
+                maintainable and easier to understand.
+              </p>
+            </Content>
+          </Section>
+
+          <Section>
+            <SectionTitle>Let&apos;s dive into the fundamentals of system design</SectionTitle>
+            <Content>
+              <p>
+                System design is the process of defining the architecture, components, modules,
+                interfaces, and data for a system to satisfy specified requirements. It involves
+                making high-level decisions about the system's structure and behavior.
               </p>
             </Content>
           </Section>
@@ -126,4 +135,4 @@ export default function SystemDesignBasicsPage() {
       </PageContainer>
     </>
   );
-} 
+}

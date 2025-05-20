@@ -7,7 +7,7 @@ let tokenRefreshTimeout: NodeJS.Timeout | null = null;
 
 export const setupTokenRefresh = () => {
   const auth = getAuth(getApp());
-  
+
   const refreshToken = async () => {
     try {
       const user = auth.currentUser;
@@ -26,17 +26,17 @@ export const setupTokenRefresh = () => {
   }
 
   // Set up auth state listener
-  const unsubscribe = onAuthStateChanged(auth, (user) => {
+  const unsubscribe = onAuthStateChanged(auth, user => {
     if (user) {
       // Get the token expiration time
-      user.getIdTokenResult().then((idTokenResult) => {
+      user.getIdTokenResult().then(idTokenResult => {
         const expirationTime = idTokenResult.expirationTime;
         const currentTime = new Date().getTime();
         const timeUntilExpiration = new Date(expirationTime).getTime() - currentTime;
-        
+
         // Refresh token 5 minutes before expiration
         const refreshTime = Math.max(0, timeUntilExpiration - 5 * 60 * 1000);
-        
+
         tokenRefreshTimeout = setTimeout(() => {
           refreshToken();
         }, refreshTime);
@@ -56,7 +56,7 @@ export const setupTokenRefresh = () => {
 export const getAuthToken = async () => {
   const auth = getAuth(getApp());
   const user = auth.currentUser;
-  
+
   if (!user) {
     throw new Error('No authenticated user');
   }
@@ -129,10 +129,10 @@ const refreshServerToken = async () => {
 
 export const requireAuth = async () => {
   const session = await getServerSession();
-  
+
   if (!session) {
     throw new Error('Authentication required');
   }
-  
+
   return session;
-}; 
+};

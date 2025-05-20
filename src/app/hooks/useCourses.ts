@@ -28,7 +28,7 @@ export const useCourses = () => {
   // Fetch user's enrolled courses
   const fetchUserCourses = async () => {
     if (!user) return;
-    
+
     try {
       setLoading(true);
       const data = await courseService.getUserCourses(user.uid);
@@ -63,11 +63,7 @@ export const useCourses = () => {
   };
 
   // Update course progress
-  const updateProgress = async (
-    courseId: string,
-    lessonId: string,
-    isCompleted: boolean
-  ) => {
+  const updateProgress = async (courseId: string, lessonId: string, isCompleted: boolean) => {
     if (!user) {
       setError('You must be logged in to update progress');
       return;
@@ -115,6 +111,6 @@ export const useCourses = () => {
     updateProgress,
     getCourseProgress,
     refreshCourses: fetchCourses,
-    refreshUserCourses: fetchUserCourses
+    refreshUserCourses: fetchUserCourses,
   };
-}; 
+};

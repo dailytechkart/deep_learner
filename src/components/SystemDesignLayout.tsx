@@ -7,7 +7,7 @@ const Layout = styled.div`
   height: 100vh;
   min-height: 100vh;
   background: ${({ theme }) => theme.colors.background};
-  font-family: "Charter", "Georgia", "Cambria", "Times New Roman", "Times", serif;
+  font-family: 'Charter', 'Georgia', 'Cambria', 'Times New Roman', 'Times', serif;
 `;
 
 const LeftPanel = styled.nav<{ isOpen?: boolean }>`
@@ -87,11 +87,13 @@ const SystemDesignLayout: React.FC<SystemDesignLayoutProps> = ({
   leftPanel,
   mainPanel,
   rightPanel,
-  breadcrumbs
+  breadcrumbs,
 }) => {
   return (
     <>
-      {breadcrumbs && <BreadcrumbContainer aria-label="Breadcrumb">{breadcrumbs}</BreadcrumbContainer>}
+      {breadcrumbs && (
+        <BreadcrumbContainer aria-label="Breadcrumb">{breadcrumbs}</BreadcrumbContainer>
+      )}
       <Layout>
         {leftPanel && <LeftPanel>{leftPanel}</LeftPanel>}
         <MainPanel>{mainPanel}</MainPanel>
@@ -101,4 +103,4 @@ const SystemDesignLayout: React.FC<SystemDesignLayoutProps> = ({
   );
 };
 
-export default SystemDesignLayout; 
+export default SystemDesignLayout;

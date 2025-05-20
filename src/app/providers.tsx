@@ -50,11 +50,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <StyledComponentsRegistry>
       <SessionProvider>
         <ThemeProvider>
-          <ThemeWrapper>
-            {children}
-          </ThemeWrapper>
+          <ThemeWrapper>{children}</ThemeWrapper>
         </ThemeProvider>
       </SessionProvider>
     </StyledComponentsRegistry>
   );
-} 
+}

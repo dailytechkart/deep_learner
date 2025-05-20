@@ -52,12 +52,13 @@ const OptionsList = styled.div`
 
 const OptionButton = styled.button<{ selected?: boolean; correct?: boolean; incorrect?: boolean }>`
   padding: 12px 16px;
-  border: 2px solid ${props => {
-    if (props.correct) return '#4CAF50';
-    if (props.incorrect) return '#f44336';
-    if (props.selected) return '#2196F3';
-    return '#e0e0e0';
-  }};
+  border: 2px solid
+    ${props => {
+      if (props.correct) return '#4CAF50';
+      if (props.incorrect) return '#f44336';
+      if (props.selected) return '#2196F3';
+      return '#e0e0e0';
+    }};
   border-radius: 6px;
   background: ${props => {
     if (props.correct) return '#E8F5E9';
@@ -88,9 +89,9 @@ const OptionButton = styled.button<{ selected?: boolean; correct?: boolean; inco
 const Explanation = styled.div<{ show: boolean }>`
   margin-top: 16px;
   padding: 16px;
-  background: #F5F5F5;
+  background: #f5f5f5;
   border-radius: 6px;
-  display: ${props => props.show ? 'block' : 'none'};
+  display: ${props => (props.show ? 'block' : 'none')};
 `;
 
 const Timer = styled.div`
@@ -183,4 +184,4 @@ export const PracticeQuestion: React.FC<PracticeQuestionProps> = ({ question, on
       </Explanation>
     </QuestionContainer>
   );
-}; 
+};

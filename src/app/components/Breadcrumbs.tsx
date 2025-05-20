@@ -38,7 +38,7 @@ const BreadcrumbLink = styled(Link)`
     color: ${props => props.theme.colors.primary};
   }
 
-  &[aria-current="page"] {
+  &[aria-current='page'] {
     color: ${props => props.theme.colors.text};
     font-weight: ${props => props.theme.typography.fontWeight.medium};
     pointer-events: none;
@@ -71,4 +71,4 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
       </BreadcrumbList>
     </BreadcrumbContainer>
   );
-} 
+}

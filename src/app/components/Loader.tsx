@@ -31,7 +31,7 @@ const LoaderContainer = styled.div<LoaderProps>`
   justify-content: center;
   width: 100%;
   height: 100%;
-  min-height: ${(props) => {
+  min-height: ${props => {
     switch (props.size) {
       case 'sm':
         return '24px';
@@ -44,7 +44,7 @@ const LoaderContainer = styled.div<LoaderProps>`
 `;
 
 const Spinner = styled.div<LoaderProps>`
-  width: ${(props) => {
+  width: ${props => {
     switch (props.size) {
       case 'sm':
         return '20px';
@@ -54,7 +54,7 @@ const Spinner = styled.div<LoaderProps>`
         return '30px';
     }
   }};
-  height: ${(props) => {
+  height: ${props => {
     switch (props.size) {
       case 'sm':
         return '20px';
@@ -64,14 +64,14 @@ const Spinner = styled.div<LoaderProps>`
         return '30px';
     }
   }};
-  border: 3px solid ${(props) => props.theme.colors.border};
-  border-top-color: ${(props) => props.color || props.theme.colors.primary};
+  border: 3px solid ${props => props.theme.colors.border};
+  border-top-color: ${props => props.color || props.theme.colors.primary};
   border-radius: 50%;
   animation: ${spin} 0.8s linear infinite;
 `;
 
 const PulseLoader = styled.div<LoaderProps>`
-  width: ${(props) => {
+  width: ${props => {
     switch (props.size) {
       case 'sm':
         return '20px';
@@ -81,7 +81,7 @@ const PulseLoader = styled.div<LoaderProps>`
         return '30px';
     }
   }};
-  height: ${(props) => {
+  height: ${props => {
     switch (props.size) {
       case 'sm':
         return '20px';
@@ -91,14 +91,14 @@ const PulseLoader = styled.div<LoaderProps>`
         return '30px';
     }
   }};
-  background-color: ${(props) => props.color || props.theme.colors.primary};
+  background-color: ${props => props.color || props.theme.colors.primary};
   border-radius: 50%;
   animation: ${pulse} 1.5s ease-in-out infinite;
 `;
 
 const ShimmerLoader = styled.div<LoaderProps>`
   width: 100%;
-  height: ${(props) => {
+  height: ${props => {
     switch (props.size) {
       case 'sm':
         return '20px';
@@ -110,20 +110,16 @@ const ShimmerLoader = styled.div<LoaderProps>`
   }};
   background: linear-gradient(
     90deg,
-    ${(props) => props.theme.colors.border} 25%,
-    ${(props) => props.theme.colors.backgroundAlt} 50%,
-    ${(props) => props.theme.colors.border} 75%
+    ${props => props.theme.colors.border} 25%,
+    ${props => props.theme.colors.backgroundAlt} 50%,
+    ${props => props.theme.colors.border} 75%
   );
   background-size: 200% 100%;
   animation: ${shimmer} 1.5s infinite;
-  border-radius: ${(props) => props.theme.borderRadius.md};
+  border-radius: ${props => props.theme.borderRadius.md};
 `;
 
-const Loader: React.FC<LoaderProps> = ({
-  variant = 'spinner',
-  size = 'md',
-  color,
-}) => {
+const Loader: React.FC<LoaderProps> = ({ variant = 'spinner', size = 'md', color }) => {
   return (
     <LoaderContainer size={size}>
       {variant === 'spinner' && <Spinner size={size} color={color} />}

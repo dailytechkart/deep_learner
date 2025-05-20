@@ -52,12 +52,14 @@ Client -> Load Balancer -> Rate Limiter Service -> Backend Services
 ### Components
 
 1. **Rate Limiter Service**
+
    - Handles rate limit checks
    - Implements different rate limiting algorithms
    - Manages rate limit configurations
    - Communicates with Redis for state management
 
 2. **Redis Cluster**
+
    - Stores rate limit counters
    - Provides atomic operations for counter updates
    - Enables distributed rate limiting
@@ -70,17 +72,20 @@ Client -> Load Balancer -> Rate Limiter Service -> Backend Services
 ### Rate Limiting Algorithms
 
 1. **Token Bucket**
+
    - Maintains a bucket of tokens
    - Each request consumes a token
    - Tokens are refilled at a constant rate
    - Good for bursty traffic
 
 2. **Leaky Bucket**
+
    - Requests are processed at a constant rate
    - Excess requests are queued or rejected
    - Good for smoothing traffic
 
 3. **Fixed Window**
+
    - Simple counter per time window
    - Resets at window boundaries
    - May allow burst at window edges
@@ -94,12 +99,12 @@ Client -> Load Balancer -> Rate Limiter Service -> Backend Services
 
 ```typescript
 interface RateLimit {
-  key: string;           // User ID, IP, or endpoint
-  limit: number;         // Maximum requests allowed
-  window: number;        // Time window in seconds
-  algorithm: string;     // Rate limiting algorithm
-  current: number;       // Current request count
-  resetAt: number;       // Timestamp when counter resets
+  key: string; // User ID, IP, or endpoint
+  limit: number; // Maximum requests allowed
+  window: number; // Time window in seconds
+  algorithm: string; // Rate limiting algorithm
+  current: number; // Current request count
+  resetAt: number; // Timestamp when counter resets
 }
 
 interface RateLimitConfig {
@@ -109,8 +114,8 @@ interface RateLimitConfig {
     [key: string]: {
       limit: number;
       window: number;
-    }
-  }
+    };
+  };
 }
 ```
 
@@ -143,11 +148,11 @@ class RedisRateLimiter {
   async checkLimit(key: string, limit: number, window: number): Promise<boolean> {
     const now = Date.now();
     const windowKey = `${key}:${Math.floor(now / window)}`;
-    
+
     const multi = this.redis.multi();
     multi.incr(windowKey);
     multi.expire(windowKey, window);
-    
+
     const [count] = await multi.exec();
     return count <= limit;
   }
@@ -157,6 +162,7 @@ class RedisRateLimiter {
 ### Distributed Rate Limiting
 
 1. **Sharding**
+
    - Shard rate limiters by key
    - Use consistent hashing for distribution
    - Handle shard failures gracefully
@@ -169,6 +175,7 @@ class RedisRateLimiter {
 ### Monitoring and Alerts
 
 1. **Metrics to Track**
+
    - Request rate per user/endpoint
    - Rejection rate
    - Latency percentiles
@@ -183,11 +190,13 @@ class RedisRateLimiter {
 ## Scaling Considerations
 
 1. **Horizontal Scaling**
+
    - Add more rate limiter instances
    - Use consistent hashing for key distribution
    - Implement proper load balancing
 
 2. **Caching**
+
    - Cache rate limit results
    - Use Redis for distributed caching
    - Implement proper cache invalidation
@@ -200,11 +209,13 @@ class RedisRateLimiter {
 ## Trade-offs
 
 1. **Accuracy vs. Performance**
+
    - More accurate algorithms (sliding window) are more complex
    - Simpler algorithms (fixed window) may allow bursts
    - Choose based on use case requirements
 
 2. **Consistency vs. Availability**
+
    - Strong consistency requires more coordination
    - Eventual consistency provides better performance
    - Consider business requirements
@@ -217,11 +228,13 @@ class RedisRateLimiter {
 ## Additional Considerations
 
 1. **Security**
+
    - Prevent rate limit bypass
    - Handle DDoS attacks
    - Implement proper authentication
 
 2. **Cost Optimization**
+
    - Use appropriate instance types
    - Implement proper caching
    - Monitor resource usage
@@ -239,4 +252,4 @@ Designing a rate limiter requires careful consideration of various factors inclu
 
 1. [Redis Rate Limiting](https://redis.com/redis-best-practices/basic-rate-limiting/)
 2. [Rate Limiting Algorithms](https://konghq.com/blog/how-to-design-a-scalable-rate-limiting-algorithm/)
-3. [Distributed Rate Limiting](https://www.infoq.com/articles/distributed-rate-limiting/) 
+3. [Distributed Rate Limiting](https://www.infoq.com/articles/distributed-rate-limiting/)

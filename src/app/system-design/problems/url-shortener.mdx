@@ -1,8 +1,8 @@
 ---
-title: "Design a URL Shortening Service"
-difficulty: "Medium"
-timeEstimate: "45 minutes"
-tags: ["System Design", "Distributed Systems", "Caching", "Database"]
+title: 'Design a URL Shortening Service'
+difficulty: 'Medium'
+timeEstimate: '45 minutes'
+tags: ['System Design', 'Distributed Systems', 'Caching', 'Database']
 ---
 
 # Design a URL Shortening Service
@@ -49,22 +49,26 @@ graph LR
 ### Components
 
 1. **URL Service**
+
    - Handles URL shortening requests
    - Generates unique short codes
    - Manages custom URLs
    - Validates URLs
 
 2. **Redirect Service**
+
    - Handles redirection requests
    - Implements caching strategy
    - Tracks analytics
 
 3. **Analytics Service**
+
    - Collects click data
    - Generates reports
    - Handles data aggregation
 
 4. **Database**
+
    - Stores URL mappings
    - Maintains analytics data
    - Handles user data
@@ -161,16 +165,19 @@ public class URLCache {
 ## Scaling Considerations
 
 1. **Horizontal Scaling**
+
    - Use multiple instances of each service
    - Implement load balancing
    - Use distributed caching
 
 2. **Database Scaling**
+
    - Implement database sharding
    - Use read replicas
    - Optimize indexes
 
 3. **Caching Strategy**
+
    - Use distributed caching (Redis)
    - Implement cache invalidation
    - Handle cache misses
@@ -183,11 +190,13 @@ public class URLCache {
 ## Trade-offs
 
 1. **Short URL Length vs. Collision Probability**
+
    - Shorter URLs are more user-friendly
    - Longer URLs reduce collision probability
    - Solution: Use 7 characters (62^7 possibilities)
 
 2. **Cache Size vs. Memory Usage**
+
    - Larger cache improves performance
    - Limited by available memory
    - Solution: Use LRU cache with size limits
@@ -200,12 +209,14 @@ public class URLCache {
 ## Future Improvements
 
 1. **Additional Features**
+
    - URL preview
    - QR code generation
    - Custom domains
    - API rate limiting
 
 2. **Performance Optimizations**
+
    - Edge caching
    - CDN integration
    - Database optimizations
@@ -214,4 +225,4 @@ public class URLCache {
    - URL validation
    - Malware scanning
    - Rate limiting
-   - Access control 
+   - Access control

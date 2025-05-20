@@ -8,7 +8,7 @@ import {
   Description,
   Section,
   SectionTitle,
-  Content
+  Content,
 } from '../../components/StyledComponents';
 
 export default function ScalabilityPage() {
@@ -17,18 +17,15 @@ export default function ScalabilityPage() {
       <MainContent>
         <Title>Scalability</Title>
         <Description>
-          Learn about different approaches to scaling systems and how to implement them
-          effectively. Understand the trade-offs and best practices for building scalable
-          applications.
+          Learn about different approaches to scaling systems and how to implement them effectively.
+          Understand the trade-offs and best practices for building scalable applications.
         </Description>
 
         <Section>
           <SectionTitle>Horizontal vs Vertical Scaling</SectionTitle>
           <Content>
             <h3>Horizontal Scaling (Scale Out)</h3>
-            <p>
-              Adding more machines or nodes to your system to handle increased load.
-            </p>
+            <p>Adding more machines or nodes to your system to handle increased load.</p>
             <ul>
               <li>Adds more servers to your pool of resources</li>
               <li>Better fault tolerance</li>
@@ -37,9 +34,7 @@ export default function ScalabilityPage() {
             </ul>
 
             <h3>Vertical Scaling (Scale Up)</h3>
-            <p>
-              Adding more power (CPU, RAM) to your existing machines.
-            </p>
+            <p>Adding more power (CPU, RAM) to your existing machines.</p>
             <ul>
               <li>Increases capacity of existing hardware</li>
               <li>Simpler to implement</li>
@@ -53,8 +48,8 @@ export default function ScalabilityPage() {
           <SectionTitle>Load Balancing</SectionTitle>
           <Content>
             <p>
-              Load balancing distributes incoming network traffic across multiple servers to
-              ensure no single server becomes overwhelmed.
+              Load balancing distributes incoming network traffic across multiple servers to ensure
+              no single server becomes overwhelmed.
             </p>
             <h3>Types of Load Balancers</h3>
             <ul>
@@ -77,9 +72,7 @@ export default function ScalabilityPage() {
           <SectionTitle>Database Scaling</SectionTitle>
           <Content>
             <h3>Read Replicas</h3>
-            <p>
-              Creating copies of the database for read operations to distribute the load.
-            </p>
+            <p>Creating copies of the database for read operations to distribute the load.</p>
             <ul>
               <li>Improves read performance</li>
               <li>Reduces load on primary database</li>
@@ -88,9 +81,7 @@ export default function ScalabilityPage() {
             </ul>
 
             <h3>Sharding</h3>
-            <p>
-              Splitting data across multiple databases based on a sharding key.
-            </p>
+            <p>Splitting data across multiple databases based on a sharding key.</p>
             <ul>
               <li>Distributes data across multiple servers</li>
               <li>Improves write performance</li>
@@ -122,4 +113,4 @@ export default function ScalabilityPage() {
       </MainContent>
     </PageContainer>
   );
-} 
+}

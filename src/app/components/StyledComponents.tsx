@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 import Image from 'next/image';
 import { useTheme } from '../context/ThemeContext';
@@ -42,20 +42,21 @@ export const typography = {
     xl: '1.25rem',
     '2xl': '1.5rem',
     '3xl': '1.875rem',
-    '4xl': '2.25rem'
+    '4xl': '2.25rem',
   },
   fontWeight: {
     normal: 400,
     medium: 500,
     semibold: 600,
-    bold: 700
-  }
+    bold: 700,
+  },
 };
 
 const fonts = {
   body: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-  heading: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-  code: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
+  heading:
+    'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+  code: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
 };
 
 export const DashboardContainer = styled.div`
@@ -136,13 +137,15 @@ export const ActionButton = styled.a<{ primary?: boolean; fullWidth?: boolean }>
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  background: ${props => props.primary ? props.theme.colors.primary : 'transparent'};
-  color: ${props => props.primary ? '#fff' : props.theme.colors.text};
-  border: 1px solid ${props => props.primary ? props.theme.colors.primary : props.theme.colors.border};
-  width: ${props => props.fullWidth ? '100%' : 'auto'};
+  background: ${props => (props.primary ? props.theme.colors.primary : 'transparent')};
+  color: ${props => (props.primary ? '#fff' : props.theme.colors.text)};
+  border: 1px solid
+    ${props => (props.primary ? props.theme.colors.primary : props.theme.colors.border)};
+  width: ${props => (props.fullWidth ? '100%' : 'auto')};
 
   &:hover {
-    background: ${props => props.primary ? props.theme.colors.primaryDark : props.theme.colors.backgroundAlt};
+    background: ${props =>
+      props.primary ? props.theme.colors.primaryDark : props.theme.colors.backgroundAlt};
   }
 
   .action-label {
@@ -167,15 +170,16 @@ export const CategoryList = styled.div`
 `;
 
 export const CategoryButton = styled.button<{ active: boolean }>`
-  background: ${props => props.active ? props.theme.colors.primary : 'transparent'};
-  color: ${props => props.active ? '#FFFFFF' : props.theme.colors.text};
-  border: 1px solid ${props => props.active ? props.theme.colors.primary : props.theme.colors.border};
+  background: ${props => (props.active ? props.theme.colors.primary : 'transparent')};
+  color: ${props => (props.active ? '#FFFFFF' : props.theme.colors.text)};
+  border: 1px solid
+    ${props => (props.active ? props.theme.colors.primary : props.theme.colors.border)};
   padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
   border-radius: ${props => props.theme.borderRadius.md};
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: ${props => props.theme.typography.fontSize.sm};
-  font-weight: ${props => props.active ? '600' : '400'};
+  font-weight: ${props => (props.active ? '600' : '400')};
   display: flex;
   align-items: center;
   gap: ${props => props.theme.spacing.sm};
@@ -183,7 +187,8 @@ export const CategoryButton = styled.button<{ active: boolean }>`
   justify-content: space-between;
 
   &:hover {
-    background: ${props => props.active ? props.theme.colors.primaryDark : props.theme.colors.backgroundAlt};
+    background: ${props =>
+      props.active ? props.theme.colors.primaryDark : props.theme.colors.backgroundAlt};
     border-color: ${props => props.theme.colors.primary};
     transform: translateY(-1px);
     box-shadow: 0 2px 4px ${props => props.theme.colors.primary}15;
@@ -194,11 +199,12 @@ export const CategoryButton = styled.button<{ active: boolean }>`
   }
 
   .category-count {
-    background: ${props => props.active ? 'rgba(255, 255, 255, 0.2)' : props.theme.colors.backgroundAlt};
+    background: ${props =>
+      props.active ? 'rgba(255, 255, 255, 0.2)' : props.theme.colors.backgroundAlt};
     padding: 2px 8px;
     border-radius: 12px;
     font-size: ${props => props.theme.typography.fontSize.xs};
-    color: ${props => props.active ? '#FFFFFF' : props.theme.colors.textSecondary};
+    color: ${props => (props.active ? '#FFFFFF' : props.theme.colors.textSecondary)};
   }
 `;
 
@@ -213,12 +219,12 @@ export const Logo = styled.div`
   display: flex;
   align-items: center;
   gap: ${props => props.theme.spacing.sm};
-  
+
   &::before {
     content: '🚀';
     font-size: 1.2em;
   }
-  
+
   &:hover {
     color: ${props => props.theme.colors.primaryDark};
     transform: scale(1.02);
@@ -232,7 +238,7 @@ export const SearchContainer = styled.div<{ $isFocused: boolean }>`
   max-width: 400px;
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    display: ${props => props.$isFocused ? 'block' : 'none'};
+    display: ${props => (props.$isFocused ? 'block' : 'none')};
     position: absolute;
     top: 100%;
     left: 0;
@@ -819,7 +825,7 @@ export const MobileSidebar = styled.div<{ $isOpen: boolean }>`
   background: ${props => props.theme.colors.background};
   border-right: 1px solid ${props => props.theme.colors.border};
   z-index: 1000;
-  transform: translateX(${props => props.$isOpen ? '0' : '-100%'});
+  transform: translateX(${props => (props.$isOpen ? '0' : '-100%')});
   transition: transform 0.3s ease;
   padding: 1rem;
   display: flex;
@@ -890,8 +896,8 @@ export const MobileSidebarOverlay = styled.div<{ $isOpen: boolean }>`
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
-  opacity: ${props => props.$isOpen ? 1 : 0};
-  visibility: ${props => props.$isOpen ? 'visible' : 'hidden'};
+  opacity: ${props => (props.$isOpen ? 1 : 0)};
+  visibility: ${props => (props.$isOpen ? 'visible' : 'hidden')};
   transition: all 0.3s ease;
 `;
 
@@ -1069,7 +1075,8 @@ export const Content = styled.div`
     margin-bottom: 1.5rem;
   }
 
-  ul, ol {
+  ul,
+  ol {
     margin: 1rem 0;
     padding-left: 1.5rem;
   }
@@ -1407,15 +1414,17 @@ export const SidebarActions = styled.div`
 export const FilterButton = styled.button<{ active: boolean }>`
   padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
   border-radius: ${props => props.theme.borderRadius.md};
-  border: 1px solid ${props => props.active ? props.theme.colors.primary : props.theme.colors.border};
-  background: ${props => props.active ? props.theme.colors.primary : 'transparent'};
-  color: ${props => props.active ? '#FFFFFF' : props.theme.colors.text};
+  border: 1px solid
+    ${props => (props.active ? props.theme.colors.primary : props.theme.colors.border)};
+  background: ${props => (props.active ? props.theme.colors.primary : 'transparent')};
+  color: ${props => (props.active ? '#FFFFFF' : props.theme.colors.text)};
   font-size: ${props => props.theme.typography.fontSize.sm};
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${props => props.active ? props.theme.colors.primary : props.theme.colors.backgroundAlt};
+    background: ${props =>
+      props.active ? props.theme.colors.primary : props.theme.colors.backgroundAlt};
     border-color: ${props => props.theme.colors.primary};
   }
 `;

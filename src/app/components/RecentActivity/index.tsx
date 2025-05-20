@@ -47,8 +47,11 @@ export const RecentActivity: React.FC<RecentActivityProps> = ({ activities }) =>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {activities.map((activity) => (
-            <div key={activity.id} className="flex items-start space-x-4 p-3 rounded-lg hover:bg-gray-50">
+          {activities.map(activity => (
+            <div
+              key={activity.id}
+              className="flex items-start space-x-4 p-3 rounded-lg hover:bg-gray-50"
+            >
               <span className="text-lg">{getStatusIcon(activity.status)}</span>
               <div className="flex-1">
                 <h4 className="text-sm font-medium text-gray-900">{activity.title}</h4>
@@ -63,4 +66,4 @@ export const RecentActivity: React.FC<RecentActivityProps> = ({ activities }) =>
       </CardContent>
     </Card>
   );
-}; 
+};

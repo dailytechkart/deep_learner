@@ -3,10 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
     const filePath = path.join(process.cwd(), 'src/app/system-design/problems', `${params.id}.mdx`);
     const fileContent = fs.readFileSync(filePath, 'utf8');
@@ -15,9 +12,6 @@ export async function GET(
     return NextResponse.json({ content });
   } catch (error) {
     console.error('Error reading MDX file:', error);
-    return NextResponse.json(
-      { error: 'Failed to load content' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to load content' }, { status: 500 });
   }
-} 
+}

@@ -142,4 +142,4 @@ declare module 'styled-components' {
       desktop: string;
     };
   }
-} 
+}

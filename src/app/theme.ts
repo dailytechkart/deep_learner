@@ -13,14 +13,14 @@ declare module 'styled-components' {
       sidebar: string;
       text: string;
       textSecondary: string;
-      
+
       // UI Element colors
       border: string;
       borderLight: string;
       practiceBackground: string;
       problemBackground: string;
       solutionBackground: string;
-      
+
       // Status colors
       status: {
         success: string;
@@ -28,7 +28,7 @@ declare module 'styled-components' {
         warning: string;
         info: string;
       };
-      
+
       // Code snippet colors
       code: {
         background: string;
@@ -41,7 +41,7 @@ declare module 'styled-components' {
         number: string;
         operator: string;
       };
-      
+
       // Accent colors
       accent1: string;
       accent2: string;
@@ -51,13 +51,13 @@ declare module 'styled-components' {
       accent6: string;
       accent7: string;
       accent8: string;
-      
+
       // Gradient colors
       gradient1: string;
       gradient2: string;
       gradient3: string;
       gradient4: string;
-      
+
       // System Design specific colors
       systemDesign: {
         architecture: string;
@@ -196,7 +196,7 @@ export const lightTheme: DefaultTheme = {
       success: '#2ECC71',
       error: '#E74C3C',
       warning: '#F1C40F',
-      info: '#3498DB'
+      info: '#3498DB',
     },
     code: {
       background: '#f8f8f8',
@@ -207,7 +207,7 @@ export const lightTheme: DefaultTheme = {
       function: '#DCDCAA',
       variable: '#9CDCFE',
       number: '#B5CEA8',
-      operator: '#D4D4D4'
+      operator: '#D4D4D4',
     },
     accent1: '#FF6B6B',
     accent2: '#4ECDC4',
@@ -229,13 +229,14 @@ export const lightTheme: DefaultTheme = {
       performance: '#FFD93D',
       reliability: '#95E1D3',
       microservices: '#E17055',
-      cloud: '#3498DB'
-    }
+      cloud: '#3498DB',
+    },
   },
   fonts: {
     body: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-    heading: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-    code: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
+    heading:
+      'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+    code: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
   },
   spacing: {
     xs: '0.25rem',
@@ -248,19 +249,19 @@ export const lightTheme: DefaultTheme = {
     '3xl': '6rem',
     '4xl': '8rem',
     '5xl': '10rem',
-    '6xl': '12rem'
+    '6xl': '12rem',
   },
   borderRadius: {
     sm: '0.25rem',
     md: '0.5rem',
     lg: '1rem',
     xl: '1.5rem',
-    full: '9999px'
+    full: '9999px',
   },
   shadows: {
     sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
     md: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'
+    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
   },
   typography: {
     fontSize: {
@@ -271,70 +272,70 @@ export const lightTheme: DefaultTheme = {
       xl: '1.25rem',
       '2xl': '1.5rem',
       '3xl': '1.875rem',
-      '4xl': '2.25rem'
+      '4xl': '2.25rem',
     },
     fontWeight: {
       normal: 400,
       medium: 500,
       semibold: 600,
-      bold: 700
+      bold: 700,
     },
     h1: {
       fontSize: '2.5rem',
       fontWeight: 700,
-      lineHeight: 1.2
+      lineHeight: 1.2,
     },
     h2: {
       fontSize: '2rem',
       fontWeight: 700,
-      lineHeight: 1.3
+      lineHeight: 1.3,
     },
     h3: {
       fontSize: '1.75rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     h4: {
       fontSize: '1.5rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     h5: {
       fontSize: '1.25rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     h6: {
       fontSize: '1rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     body1: {
       fontSize: '1rem',
       fontWeight: 400,
-      lineHeight: 1.5
+      lineHeight: 1.5,
     },
     body2: {
       fontSize: '0.875rem',
       fontWeight: 400,
-      lineHeight: 1.5
+      lineHeight: 1.5,
     },
     caption: {
       fontSize: '0.75rem',
       fontWeight: 400,
-      lineHeight: 1.5
-    }
+      lineHeight: 1.5,
+    },
   },
   transitions: {
     default: '0.3s ease',
     fast: '0.15s ease',
-    slow: '0.5s ease'
+    slow: '0.5s ease',
   },
   breakpoints: {
     mobile: '640px',
     tablet: '768px',
-    desktop: '1024px'
-  }
+    desktop: '1024px',
+  },
 };
 
 export const darkTheme: DefaultTheme = {
@@ -357,7 +358,7 @@ export const darkTheme: DefaultTheme = {
       success: '#2ECC71',
       error: '#E74C3C',
       warning: '#F1C40F',
-      info: '#3498DB'
+      info: '#3498DB',
     },
     code: {
       background: '#2d2d2d',
@@ -368,7 +369,7 @@ export const darkTheme: DefaultTheme = {
       function: '#DCDCAA',
       variable: '#9CDCFE',
       number: '#B5CEA8',
-      operator: '#D4D4D4'
+      operator: '#D4D4D4',
     },
     accent1: '#FF6B6B',
     accent2: '#4ECDC4',
@@ -390,13 +391,14 @@ export const darkTheme: DefaultTheme = {
       performance: '#FFD93D',
       reliability: '#95E1D3',
       microservices: '#E17055',
-      cloud: '#3498DB'
-    }
+      cloud: '#3498DB',
+    },
   },
   fonts: {
     body: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-    heading: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-    code: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
+    heading:
+      'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+    code: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
   },
   spacing: {
     xs: '0.25rem',
@@ -409,19 +411,19 @@ export const darkTheme: DefaultTheme = {
     '3xl': '6rem',
     '4xl': '8rem',
     '5xl': '10rem',
-    '6xl': '12rem'
+    '6xl': '12rem',
   },
   borderRadius: {
     sm: '0.25rem',
     md: '0.5rem',
     lg: '1rem',
     xl: '1.5rem',
-    full: '9999px'
+    full: '9999px',
   },
   shadows: {
     sm: '0 1px 2px 0 rgba(0, 0, 0, 0.2)',
     md: '0 4px 6px -1px rgba(0, 0, 0, 0.3)',
-    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.3)'
+    lg: '0 10px 15px -3px rgba(0, 0, 0, 0.3)',
   },
   typography: {
     fontSize: {
@@ -432,68 +434,68 @@ export const darkTheme: DefaultTheme = {
       xl: '1.25rem',
       '2xl': '1.5rem',
       '3xl': '1.875rem',
-      '4xl': '2.25rem'
+      '4xl': '2.25rem',
     },
     fontWeight: {
       normal: 400,
       medium: 500,
       semibold: 600,
-      bold: 700
+      bold: 700,
     },
     h1: {
       fontSize: '2.5rem',
       fontWeight: 700,
-      lineHeight: 1.2
+      lineHeight: 1.2,
     },
     h2: {
       fontSize: '2rem',
       fontWeight: 700,
-      lineHeight: 1.3
+      lineHeight: 1.3,
     },
     h3: {
       fontSize: '1.75rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     h4: {
       fontSize: '1.5rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     h5: {
       fontSize: '1.25rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     h6: {
       fontSize: '1rem',
       fontWeight: 600,
-      lineHeight: 1.4
+      lineHeight: 1.4,
     },
     body1: {
       fontSize: '1rem',
       fontWeight: 400,
-      lineHeight: 1.5
+      lineHeight: 1.5,
     },
     body2: {
       fontSize: '0.875rem',
       fontWeight: 400,
-      lineHeight: 1.5
+      lineHeight: 1.5,
     },
     caption: {
       fontSize: '0.75rem',
       fontWeight: 400,
-      lineHeight: 1.5
-    }
+      lineHeight: 1.5,
+    },
   },
   transitions: {
     default: '0.3s ease',
     fast: '0.15s ease',
-    slow: '0.5s ease'
+    slow: '0.5s ease',
   },
   breakpoints: {
     mobile: '640px',
     tablet: '768px',
-    desktop: '1024px'
-  }
-}; 
+    desktop: '1024px',
+  },
+};

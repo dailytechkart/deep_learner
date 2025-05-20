@@ -9,7 +9,7 @@ interface DesktopLayoutProps {
 
 const LayoutContainer = styled.div`
   min-height: 100vh;
-  background-color: #F9FAFB;
+  background-color: #f9fafb;
 `;
 
 const ContentWrapper = styled.div`
@@ -31,10 +31,8 @@ export const DesktopLayout = ({ children, className }: DesktopLayoutProps) => {
     <LayoutContainer>
       <ContentWrapper>
         <Breadcrumb className="mb-6" />
-        <MainContent className={className}>
-          {children}
-        </MainContent>
+        <MainContent className={className}>{children}</MainContent>
       </ContentWrapper>
     </LayoutContainer>
   );
-}; 
+};

@@ -13,11 +13,7 @@ const MainContent = styled.main`
   color: ${props => props.theme.colors.text};
 `;
 
-export default function SystemDesignLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function SystemDesignLayout({ children }: { children: React.ReactNode }) {
   const { isDarkMode, toggleTheme } = useTheme();
   const { searchQuery, setSearchQuery } = useSearch();
 
@@ -29,9 +25,7 @@ export default function SystemDesignLayout({
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
       />
-      <MainContent>
-        {children}
-      </MainContent>
+      <MainContent>{children}</MainContent>
     </>
   );
-} 
+}

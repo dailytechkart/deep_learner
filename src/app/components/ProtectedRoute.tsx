@@ -20,17 +20,21 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   if (loading) {
     return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-        background: '#f5f5f5'
-      }}>
-        <div style={{
-          fontSize: '1.5rem',
-          color: '#333'
-        }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '100vh',
+          background: '#f5f5f5',
+        }}
+      >
+        <div
+          style={{
+            fontSize: '1.5rem',
+            color: '#333',
+          }}
+        >
           Loading...
         </div>
       </div>
@@ -44,4 +48,4 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   return <>{children}</>;
 };
 
-export default ProtectedRoute; 
+export default ProtectedRoute;

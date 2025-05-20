@@ -11,7 +11,7 @@ import {
   User,
   setPersistence,
   browserLocalPersistence,
-  signOut as firebaseSignOut
+  signOut as firebaseSignOut,
 } from 'firebase/auth';
 import app from '@/lib/firebaseConfig';
 import { useRouter } from 'next/navigation';
@@ -36,44 +36,47 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Set persistence to LOCAL
-    setPersistence(auth, browserLocalPersistence)
-      .catch((error) => {
-        console.error('Error setting persistence:', error);
-      });
-
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      console.log('Auth state changed:', user ? 'User logged in' : 'No user');
-      
-      if (user) {
-        try {
-          // Get the ID token
-          const token = await user.getIdToken();
-          
-          // Set the token in a cookie
-          await fetch('/api/auth/session', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ token }),
-          });
-        } catch (error) {
-          console.error('Error setting session:', error);
-        }
-      } else {
-        // Clear the session cookie
-        await fetch('/api/auth/session', {
-          method: 'DELETE',
-        });
-      }
-      
-      setUser(user);
-      setLoading(false);
-    }, (error) => {
-      console.error('Auth state change error:', error);
-      setError(error.message);
-      setLoading(false);
+    setPersistence(auth, browserLocalPersistence).catch(error => {
+      console.error('Error setting persistence:', error);
     });
+
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      async user => {
+        console.log('Auth state changed:', user ? 'User logged in' : 'No user');
+
+        if (user) {
+          try {
+            // Get the ID token
+            const token = await user.getIdToken();
+
+            // Set the token in a cookie
+            await fetch('/api/auth/session', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ token }),
+            });
+          } catch (error) {
+            console.error('Error setting session:', error);
+          }
+        } else {
+          // Clear the session cookie
+          await fetch('/api/auth/session', {
+            method: 'DELETE',
+          });
+        }
+
+        setUser(user);
+        setLoading(false);
+      },
+      error => {
+        console.error('Auth state change error:', error);
+        setError(error.message);
+        setLoading(false);
+      }
+    );
 
     return () => unsubscribe();
   }, [auth]);
@@ -130,4 +133,4 @@ export function useAuth() {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-} 
+}

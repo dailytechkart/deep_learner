@@ -1,7 +1,9 @@
 # Comment Thread (YouTube/Facebook)
 
 ## Problem Statement
+
 Design and implement a comment thread system similar to YouTube or Facebook. The system should support:
+
 - Nested comments and replies
 - Comment editing and deletion
 - Real-time updates
@@ -11,7 +13,9 @@ Design and implement a comment thread system similar to YouTube or Facebook. The
 ## System Requirements
 
 ### Functional Requirements
+
 1. **Comment Features**
+
    - Nested comments (unlimited depth)
    - Comment editing
    - Comment deletion
@@ -20,6 +24,7 @@ Design and implement a comment thread system similar to YouTube or Facebook. The
    - Comment sorting
 
 2. **User Features**
+
    - User profiles
    - Comment history
    - Notifications
@@ -34,13 +39,16 @@ Design and implement a comment thread system similar to YouTube or Facebook. The
    - Content moderation
 
 ### Non-Functional Requirements
+
 1. **Performance**
+
    - Comment load time < 1s
    - Real-time updates < 500ms
    - Support for 1M+ comments
    - 99.9% uptime
 
 2. **Scalability**
+
    - Horizontal scaling
    - Data partitioning
    - Caching strategy
@@ -55,12 +63,15 @@ Design and implement a comment thread system similar to YouTube or Facebook. The
 ## High-Level Architecture
 
 ### Components
+
 1. **Client Applications**
+
    - Web client (React)
    - Mobile clients (iOS/Android)
    - API Gateway
 
 2. **Backend Services**
+
    - Comment Service
    - User Service
    - Moderation Service
@@ -68,6 +79,7 @@ Design and implement a comment thread system similar to YouTube or Facebook. The
    - Analytics Service
 
 3. **Data Storage**
+
    - Comment Database (MongoDB)
    - User Database (PostgreSQL)
    - Cache (Redis)
@@ -80,6 +92,7 @@ Design and implement a comment thread system similar to YouTube or Facebook. The
 ## Detailed Design
 
 ### 1. Comment Thread Structure
+
 ```mermaid
 classDiagram
     class Comment {
@@ -105,7 +118,9 @@ classDiagram
 ```
 
 ### 2. Comment Flow
+
 1. **Comment Creation**
+
    - User submits comment
    - Content validation
    - Spam check
@@ -113,6 +128,7 @@ classDiagram
    - Cache update
 
 2. **Reply Management**
+
    - Lazy loading
    - Pagination
    - Sorting options
@@ -125,7 +141,9 @@ classDiagram
    - Moderation actions
 
 ### 3. Real-time Updates
+
 1. **WebSocket Events**
+
    - New comments
    - Comment edits
    - Comment deletions
@@ -139,6 +157,7 @@ classDiagram
 ## Database Schema
 
 ### Comments Collection
+
 ```json
 {
   "commentId": "string",
@@ -146,12 +165,14 @@ classDiagram
   "authorId": "string",
   "parentId": "string",
   "threadId": "string",
-  "replies": [{
-    "commentId": "string",
-    "content": "string",
-    "authorId": "string",
-    "createdAt": "timestamp"
-  }],
+  "replies": [
+    {
+      "commentId": "string",
+      "content": "string",
+      "authorId": "string",
+      "createdAt": "timestamp"
+    }
+  ],
   "stats": {
     "likes": "number",
     "replies": "number"
@@ -163,15 +184,18 @@ classDiagram
 ```
 
 ### Threads Collection
+
 ```json
 {
   "threadId": "string",
   "contentId": "string",
-  "comments": [{
-    "commentId": "string",
-    "score": "number",
-    "timestamp": "timestamp"
-  }],
+  "comments": [
+    {
+      "commentId": "string",
+      "score": "number",
+      "timestamp": "timestamp"
+    }
+  ],
   "stats": {
     "totalComments": "number",
     "totalReplies": "number"
@@ -184,6 +208,7 @@ classDiagram
 ```
 
 ### Users Collection
+
 ```json
 {
   "userId": "string",
@@ -206,6 +231,7 @@ classDiagram
 ## API Endpoints
 
 ### Comments
+
 ```
 GET /api/comments/:threadId
 POST /api/comments/:threadId
@@ -214,6 +240,7 @@ DELETE /api/comments/:commentId
 ```
 
 ### Replies
+
 ```
 GET /api/comments/:commentId/replies
 POST /api/comments/:commentId/replies
@@ -222,6 +249,7 @@ DELETE /api/replies/:replyId
 ```
 
 ### Moderation
+
 ```
 GET /api/moderation/reports
 POST /api/moderation/actions
@@ -229,6 +257,7 @@ PUT /api/moderation/settings
 ```
 
 ### Users
+
 ```
 GET /api/users/:userId/comments
 GET /api/users/:userId/notifications
@@ -238,6 +267,7 @@ PUT /api/users/:userId/preferences
 ## Implementation Considerations
 
 ### 1. Performance Optimization
+
 - Implement comment pagination
 - Use Redis for caching
 - Implement lazy loading
@@ -245,12 +275,14 @@ PUT /api/users/:userId/preferences
 - Implement virtual scrolling
 
 ### 2. Data Consistency
+
 - Use eventual consistency model
 - Implement conflict resolution
 - Handle offline scenarios
 - Implement data synchronization
 
 ### 3. Security Measures
+
 - Implement rate limiting
 - Use JWT for authentication
 - Validate user input
@@ -258,6 +290,7 @@ PUT /api/users/:userId/preferences
 - Use HTTPS for all communications
 
 ### 4. Monitoring and Analytics
+
 - Track comment performance
 - Monitor user behavior
 - Log error rates
@@ -266,24 +299,28 @@ PUT /api/users/:userId/preferences
 ## Testing Strategy
 
 ### 1. Unit Tests
+
 - Comment creation
 - Reply management
 - Moderation actions
 - Content filtering
 
 ### 2. Integration Tests
+
 - Comment flow
 - Real-time updates
 - Moderation flow
 - Notification delivery
 
 ### 3. Load Tests
+
 - Concurrent users
 - Comment creation
 - Reply loading
 - Real-time updates
 
 ### 4. Security Tests
+
 - Authentication
 - Authorization
 - Rate limiting
@@ -292,12 +329,14 @@ PUT /api/users/:userId/preferences
 ## Deployment Strategy
 
 ### 1. Infrastructure
+
 - Use Kubernetes for container orchestration
 - Implement auto-scaling
 - Use multiple availability zones
 - Implement disaster recovery
 
 ### 2. CI/CD
+
 - Automated testing
 - Blue-green deployment
 - Rollback capability
@@ -306,6 +345,7 @@ PUT /api/users/:userId/preferences
 ## Future Enhancements
 
 1. **Advanced Features**
+
    - Rich text editor
    - Media embedding
    - Comment reactions
@@ -313,6 +353,7 @@ PUT /api/users/:userId/preferences
    - Comment search
 
 2. **AI Features**
+
    - Spam detection
    - Content moderation
    - Sentiment analysis
@@ -325,11 +366,13 @@ PUT /api/users/:userId/preferences
    - Business analytics
 
 ## Conclusion
+
 This system design provides a scalable and maintainable architecture for a comment thread system. The design focuses on:
+
 - Real-time updates
 - Performance optimization
 - Content moderation
 - Scalability
 - User experience
 
-The implementation should be done in phases, starting with core features and gradually adding more complex functionality. 
+The implementation should be done in phases, starting with core features and gradually adding more complex functionality.

@@ -42,4 +42,4 @@ declare module 'next-auth/jwt' {
       streak: number;
     };
   }
-} 
+}
