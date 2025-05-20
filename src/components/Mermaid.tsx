@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useRef, useState } from 'react';
 import mermaid from 'mermaid';
 
@@ -18,7 +20,11 @@ const Mermaid: React.FC<MermaidProps> = ({ chart, id }) => {
 
   useEffect(() => {
     let isMounted = true;
-    mermaid.initialize({ startOnLoad: false });
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+    });
     mermaid
       .render(chartId.current, chart)
       .then(({ svg }) => {

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
@@ -7,7 +9,7 @@ const Layout = styled.div`
   height: 100vh;
   min-height: 100vh;
   background: ${({ theme }) => theme.colors.background};
-  font-family: 'Charter', 'Georgia', 'Cambria', 'Times New Roman', 'Times', serif;
+  font-family: ${({ theme }) => theme.typography.fontFamily};
 `;
 
 const LeftPanel = styled.nav<{ isOpen?: boolean }>`
@@ -20,8 +22,8 @@ const LeftPanel = styled.nav<{ isOpen?: boolean }>`
   height: 100vh;
   position: relative;
   margin-top: 80px;
-  transition: all 0.3s ease;
-  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
+  transition: ${({ theme }) => theme.transitions.default};
+  box-shadow: ${({ theme }) => theme.shadows.medium};
 
   @media (max-width: 768px) {
     position: fixed;
@@ -39,7 +41,7 @@ const MainPanel = styled.main`
   background: ${({ theme }) => theme.colors.background};
   height: 100vh;
   margin-top: 80px;
-  transition: all 0.3s ease;
+  transition: ${({ theme }) => theme.transitions.default};
   position: relative;
   overflow-y: auto;
 `;
@@ -54,9 +56,9 @@ const RightPanel = styled.aside`
   height: 100vh;
   position: relative;
   margin-top: 80px;
-  transition: all 0.3s ease;
-  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
-  padding: 24px;
+  transition: ${({ theme }) => theme.transitions.default};
+  box-shadow: ${({ theme }) => theme.shadows.medium};
+  padding: ${({ theme }) => theme.spacing.lg};
   overflow-y: auto;
 
   @media (max-width: 1200px) {
@@ -66,14 +68,16 @@ const RightPanel = styled.aside`
 
 const BreadcrumbContainer = styled.nav`
   width: 100%;
-  padding: 16px 36px;
+  padding: ${({ theme }) => `${theme.spacing.md} ${theme.spacing.xl}`};
   background: ${({ theme }) => theme.colors.background};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   margin-top: 80px;
   position: sticky;
   top: 80px;
   z-index: 10;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: ${({ theme }) => theme.shadows.small};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  font-size: ${({ theme }) => theme.typography.fontSize.small};
 `;
 
 interface SystemDesignLayoutProps {

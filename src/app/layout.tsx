@@ -6,6 +6,7 @@ import { AuthProvider } from './context/AuthContext';
 import { SearchProvider } from './context/SearchContext';
 import Script from 'next/script';
 import StyledComponentsRegistry from '@/lib/registry';
+import { ThemeProvider } from '@/components/ThemeProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -109,17 +110,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main-content" className="skip-link">
           Skip to main content
         </a>
-        <AuthProvider>
-          <SearchProvider>
-            <StyledComponentsRegistry>
-              <Providers>
-                <main id="main-content" role="main">
-                  {children}
-                </main>
-              </Providers>
-            </StyledComponentsRegistry>
-          </SearchProvider>
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <SearchProvider>
+              <StyledComponentsRegistry>
+                <Providers>
+                  <main id="main-content" role="main">
+                    {children}
+                  </main>
+                </Providers>
+              </StyledComponentsRegistry>
+            </SearchProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
