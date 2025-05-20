@@ -6,7 +6,7 @@ import { TopicList } from '../components/TopicList';
 import { learningTopics } from '../../data/learningTopics';
 import { MainLayout } from '@/components/MainLayout';
 import { useTheme } from '../context/ThemeContext';
-import { FaSearch, FaFilter, FaChevronDown, FaStar, FaClock, FaUsers, FaBook, FaJs, FaReact, FaCss3Alt, FaGitAlt, FaShieldAlt, FaSearch as FaSearchIcon, FaRocket, FaChartLine, FaCode, FaSpinner, FaLock, FaGithub, FaTwitter, FaLinkedin, FaYoutube, FaEnvelope, FaHeart } from 'react-icons/fa';
+import { FaSearch, FaFilter, FaChevronDown, FaStar, FaClock, FaUsers, FaBook, FaJs, FaReact, FaCss3Alt, FaGitAlt, FaShieldAlt, FaSearch as FaSearchIcon, FaRocket, FaChartLine, FaCode, FaSpinner, FaLock } from 'react-icons/fa';
 import { SiJavascript, SiTypescript, SiNextdotjs, SiTailwindcss, SiJest, SiCypress, SiWebpack, SiVite, SiDocker, SiKubernetes, SiJenkins, SiGithubactions, SiJunit5, SiTestinglibrary, SiCucumber, SiSelenium, SiPostman, SiNewrelic, SiDatadog, SiGrafana, SiPrometheus, SiSentry, SiGoogleanalytics, SiHotjar, SiContentful, SiWordpress, SiShopify, SiMagento, SiWoo, SiBigcommerce } from 'react-icons/si';
 
 const PageContainer = styled.div`
@@ -1301,68 +1301,6 @@ const LearnPage: React.FC = () => {
             )}
           </CoursesSection>
         </MainContent>
-        <Footer>
-          <FooterContent>
-            <FooterSection>
-              <FooterTitle>Deep Learner</FooterTitle>
-              <FooterText>
-                Empowering developers with comprehensive frontend development courses.
-                Master modern technologies and advance your career with our expert-led learning paths.
-              </FooterText>
-              <SocialLinks>
-                <SocialLink href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                  <FaGithub />
-                </SocialLink>
-                <SocialLink href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-                  <FaTwitter />
-                </SocialLink>
-                <SocialLink href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                  <FaLinkedin />
-                </SocialLink>
-                <SocialLink href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-                  <FaYoutube />
-                </SocialLink>
-              </SocialLinks>
-            </FooterSection>
-
-            <FooterSection>
-              <FooterTitle>Learning Paths</FooterTitle>
-              <FooterLink href="/learn/javascript" rel="noopener">JavaScript Fundamentals</FooterLink>
-              <FooterLink href="/learn/react" rel="noopener">React Development</FooterLink>
-              <FooterLink href="/learn/css" rel="noopener">Advanced CSS</FooterLink>
-              <FooterLink href="/learn/testing" rel="noopener">Frontend Testing</FooterLink>
-              <FooterLink href="/learn/performance" rel="noopener">Performance Optimization</FooterLink>
-            </FooterSection>
-
-            <FooterSection>
-              <FooterTitle>Resources</FooterTitle>
-              <FooterLink href="/blog" rel="noopener">Blog & Articles</FooterLink>
-              <FooterLink href="/docs" rel="noopener">Documentation</FooterLink>
-              <FooterLink href="/community" rel="noopener">Community</FooterLink>
-              <FooterLink href="/faq" rel="noopener">FAQ</FooterLink>
-              <FooterLink href="/support" rel="noopener">Support</FooterLink>
-            </FooterSection>
-
-            <FooterSection>
-              <FooterTitle>Contact</FooterTitle>
-              <FooterLink href="mailto:contact@deeplearner.com" rel="noopener">
-                <FaEnvelope /> contact@deeplearner.com
-              </FooterLink>
-              <FooterText>
-                Have questions? We're here to help you succeed in your learning journey.
-              </FooterText>
-            </FooterSection>
-          </FooterContent>
-
-          <FooterBottom>
-            <Copyright>
-              © {new Date().getFullYear()} Deep Learner. All rights reserved.
-            </Copyright>
-            <MadeWithLove>
-              Made with <FaHeart /> for developers
-            </MadeWithLove>
-          </FooterBottom>
-        </Footer>
       </PageContainer>
     </MainLayout>
   );
