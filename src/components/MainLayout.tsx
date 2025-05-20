@@ -1,11 +1,12 @@
-import { ReactNode, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Header from '@/app/components/Header';
 import { PageLayout } from '@/app/components/PageLayout';
 import { useTheme } from '@/app/context/ThemeContext';
+import { AppFooter } from './Footer';
 
 interface MainLayoutProps {
-  children: ReactNode;
+  children: React.ReactNode;
   className?: string;
   showBreadcrumb?: boolean;
 }
@@ -40,17 +41,20 @@ const ContentWrapper = styled.div`
   background: ${props => props.theme.colors.background};
 `;
 
-export const MainLayout = ({ 
+const Main = styled.main`
+  flex: 1;
+`;
+
+export const MainLayout: React.FC<MainLayoutProps> = ({ 
   children, 
   className,
   showBreadcrumb = true 
-}: MainLayoutProps) => {
+}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const { isDarkMode } = useTheme();
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
-    // You can add additional search logic here
   };
 
   return (
@@ -62,10 +66,13 @@ export const MainLayout = ({
         />
       </HeaderWrapper>
       <ContentWrapper>
-        <PageLayout className={className} showBreadcrumb={showBreadcrumb}>
-          {children}
-        </PageLayout>
+        <Main>
+          <PageLayout className={className} showBreadcrumb={showBreadcrumb}>
+            {children}
+          </PageLayout>
+        </Main>
       </ContentWrapper>
+      <AppFooter />
     </LayoutContainer>
   );
 }; 
