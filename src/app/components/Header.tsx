@@ -4,9 +4,10 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { FaCode, FaBook, FaRocket, FaShieldAlt, FaChartLine, FaUser, FaSignOutAlt } from 'react-icons/fa';
+import { FaBook, FaRocket, FaShieldAlt, FaChartLine, FaUser, FaSignOutAlt } from 'react-icons/fa';
 import { useTheme } from '@/app/context/ThemeContext';
 import { useAuth } from '@/app/context/AuthContext';
+import Logo from './Logo';
 
 const HeaderContainer = styled.header`
   width: 100%;
@@ -30,24 +31,13 @@ const HeaderContent = styled.div`
   align-items: center;
 `;
 
-const Logo = styled(Link)`
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+const LogoLink = styled(Link)`
   text-decoration: none;
-  color: ${props => props.theme.colors.text};
-  font-size: ${props => props.theme.typography.fontSize.xl};
-  font-weight: ${props => props.theme.typography.fontWeight.bold};
   transition: all 0.2s ease;
 
   &:hover {
-    color: ${props => props.theme.colors.primary};
+    transform: translateY(-1px);
   }
-`;
-
-const LogoIcon = styled.div`
-  color: ${props => props.theme.colors.primary};
-  font-size: 1.5rem;
 `;
 
 const Nav = styled.nav`
@@ -279,12 +269,9 @@ const Header: React.FC = () => {
   return (
     <HeaderContainer>
       <HeaderContent>
-        <Logo href="/">
-          <LogoIcon>
-            <FaCode />
-          </LogoIcon>
-          Deep Learner
-        </Logo>
+        <LogoLink href="/">
+          <Logo />
+        </LogoLink>
 
         <Nav>
           <NavLink href="/learn">

@@ -18,7 +18,7 @@ export default function SEO({
   ogType = 'website',
   twitterCard = 'summary_large_image'
 }: SEOProps) {
-  const fullTitle = `${title} | Deep Learner`;
+  const fullTitle = `${title} | Frontend School`;
 
   return (
     <Head>

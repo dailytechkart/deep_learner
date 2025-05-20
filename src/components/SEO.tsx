@@ -20,7 +20,7 @@ export default function SEO({
   ogType = 'website',
   twitterCard = 'summary_large_image'
 }: SEOProps) {
-  const siteTitle = 'Deep Learner';
+  const siteTitle = 'Frontend School';
   const fullTitle = `${title} | ${siteTitle}`;
 
   return (

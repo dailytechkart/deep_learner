@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import MainLayout from '@/components/MainLayout';
 import { useTheme } from '@/app/context/ThemeContext';
-import { FaSearch, FaFilter, FaChevronDown, FaStar, FaClock, FaUsers, FaBook, FaReact, FaNodeJs, FaDatabase, FaServer, FaMobile, FaShieldAlt, FaChartLine, FaCode, FaSpinner, FaLock, FaRocket, FaBrain, FaLaptopCode, FaList, FaLaptop, FaQuestionCircle, FaTimes, FaPlus, FaMinus } from 'react-icons/fa';
+import { FaSearch, FaFilter, FaChevronDown, FaStar, FaClock, FaUsers, FaBook, FaReact, FaNodeJs, FaDatabase, FaServer, FaMobile, FaShieldAlt, FaChartLine, FaCode, FaSpinner, FaLock, FaRocket, FaBrain, FaLaptopCode, FaList, FaLaptop, FaQuestionCircle, FaTimes, FaPlus, FaMinus, FaCheck } from 'react-icons/fa';
 import { SiTypescript, SiJavascript, SiNextdotjs, SiTailwindcss, SiRedux, SiWebpack } from 'react-icons/si';
 
 const PageContainer = styled.div`
@@ -363,18 +363,23 @@ const TabList = styled.div`
 `;
 
 const Tab = styled.button<{ active: boolean }>`
-  padding: 1rem 0;
+  padding: 1rem 2rem;
   font-size: ${props => props.theme.typography.fontSize.lg};
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  font-weight: ${props => props.theme.typography.fontWeight.bold};
   color: ${props => props.active ? props.theme.colors.primary : props.theme.colors.textSecondary};
-  border-bottom: 2px solid ${props => props.active ? props.theme.colors.primary : 'transparent'};
-  transition: all 0.2s ease;
+  border-bottom: 3px solid ${props => props.active ? props.theme.colors.primary : 'transparent'};
+  background: ${props => props.active ? props.theme.colors.primary + '08' : 'transparent'};
+  border-radius: 1.5rem 1.5rem 0 0;
+  transition: all 0.2s;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-
+  gap: 0.75rem;
+  cursor: pointer;
+  box-shadow: ${props => props.active ? `0 2px 12px ${props.theme.colors.primary}11` : 'none'};
   &:hover {
     color: ${props => props.theme.colors.primary};
+    background: ${props => props.theme.colors.primary + '10'};
+    transform: translateY(-2px) scale(1.03);
   }
 `;
 
@@ -768,6 +773,59 @@ const RoleTag = styled.div`
   color: ${tagColors.role.color};
   margin-right: 0.25rem;
   margin-bottom: 0.25rem;
+`;
+
+const ActionBar = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.25rem;
+`;
+
+const StartButton = styled.button`
+  background: ${props => props.theme.colors.primary};
+  color: #fff;
+  border: none;
+  border-radius: ${props => props.theme.borderRadius.full};
+  padding: 0.5rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px ${props => props.theme.colors.primary}22;
+  transition: background 0.2s, transform 0.15s;
+  &:hover {
+    background: ${props => props.theme.colors.secondary};
+    transform: translateY(-2px) scale(1.04);
+  }
+`;
+
+const CompletedBadge = styled.span`
+  background: #e0ffe0;
+  color: #1b7e1b;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+`;
+
+const SectionHeading = styled.h2`
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: ${props => props.theme.colors.primary};
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+`;
+
+const SectionDescription = styled.p`
+  font-size: 1.1rem;
+  color: ${props => props.theme.colors.textSecondary};
+  margin-bottom: 2rem;
+  line-height: 1.6;
 `;
 
 interface InterviewTopic {
@@ -1327,6 +1385,13 @@ const InterviewPage: React.FC = () => {
                   </>
                 )}
               </ProblemMeta>
+              <ActionBar>
+                <StartButton>{type === 'quizzes' ? 'Start Quiz' : type === 'machine-coding' ? 'Solve' : 'Solve'}</StartButton>
+                {/* Mocked completed badge for demo; replace with real logic if available */}
+                {Math.random() > 0.7 && (
+                  <CompletedBadge><FaCheck /> Completed</CompletedBadge>
+                )}
+              </ActionBar>
             </ProblemCard>
           ))}
         </ListContent>
@@ -1338,45 +1403,73 @@ const InterviewPage: React.FC = () => {
     switch (activeTab) {
       case 'topics':
         return (
-          <TopicsGrid>
-            {interviewTopics.map((topic: InterviewTopic) => (
-              <TopicCard key={topic.id}>
-                <TopicIcon>{topic.icon}</TopicIcon>
-                <TopicContent>
+          <>
+            <SectionHeading><FaBook /> Interview Topics</SectionHeading>
+            <SectionDescription>
+              Explore all the essential frontend interview topics. Click a topic to start learning or practicing questions.
+            </SectionDescription>
+            <TopicsGrid>
+              {filteredTopics.map((topic) => (
+                <TopicCard key={topic.id}>
+                  <TopicIcon className="topic-icon">{topic.icon}</TopicIcon>
                   <TopicTitle>{topic.title}</TopicTitle>
                   <TopicDescription>{topic.description}</TopicDescription>
                   <TagGroup>
-                    {topic.tags.map((tag: string) => (
-                      <Tag key={tag}>{tag}</Tag>
+                    {topic.tags.map((tag) => (
+                      <Tag key={tag} type={tag as 'beginner' | 'intermediate' | 'advanced'}>
+                        {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                      </Tag>
+                    ))}
+                    {topic.technologies.map((tech) => (
+                      <Tag key={tech} type="technology">
+                        <TechIcon>{getTechIcon(tech)}</TechIcon>
+                        {tech}
+                      </Tag>
+                    ))}
+                    {topic.roles.map((role) => (
+                      <Tag key={role} type="role">
+                        {role}
+                      </Tag>
                     ))}
                   </TagGroup>
-                  <TechStack>
-                    {topic.technologies.map((tech: string) => (
-                      <TechItem key={tech}>
-                        {getTechIcon(tech)}
-                        {tech}
-                      </TechItem>
-                    ))}
-                  </TechStack>
-                  <RoleGroup>
-                    {topic.roles.map((role: string) => (
-                      <RoleTag key={role}>{role}</RoleTag>
-                    ))}
-                  </RoleGroup>
-                </TopicContent>
-              </TopicCard>
-            ))}
-          </TopicsGrid>
+                  <ActionBar>
+                    <StartButton>Start</StartButton>
+                  </ActionBar>
+                </TopicCard>
+              ))}
+            </TopicsGrid>
+          </>
         );
-
       case 'dsa':
-        return renderListContent('dsa');
-
+        return (
+          <>
+            <SectionHeading><FaList /> DSA Blind 75</SectionHeading>
+            <SectionDescription>
+              Practice the most frequently asked DSA problems for frontend interviews. Click a problem to solve it!
+            </SectionDescription>
+            {renderListContent('dsa')}
+          </>
+        );
       case 'machine-coding':
-        return renderListContent('machine-coding');
-
+        return (
+          <>
+            <SectionHeading><FaLaptop /> Machine Coding Rounds</SectionHeading>
+            <SectionDescription>
+              Tackle real-world frontend machine coding challenges. Click a challenge to get started.
+            </SectionDescription>
+            {renderListContent('machine-coding')}
+          </>
+        );
       case 'quizzes':
-        return renderListContent('quizzes');
+        return (
+          <>
+            <SectionHeading><FaQuestionCircle /> Frontend Quizzes</SectionHeading>
+            <SectionDescription>
+              Test your knowledge with quick quizzes on frontend topics, frameworks, and best practices.
+            </SectionDescription>
+            {renderListContent('quizzes')}
+          </>
+        );
     }
   };
 

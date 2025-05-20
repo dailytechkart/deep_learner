@@ -119,7 +119,7 @@ export const AppFooter: React.FC = () => {
     <Footer>
       <FooterContent>
         <FooterSection>
-          <FooterTitle>Deep Learner</FooterTitle>
+          <FooterTitle>Frontend School</FooterTitle>
           <FooterText>
             Empowering developers with comprehensive frontend development courses.
             Master modern technologies and advance your career with our expert-led learning paths.
@@ -171,7 +171,7 @@ export const AppFooter: React.FC = () => {
 
       <FooterBottom>
         <Copyright>
-          © {new Date().getFullYear()} Deep Learner. All rights reserved.
+          © {new Date().getFullYear()} Frontend School. All rights reserved.
         </Copyright>
         <MadeWithLove>
           Made with <FaHeart /> for developers
