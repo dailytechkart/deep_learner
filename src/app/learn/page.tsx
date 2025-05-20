@@ -6,7 +6,7 @@ import { TopicList } from '../components/TopicList';
 import { learningTopics } from '../../data/learningTopics';
 import { MainLayout } from '@/components/MainLayout';
 import { useTheme } from '../context/ThemeContext';
-import { FaSearch, FaFilter, FaChevronDown, FaStar, FaClock, FaUsers, FaBook, FaJs, FaReact, FaCss3Alt, FaGitAlt, FaShieldAlt, FaSearch as FaSearchIcon, FaRocket, FaChartLine, FaCode, FaSpinner } from 'react-icons/fa';
+import { FaSearch, FaFilter, FaChevronDown, FaStar, FaClock, FaUsers, FaBook, FaJs, FaReact, FaCss3Alt, FaGitAlt, FaShieldAlt, FaSearch as FaSearchIcon, FaRocket, FaChartLine, FaCode, FaSpinner, FaLock } from 'react-icons/fa';
 import { SiJavascript, SiTypescript, SiNextdotjs, SiTailwindcss, SiJest, SiCypress, SiWebpack, SiVite, SiDocker, SiKubernetes, SiJenkins, SiGithubactions, SiJunit5, SiTestinglibrary, SiCucumber, SiSelenium, SiPostman, SiNewrelic, SiDatadog, SiGrafana, SiPrometheus, SiSentry, SiGoogleanalytics, SiHotjar, SiContentful, SiWordpress, SiShopify, SiMagento, SiWoo, SiBigcommerce } from 'react-icons/si';
 
 const PageContainer = styled.div`
@@ -333,24 +333,26 @@ const CoursesGrid = styled.div`
   gap: ${props => props.theme.spacing.md};
 `;
 
-const CourseRow = styled.div`
+const CourseRow = styled.div<{ isLocked?: boolean }>`
   background: ${props => props.theme.colors.background};
   border-radius: ${props => props.theme.borderRadius.lg};
   padding: ${props => props.theme.spacing.lg};
   display: flex;
   gap: ${props => props.theme.spacing.lg};
   box-shadow: ${props => props.theme.shadows.sm};
-  transition: all 0.2s ease;
-  cursor: pointer;
+  transition: all 0.3s ease;
+  cursor: ${props => props.isLocked ? 'default' : 'pointer'};
   border: 1px solid ${props => props.theme.colors.border};
+  position: relative;
+  overflow: hidden;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${props => props.theme.shadows.md};
+    transform: ${props => props.isLocked ? 'none' : 'translateY(-2px)'};
+    box-shadow: ${props => props.isLocked ? props.theme.shadows.sm : props.theme.shadows.md};
   }
 `;
 
-const CourseImage = styled.div<{ category: string }>`
+const CourseImage = styled.div<{ category: string; isLocked?: boolean }>`
   width: 200px;
   height: 120px;
   border-radius: ${props => props.theme.borderRadius.md};
@@ -384,6 +386,8 @@ const CourseImage = styled.div<{ category: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  filter: ${props => props.isLocked ? 'grayscale(0.5)' : 'none'};
+  transition: all 0.3s ease;
 `;
 
 const IconWrapper = styled.div`
@@ -668,6 +672,128 @@ const FilterNoResults = styled.div`
   font-style: italic;
 `;
 
+const LockOverlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${props => props.theme.borderRadius.lg};
+  z-index: 1;
+  transition: all 0.3s ease;
+`;
+
+const LockContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: ${props => props.theme.spacing.md};
+  text-align: center;
+  padding: ${props => props.theme.spacing.xl};
+  max-width: 300px;
+`;
+
+const LockIcon = styled.div`
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: ${props => props.theme.spacing.sm};
+  border: 2px solid ${props => props.theme.colors.primary};
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+
+    &::after {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  &::after {
+    content: 'This course is currently under development';
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  svg {
+    font-size: 24px;
+    color: ${props => props.theme.colors.primary};
+  }
+`;
+
+const LockTitle = styled.h4`
+  font-size: ${props => props.theme.typography.fontSize.lg};
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  color: white;
+  margin: 0;
+`;
+
+const LockedBadge = styled.span`
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: ${props => props.theme.typography.fontSize.xs};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  background: rgba(0, 0, 0, 0.6);
+  color: ${props => props.theme.colors.primary};
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid ${props => props.theme.colors.primary};
+
+  svg {
+    font-size: 12px;
+  }
+`;
+
+const NotifyButton = styled.button`
+  padding: 8px 16px;
+  border-radius: ${props => props.theme.borderRadius.md};
+  background: ${props => props.theme.colors.primary};
+  color: white;
+  border: none;
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: ${props => props.theme.shadows.md};
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
 const LearnPage: React.FC = () => {
   const { isDarkMode } = useTheme();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -679,6 +805,7 @@ const LearnPage: React.FC = () => {
   const [isDifficultyOpen, setIsDifficultyOpen] = useState(true);
   const [isRoleOpen, setIsRoleOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [notifyStates, setNotifyStates] = useState<{ [key: string]: boolean }>({});
 
   // Get unique categories, difficulties, and roles
   const categories = ['all', ...new Set(learningTopics.map(topic => topic.category))];
@@ -770,6 +897,20 @@ const LearnPage: React.FC = () => {
     return () => clearTimeout(timer);
   }, [selectedCategories, selectedDifficulties, selectedRoles, searchQuery, filterSearchQuery]);
 
+  const handleNotifyClick = (courseId: string) => {
+    setNotifyStates(prev => ({
+      ...prev,
+      [courseId]: true
+    }));
+    // Here you would typically make an API call to subscribe the user
+    setTimeout(() => {
+      setNotifyStates(prev => ({
+        ...prev,
+        [courseId]: false
+      }));
+    }, 2000);
+  };
+
   const renderNoResults = () => (
     <NoResultsContainer>
       <NoResultsIllustration>
@@ -794,6 +935,10 @@ const LearnPage: React.FC = () => {
       No matching options found
     </FilterNoResults>
   );
+
+  const isCourseLocked = (index: number) => {
+    return index >= 2; // First 2 courses are unlocked, rest are locked
+  };
 
   return (
     <MainLayout>
@@ -984,41 +1129,60 @@ const LearnPage: React.FC = () => {
               </LoadingSpinner>
             ) : filteredTopics.length > 0 ? (
               <CoursesGrid>
-                {filteredTopics.map(topic => (
-                  <CourseRow key={topic.id}>
-                    <CourseImage category={topic.category}>
-                      <IconWrapper>
-                        {getCategoryIcon(topic.category)}
-                      </IconWrapper>
-                    </CourseImage>
-                    <CourseContent>
-                      <CourseHeader>
-                        <CourseTitle>{topic.title}</CourseTitle>
-                        <BadgeContainer>
-                          <DifficultyBadge difficulty={topic.difficulty}>
-                            {topic.difficulty}
-                          </DifficultyBadge>
-                          <RoleBadge role={topic.role}>
-                            {topic.role}
-                          </RoleBadge>
-                        </BadgeContainer>
-                      </CourseHeader>
-                      <CourseDescription>{topic.description}</CourseDescription>
-                      <CourseMeta>
-                        <MetaItem>
-                          <MetaIcon><FaClock /></MetaIcon>
-                          <span>{topic.estimatedTime}</span>
-                        </MetaItem>
-                        <MetaItem>
-                          <MetaIcon><FaBook /></MetaIcon>
-                          <span>{topic.totalLessons} Lessons</span>
-                        </MetaItem>
-                        <CategoryBadge>{topic.category}</CategoryBadge>
-                      </CourseMeta>
-                      <ProgressBar progress={topic.progress} />
-                    </CourseContent>
-                  </CourseRow>
-                ))}
+                {filteredTopics.map((topic, index) => {
+                  const isLocked = isCourseLocked(index);
+                  return (
+                    <CourseRow key={topic.id} isLocked={isLocked}>
+                      <CourseImage category={topic.category} isLocked={isLocked}>
+                        <IconWrapper>
+                          {getCategoryIcon(topic.category)}
+                        </IconWrapper>
+                      </CourseImage>
+                      <CourseContent>
+                        <CourseHeader>
+                          <CourseTitle>{topic.title}</CourseTitle>
+                          <BadgeContainer>
+                            <DifficultyBadge difficulty={topic.difficulty}>
+                              {topic.difficulty}
+                            </DifficultyBadge>
+                            <RoleBadge role={topic.role}>
+                              {topic.role}
+                            </RoleBadge>
+                            {isLocked && (
+                              <LockedBadge>
+                                <FaLock />
+                                Coming Soon
+                              </LockedBadge>
+                            )}
+                          </BadgeContainer>
+                        </CourseHeader>
+                        <CourseDescription>{topic.description}</CourseDescription>
+                        <CourseMeta>
+                          <MetaItem>
+                            <MetaIcon><FaClock /></MetaIcon>
+                            <span>{topic.estimatedTime}</span>
+                          </MetaItem>
+                          <MetaItem>
+                            <MetaIcon><FaBook /></MetaIcon>
+                            <span>{topic.totalLessons} Lessons</span>
+                          </MetaItem>
+                          <CategoryBadge>{topic.category}</CategoryBadge>
+                        </CourseMeta>
+                        <ProgressBar progress={topic.progress} />
+                      </CourseContent>
+                      {isLocked && (
+                        <LockOverlay>
+                          <LockContent>
+                            <LockIcon>
+                              <FaLock />
+                            </LockIcon>
+                            <LockTitle>Coming Soon</LockTitle>
+                          </LockContent>
+                        </LockOverlay>
+                      )}
+                    </CourseRow>
+                  );
+                })}
               </CoursesGrid>
             ) : (
               renderNoResults()
