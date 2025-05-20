@@ -5,13 +5,16 @@ import { Providers } from './providers';
 import { AuthProvider } from './context/AuthContext';
 import { SearchProvider } from './context/SearchContext';
 import Script from 'next/script';
+import StyledComponentsRegistry from '@/lib/registry';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Frontendly - Master Modern Frontend Development',
-  description: 'Learn frontend development with hands-on projects, real-world examples, and expert guidance. Master HTML, CSS, JavaScript, React, and more.',
-  keywords: 'frontend development, web development, HTML, CSS, JavaScript, React, Next.js, TypeScript, web design, UI/UX',
+  description:
+    'Learn frontend development with hands-on projects, real-world examples, and expert guidance. Master HTML, CSS, JavaScript, React, and more.',
+  keywords:
+    'frontend development, web development, HTML, CSS, JavaScript, React, Next.js, TypeScript, web design, UI/UX',
   authors: [{ name: 'Frontendly Team' }],
   creator: 'Frontendly',
   publisher: 'Frontendly',
@@ -40,13 +43,15 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://frontendly.com',
     title: 'Frontendly - Master Modern Frontend Development',
-    description: 'Learn frontend development with hands-on projects, real-world examples, and expert guidance. Master HTML, CSS, JavaScript, React, and more.',
+    description:
+      'Learn frontend development with hands-on projects, real-world examples, and expert guidance. Master HTML, CSS, JavaScript, React, and more.',
     siteName: 'Frontendly',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Frontendly - Master Modern Frontend Development',
-    description: 'Learn frontend development with hands-on projects, real-world examples, and expert guidance. Master HTML, CSS, JavaScript, React, and more.',
+    description:
+      'Learn frontend development with hands-on projects, real-world examples, and expert guidance. Master HTML, CSS, JavaScript, React, and more.',
     creator: '@frontendly',
     site: '@frontendly',
   },
@@ -81,9 +86,9 @@ export default function RootLayout({
       <body className={inter.className} suppressHydrationWarning>
         <AuthProvider>
           <SearchProvider>
-            <Providers>
-              {children}
-            </Providers>
+            <StyledComponentsRegistry>
+              <Providers>{children}</Providers>
+            </StyledComponentsRegistry>
           </SearchProvider>
         </AuthProvider>
       </body>

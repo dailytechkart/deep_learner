@@ -1493,6 +1493,8 @@ export const MainContent = styled.main`
   margin-left: 280px;
   min-height: 100vh;
   background: ${props => props.theme.colors.background};
+  max-width: 900px;
+  margin: 0 auto;
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     margin-left: 0;

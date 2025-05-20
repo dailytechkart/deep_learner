@@ -123,10 +123,10 @@ export const Layout: React.FC<LayoutProps> = ({
 
   return (
     <LayoutContainer>
-      <Header
+      {/* <Header
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-      />
+      /> */}
       <MainContent>
         {(title || description) && (
           <PageHeader>

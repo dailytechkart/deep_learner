@@ -10,115 +10,136 @@ import {
   SectionTitle,
   Content
 } from '../../components/StyledComponents';
+import Breadcrumbs from '@/components/Breadcrumbs';
+import SEO from '@/components/SEO';
 
-export default function ArchitecturePatternsPage() {
+export default function SystemDesignArchitecturePage() {
   return (
-    <PageContainer>
-      <MainContent>
-        <Title>Architecture Patterns</Title>
-        <Description>
-          Explore common architecture patterns used in system design. Learn how to choose
-          and implement the right pattern for your system.
-        </Description>
+    <>
+      <SEO
+        title="System Design Architecture"
+        description="Learn about different system design architectures and their applications. Understand how to choose and implement the right architecture for your system."
+        keywords={[
+          'system design',
+          'architecture',
+          'distributed systems',
+          'microservices',
+          'monolithic',
+          'serverless',
+          'cloud architecture'
+        ]}
+      />
+      <PageContainer>
+        <MainContent>
+          <Breadcrumbs
+            items={[
+              { label: 'System Design', href: '/system-design' },
+              { label: 'Architecture' }
+            ]}
+          />
+          <Title>System Design Architecture</Title>
+          <Description>
+            Learn about different system design architectures and their applications. Understand
+            how to choose and implement the right architecture for your system.
+          </Description>
 
-        <Section>
-          <SectionTitle>Monolithic Architecture</SectionTitle>
-          <Content>
-            <p>
-              A monolithic architecture is a traditional unified model for the design of a
-              software program. All components are combined into a single program on a single
-              platform.
-            </p>
-            <h3>Advantages</h3>
-            <ul>
-              <li>Simple to develop and deploy</li>
-              <li>Easier to test and debug</li>
-              <li>Lower initial development cost</li>
-              <li>Better performance for small applications</li>
-            </ul>
-            <h3>Disadvantages</h3>
-            <ul>
-              <li>Difficult to scale</li>
-              <li>Hard to maintain as the application grows</li>
-              <li>Technology stack is locked</li>
-              <li>Single point of failure</li>
-            </ul>
-          </Content>
-        </Section>
+          <Section>
+            <SectionTitle>Monolithic Architecture</SectionTitle>
+            <Content>
+              <p>
+                A traditional approach where all components of an application are tightly
+                coupled and deployed as a single unit.
+              </p>
+              <h3>Characteristics</h3>
+              <ul>
+                <li>Single codebase</li>
+                <li>Unified deployment</li>
+                <li>Shared resources</li>
+                <li>Simpler development</li>
+              </ul>
+              <h3>Use Cases</h3>
+              <ul>
+                <li>Small to medium applications</li>
+                <li>Simple business logic</li>
+                <li>Limited scaling needs</li>
+                <li>Rapid prototyping</li>
+              </ul>
+            </Content>
+          </Section>
 
-        <Section>
-          <SectionTitle>Microservices Architecture</SectionTitle>
-          <Content>
-            <p>
-              Microservices architecture is an approach where an application is structured as
-              a collection of small, independent services that communicate over well-defined
-              APIs.
-            </p>
-            <h3>Advantages</h3>
-            <ul>
-              <li>Independent deployment and scaling</li>
-              <li>Technology diversity</li>
-              <li>Fault isolation</li>
-              <li>Easier maintenance and updates</li>
-            </ul>
-            <h3>Disadvantages</h3>
-            <ul>
-              <li>Increased complexity</li>
-              <li>Network latency</li>
-              <li>Distributed system challenges</li>
-              <li>Higher operational overhead</li>
-            </ul>
-          </Content>
-        </Section>
+          <Section>
+            <SectionTitle>Microservices Architecture</SectionTitle>
+            <Content>
+              <p>
+                An architectural style that structures an application as a collection of
+                small, independent services.
+              </p>
+              <h3>Key Features</h3>
+              <ul>
+                <li>Service independence</li>
+                <li>Distributed deployment</li>
+                <li>Technology diversity</li>
+                <li>Scalability</li>
+              </ul>
+              <h3>Benefits</h3>
+              <ul>
+                <li>Independent scaling</li>
+                <li>Fault isolation</li>
+                <li>Team autonomy</li>
+                <li>Technology flexibility</li>
+              </ul>
+            </Content>
+          </Section>
 
-        <Section>
-          <SectionTitle>Event-Driven Architecture</SectionTitle>
-          <Content>
-            <p>
-              Event-driven architecture is a software architecture pattern promoting the
-              production, detection, consumption of, and reaction to events.
-            </p>
-            <h3>Key Components</h3>
-            <ul>
-              <li>Event producers</li>
-              <li>Event channels</li>
-              <li>Event processing</li>
-              <li>Event consumers</li>
-            </ul>
-            <h3>Use Cases</h3>
-            <ul>
-              <li>Real-time data processing</li>
-              <li>IoT applications</li>
-              <li>Asynchronous workflows</li>
-              <li>Decoupled systems</li>
-            </ul>
-          </Content>
-        </Section>
+          <Section>
+            <SectionTitle>Serverless Architecture</SectionTitle>
+            <Content>
+              <p>
+                A cloud computing execution model where the cloud provider manages the
+                infrastructure and automatically scales resources.
+              </p>
+              <h3>Components</h3>
+              <ul>
+                <li>Function as a Service (FaaS)</li>
+                <li>Backend as a Service (BaaS)</li>
+                <li>Event-driven execution</li>
+                <li>Pay-per-use pricing</li>
+              </ul>
+              <h3>Advantages</h3>
+              <ul>
+                <li>No server management</li>
+                <li>Automatic scaling</li>
+                <li>Cost efficiency</li>
+                <li>Reduced operational overhead</li>
+              </ul>
+            </Content>
+          </Section>
 
-        <Section>
-          <SectionTitle>Serverless Architecture</SectionTitle>
-          <Content>
-            <p>
-              Serverless architecture allows developers to build and run applications without
-              managing servers. The cloud provider handles the infrastructure.
-            </p>
-            <h3>Benefits</h3>
-            <ul>
-              <li>No server management</li>
-              <li>Pay-per-use pricing</li>
-              <li>Automatic scaling</li>
-              <li>Reduced operational costs</li>
-            </ul>
-            <h3>Considerations</h3>
-            <ul>
-              <li>Cold start latency</li>
-              <li>Execution time limits</li>
-              <li>Vendor lock-in</li>
-              <li>Debugging complexity</li>
-            </ul>
-          </Content>
-        </Section>
-      </MainContent>
-    </PageContainer>
+          <Section>
+            <SectionTitle>Event-Driven Architecture</SectionTitle>
+            <Content>
+              <p>
+                A software architecture pattern promoting the production, detection,
+                consumption of, and reaction to events.
+              </p>
+              <h3>Components</h3>
+              <ul>
+                <li>Event producers</li>
+                <li>Event consumers</li>
+                <li>Event channels</li>
+                <li>Event processing</li>
+              </ul>
+              <h3>Benefits</h3>
+              <ul>
+                <li>Loose coupling</li>
+                <li>Scalability</li>
+                <li>Real-time processing</li>
+                <li>Asynchronous communication</li>
+              </ul>
+            </Content>
+          </Section>
+        </MainContent>
+      </PageContainer>
+    </>
   );
 } 

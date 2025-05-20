@@ -33,6 +33,8 @@ import {
   TestimonialRole,
   TestimonialAvatar
 } from './components/StyledComponents';
+import { PageLayout } from './components/PageLayout';
+import { MainLayout } from '@/components/MainLayout';
 
 // Add new styled components for the companies section
 const CompaniesSection = styled.div`
@@ -342,268 +344,286 @@ const MobileActions = styled.div`
   margin-top: 1rem;
 `;
 
+const StyledSection = styled(Section)`
+  background: ${props => props.theme.colors.backgroundAlt};
+  padding: 4rem 2rem;
+`;
+
+const GradientSection = styled(Section)`
+  text-align: center;
+  padding: 4rem 2rem;
+  background: ${props => props.theme.colors.gradient1};
+`;
+
+const StyledCTAButton = styled(CTAButton)`
+  background: ${props => props.theme.colors.background};
+  color: ${props => props.theme.colors.primary};
+`;
+
 export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <LandingContainer>
-      <Header />
+    <MainLayout showBreadcrumb={false}>
+      <LandingContainer>
+        <Header />
 
-      <HeroSection>
-        <HeroContent>
-          <div>
-            <HeroTitle>Master Deep Learning with Interactive Learning</HeroTitle>
-            <HeroSubtitle>Your journey to becoming a deep learning expert starts here</HeroSubtitle>
-            <HeroDescription>
-              Join thousands of learners worldwide in mastering deep learning concepts through
-              interactive tutorials, real-world projects, and expert mentorship.
-            </HeroDescription>
-            <CTAButton href="/signup">
-              Start Learning Now
-              <span>→</span>
-            </CTAButton>
-          </div>
-          <HeroImage>
-            <img src="/hero-illustration.svg" alt="Deep Learning Illustration" />
-          </HeroImage>
-        </HeroContent>
-      </HeroSection>
-
-      <StatsSection>
-        <StatCard>
-          <StatNumber>10k+</StatNumber>
-          <StatLabel>Active Learners</StatLabel>
-        </StatCard>
-        <StatCard>
-          <StatNumber>50+</StatNumber>
-          <StatLabel>Interactive Courses</StatLabel>
-        </StatCard>
-        <StatCard>
-          <StatNumber>100+</StatNumber>
-          <StatLabel>Real Projects</StatLabel>
-        </StatCard>
-        <StatCard>
-          <StatNumber>24/7</StatNumber>
-          <StatLabel>Community Support</StatLabel>
-        </StatCard>
-      </StatsSection>
-
-      <CompaniesSection>
-        <CompaniesTitle>Trusted by developers at leading companies</CompaniesTitle>
-        <div style={{ overflow: 'hidden', position: 'relative' }}>
-          <CompaniesCarousel>
-            {/* First set of logos */}
-            <CompanyLogo>
-              <img src="/companies/google.svg" alt="Google" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/meta.svg" alt="Meta" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/amazon.svg" alt="Amazon" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/microsoft.svg" alt="Microsoft" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/apple.svg" alt="Apple" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/netflix.svg" alt="Netflix" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/spotify.svg" alt="Spotify" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/airbnb.svg" alt="Airbnb" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/flipkart.svg" alt="Flipkart" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/meesho.svg" alt="Meesho" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/myntra.svg" alt="Myntra" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/razorpay.svg" alt="Razorpay" />
-            </CompanyLogo>
-            {/* Duplicate set for seamless loop */}
-            <CompanyLogo>
-              <img src="/companies/google.svg" alt="Google" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/meta.svg" alt="Meta" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/amazon.svg" alt="Amazon" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/microsoft.svg" alt="Microsoft" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/apple.svg" alt="Apple" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/netflix.svg" alt="Netflix" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/spotify.svg" alt="Spotify" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/airbnb.svg" alt="Airbnb" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/flipkart.svg" alt="Flipkart" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/meesho.svg" alt="Meesho" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/myntra.svg" alt="Myntra" />
-            </CompanyLogo>
-            <CompanyLogo>
-              <img src="/companies/razorpay.svg" alt="Razorpay" />
-            </CompanyLogo>
-          </CompaniesCarousel>
-        </div>
-      </CompaniesSection>
-
-      <FeaturesSection id="features">
-        <SectionHeader>
-          <SectionTitle>Why Choose Frontendly?</SectionTitle>
-          <SectionContent>
-            Discover the features that make us the preferred choice for deep learning education
-          </SectionContent>
-        </SectionHeader>
-        <FeatureGrid>
-          <FeatureCard>
-            <FeatureIcon>🎯</FeatureIcon>
-            <FeatureTitle>Interactive Learning</FeatureTitle>
-            <FeatureDescription>
-              Learn by doing with our hands-on approach to deep learning concepts
-            </FeatureDescription>
-          </FeatureCard>
-          <FeatureCard>
-            <FeatureIcon>🚀</FeatureIcon>
-            <FeatureTitle>Project-Based Learning</FeatureTitle>
-            <FeatureDescription>
-              Build real-world projects that showcase your skills and enhance your portfolio
-            </FeatureDescription>
-          </FeatureCard>
-          <FeatureCard>
-            <FeatureIcon>👥</FeatureIcon>
-            <FeatureTitle>Expert Community</FeatureTitle>
-            <FeatureDescription>
-              Connect with fellow learners and industry experts for guidance and support
-            </FeatureDescription>
-          </FeatureCard>
-        </FeatureGrid>
-      </FeaturesSection>
-
-      <Section style={{ background: '#F8FAFC', padding: '4rem 2rem' }}>
-        <SectionHeader>
-          <SectionTitle>Learning Paths</SectionTitle>
-          <HeroDescription style={{ maxWidth: '600px', margin: '1rem auto 2rem' }}>
-            Follow our structured learning paths to master frontend development step by step
-          </HeroDescription>
-        </SectionHeader>
-        <SectionContent>
-          <RoadmapSection>
-            <RoadmapTimeline>
-              <RoadmapItem>
-                <RoadmapContent>
-                  <RoadmapTitle>HTML & CSS Fundamentals</RoadmapTitle>
-                  <RoadmapDescription>
-                    Master the building blocks of web development. Learn semantic HTML, modern CSS layouts, and responsive design.
-                  </RoadmapDescription>
-                </RoadmapContent>
-              </RoadmapItem>
-              <RoadmapItem>
-                <RoadmapContent>
-                  <RoadmapTitle>JavaScript Mastery</RoadmapTitle>
-                  <RoadmapDescription>
-                    Dive deep into modern JavaScript. Learn ES6+, async programming, and advanced concepts.
-                  </RoadmapDescription>
-                </RoadmapContent>
-              </RoadmapItem>
-              <RoadmapItem>
-                <RoadmapContent>
-                  <RoadmapTitle>React Development</RoadmapTitle>
-                  <RoadmapDescription>
-                    Build modern web applications with React. Learn hooks, state management, and best practices.
-                  </RoadmapDescription>
-                </RoadmapContent>
-              </RoadmapItem>
-              <RoadmapItem>
-                <RoadmapContent>
-                  <RoadmapTitle>TypeScript Integration</RoadmapTitle>
-                  <RoadmapDescription>
-                    Add type safety to your JavaScript code. Learn TypeScript fundamentals and integration with React.
-                  </RoadmapDescription>
-                </RoadmapContent>
-              </RoadmapItem>
-            </RoadmapTimeline>
-          </RoadmapSection>
-        </SectionContent>
-      </Section>
-
-      <TestimonialsSection>
-        <SectionHeader>
-          <SectionTitle>What Our Learners Say</SectionTitle>
-          <HeroDescription style={{ maxWidth: '600px', margin: '1rem auto 2rem' }}>
-            Join thousands of successful developers who transformed their careers with Frontendly
-          </HeroDescription>
-        </SectionHeader>
-        <FeatureGrid>
-          <TestimonialCard>
-            <TestimonialContent>
-              "The hands-on projects and real-world challenges helped me land my first frontend developer job. The community support is incredible!"
-            </TestimonialContent>
-            <TestimonialAuthor>
-              <TestimonialAvatar src="/avatars/user1.jpg" alt="Sarah Johnson" />
-              <div>
-                <strong>Sarah Johnson</strong>
-                <TestimonialRole>Frontend Developer at TechCorp</TestimonialRole>
-              </div>
-            </TestimonialAuthor>
-          </TestimonialCard>
-          <TestimonialCard>
-            <TestimonialContent>
-              "The curriculum is well-structured and up-to-date. I learned more in 3 months here than I did in a year of self-study."
-            </TestimonialContent>
-            <TestimonialAuthor>
-              <TestimonialAvatar src="/avatars/user2.jpg" alt="Mike Chen" />
-              <div>
-                <strong>Mike Chen</strong>
-                <TestimonialRole>React Developer at StartupX</TestimonialRole>
-              </div>
-            </TestimonialAuthor>
-          </TestimonialCard>
-        </FeatureGrid>
-      </TestimonialsSection>
-
-      <Section style={{ textAlign: 'center', padding: '4rem 2rem', background: 'linear-gradient(to right, #F59E0B, #D97706)' }}>
-        <SectionHeader>
-          <SectionTitle style={{ color: 'white' }}>Ready to Start Your Journey?</SectionTitle>
-        </SectionHeader>
-        <SectionContent>
-          <HeroDescription style={{ maxWidth: '600px', margin: '0 auto 2rem', color: 'white' }}>
-            Join thousands of developers who have transformed their careers with Frontendly.
-          </HeroDescription>
-          <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="/signup" passHref>
-              <CTAButton href="/signup" style={{ background: 'white', color: '#F59E0B' }}>Get Started Free</CTAButton>
-            </Link>
-            <Link href="/learn" passHref>
-              <CTAButton href="/learn" style={{ background: 'transparent', border: '2px solid white', color: 'white' }}>
-                Explore Courses
+        <HeroSection>
+          <HeroContent>
+            <div>
+              <HeroTitle>Master Deep Learning with Interactive Learning</HeroTitle>
+              <HeroSubtitle>Your journey to becoming a deep learning expert starts here</HeroSubtitle>
+              <HeroDescription>
+                Join thousands of learners worldwide in mastering deep learning concepts through
+                interactive tutorials, real-world projects, and expert mentorship.
+              </HeroDescription>
+              <CTAButton href="/signup">
+                Start Learning Now
+                <span>→</span>
               </CTAButton>
-            </Link>
+            </div>
+            <HeroImage>
+              <img src="/hero-illustration.svg" alt="Deep Learning Illustration" />
+            </HeroImage>
+          </HeroContent>
+        </HeroSection>
+
+        <StatsSection>
+          <StatCard>
+            <StatNumber>10k+</StatNumber>
+            <StatLabel>Active Learners</StatLabel>
+          </StatCard>
+          <StatCard>
+            <StatNumber>50+</StatNumber>
+            <StatLabel>Interactive Courses</StatLabel>
+          </StatCard>
+          <StatCard>
+            <StatNumber>100+</StatNumber>
+            <StatLabel>Real Projects</StatLabel>
+          </StatCard>
+          <StatCard>
+            <StatNumber>24/7</StatNumber>
+            <StatLabel>Community Support</StatLabel>
+          </StatCard>
+        </StatsSection>
+
+        <CompaniesSection>
+          <CompaniesTitle>Trusted by developers at leading companies</CompaniesTitle>
+          <div style={{ overflow: 'hidden', position: 'relative' }}>
+            <CompaniesCarousel>
+              {/* First set of logos */}
+              <CompanyLogo>
+                <img src="/companies/google.svg" alt="Google" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/meta.svg" alt="Meta" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/amazon.svg" alt="Amazon" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/microsoft.svg" alt="Microsoft" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/apple.svg" alt="Apple" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/netflix.svg" alt="Netflix" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/spotify.svg" alt="Spotify" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/airbnb.svg" alt="Airbnb" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/flipkart.svg" alt="Flipkart" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/meesho.svg" alt="Meesho" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/myntra.svg" alt="Myntra" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/razorpay.svg" alt="Razorpay" />
+              </CompanyLogo>
+              {/* Duplicate set for seamless loop */}
+              <CompanyLogo>
+                <img src="/companies/google.svg" alt="Google" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/meta.svg" alt="Meta" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/amazon.svg" alt="Amazon" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/microsoft.svg" alt="Microsoft" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/apple.svg" alt="Apple" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/netflix.svg" alt="Netflix" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/spotify.svg" alt="Spotify" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/airbnb.svg" alt="Airbnb" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/flipkart.svg" alt="Flipkart" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/meesho.svg" alt="Meesho" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/myntra.svg" alt="Myntra" />
+              </CompanyLogo>
+              <CompanyLogo>
+                <img src="/companies/razorpay.svg" alt="Razorpay" />
+              </CompanyLogo>
+            </CompaniesCarousel>
           </div>
-        </SectionContent>
-      </Section>
-    </LandingContainer>
+        </CompaniesSection>
+
+        <FeaturesSection id="features">
+          <SectionHeader>
+            <SectionTitle>Why Choose Frontendly?</SectionTitle>
+            <SectionContent>
+              Discover the features that make us the preferred choice for deep learning education
+            </SectionContent>
+          </SectionHeader>
+          <FeatureGrid>
+            <FeatureCard>
+              <FeatureIcon>🎯</FeatureIcon>
+              <FeatureTitle>Interactive Learning</FeatureTitle>
+              <FeatureDescription>
+                Learn by doing with our hands-on approach to deep learning concepts
+              </FeatureDescription>
+            </FeatureCard>
+            <FeatureCard>
+              <FeatureIcon>🚀</FeatureIcon>
+              <FeatureTitle>Project-Based Learning</FeatureTitle>
+              <FeatureDescription>
+                Build real-world projects that showcase your skills and enhance your portfolio
+              </FeatureDescription>
+            </FeatureCard>
+            <FeatureCard>
+              <FeatureIcon>👥</FeatureIcon>
+              <FeatureTitle>Expert Community</FeatureTitle>
+              <FeatureDescription>
+                Connect with fellow learners and industry experts for guidance and support
+              </FeatureDescription>
+            </FeatureCard>
+          </FeatureGrid>
+        </FeaturesSection>
+
+        <StyledSection>
+          <SectionHeader>
+            <SectionTitle>Learning Paths</SectionTitle>
+            <HeroDescription style={{ maxWidth: '600px', margin: '1rem auto 2rem' }}>
+              Follow our structured learning paths to master frontend development step by step
+            </HeroDescription>
+          </SectionHeader>
+          <SectionContent>
+            <RoadmapSection>
+              <RoadmapTimeline>
+                <RoadmapItem>
+                  <RoadmapContent>
+                    <RoadmapTitle>HTML & CSS Fundamentals</RoadmapTitle>
+                    <RoadmapDescription>
+                      Master the building blocks of web development. Learn semantic HTML, modern CSS layouts, and responsive design.
+                    </RoadmapDescription>
+                  </RoadmapContent>
+                </RoadmapItem>
+                <RoadmapItem>
+                  <RoadmapContent>
+                    <RoadmapTitle>JavaScript Mastery</RoadmapTitle>
+                    <RoadmapDescription>
+                      Dive deep into modern JavaScript. Learn ES6+, async programming, and advanced concepts.
+                    </RoadmapDescription>
+                  </RoadmapContent>
+                </RoadmapItem>
+                <RoadmapItem>
+                  <RoadmapContent>
+                    <RoadmapTitle>React Development</RoadmapTitle>
+                    <RoadmapDescription>
+                      Build modern web applications with React. Learn hooks, state management, and best practices.
+                    </RoadmapDescription>
+                  </RoadmapContent>
+                </RoadmapItem>
+                <RoadmapItem>
+                  <RoadmapContent>
+                    <RoadmapTitle>TypeScript Integration</RoadmapTitle>
+                    <RoadmapDescription>
+                      Add type safety to your JavaScript code. Learn TypeScript fundamentals and integration with React.
+                    </RoadmapDescription>
+                  </RoadmapContent>
+                </RoadmapItem>
+              </RoadmapTimeline>
+            </RoadmapSection>
+          </SectionContent>
+        </StyledSection>
+
+        <TestimonialsSection>
+          <SectionHeader>
+            <SectionTitle>What Our Learners Say</SectionTitle>
+            <HeroDescription style={{ maxWidth: '600px', margin: '1rem auto 2rem' }}>
+              Join thousands of successful developers who transformed their careers with Frontendly
+            </HeroDescription>
+          </SectionHeader>
+          <FeatureGrid>
+            <TestimonialCard>
+              <TestimonialContent>
+                "The hands-on projects and real-world challenges helped me land my first frontend developer job. The community support is incredible!"
+              </TestimonialContent>
+              <TestimonialAuthor>
+                <TestimonialAvatar src="/avatars/user1.jpg" alt="Sarah Johnson" />
+                <div>
+                  <strong>Sarah Johnson</strong>
+                  <TestimonialRole>Frontend Developer at TechCorp</TestimonialRole>
+                </div>
+              </TestimonialAuthor>
+            </TestimonialCard>
+            <TestimonialCard>
+              <TestimonialContent>
+                "The curriculum is well-structured and up-to-date. I learned more in 3 months here than I did in a year of self-study."
+              </TestimonialContent>
+              <TestimonialAuthor>
+                <TestimonialAvatar src="/avatars/user2.jpg" alt="Mike Chen" />
+                <div>
+                  <strong>Mike Chen</strong>
+                  <TestimonialRole>React Developer at StartupX</TestimonialRole>
+                </div>
+              </TestimonialAuthor>
+            </TestimonialCard>
+          </FeatureGrid>
+        </TestimonialsSection>
+
+        <GradientSection>
+          <SectionHeader>
+            <SectionTitle style={{ color: 'white' }}>Ready to Start Your Journey?</SectionTitle>
+            <HeroDescription style={{ maxWidth: '600px', margin: '0 auto 2rem', color: 'white' }}>
+              Join thousands of developers who have transformed their careers with Frontendly.
+            </HeroDescription>
+          </SectionHeader>
+          <SectionContent>
+            <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Link href="/signup" passHref>
+                <StyledCTAButton href="/signup">Get Started Free</StyledCTAButton>
+              </Link>
+              <Link href="/learn" passHref>
+                <CTAButton href="/learn" style={{ background: 'transparent', border: '2px solid white', color: 'white' }}>
+                  Explore Courses
+                </CTAButton>
+              </Link>
+            </div>
+          </SectionContent>
+        </GradientSection>
+      </LandingContainer>
+    </MainLayout>
   );
 }

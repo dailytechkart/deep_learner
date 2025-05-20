@@ -4,7 +4,8 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
 import { useTheme as useStyledTheme } from 'styled-components';
-import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 
 const HeaderContainer = styled.header`
@@ -46,6 +47,27 @@ const Logo = styled(Link)`
   &:hover {
     transform: translateY(-1px);
     opacity: 0.9;
+  }
+`;
+
+const SearchContainer = styled.div`
+  flex: 1;
+  max-width: 600px;
+  margin: 0 2rem;
+`;
+
+const SearchInput = styled.input`
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: 0.5rem;
+  background: ${props => props.theme.colors.backgroundAlt};
+  color: ${props => props.theme.colors.text};
+  font-size: 0.875rem;
+
+  &:focus {
+    outline: none;
+    border-color: ${props => props.theme.colors.primary};
   }
 `;
 
@@ -199,6 +221,29 @@ const DropdownItem = styled(Link)`
   }
 `;
 
+const SignOutButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.sm};
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+  color: ${props => props.theme.colors.text};
+  text-decoration: none;
+  border-radius: ${props => props.theme.borderRadius.sm};
+  transition: all ${props => props.theme.transitions.default};
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-size: ${props => props.theme.typography.fontSize.md};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  
+  &:hover {
+    background: ${props => props.theme.colors.backgroundAlt};
+    color: ${props => props.theme.colors.primary};
+  }
+`;
+
 const MobileMenuButton = styled.button`
   display: none;
   background: none;
@@ -283,19 +328,24 @@ const MobileActions = styled.div`
   margin-top: ${props => props.theme.spacing.md};
 `;
 
-const SearchInput = styled.input`
-  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
-  border: 1px solid ${props => props.theme.colors.border};
-  border-radius: ${props => props.theme.borderRadius.md};
-  background: ${props => props.theme.colors.backgroundAlt};
+const MobileSignOutButton = styled.button`
+  display: block;
   color: ${props => props.theme.colors.text};
+  text-decoration: none;
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
   font-size: ${props => props.theme.typography.fontSize.md};
+  padding: ${props => props.theme.spacing.md};
+  border-radius: ${props => props.theme.borderRadius.md};
   transition: all ${props => props.theme.transitions.default};
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
 
-  &:focus {
-    outline: none;
-    border-color: ${props => props.theme.colors.primary};
-    box-shadow: 0 0 0 2px ${props => props.theme.colors.primary}20;
+  &:hover {
+    background: ${props => props.theme.colors.backgroundAlt};
+    color: ${props => props.theme.colors.primary};
   }
 `;
 
@@ -314,15 +364,17 @@ const ThemeToggle = styled.button`
   }
 `;
 
-interface HeaderProps {
-  searchQuery: string;
-  onSearchChange: (query: string) => void;
+export interface HeaderProps {
+  searchQuery?: string;
+  onSearchChange?: (query: string) => void;
 }
 
-export default function Header({ searchQuery, onSearchChange }: HeaderProps) {
+export default function Header({ searchQuery = '', onSearchChange }: HeaderProps) {
+  const router = useRouter();
+  const { user, signOut } = useAuth();
+  const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const { data: session } = useSession();
   const { isDarkMode, toggleTheme } = useTheme();
   const theme = useStyledTheme();
 
@@ -333,6 +385,21 @@ export default function Header({ searchQuery, onSearchChange }: HeaderProps) {
   const handleClickOutside = (e: MouseEvent) => {
     if (isUserMenuOpen && !(e.target as Element).closest('.user-menu')) {
       setIsUserMenuOpen(false);
+    }
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setLocalSearchQuery(value);
+    onSearchChange?.(value);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      router.push('/login');
+    } catch (error) {
+      console.error('Error signing out:', error);
     }
   };
 
@@ -348,6 +415,15 @@ export default function Header({ searchQuery, onSearchChange }: HeaderProps) {
         Frontendly
       </Logo>
 
+      <SearchContainer>
+        <SearchInput
+          type="search"
+          placeholder="Search courses, topics, or resources..."
+          value={localSearchQuery}
+          onChange={handleSearchChange}
+        />
+      </SearchContainer>
+
       <NavLinks>
         <NavLink href="/learn">Learn</NavLink>
         <NavLink href="/practice">Practice</NavLink>
@@ -357,20 +433,14 @@ export default function Header({ searchQuery, onSearchChange }: HeaderProps) {
       </NavLinks>
 
       <Actions>
-        <SearchInput
-          type="text"
-          placeholder="Search..."
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
-        />
         <ThemeToggle onClick={toggleTheme}>
           {isDarkMode ? '🌞' : '🌙'}
         </ThemeToggle>
-        {session ? (
+        {user ? (
           <UserMenu className="user-menu">
             <UserAvatar onClick={handleUserMenuClick}>
               <div className="avatar-initials">
-                {session?.user?.name?.charAt(0) || 'U'}
+                {user.displayName?.charAt(0) || user.email?.charAt(0) || 'U'}
               </div>
             </UserAvatar>
             <UserDropdown $isOpen={isUserMenuOpen}>
@@ -383,9 +453,9 @@ export default function Header({ searchQuery, onSearchChange }: HeaderProps) {
               <DropdownItem href="/settings">
                 Settings
               </DropdownItem>
-              <DropdownItem href="/api/auth/signout">
+              <SignOutButton onClick={handleSignOut}>
                 Sign Out
-              </DropdownItem>
+              </SignOutButton>
             </UserDropdown>
           </UserMenu>
         ) : (
@@ -411,12 +481,12 @@ export default function Header({ searchQuery, onSearchChange }: HeaderProps) {
         <MobileNavLink href="/system-design">System Design</MobileNavLink>
         <MobileNavLink href="/interview">Interview</MobileNavLink>
         <MobileActions>
-          {session ? (
+          {user ? (
             <>
               <MobileNavLink href="/profile">Profile</MobileNavLink>
               <MobileNavLink href="/dashboard">Dashboard</MobileNavLink>
               <MobileNavLink href="/settings">Settings</MobileNavLink>
-              <MobileNavLink href="/api/auth/signout">Sign Out</MobileNavLink>
+              <MobileSignOutButton onClick={handleSignOut}>Sign Out</MobileSignOutButton>
             </>
           ) : (
             <>

@@ -1,0 +1,242 @@
+---
+title: 'Design a Rate Limiter'
+description: 'Learn how to design a scalable rate limiter system that can handle millions of requests per second'
+difficulty: 'Medium'
+category: 'Backend'
+estimatedTime: '45 minutes'
+tags: ['System Design', 'Rate Limiting', 'Distributed Systems', 'Redis', 'Caching']
+companies: ['Google', 'Amazon', 'Microsoft', 'Facebook']
+---
+
+# Design a Rate Limiter
+
+## Problem Statement
+
+Design a rate limiter system that can handle millions of requests per second while ensuring fair usage of resources. The system should be able to:
+
+1. Limit the number of requests a user can make within a specific time window
+2. Support different rate limiting strategies (e.g., fixed window, sliding window, token bucket)
+3. Be highly available and scalable
+4. Have low latency
+5. Be configurable per user, IP, or API endpoint
+
+## Requirements
+
+### Functional Requirements
+
+- Support multiple rate limiting algorithms
+- Allow different rate limits for different users/endpoints
+- Provide real-time feedback to clients about their rate limit status
+- Support both authenticated and unauthenticated requests
+- Allow for dynamic rate limit adjustments
+
+### Non-Functional Requirements
+
+- High availability (99.99%)
+- Low latency (< 10ms)
+- Scalability to handle millions of requests per second
+- Fault tolerance
+- Data consistency
+
+## System Design
+
+### High-Level Architecture
+
+```
+Client -> Load Balancer -> Rate Limiter Service -> Backend Services
+                     |
+                     v
+                Redis Cluster
+```
+
+### Components
+
+1. **Rate Limiter Service**
+   - Handles rate limit checks
+   - Implements different rate limiting algorithms
+   - Manages rate limit configurations
+   - Communicates with Redis for state management
+
+2. **Redis Cluster**
+   - Stores rate limit counters
+   - Provides atomic operations for counter updates
+   - Enables distributed rate limiting
+
+3. **Configuration Service**
+   - Manages rate limit rules
+   - Handles dynamic updates to rate limits
+   - Stores rate limit policies
+
+### Rate Limiting Algorithms
+
+1. **Token Bucket**
+   - Maintains a bucket of tokens
+   - Each request consumes a token
+   - Tokens are refilled at a constant rate
+   - Good for bursty traffic
+
+2. **Leaky Bucket**
+   - Requests are processed at a constant rate
+   - Excess requests are queued or rejected
+   - Good for smoothing traffic
+
+3. **Fixed Window**
+   - Simple counter per time window
+   - Resets at window boundaries
+   - May allow burst at window edges
+
+4. **Sliding Window**
+   - More accurate than fixed window
+   - Uses multiple time windows
+   - Smoother rate limiting
+
+### Data Model
+
+```typescript
+interface RateLimit {
+  key: string;           // User ID, IP, or endpoint
+  limit: number;         // Maximum requests allowed
+  window: number;        // Time window in seconds
+  algorithm: string;     // Rate limiting algorithm
+  current: number;       // Current request count
+  resetAt: number;       // Timestamp when counter resets
+}
+
+interface RateLimitConfig {
+  defaultLimit: number;
+  defaultWindow: number;
+  overrides: {
+    [key: string]: {
+      limit: number;
+      window: number;
+    }
+  }
+}
+```
+
+### API Design
+
+```typescript
+interface RateLimiterAPI {
+  // Check if request is allowed
+  checkLimit(key: string): Promise<{
+    allowed: boolean;
+    limit: number;
+    remaining: number;
+    resetAt: number;
+  }>;
+
+  // Update rate limit configuration
+  updateConfig(config: RateLimitConfig): Promise<void>;
+
+  // Get current rate limit status
+  getStatus(key: string): Promise<RateLimit>;
+}
+```
+
+## Implementation Considerations
+
+### Redis Implementation
+
+```typescript
+class RedisRateLimiter {
+  async checkLimit(key: string, limit: number, window: number): Promise<boolean> {
+    const now = Date.now();
+    const windowKey = `${key}:${Math.floor(now / window)}`;
+    
+    const multi = this.redis.multi();
+    multi.incr(windowKey);
+    multi.expire(windowKey, window);
+    
+    const [count] = await multi.exec();
+    return count <= limit;
+  }
+}
+```
+
+### Distributed Rate Limiting
+
+1. **Sharding**
+   - Shard rate limiters by key
+   - Use consistent hashing for distribution
+   - Handle shard failures gracefully
+
+2. **Replication**
+   - Replicate rate limit data across regions
+   - Use eventual consistency for better performance
+   - Handle replication lag
+
+### Monitoring and Alerts
+
+1. **Metrics to Track**
+   - Request rate per user/endpoint
+   - Rejection rate
+   - Latency percentiles
+   - Error rates
+
+2. **Alerts**
+   - High rejection rates
+   - Latency spikes
+   - Error rate thresholds
+   - Resource utilization
+
+## Scaling Considerations
+
+1. **Horizontal Scaling**
+   - Add more rate limiter instances
+   - Use consistent hashing for key distribution
+   - Implement proper load balancing
+
+2. **Caching**
+   - Cache rate limit results
+   - Use Redis for distributed caching
+   - Implement proper cache invalidation
+
+3. **Data Partitioning**
+   - Partition rate limit data by key
+   - Use consistent hashing for distribution
+   - Handle partition failures
+
+## Trade-offs
+
+1. **Accuracy vs. Performance**
+   - More accurate algorithms (sliding window) are more complex
+   - Simpler algorithms (fixed window) may allow bursts
+   - Choose based on use case requirements
+
+2. **Consistency vs. Availability**
+   - Strong consistency requires more coordination
+   - Eventual consistency provides better performance
+   - Consider business requirements
+
+3. **Memory vs. CPU**
+   - Token bucket uses more memory
+   - Leaky bucket uses more CPU
+   - Choose based on resource constraints
+
+## Additional Considerations
+
+1. **Security**
+   - Prevent rate limit bypass
+   - Handle DDoS attacks
+   - Implement proper authentication
+
+2. **Cost Optimization**
+   - Use appropriate instance types
+   - Implement proper caching
+   - Monitor resource usage
+
+3. **Maintenance**
+   - Regular monitoring
+   - Performance tuning
+   - Capacity planning
+
+## Conclusion
+
+Designing a rate limiter requires careful consideration of various factors including scalability, performance, and accuracy. The chosen architecture should be based on specific requirements and constraints. Regular monitoring and maintenance are essential for optimal performance.
+
+## Further Reading
+
+1. [Redis Rate Limiting](https://redis.com/redis-best-practices/basic-rate-limiting/)
+2. [Rate Limiting Algorithms](https://konghq.com/blog/how-to-design-a-scalable-rate-limiting-algorithm/)
+3. [Distributed Rate Limiting](https://www.infoq.com/articles/distributed-rate-limiting/) 

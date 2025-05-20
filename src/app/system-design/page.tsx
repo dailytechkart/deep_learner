@@ -2,222 +2,476 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { Layout, Section, SectionHeader, SectionTitle, SectionContent, Grid } from '../components/Layout';
-import Link from 'next/link';
+import { FaDatabase, FaCloud, FaNetworkWired, FaLock, FaUsers, FaMobile, FaCogs, FaCheckCircle, FaWindows } from 'react-icons/fa';
+import { SiNetflix, SiUber, SiAmazon, SiGoogle } from 'react-icons/si';
+import { BsTwitterX } from 'react-icons/bs';
+import { PageContainer, MainContent, Title, Description } from '../components/StyledComponents';
+import Breadcrumbs from '../components/Breadcrumbs';
+import SEO from '../components/SEO';
+import { lightTheme, darkTheme } from '../theme';
+import { useTheme } from '../context/ThemeContext';
 
-const Card = styled.div`
-  background: ${props => props.theme.colors.background};
-  border: 1px solid ${props => props.theme.colors.border};
+const HeroSection = styled.div`
+  background: ${props => props.theme.colors.gradient1};
+  padding: ${props => props.theme.spacing.xxl};
   border-radius: ${props => props.theme.borderRadius.lg};
-  padding: ${props => props.theme.spacing.lg};
-  transition: all ${props => props.theme.transitions.default};
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+  margin-bottom: ${props => props.theme.spacing.xxl};
+  position: relative;
+  overflow: hidden;
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${props => props.theme.shadows.md};
-    border-color: ${props => props.theme.colors.primary};
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at top right, rgba(255,255,255,0.1) 0%, transparent 70%);
   }
 `;
 
-const CardTitle = styled.h3`
-  font-size: ${props => props.theme.typography.h3.fontSize};
-  font-weight: ${props => props.theme.typography.h3.fontWeight};
-  color: ${props => props.theme.colors.text};
-  margin-bottom: ${props => props.theme.spacing.md};
+const FeatureGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: ${props => props.theme.spacing.lg};
+  margin-bottom: ${props => props.theme.spacing.xxl};
 `;
 
-const CardDescription = styled.p`
+const FeatureCard = styled.a`
+  background: ${props => props.theme.colors.backgroundAlt};
+  padding: ${props => props.theme.spacing.lg};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  color: ${props => props.theme.colors.text};
+  border: 1px solid ${props => props.theme.colors.border};
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    border-color: ${props => props.theme.colors.primary};
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: ${props => props.theme.colors.primary};
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+`;
+
+const IconContainer = styled.div<{ color: string }>`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: ${props => props.theme.spacing.md};
+  background: ${props => props.color}15;
+  color: ${props => props.color};
+  font-size: 1.5rem;
+`;
+
+const FeatureTitle = styled.h3`
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: ${props => props.theme.colors.text};
+`;
+
+const FeatureDescription = styled.p`
   color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.typography.body2.fontSize};
-  margin-bottom: ${props => props.theme.spacing.lg};
+  line-height: 1.6;
+`;
+
+const LearningPathSection = styled.div`
+  background: ${props => props.theme.colors.backgroundAlt};
+  padding: ${props => props.theme.spacing.xxl};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  margin-bottom: ${props => props.theme.spacing.xxl};
+  border: 1px solid ${props => props.theme.colors.border};
+`;
+
+const PathStep = styled.div`
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  position: relative;
+
+  &:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 60px;
+    bottom: 0;
+    width: 2px;
+    background: ${props => props.theme.colors.border};
+    z-index: 0;
+  }
+
+  &:last-child::after {
+    display: none;
+  }
+`;
+
+const StepItem = styled.a`
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: ${props => props.theme.spacing.xl};
+  text-decoration: none;
+  color: ${props => props.theme.colors.text};
+  transition: all 0.3s ease;
+  padding: ${props => props.theme.spacing.md};
+  border-radius: ${props => props.theme.borderRadius.md};
+  border: 1px solid transparent;
+
+  &:hover {
+    background: ${props => props.theme.colors.backgroundHover};
+    border-color: ${props => props.theme.colors.border};
+  }
+`;
+
+const StepNumber = styled.div<{ color: string }>`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: ${props => props.color}15;
+  color: ${props => props.color};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: ${props => props.theme.spacing.md};
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px ${props => props.color}30;
+`;
+
+const StepContent = styled.div`
   flex: 1;
 `;
 
-const CardLink = styled(Link)`
-  color: ${props => props.theme.colors.primary};
-  text-decoration: none;
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
+const StepTitle = styled.h3`
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: ${props => props.theme.colors.text};
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const StepDescription = styled.p`
+  color: ${props => props.theme.colors.textSecondary};
+  margin-bottom: 1rem;
+`;
+
+const StepList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+`;
+
+const Tag = styled.span`
   display: inline-flex;
   align-items: center;
-  gap: ${props => props.theme.spacing.sm};
-  transition: all ${props => props.theme.transitions.default};
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: ${props => props.theme.colors.primary}15;
+  color: ${props => props.theme.colors.primary};
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0.5rem;
+`;
 
-  &:hover {
-    color: ${props => props.theme.colors.secondary};
-    gap: ${props => props.theme.spacing.md};
+const TagGroup = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+`;
+
+const PracticeSection = styled.div`
+  background: ${props => props.theme.colors.gradient2};
+  padding: ${props => props.theme.spacing.xxl};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  text-align: center;
+  color: white;
+  margin-bottom: ${props => props.theme.spacing.xxl};
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at bottom left, rgba(255,255,255,0.1) 0%, transparent 70%);
   }
 `;
 
-const Badge = styled.span`
-  background: ${props => props.theme.colors.backgroundAlt};
-  color: ${props => props.theme.colors.textSecondary};
-  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
+const PracticeButton = styled.a`
+  display: inline-block;
+  background: white;
+  color: ${props => props.theme.colors.primary};
+  padding: ${props => props.theme.spacing.md} ${props => props.theme.spacing.xl};
+  border-radius: ${props => props.theme.borderRadius.md};
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: ${props => props.theme.spacing.lg};
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  }
+`;
+
+const Badge = styled.span<{ type: 'success' | 'warning' | 'error' | 'info' }>`
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
   border-radius: ${props => props.theme.borderRadius.full};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: ${props => props.theme.colors.status[props.type]}15;
+  color: ${props => props.theme.colors.status[props.type]};
+  margin-right: 0.5rem;
+`;
+
+const CompanyIcon = styled.div`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 0.5rem;
+  color: ${props => props.theme.colors.textSecondary};
+`;
+
+const TagWithIcon = styled.div`
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background: ${props => props.theme.colors.primary}15;
+  color: ${props => props.theme.colors.primary};
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0.5rem;
 `;
 
 export default function SystemDesignPage() {
-  const prerequisites = [
-    {
-      title: 'Frontend Fundamentals',
-      description: 'Understanding of HTML, CSS, JavaScript, and modern frontend frameworks.',
-      link: '/learn/frontend-basics'
-    },
-    {
-      title: 'State Management',
-      description: 'Knowledge of state management patterns and solutions like Redux, MobX, or Context API.',
-      link: '/learn/state-management'
-    },
-    {
-      title: 'Performance Optimization',
-      description: 'Understanding of frontend performance optimization techniques and tools.',
-      link: '/learn/performance'
-    },
-    {
-      title: 'Basic Computer Science',
-      description: 'Understanding of data structures, algorithms, and basic computer science concepts.',
-      link: '/learn/basics'
-    },
-    {
-      title: 'Networking Fundamentals',
-      description: 'Knowledge of HTTP, TCP/IP, DNS, and basic networking concepts.',
-      link: '/learn/networking'
-    },
-    {
-      title: 'Database Concepts',
-      description: 'Understanding of SQL, NoSQL, and database design principles.',
-      link: '/learn/databases'
-    }
-  ];
-
-  const topics = [
-    {
-      title: 'Frontend Architecture',
-      description: 'Learn about component architecture, state management, and building scalable frontend applications.',
-      link: '/system-design/frontend-architecture'
-    },
-    {
-      title: 'Performance Optimization',
-      description: 'Master techniques for optimizing frontend performance, including code splitting, lazy loading, and caching strategies.',
-      link: '/system-design/performance'
-    },
-    {
-      title: 'Micro Frontends',
-      description: 'Learn how to design and implement micro frontend architectures for large-scale applications.',
-      link: '/system-design/micro-frontends'
-    },
-    {
-      title: 'System Design Fundamentals',
-      description: 'Learn the core concepts and principles of system design.',
-      link: '/system-design/fundamentals'
-    },
-    {
-      title: 'Design Patterns',
-      description: 'Explore common system design patterns and their applications.',
-      link: '/system-design/patterns'
-    },
-    {
-      title: 'Case Studies',
-      description: 'Study real-world system design examples from top companies.',
-      link: '/system-design/case-studies'
-    },
-    {
-      title: 'Practice Problems',
-      description: 'Solve system design problems and get hands-on experience.',
-      link: '/system-design/problems'
-    }
-  ];
+  const { isDarkMode } = useTheme();
+  const currentTheme = isDarkMode ? darkTheme : lightTheme;
 
   return (
-    <Layout
-      title="System Design"
-      description="Master the art of designing scalable, reliable, and efficient systems. Learn from real-world examples and practice with hands-on problems."
-    >
-      <Section>
-        <SectionHeader>
-          <SectionTitle>Prerequisites</SectionTitle>
-        </SectionHeader>
-        <SectionContent>
-          <Grid>
-            {prerequisites.map((prerequisite, index) => (
-              <Card key={index}>
-                <CardTitle>{prerequisite.title}</CardTitle>
-                <CardDescription>{prerequisite.description}</CardDescription>
-                <CardLink href={prerequisite.link}>
-                  Learn More →
-                </CardLink>
-              </Card>
-            ))}
-          </Grid>
-        </SectionContent>
-      </Section>
+    <PageContainer>
+      <SEO 
+        title="System Design"
+        description="Master system design concepts, patterns, and best practices for building scalable and reliable systems."
+        keywords={[
+          'system design',
+          'architecture',
+          'scalability',
+          'patterns',
+          'microservices',
+          'cloud computing'
+        ]}
+      />
+      <MainContent>
+        <HeroSection>
+          <Title>System Design</Title>
+          <Description>
+            Master the art of designing scalable, reliable, and efficient systems.
+            Learn essential concepts, patterns, and best practices.
+          </Description>
+          <TagGroup>
+            <Badge type="success">Beginner Friendly</Badge>
+            <Badge type="info">Industry Standard</Badge>
+            <Badge type="warning">Advanced Topics</Badge>
+          </TagGroup>
+        </HeroSection>
 
-      <Section>
-        <SectionHeader>
-          <SectionTitle>Topics</SectionTitle>
-        </SectionHeader>
-        <SectionContent>
-          <Grid>
-            {topics.map((topic, index) => (
-              <Card key={index}>
-                <CardTitle>{topic.title}</CardTitle>
-                <CardDescription>{topic.description}</CardDescription>
-                <CardLink href={topic.link}>
-                  Explore →
-                </CardLink>
-              </Card>
-            ))}
-          </Grid>
-        </SectionContent>
-      </Section>
+        <FeatureGrid>
+          <FeatureCard href="/system-design/architecture">
+            <IconContainer color={currentTheme.colors.systemDesign.architecture}>
+              <FaDatabase />
+            </IconContainer>
+            <h3>Architecture</h3>
+            <p>Learn about different architectural styles and their applications</p>
+            <TagGroup>
+              <Badge type="info">Fundamental</Badge>
+            </TagGroup>
+          </FeatureCard>
 
-      <Section>
-        <SectionHeader>
-          <SectionTitle>Getting Started</SectionTitle>
-        </SectionHeader>
-        <SectionContent>
-          <p>
-            System design is a crucial skill for software engineers. It involves designing scalable,
-            reliable, and efficient systems that can handle large amounts of data and traffic.
-          </p>
-          <p>
-            For frontend developers, system design includes:
-          </p>
-          <ul>
-            <li>Component architecture and composition</li>
-            <li>State management and data flow</li>
-            <li>Performance optimization and code splitting</li>
-            <li>Micro frontend architecture</li>
-            <li>Build system and deployment strategies</li>
-            <li>Browser caching and service workers</li>
-            <li>Progressive enhancement and accessibility</li>
-          </ul>
-          <p>
-            For backend developers, system design covers:
-          </p>
-          <ul>
-            <li>API design and versioning</li>
-            <li>Database design and optimization</li>
-            <li>Scalability and load balancing</li>
-            <li>Caching and performance</li>
-            <li>Security and authentication</li>
-            <li>Monitoring and logging</li>
-            <li>Deployment and DevOps</li>
-          </ul>
-          <p>
-            This section will guide you through the fundamentals of system design, common patterns,
-            and real-world case studies. You'll also get hands-on practice with system design problems.
-          </p>
-          <p>
-            Start with the prerequisites if you're new to system design, or dive directly into the
-            topics if you're already familiar with the basics.
-          </p>
-        </SectionContent>
-      </Section>
-    </Layout>
+          <FeatureCard href="/system-design/patterns">
+            <IconContainer color={currentTheme.colors.systemDesign.patterns}>
+              <FaNetworkWired />
+            </IconContainer>
+            <h3>Design Patterns</h3>
+            <p>Explore common patterns for building robust systems</p>
+            <TagGroup>
+              <Badge type="warning">Intermediate</Badge>
+            </TagGroup>
+          </FeatureCard>
+
+          <FeatureCard href="/system-design/case-studies">
+            <IconContainer color={currentTheme.colors.systemDesign.scalability}>
+              <FaCloud />
+            </IconContainer>
+            <h3>Case Studies</h3>
+            <p>Analyze real-world system design examples</p>
+            <TagGroup>
+              <Badge type="success">Real World</Badge>
+            </TagGroup>
+          </FeatureCard>
+
+          <FeatureCard href="/system-design/problems">
+            <IconContainer color={currentTheme.colors.systemDesign.security}>
+              <FaLock />
+            </IconContainer>
+            <h3>Practice Problems</h3>
+            <p>Test your knowledge with hands-on challenges</p>
+            <TagGroup>
+              <Badge type="error">Challenging</Badge>
+            </TagGroup>
+          </FeatureCard>
+        </FeatureGrid>
+
+        <LearningPathSection>
+          <Title>Learning Path</Title>
+          <Description>
+            Follow our structured learning path to master system design concepts
+          </Description>
+
+          <StepItem href="/system-design/basics">
+            <StepNumber color={currentTheme.colors.systemDesign.architecture}>1</StepNumber>
+            <div>
+              <h3>System Design Basics</h3>
+              <p>Understand fundamental concepts and principles</p>
+              <TagGroup>
+                <Badge type="success">Beginner</Badge>
+                <Badge type="info">Essential</Badge>
+              </TagGroup>
+              <ul>
+                <li>Scalability</li>
+                <li>Reliability</li>
+                <li>Performance</li>
+              </ul>
+            </div>
+          </StepItem>
+
+          <StepItem href="/system-design/architecture">
+            <StepNumber color={currentTheme.colors.systemDesign.patterns}>2</StepNumber>
+            <div>
+              <h3>Architecture Patterns</h3>
+              <p>Learn about different architectural styles</p>
+              <TagGroup>
+                <Badge type="warning">Intermediate</Badge>
+                <Badge type="info">Patterns</Badge>
+              </TagGroup>
+              <ul>
+                <li>Monolithic</li>
+                <li>Microservices</li>
+                <li>Event-Driven</li>
+              </ul>
+            </div>
+          </StepItem>
+
+          <StepItem href="/system-design/case-studies">
+            <StepNumber color={currentTheme.colors.systemDesign.scalability}>3</StepNumber>
+            <div>
+              <h3>Case Studies</h3>
+              <p>Analyze real-world system designs</p>
+              <TagGroup>
+                <Badge type="error">Advanced</Badge>
+                <Badge type="success">Real World</Badge>
+              </TagGroup>
+              <ul>
+                <li>
+                  <TagWithIcon>
+                    <CompanyIcon><SiNetflix /></CompanyIcon>
+                    Netflix
+                  </TagWithIcon>
+                </li>
+                <li>
+                  <TagWithIcon>
+                    <CompanyIcon><SiUber /></CompanyIcon>
+                    Uber
+                  </TagWithIcon>
+                </li>
+                <li>
+                  <TagWithIcon>
+                    <CompanyIcon><BsTwitterX /></CompanyIcon>
+                    Twitter
+                  </TagWithIcon>
+                </li>
+                <li>
+                  <TagWithIcon>
+                    <CompanyIcon><SiAmazon /></CompanyIcon>
+                    Amazon
+                  </TagWithIcon>
+                </li>
+                <li>
+                  <TagWithIcon>
+                    <CompanyIcon><SiGoogle /></CompanyIcon>
+                    Google
+                  </TagWithIcon>
+                </li>
+                <li>
+                  <TagWithIcon>
+                    <CompanyIcon><FaWindows /></CompanyIcon>
+                    Microsoft
+                  </TagWithIcon>
+                </li>
+              </ul>
+            </div>
+          </StepItem>
+        </LearningPathSection>
+
+        <PracticeSection>
+          <Title>Ready to Practice?</Title>
+          <Description>
+            Test your system design skills with our collection of practice problems
+          </Description>
+          <TagGroup>
+            <Badge type="error">Challenging</Badge>
+            <Badge type="warning">Interview Prep</Badge>
+            <Badge type="success">Hands-on</Badge>
+          </TagGroup>
+          <PracticeButton href="/system-design/problems">
+            Start Practicing
+          </PracticeButton>
+        </PracticeSection>
+      </MainContent>
+    </PageContainer>
   );
 } 

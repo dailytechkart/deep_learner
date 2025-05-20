@@ -10,9 +10,11 @@ import {
   GithubAuthProvider,
   User,
   setPersistence,
-  browserLocalPersistence
+  browserLocalPersistence,
+  signOut as firebaseSignOut
 } from 'firebase/auth';
 import app from '@/lib/firebaseConfig';
+import { useRouter } from 'next/navigation';
 
 interface AuthContextType {
   user: User | null;
@@ -30,6 +32,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const auth = getAuth(app);
+  const router = useRouter();
 
   useEffect(() => {
     // Set persistence to LOCAL
@@ -77,65 +80,45 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signInWithGoogle = async () => {
     try {
-      setLoading(true);
-      setError(null);
       const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({
-        prompt: 'select_account'
-      });
       await signInWithPopup(auth, provider);
-    } catch (error: any) {
+    } catch (error) {
       console.error('Google sign in error:', error);
-      setError(error.message || 'Failed to sign in with Google');
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
   const signInWithGithub = async () => {
     try {
-      setLoading(true);
-      setError(null);
       const provider = new GithubAuthProvider();
-      provider.setCustomParameters({
-        prompt: 'consent'
-      });
       await signInWithPopup(auth, provider);
-    } catch (error: any) {
-      console.error('GitHub sign in error:', error);
-      setError(error.message || 'Failed to sign in with GitHub');
+    } catch (error) {
+      console.error('Github sign in error:', error);
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
   const signOut = async () => {
     try {
-      setLoading(true);
-      setError(null);
-      await auth.signOut();
-    } catch (error: any) {
+      await firebaseSignOut(auth);
+      router.push('/login');
+    } catch (error) {
       console.error('Sign out error:', error);
-      setError(error.message || 'Failed to sign out');
       throw error;
-    } finally {
-      setLoading(false);
     }
   };
 
-  const value = {
-    user,
-    loading,
-    error,
-    signInWithGoogle,
-    signInWithGithub,
-    signOut
-  };
-
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        error,
+        signInWithGoogle,
+        signInWithGithub,
+        signOut,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

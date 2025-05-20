@@ -1,9 +1,7 @@
-import { requireGuest } from '@/lib/auth';
+'use client';
+
 import LoginClient from './LoginClient';
 
-export default async function LoginPage() {
-  // This will redirect if user is already logged in
-  await requireGuest();
-
+export default function LoginPage() {
   return <LoginClient />;
 } 

@@ -1,24 +1,25 @@
 'use client';
 
 import { useState, useRef, useEffect, Suspense, useMemo } from 'react';
+import { useTheme } from 'styled-components';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
-import { 
-  FaComments, 
-  FaList, 
-  FaClock, 
-  FaCommentDots, 
-  FaClipboardList, 
-  FaBolt, 
-  FaSearch, 
-  FaLayerGroup, 
-  FaFilter, 
-  FaTimes, 
-  FaBuilding, 
-  FaCode, 
-  FaDatabase, 
-  FaCogs, 
-  FaServer, 
+import {
+  FaComments,
+  FaList,
+  FaClock,
+  FaCommentDots,
+  FaClipboardList,
+  FaBolt,
+  FaSearch,
+  FaLayerGroup,
+  FaFilter,
+  FaTimes,
+  FaBuilding,
+  FaCode,
+  FaDatabase,
+  FaCogs,
+  FaServer,
   FaNetworkWired,
   FaUsers,
   FaHistory,
@@ -46,7 +47,7 @@ import {
   FaRegCopy,
   FaChevronDown,
   FaChevronUp,
-  FaThumbtack
+  FaThumbtack,
 } from 'react-icons/fa';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -196,7 +197,7 @@ const problemsList = [
       'Handle user online/offline status',
       'Ensure message delivery status (sent, delivered, read)',
       'Support file sharing and media messages',
-      'Implement proper error handling and retry mechanisms'
+      'Implement proper error handling and retry mechanisms',
     ],
     constraints: [
       'Must handle at least 1000 concurrent users',
@@ -206,7 +207,7 @@ const problemsList = [
       'Must be scalable and handle high message throughput',
       'Should work across different devices and browsers',
       'Must implement proper security measures',
-      'Should handle network issues gracefully'
+      'Should handle network issues gracefully',
     ],
     twist: 'Add group chat and unread count badges.',
     icon: <FaComments />,
@@ -218,8 +219,15 @@ const problemsList = [
     time_limit: 120,
     difficulty: 'Hard',
     roles: ['SDE2', 'SDE3'],
-    tags: ['Pagination', 'Virtualization', 'React', 'Feed System', 'Infinite Scroll'],
-    description: 'Create a responsive, paginated news feed with likes, comments, and post creation.',
+    tags: [
+      'Pagination',
+      'Virtualization',
+      'React',
+      'Feed System',
+      'Infinite Scroll',
+    ],
+    description:
+      'Create a responsive, paginated news feed with likes, comments, and post creation.',
     twist: 'Add real-time update for new posts and optimistic UI.',
     icon: <FaList />,
   },
@@ -231,7 +239,8 @@ const problemsList = [
     difficulty: 'Medium',
     roles: ['SDE1', 'SDE2'],
     tags: ['Filters', 'Sorting', 'Pagination', 'React', 'UI Performance'],
-    description: 'Build a product list page with filters, sorting, and lazy loading of images.',
+    description:
+      'Build a product list page with filters, sorting, and lazy loading of images.',
     twist: 'Support comparison view and wishlist functionality.',
     icon: <FaClipboardList />,
   },
@@ -243,7 +252,8 @@ const problemsList = [
     difficulty: 'Easy',
     roles: ['SDE1'],
     tags: ['Timer', 'Hooks', 'React', 'Ref', 'Controlled Inputs'],
-    description: 'Create a timer component that counts down and allows multiple timers sequentially.',
+    description:
+      'Create a timer component that counts down and allows multiple timers sequentially.',
     twist: 'Show an alert and allow rescheduling expired timers.',
     icon: <FaClock />,
   },
@@ -255,7 +265,8 @@ const problemsList = [
     difficulty: 'Medium',
     roles: ['SDE1', 'SDE2'],
     tags: ['Nested Comments', 'Recursion', 'React', 'UX'],
-    description: 'Implement a comment section that supports replies, editing, deleting and collapse.',
+    description:
+      'Implement a comment section that supports replies, editing, deleting and collapse.',
     twist: 'Add real-time updates and lazy loading of replies.',
     icon: <FaCommentDots />,
   },
@@ -267,7 +278,8 @@ const problemsList = [
     difficulty: 'Hard',
     roles: ['SDE2', 'SDE3'],
     tags: ['Drag and Drop', 'React', 'State Sync', 'UX'],
-    description: 'Build a board with draggable cards across columns with editable tasks.',
+    description:
+      'Build a board with draggable cards across columns with editable tasks.',
     twist: 'Support offline mode and sync when back online.',
     icon: <FaLayerGroup />,
   },
@@ -279,7 +291,8 @@ const problemsList = [
     difficulty: 'Medium',
     roles: ['SDE1'],
     tags: ['Form Validation', 'React', 'Step Navigation', 'UX'],
-    description: 'Create a multi-step form with validation, progress indicator, and summary view.',
+    description:
+      'Create a multi-step form with validation, progress indicator, and summary view.',
     twist: 'Add auto-save and form state recovery after refresh.',
     icon: <FaBolt />,
   },
@@ -291,10 +304,11 @@ const problemsList = [
     difficulty: 'Easy',
     roles: ['SDE1'],
     tags: ['Debounce', 'Fetch', 'React', 'UX'],
-    description: 'Implement a search bar that shows suggestions with debounce and highlight.',
+    description:
+      'Implement a search bar that shows suggestions with debounce and highlight.',
     twist: 'Group results by category and support keyboard navigation.',
     icon: <FaSearch />,
-  }
+  },
 ];
 
 const Layout = styled.div`
@@ -302,7 +316,8 @@ const Layout = styled.div`
   height: 100vh;
   min-height: 100vh;
   background: ${({ theme }) => theme.colors.background};
-  font-family: "Charter", "Georgia", "Cambria", "Times New Roman", "Times", serif;
+  font-family: 'Charter', 'Georgia', 'Cambria', 'Times New Roman', 'Times',
+    serif;
 `;
 
 const LeftPanel = styled.nav<{ isOpen?: boolean }>`
@@ -389,16 +404,21 @@ const ProblemList = styled.ul`
 `;
 
 const ProblemCard = styled.li<{ selected: boolean; isDisabled?: boolean }>`
-  background: ${({ selected, theme }) => selected ? theme.colors.background : theme.colors.backgroundAlt};
-  border: 1px solid ${({ selected, theme }) => selected ? theme.colors.primary : theme.colors.border};
+  background: ${({ selected, theme }) =>
+    selected ? theme.colors.background : theme.colors.backgroundAlt};
+  border: 1px solid
+    ${({ selected, theme }) =>
+      selected ? theme.colors.primary : theme.colors.border};
   border-radius: 10px;
   margin-bottom: 12px;
   padding: 16px;
-  color: ${({ selected, theme }) => selected ? theme.colors.primary : theme.colors.text};
+  color: ${({ selected, theme }) =>
+    selected ? theme.colors.primary : theme.colors.text};
   font-weight: ${({ selected }) => (selected ? 600 : 400)};
-  cursor: ${({ isDisabled }) => isDisabled ? 'not-allowed' : 'pointer'};
-  opacity: ${({ isDisabled }) => isDisabled ? 0.7 : 1};
-  box-shadow: ${({ selected }) => selected ? '0 4px 12px rgba(0,0,0,0.08)' : 'none'};
+  cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
+  opacity: ${({ isDisabled }) => (isDisabled ? 0.7 : 1)};
+  box-shadow: ${({ selected }) =>
+    selected ? '0 4px 12px rgba(0,0,0,0.08)' : 'none'};
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
@@ -407,10 +427,14 @@ const ProblemCard = styled.li<{ selected: boolean; isDisabled?: boolean }>`
   overflow: hidden;
 
   &:hover {
-    background: ${({ theme, isDisabled }) => isDisabled ? 'inherit' : theme.colors.background};
-    border-color: ${({ theme, isDisabled }) => isDisabled ? 'inherit' : theme.colors.primary};
-    box-shadow: ${({ isDisabled }) => isDisabled ? 'none' : '0 4px 12px rgba(0,0,0,0.08)'};
-    transform: ${({ isDisabled }) => isDisabled ? 'none' : 'translateY(-1px)'};
+    background: ${({ theme, isDisabled }) =>
+      isDisabled ? 'inherit' : theme.colors.background};
+    border-color: ${({ theme, isDisabled }) =>
+      isDisabled ? 'inherit' : theme.colors.primary};
+    box-shadow: ${({ isDisabled }) =>
+      isDisabled ? 'none' : '0 4px 12px rgba(0,0,0,0.08)'};
+    transform: ${({ isDisabled }) =>
+      isDisabled ? 'none' : 'translateY(-1px)'};
   }
 
   &::after {
@@ -420,7 +444,8 @@ const ProblemCard = styled.li<{ selected: boolean; isDisabled?: boolean }>`
     left: 0;
     width: 3px;
     height: 100%;
-    background: ${({ selected, theme }) => selected ? theme.colors.primary : 'transparent'};
+    background: ${({ selected, theme }) =>
+      selected ? theme.colors.primary : 'transparent'};
     transition: background 0.2s ease;
   }
 `;
@@ -500,7 +525,8 @@ const MainTitle = styled.h1`
   font-weight: 500;
   margin: 0 0 1.5rem 0;
   color: ${({ theme }) => theme.colors.text};
-  font-family: 'Charter', 'Georgia', 'Cambria', 'Times New Roman', 'Times', serif;
+  font-family: 'Charter', 'Georgia', 'Cambria', 'Times New Roman', 'Times',
+    serif;
   letter-spacing: -0.018em;
   line-height: 1.16;
   text-align: left;
@@ -582,7 +608,7 @@ const FilterSection = styled.div`
 const SearchInput = styled.div`
   position: relative;
   margin-bottom: 16px;
-  
+
   input {
     width: 100%;
     padding: 10px 14px 10px 38px;
@@ -592,7 +618,7 @@ const SearchInput = styled.div`
     color: ${({ theme }) => theme.colors.text};
     font-size: 0.9em;
     transition: all 0.2s ease;
-    
+
     &:focus {
       outline: none;
       border-color: ${({ theme }) => theme.colors.primary};
@@ -604,7 +630,7 @@ const SearchInput = styled.div`
       opacity: 0.7;
     }
   }
-  
+
   svg {
     position: absolute;
     left: 12px;
@@ -629,7 +655,9 @@ const DropdownFilter = styled.div`
 const DropdownButton = styled.button<{ isOpen: boolean }>`
   width: 100%;
   padding: 10px 14px;
-  border: 1px solid ${({ isOpen, theme }) => isOpen ? theme.colors.primary : theme.colors.border};
+  border: 1px solid
+    ${({ isOpen, theme }) =>
+      isOpen ? theme.colors.primary : theme.colors.border};
   border-radius: 8px;
   background: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
@@ -640,7 +668,7 @@ const DropdownButton = styled.button<{ isOpen: boolean }>`
   align-items: center;
   justify-content: space-between;
   transition: all 0.2s ease;
-  
+
   &:hover {
     border-color: ${({ theme }) => theme.colors.primary};
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
@@ -648,7 +676,7 @@ const DropdownButton = styled.button<{ isOpen: boolean }>`
 
   svg {
     transition: transform 0.2s ease;
-    transform: rotate(${({ isOpen }) => isOpen ? '180deg' : '0'});
+    transform: rotate(${({ isOpen }) => (isOpen ? '180deg' : '0')});
     font-size: 0.9em;
   }
 `;
@@ -663,7 +691,7 @@ const DropdownContent = styled.div<{ isOpen: boolean }>`
   border-radius: 8px;
   padding: 6px;
   z-index: 10;
-  display: ${({ isOpen }) => isOpen ? 'block' : 'none'};
+  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   max-height: 280px;
   overflow-y: auto;
@@ -677,9 +705,11 @@ const DropdownOption = styled.div<{ selected: boolean }>`
   display: flex;
   align-items: center;
   gap: 8px;
-  color: ${({ selected, theme }) => selected ? theme.colors.primary : theme.colors.text};
-  background: ${({ selected, theme }) => selected ? `${theme.colors.primary}10` : 'transparent'};
-  font-weight: ${({ selected }) => selected ? '500' : '400'};
+  color: ${({ selected, theme }) =>
+    selected ? theme.colors.primary : theme.colors.text};
+  background: ${({ selected, theme }) =>
+    selected ? `${theme.colors.primary}10` : 'transparent'};
+  font-weight: ${({ selected }) => (selected ? '500' : '400')};
   font-size: 0.9em;
 
   &:hover {
@@ -699,7 +729,7 @@ const PriceRangeInput = styled.div`
     border: 1px solid ${({ theme }) => theme.colors.border};
     border-radius: 6px;
     font-size: 0.9em;
-    
+
     &:focus {
       outline: none;
       border-color: ${({ theme }) => theme.colors.primary};
@@ -727,7 +757,7 @@ const ApplyButton = styled.button`
 
 const FilterGroup = styled.div`
   margin-bottom: 20px;
-  
+
   &:last-child {
     margin-bottom: 0;
   }
@@ -757,20 +787,24 @@ const FilterOptions = styled.div`
 const FilterChip = styled.button<{ active: boolean }>`
   padding: 8px 16px;
   border-radius: 999px;
-  border: 2px solid ${({ active, theme }) => active ? theme.colors.primary : theme.colors.border};
-  background: ${({ active, theme }) => active ? theme.colors.primary : 'transparent'};
-  color: ${({ active, theme }) => active ? '#fff' : theme.colors.text};
+  border: 2px solid
+    ${({ active, theme }) =>
+      active ? theme.colors.primary : theme.colors.border};
+  background: ${({ active, theme }) =>
+    active ? theme.colors.primary : 'transparent'};
+  color: ${({ active, theme }) => (active ? '#fff' : theme.colors.text)};
   font-size: 0.85em;
-  font-weight: ${({ active }) => active ? '600' : '500'};
+  font-weight: ${({ active }) => (active ? '600' : '500')};
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: 6px;
-  
+
   &:hover {
     border-color: ${({ theme }) => theme.colors.primary};
-    background: ${({ active, theme }) => active ? theme.colors.primary : 'rgba(108, 99, 255, 0.1)'};
+    background: ${({ active, theme }) =>
+      active ? theme.colors.primary : 'rgba(108, 99, 255, 0.1)'};
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
@@ -796,7 +830,7 @@ const ClearFilters = styled.button`
   margin-top: 16px;
   width: 100%;
   transition: all 0.2s ease;
-  
+
   &:hover {
     background: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
@@ -1069,13 +1103,26 @@ const MermaidDiagram = ({ chart }: { chart: string }) => {
     if (typeof window === 'undefined') return;
     const id = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
     mermaid.parseError = () => {};
-    mermaid.render(id, chart)
+    mermaid
+      .render(id, chart)
       .then(({ svg }) => {
         setSvg(svg);
       })
       .catch(() => setSvg('<div style="color:red">Diagram Error</div>'));
   }, [chart]);
-  return <div ref={ref} style={{ width: '100%', minHeight: 200, display: 'flex', justifyContent: 'center', alignItems: 'center' }} dangerouslySetInnerHTML={{ __html: svg }} />;
+  return (
+    <div
+      ref={ref}
+      style={{
+        width: '100%',
+        minHeight: 200,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+      dangerouslySetInnerHTML={{ __html: svg }}
+    />
+  );
 };
 
 // HLD: System Architecture (flowchart)
@@ -1252,30 +1299,31 @@ const CodeBlock = styled.pre`
   margin: 1.8em 0;
   border: 1px solid ${({ theme }) => theme.colors.border};
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
+    monospace;
   font-size: 0.9em;
   line-height: 1.6;
 `;
 
 const CodeComment = styled.span`
-  color: #6a737d;
+  color: ${({ theme }) => theme.colors.code.comment};
   font-style: italic;
 `;
 
 const CodeKeyword = styled.span`
-  color: #d73a49;
+  color: ${({ theme }) => theme.colors.code.keyword};
 `;
 
 const CodeString = styled.span`
-  color: #032f62;
+  color: ${({ theme }) => theme.colors.code.string};
 `;
 
 const CodeFunction = styled.span`
-  color: #6f42c1;
+  color: ${({ theme }) => theme.colors.code.function};
 `;
 
 const CodeVariable = styled.span`
-  color: #005cc5;
+  color: ${({ theme }) => theme.colors.code.variable};
 `;
 
 const ImplementationSection = styled.div`
@@ -1450,7 +1498,7 @@ ${CodeKeyword}const ${CodeVariable}cacheMiddleware = ${CodeKeyword}async (${Code
 function DynamicMDX({ slug }: { slug: string }) {
   const MDXComponent = dynamic(() => import(`./${slug}.mdx`), {
     loading: () => <div>Loading...</div>,
-    ssr: true
+    ssr: true,
   });
 
   return (
@@ -1470,7 +1518,8 @@ const MDXContent = styled.div`
     font-weight: 600;
     margin: 2em 0 1em;
     color: ${({ theme }) => theme.colors.text};
-    font-family: "GT Alpina", "Georgia", "Cambria", "Times New Roman", "Times", serif;
+    font-family: 'GT Alpina', 'Georgia', 'Cambria', 'Times New Roman', 'Times',
+      serif;
     letter-spacing: -0.016em;
     line-height: 1.3;
     position: relative;
@@ -1493,7 +1542,8 @@ const MDXContent = styled.div`
     font-weight: 600;
     margin: 1.8em 0 1em;
     color: ${({ theme }) => theme.colors.text};
-    font-family: "GT Alpina", "Georgia", "Cambria", "Times New Roman", "Times", serif;
+    font-family: 'GT Alpina', 'Georgia', 'Cambria', 'Times New Roman', 'Times',
+      serif;
     letter-spacing: -0.016em;
     line-height: 1.4;
   }
@@ -1507,7 +1557,8 @@ const MDXContent = styled.div`
     max-width: 65ch;
   }
 
-  ul, ol {
+  ul,
+  ol {
     font-size: 1.1em;
     line-height: 1.8;
     letter-spacing: -0.003em;
@@ -1527,7 +1578,8 @@ const MDXContent = styled.div`
   }
 
   code {
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
+      monospace;
     font-size: 0.9em;
     background: ${({ theme }) => theme.colors.backgroundAlt};
     padding: 0.2em 0.4em;
@@ -1576,7 +1628,8 @@ const MDXContent = styled.div`
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 
-  th, td {
+  th,
+  td {
     padding: 1em 1.2em;
     border: 1px solid ${({ theme }) => theme.colors.border};
     text-align: left;
@@ -1646,7 +1699,8 @@ const MDXContent = styled.div`
     }
   }
 
-  ul li, ol li {
+  ul li,
+  ol li {
     position: relative;
     padding-left: 0.5em;
   }
@@ -1661,7 +1715,7 @@ const MDXContent = styled.div`
 
   pre {
     position: relative;
-    
+
     &::before {
       content: '';
       position: absolute;
@@ -1746,7 +1800,9 @@ const RetryButton = styled.button`
   }
 `;
 
-const ChatAppAnswer = dynamic(() => import('../chat-app/Answer'), { ssr: false });
+const ChatAppAnswer = dynamic(() => import('../chat-app/Answer'), {
+  ssr: false,
+});
 
 const Tooltip = styled.div`
   position: absolute;
@@ -1761,7 +1817,7 @@ const Tooltip = styled.div`
   white-space: pre-line;
   z-index: 10;
   min-width: 180px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.13);
   pointer-events: none;
 `;
 
@@ -1771,7 +1827,7 @@ const WhatToCoverSection = styled.section`
   background: ${({ theme }) => theme.colors.backgroundAlt};
   border-radius: 10px;
   border: 1px solid ${({ theme }) => theme.colors.border};
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
   max-width: 700px;
   width: 100%;
   position: relative;
@@ -1805,7 +1861,9 @@ const PinButton = styled.button`
   font-size: 1.2em;
   cursor: pointer;
   transition: color 0.2s;
-  &:hover { color: ${({ theme }) => theme.colors.primary}; }
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
 `;
 
 const CopyButton = styled.button`
@@ -1815,7 +1873,9 @@ const CopyButton = styled.button`
   font-size: 1.2em;
   cursor: pointer;
   transition: color 0.2s;
-  &:hover { color: ${({ theme }) => theme.colors.primary}; }
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
 `;
 
 const CollapseButton = styled.button`
@@ -1826,7 +1886,9 @@ const CollapseButton = styled.button`
   cursor: pointer;
   margin-left: 0.5rem;
   transition: color 0.2s;
-  &:hover { color: ${({ theme }) => theme.colors.primary}; }
+  &:hover {
+    color: ${({ theme }) => theme.colors.primary};
+  }
 `;
 
 const WhatToCoverTabs = styled.div`
@@ -1838,14 +1900,15 @@ const WhatToCoverTabs = styled.div`
 const WhatToCoverTab = styled.button<{ active: boolean }>`
   background: none;
   border: none;
-  color: ${({ active, theme }) => active ? theme.colors.primary : '#888'};
-  font-weight: ${({ active }) => active ? 700 : 500};
+  color: ${({ active, theme }) => (active ? theme.colors.primary : '#888')};
+  font-weight: ${({ active }) => (active ? 700 : 500)};
   font-size: 1.08em;
   display: flex;
   align-items: center;
   gap: 0.5em;
   cursor: pointer;
-  border-bottom: 2.5px solid ${({ active, theme }) => active ? theme.colors.primary : 'transparent'};
+  border-bottom: 2.5px solid
+    ${({ active, theme }) => (active ? theme.colors.primary : 'transparent')};
   padding: 0.2em 0.5em 0.4em 0.5em;
   transition: color 0.2s, border-bottom 0.2s;
 `;
@@ -1860,14 +1923,16 @@ const WhatToCoverItem = styled.li<{ active?: boolean }>`
   margin-bottom: 0.7rem;
   padding-left: 2.2em;
   position: relative;
-  color: ${({ active, theme }) => active ? theme.colors.primary : theme.colors.text};
-  font-weight: ${({ active }) => active ? 600 : 400};
+  color: ${({ active, theme }) =>
+    active ? theme.colors.primary : theme.colors.text};
+  font-weight: ${({ active }) => (active ? 600 : 400)};
   display: flex;
   align-items: center;
   min-height: 2.2em;
   transition: background 0.2s, color 0.2s;
   border-radius: 6px;
-  background: ${({ active, theme }) => active ? `${theme.colors.primary}08` : 'transparent'};
+  background: ${({ active, theme }) =>
+    active ? `${theme.colors.primary}08` : 'transparent'};
   &:hover {
     background: ${({ theme }) => `${theme.colors.primary}10`};
   }
@@ -1879,7 +1944,8 @@ const WhatToCoverItem = styled.li<{ active?: boolean }>`
     width: 0.6em;
     height: 0.6em;
     border-radius: 50%;
-    background: ${({ active, theme }) => active ? theme.colors.primary : '#bbb'};
+    background: ${({ active, theme }) =>
+      active ? theme.colors.primary : '#bbb'};
     display: inline-block;
   }
 `;
@@ -1891,546 +1957,24 @@ export default function ProblemPage() {
   const [error, setError] = useState<string | null>(null);
   const [selectedProblem, setSelectedProblem] = useState(() => {
     const initialSlug = params?.slug as string;
-    return problemsList.find(p => p.slug === initialSlug) || problemsList[0];
+    return problemsList.find((p) => p.slug === initialSlug) || problemsList[0];
   });
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-  const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
+  const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>(
+    [],
+  );
   const [selectedTimeLimits, setSelectedTimeLimits] = useState<number[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const navigationTimeoutRef = useRef<NodeJS.Timeout>();
-  
+
   // Initialize state with default values
   const [coverTab, setCoverTab] = useState(45);
   const [coverCollapsed, setCoverCollapsed] = useState(false);
   const [pinned, setPinned] = useState(false);
   const [tooltipIdx, setTooltipIdx] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
-
-  // Update coverTab when selectedProblem changes
-  useEffect(() => {
-    if (selectedProblem.time_limit <= 45) setCoverTab(45);
-    else if (selectedProblem.time_limit === 60) setCoverTab(60);
-    else setCoverTab(61);
-  }, [selectedProblem.time_limit]);
-
-  const handleCopy = () => {
-    const slot = whatToCoverData.find(d => d.time === coverTab || (coverTab === 61 && d.time === 61));
-    if (!slot) return;
-    const text = slot.points.map(p => `• ${p.label}: ${p.example}`).join('\n');
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1200);
-  };
-
-  const allTags = useMemo(() => {
-    const tags = new Set<string>();
-    problemsList.forEach(problem => {
-      problem.tags.forEach(tag => tags.add(tag));
-    });
-    return Array.from(tags);
-  }, []);
-
-  const allRoles = useMemo(() => {
-    const roles = new Set<string>();
-    problemsList.forEach(problem => {
-      problem.roles?.forEach(role => roles.add(role));
-    });
-    return Array.from(roles);
-  }, []);
-
-  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
-
-  const toggleRole = (role: string) => {
-    setSelectedRoles(prev =>
-      prev.includes(role)
-        ? prev.filter(r => r !== role)
-        : [...prev, role]
-    );
-  };
-
-  const filteredProblems = useMemo(() => {
-    return problemsList.filter(problem => {
-      const matchesSearch = !searchQuery || problem.name.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesDifficulty = selectedDifficulties.length === 0 || selectedDifficulties.includes(problem.difficulty);
-      const matchesTime = selectedTimeLimits.length === 0 || selectedTimeLimits.includes(problem.time_limit);
-      const matchesTags = selectedTags.length === 0 || problem.tags.some(tag => selectedTags.includes(tag));
-      const matchesRoles = selectedRoles.length === 0 || (problem.roles && problem.roles.some(role => selectedRoles.includes(role)));
-      return matchesSearch && matchesDifficulty && matchesTime && matchesTags && matchesRoles;
-    });
-  }, [problemsList, searchQuery, selectedDifficulties, selectedTimeLimits, selectedTags, selectedRoles]);
-
-  // Update selected problem when URL changes
-  useEffect(() => {
-    const currentSlug = params?.slug as string;
-    const problem = problemsList.find(p => p.slug === currentSlug);
-    
-    if (!problem) {
-      setError('Problem not found');
-      return;
-    }
-
-    if (problem.slug !== selectedProblem.slug) {
-      setIsLoading(true);
-      setError(null);
-      
-      // Clear any existing timeout
-      if (navigationTimeoutRef.current) {
-        clearTimeout(navigationTimeoutRef.current);
-      }
-
-      // Set a timeout to handle navigation timeout
-      navigationTimeoutRef.current = setTimeout(() => {
-        setIsLoading(false);
-        setError('Navigation timeout. Please try again.');
-      }, 5000);
-
-      setSelectedProblem(problem);
-    }
-  }, [params?.slug]);
-
-  // Clear loading state when content is ready
-  useEffect(() => {
-    if (contentRef.current) {
-      setIsLoading(false);
-      if (navigationTimeoutRef.current) {
-        clearTimeout(navigationTimeoutRef.current);
-      }
-    }
-  }, [selectedProblem]);
-
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (navigationTimeoutRef.current) {
-        clearTimeout(navigationTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  // Update URL when problem changes
-  const handleProblemSelect = async (problem: typeof problemsList[0]) => {
-    try {
-      setIsLoading(true);
-      setError(null);
-      setSelectedProblem(problem);
-      await router.push(`/system-design/problems/${problem.slug}`);
-    } catch (err) {
-      setError('Failed to navigate. Please try again.');
-      setIsLoading(false);
-    }
-  };
-
-  const handleRetry = () => {
-    setError(null);
-    const currentSlug = params?.slug as string;
-    const problem = problemsList.find(p => p.slug === currentSlug);
-    if (problem) {
-      handleProblemSelect(problem);
-    } else {
-      router.push('/system-design/problems');
-    }
-  };
-
-  const difficulties = ['Easy', 'Medium', 'Hard'];
-  const timeLimits = [30, 45, 60, 75, 90, 120];
-
-  const toggleDropdown = (dropdownName: string) => {
-    setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
-  };
-
-  const toggleDifficulty = (difficulty: string) => {
-    setSelectedDifficulties(prev =>
-      prev.includes(difficulty)
-        ? prev.filter(d => d !== difficulty)
-        : [...prev, difficulty]
-    );
-  };
-
-  const toggleTimeLimit = (time: number) => {
-    setSelectedTimeLimits(prev =>
-      prev.includes(time)
-        ? prev.filter(t => t !== time)
-        : [...prev, time]
-    );
-  };
-
-  const toggleTag = (tag: string) => {
-    setSelectedTags(prev =>
-      prev.includes(tag)
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
-    );
-  };
-
-  const clearAllFilters = () => {
-    setSearchQuery('');
-    setSelectedDifficulties([]);
-    setSelectedTimeLimits([]);
-    setSelectedTags([]);
-  };
-
-  useEffect(() => {
-    if (contentRef.current) {
-      contentRef.current.scrollTop = 0;
-    }
-  }, [selectedProblem]);
-
-  // Close mobile menu when selecting a problem
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [selectedProblem]);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (!target.closest('.dropdown-filter')) {
-        setActiveDropdown(null);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
-  // Breadcrumbs
-  const breadcrumbsContent = (
-    <ol style={{ listStyle: 'none', display: 'flex', alignItems: 'center', gap: 8, margin: 0, padding: 0, fontSize: '0.9em' }}>
-      <li>
-        <Link href="/" aria-label="Home"><FaHome /></Link>
-      </li>
-      <li><FaChevronRight /><Link href="/system-design">System Design</Link></li>
-      <li><FaChevronRight /><Link href="/system-design/problems">Problems</Link></li>
-      <li><FaChevronRight /><span>{selectedProblem.name}</span></li>
-    </ol>
-  );
-
-  // Left Panel
-  const leftPanelContent = (
-    <>
-      <PanelHeader>
-        System Design Problems
-        <MobileMenuButton onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-          {isMobileMenuOpen ? '×' : '☰'}
-        </MobileMenuButton>
-      </PanelHeader>
-      <FilterSection>
-        <SearchInput>
-          <FaSearch />
-          <input
-            type="text"
-            placeholder="Search problems..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </SearchInput>
-        
-        <DropdownFilter className="dropdown-filter">
-          <DropdownButton 
-            isOpen={activeDropdown === 'difficulty'}
-            onClick={() => toggleDropdown('difficulty')}
-          >
-            Difficulty Level {selectedDifficulties.length > 0 && `(${selectedDifficulties.length})`}
-            <FaFilter />
-          </DropdownButton>
-          <DropdownContent isOpen={activeDropdown === 'difficulty'}>
-            {difficulties.map(difficulty => (
-              <DropdownOption
-                key={difficulty}
-                selected={selectedDifficulties.includes(difficulty)}
-                onClick={() => toggleDifficulty(difficulty)}
-              >
-                {difficulty}
-              </DropdownOption>
-            ))}
-          </DropdownContent>
-        </DropdownFilter>
-
-        <DropdownFilter className="dropdown-filter">
-          <DropdownButton 
-            isOpen={activeDropdown === 'timeLimit'}
-            onClick={() => toggleDropdown('timeLimit')}
-          >
-            Time Limit {selectedTimeLimits.length > 0 && `(${selectedTimeLimits.length})`}
-            <FaFilter />
-          </DropdownButton>
-          <DropdownContent isOpen={activeDropdown === 'timeLimit'}>
-            {timeLimits.map(time => (
-              <DropdownOption
-                key={time}
-                selected={selectedTimeLimits.includes(time)}
-                onClick={() => toggleTimeLimit(time)}
-              >
-                {time} min
-              </DropdownOption>
-            ))}
-          </DropdownContent>
-        </DropdownFilter>
-
-        <DropdownFilter className="dropdown-filter">
-          <DropdownButton 
-            isOpen={activeDropdown === 'tags'}
-            onClick={() => toggleDropdown('tags')}
-          >
-            Tags {selectedTags.length > 0 && `(${selectedTags.length})`}
-            <FaFilter />
-          </DropdownButton>
-          <DropdownContent isOpen={activeDropdown === 'tags'}>
-            {allTags.map(tag => (
-              <DropdownOption
-                key={tag}
-                selected={selectedTags.includes(tag)}
-                onClick={() => toggleTag(tag)}
-              >
-                {tag}
-              </DropdownOption>
-            ))}
-          </DropdownContent>
-        </DropdownFilter>
-
-        <DropdownFilter className="dropdown-filter">
-          <DropdownButton 
-            isOpen={activeDropdown === 'roles'}
-            onClick={() => toggleDropdown('roles')}
-          >
-            Role Level {selectedRoles.length > 0 && `(${selectedRoles.length})`}
-            <FaFilter />
-          </DropdownButton>
-          <DropdownContent isOpen={activeDropdown === 'roles'}>
-            {allRoles.map(role => (
-              <DropdownOption
-                key={role}
-                selected={selectedRoles.includes(role)}
-                onClick={() => toggleRole(role)}
-              >
-                {role}
-              </DropdownOption>
-            ))}
-          </DropdownContent>
-        </DropdownFilter>
-
-        {(searchQuery || selectedDifficulties.length > 0 || 
-          selectedTimeLimits.length > 0 || selectedTags.length > 0) && (
-          <ClearFilters onClick={clearAllFilters}>
-            <FaTimes />
-            Clear All Filters
-          </ClearFilters>
-        )}
-      </FilterSection>
-      <ProblemList>
-        {filteredProblems.map((problem) => (
-          <ProblemCard
-            key={problem.slug}
-            selected={selectedProblem.slug === problem.slug}
-            onClick={() => !isLoading && handleProblemSelect(problem)}
-            tabIndex={isLoading ? -1 : 0}
-            aria-current={selectedProblem.slug === problem.slug ? 'page' : undefined}
-            aria-label={problem.name}
-            isDisabled={isLoading}
-            role="button"
-            aria-disabled={isLoading}
-          >
-            <ProblemIcon>{problem.icon}</ProblemIcon>
-            <ProblemInfo>
-              <ProblemTitle>{problem.name}</ProblemTitle>
-              <BadgeRow>
-                <Badge color={problem.difficulty === 'Hard' ? '#e74c3c' : problem.difficulty === 'Medium' ? '#f39c12' : '#27ae60'}>
-                  {problem.difficulty}
-                </Badge>
-                <Badge color={'#6c63ff'}>{problem.time_limit} min</Badge>
-              </BadgeRow>
-              <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginTop: 4 }}>
-                {problem.roles && problem.roles.map(role => (
-                  <RoleTag key={role}>{role}</RoleTag>
-                ))}
-              </div>
-            </ProblemInfo>
-          </ProblemCard>
-        ))}
-      </ProblemList>
-    </>
-  );
-
-  // Right Panel
-  const rightPanelContent = (
-    <>
-      <InfoSection>
-        <InfoTitle>
-          <FaComments />
-          Problem Overview
-        </InfoTitle>
-        <CompanyList>
-          {selectedProblem.company_asked.map(company => (
-            <CompanyTag key={company}>
-              <FaBuilding />
-              {company}
-            </CompanyTag>
-          ))}
-        </CompanyList>
-        <InfoRow>
-          <FaClock />
-          Time Limit: {selectedProblem.time_limit} minutes
-        </InfoRow>
-        <InfoRow>
-          <FaBolt />
-          Difficulty: {selectedProblem.difficulty}
-        </InfoRow>
-        <InfoRow>
-          <FaList />
-          Tags:
-        </InfoRow>
-        <TagList>
-          {selectedProblem.tags.map(tag => (
-            <InfoTag key={tag}>{tag}</InfoTag>
-          ))}
-        </TagList>
-        <InfoRow>
-          <FaUserCircle />
-          Roles:
-          <span style={{ display: 'flex', gap: 4, flexWrap: 'wrap', marginLeft: 8 }}>
-            {selectedProblem.roles && selectedProblem.roles.map(role => (
-              <RoleTag key={role}>{role}</RoleTag>
-            ))}
-          </span>
-        </InfoRow>
-      </InfoSection>
-      <InfoSection>
-        <InfoTitle>
-          <FaCommentDots />
-          Problem Description
-        </InfoTitle>
-        <ProblemDescriptionContent>
-          {selectedProblem.description.split('\n').map((line, index) => {
-            const featureMatch = line.match(/^\s*(\d+)\.\s*(.+)/);
-            if (featureMatch) {
-              const [, number, content] = featureMatch;
-              const icons = [
-                FaComments, FaUsers, FaHistory, FaBell, FaKeyboard, FaCheckDouble, FaUserCircle, FaSmile
-              ];
-              const Icon = icons[parseInt(number) - 1] || FaBolt;
-              return (
-                <div key={index} className="feature-item">
-                  <span className="feature-icon"><Icon /></span>
-                  <div className="feature-content">
-                    <div className="feature-title">{content.trim()}</div>
-                  </div>
-                </div>
-              );
-            }
-            return line.trim() ? <p key={index}>{line.trim()}</p> : null;
-          })}
-        </ProblemDescriptionContent>
-      </InfoSection>
-      <InfoSection>
-        <InfoTitle>
-          <FaBolt />
-          Additional Challenge
-        </InfoTitle>
-        <div style={{ color: '#666', fontSize: '0.95em', lineHeight: 1.5 }}>
-          {selectedProblem.twist}
-        </div>
-      </InfoSection>
-    </>
-  );
-
-  // Main Panel
-  const mainPanelContent = (
-    <>
-      <Header>
-        <HeaderContent>
-          <MainTitle>{selectedProblem.name}</MainTitle>
-          <BadgeContainer>
-            <HeaderBadge color={selectedProblem.difficulty === 'Hard' ? '#e74c3c' : selectedProblem.difficulty === 'Medium' ? '#f39c12' : '#27ae60'}>
-              <FaBolt />
-              {selectedProblem.difficulty}
-            </HeaderBadge>
-            <HeaderBadge color={'#6c63ff'}>
-              <FaClock />
-              {selectedProblem.time_limit} min
-            </HeaderBadge>
-          </BadgeContainer>
-          <WhatToCoverSection>
-            <WhatToCoverTitleRow>
-              <WhatToCoverTitle>What to Cover in Your Answer</WhatToCoverTitle>
-              <PinCopyRow>
-                <PinButton aria-label={pinned ? 'Unpin checklist' : 'Pin checklist'} onClick={() => setPinned(prev => !prev)}>
-                  <FaThumbtack style={{ color: pinned ? '#6c63ff' : undefined, transform: pinned ? 'rotate(-20deg)' : undefined }} />
-                </PinButton>
-                <CopyButton aria-label="Copy checklist" onClick={handleCopy} title="Copy checklist">
-                  <FaRegCopy />{copied && <span style={{ marginLeft: 6, fontSize: '0.95em', color: '#6c63ff' }}>Copied!</span>}
-                </CopyButton>
-                <CollapseButton aria-label={coverCollapsed ? 'Expand checklist' : 'Collapse checklist'} onClick={() => setCoverCollapsed(prev => !prev)}>
-                  {coverCollapsed ? <FaChevronDown /> : <FaChevronUp />}
-                </CollapseButton>
-              </PinCopyRow>
-            </WhatToCoverTitleRow>
-            {!coverCollapsed && (
-              <>
-                <WhatToCoverTabs>
-                  {whatToCoverData.map(slot => (
-                    <WhatToCoverTab
-                      key={slot.time}
-                      active={coverTab === slot.time || (coverTab === 61 && slot.time === 61)}
-                      onClick={() => setCoverTab(slot.time)}
-                      aria-selected={coverTab === slot.time || (coverTab === 61 && slot.time === 61)}
-                    >
-                      {slot.icon} {slot.label}
-                    </WhatToCoverTab>
-                  ))}
-                </WhatToCoverTabs>
-                <WhatToCoverList>
-                  {whatToCoverData.find(slot => coverTab === slot.time || (coverTab === 61 && slot.time === 61))?.points.map((point, idx) => (
-                    <WhatToCoverItem
-                      key={point.label}
-                      active={coverTab === (selectedProblem.time_limit <= 45 ? 45 : selectedProblem.time_limit === 60 ? 60 : 61)}
-                      onMouseEnter={() => setTooltipIdx(idx)}
-                      onMouseLeave={() => setTooltipIdx(null)}
-                      tabIndex={0}
-                      aria-describedby={`cover-tip-${idx}`}
-                      style={{ position: 'relative' }}
-                    >
-                      <span style={{ marginRight: 10, fontSize: '1.1em', display: 'inline-flex', alignItems: 'center' }}>{point.icon}</span>
-                      <span style={{ fontWeight: 500 }}>{point.label}</span>
-                      <span style={{ color: '#888', marginLeft: 8, fontSize: '0.98em' }}>{point.example}</span>
-                      {tooltipIdx === idx && (
-                        <Tooltip id={`cover-tip-${idx}`}>{point.tooltip}</Tooltip>
-                      )}
-                    </WhatToCoverItem>
-                  ))}
-                </WhatToCoverList>
-              </>
-            )}
-          </WhatToCoverSection>
-        </HeaderContent>
-      </Header>
-      <ContentCard ref={contentRef}>
-        <article>
-          {selectedProblem.slug === 'chat-app' ? (
-            <ChatAppAnswer />
-          ) : (
-            <Suspense fallback={<div>Loading...</div>}>
-              <MDXContent>
-                <DynamicMDX slug={selectedProblem.slug} />
-              </MDXContent>
-            </Suspense>
-          )}
-        </article>
-      </ContentCard>
-    </>
-  );
-
-  return (
-    <SystemDesignLayout
-      leftPanel={leftPanelContent}
-      mainPanel={mainPanelContent}
-      rightPanel={rightPanelContent}
-      breadcrumbs={breadcrumbsContent}
-    />
-  );
+  const theme = useTheme();
 }
-

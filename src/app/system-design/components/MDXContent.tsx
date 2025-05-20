@@ -4,65 +4,61 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import styled from 'styled-components';
 
 const MDXContainer = styled.div`
-  h1 {
-    font-size: ${props => props.theme.typography.fontSize.xl};
-    font-weight: ${props => props.theme.typography.fontWeight.bold};
-    margin: ${props => props.theme.spacing.xl} 0 ${props => props.theme.spacing.lg};
-    color: ${props => props.theme.colors.text};
-  }
+  color: ${props => props.theme.colors.text};
+  line-height: 1.6;
+  font-size: ${props => props.theme.typography.body1.fontSize};
 
-  h2 {
-    font-size: ${props => props.theme.typography.fontSize.lg};
-    font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  h1, h2, h3, h4, h5, h6 {
+    color: ${props => props.theme.colors.text};
     margin: ${props => props.theme.spacing.lg} 0 ${props => props.theme.spacing.md};
-    color: ${props => props.theme.colors.text};
-  }
-
-  h3 {
-    font-size: ${props => props.theme.typography.fontSize.md};
-    font-weight: ${props => props.theme.typography.fontWeight.medium};
-    margin: ${props => props.theme.spacing.md} 0 ${props => props.theme.spacing.sm};
-    color: ${props => props.theme.colors.text};
+    font-weight: ${props => props.theme.typography.fontWeight.bold};
   }
 
   p {
-    margin-bottom: ${props => props.theme.spacing.md};
-    line-height: 1.6;
+    margin: ${props => props.theme.spacing.md} 0;
     color: ${props => props.theme.colors.text};
+  }
+
+  code {
+    background: ${props => props.theme.colors.code.background};
+    color: ${props => props.theme.colors.code.text};
+    padding: 0.2em 0.4em;
+    border-radius: ${props => props.theme.borderRadius.sm};
+    font-family: ${props => props.theme.fonts.code};
+    font-size: 0.9em;
+  }
+
+  pre {
+    background: ${props => props.theme.colors.code.background};
+    padding: ${props => props.theme.spacing.md};
+    border-radius: ${props => props.theme.borderRadius.md};
+    overflow-x: auto;
+    margin: ${props => props.theme.spacing.md} 0;
+    border: 1px solid ${props => props.theme.colors.border};
+  }
+
+  blockquote {
+    border-left: 4px solid ${props => props.theme.colors.primary};
+    padding: ${props => props.theme.spacing.md};
+    margin: ${props => props.theme.spacing.md} 0;
+    background: ${props => props.theme.colors.backgroundAlt};
+    color: ${props => props.theme.colors.textSecondary};
   }
 
   ul, ol {
     margin: ${props => props.theme.spacing.md} 0;
     padding-left: ${props => props.theme.spacing.xl};
-  }
-
-  li {
-    margin-bottom: ${props => props.theme.spacing.sm};
-    line-height: 1.6;
     color: ${props => props.theme.colors.text};
   }
 
-  pre {
-    background: ${props => props.theme.colors.backgroundAlt};
-    padding: ${props => props.theme.spacing.md};
-    border-radius: ${props => props.theme.borderRadius.md};
-    overflow-x: auto;
-    margin: ${props => props.theme.spacing.md} 0;
+  li {
+    margin: ${props => props.theme.spacing.xs} 0;
   }
 
-  code {
-    font-family: 'Fira Code', monospace;
-    font-size: ${props => props.theme.typography.fontSize.sm};
-    background: ${props => props.theme.colors.backgroundAlt};
-    padding: 2px 4px;
-    border-radius: ${props => props.theme.borderRadius.sm};
-  }
-
-  blockquote {
-    border-left: 4px solid ${props => props.theme.colors.primary};
-    padding-left: ${props => props.theme.spacing.md};
+  hr {
+    border: none;
+    border-top: 1px solid ${props => props.theme.colors.border};
     margin: ${props => props.theme.spacing.md} 0;
-    color: ${props => props.theme.colors.textSecondary};
   }
 
   table {
@@ -99,7 +95,7 @@ const MDXContainer = styled.div`
     transition: color 0.2s ease;
 
     &:hover {
-      color: ${props => props.theme.colors.secondary};
+      color: ${props => props.theme.colors.primaryDark};
       text-decoration: underline;
     }
   }
