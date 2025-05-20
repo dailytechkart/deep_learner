@@ -1,9 +1,9 @@
 /* Reset and base styles */
 :root {
   /* Primary colors */
-  --primary-color: #2563eb;
-  --primary-dark: #1d4ed8;
-  --primary-light: #60a5fa;
+  --primary-color: #4a90e2;
+  --primary-dark: #357abd;
+  --primary-light: #7fb1f0;
   
   /* Background colors */
   --background: #ffffff;
@@ -21,9 +21,9 @@
 
 [data-theme='dark'] {
   /* Primary colors */
-  --primary-color: #3b82f6;
-  --primary-dark: #2563eb;
-  --primary-light: #60a5fa;
+  --primary-color: #5a9de2;
+  --primary-dark: #4a8cd2;
+  --primary-light: #8fc1f2;
   
   /* Background colors */
   --background: #0f172a;
