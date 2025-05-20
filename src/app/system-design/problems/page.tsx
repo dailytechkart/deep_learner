@@ -53,6 +53,27 @@ interface Theme {
   };
 }
 
+// Color palette for tags
+const tagColors = {
+  beginner: { bg: '#E0F7FA', color: '#00796B' },
+  intermediate: { bg: '#FFF3E0', color: '#F57C00' },
+  advanced: { bg: '#FCE4EC', color: '#C2185B' },
+  technology: { bg: '#E3F2FD', color: '#1976D2' },
+  role: { bg: '#EDE7F6', color: '#512DA8' },
+  company: {
+    Google: { bg: '#E8F0FE', color: '#4285F4' },
+    Meta: { bg: '#E7F3FF', color: '#1877F2' },
+    Amazon: { bg: '#FFF7E0', color: '#FF9900' },
+    Microsoft: { bg: '#EAF1FB', color: '#0078D4' },
+    Apple: { bg: '#F5F5F7', color: '#000000' },
+    default: { bg: '#F3E5F5', color: '#8E24AA' }
+  }
+};
+
+const getCompanyTagColor = (company: string) => {
+  return tagColors.company[company as keyof typeof tagColors.company] || tagColors.company.default;
+};
+
 // Styled Components
 const Container = styled.div`
   width: 100%;
@@ -246,7 +267,44 @@ const CardFooter = styled.div`
   gap: 0.75rem;
 `;
 
-const Badge = styled.span<{ difficulty: string; theme: Theme }>`
+const Tag = styled.span<{ type?: 'beginner' | 'intermediate' | 'advanced' | 'technology' | 'role', color?: string, bgColor?: string }>`
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.875rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: ${({ type, bgColor }) =>
+    bgColor ? bgColor :
+    type === 'beginner' ? tagColors.beginner.bg :
+    type === 'intermediate' ? tagColors.intermediate.bg :
+    type === 'advanced' ? tagColors.advanced.bg :
+    type === 'technology' ? tagColors.technology.bg :
+    type === 'role' ? tagColors.role.bg :
+    tagColors.beginner.bg};
+  color: ${({ type, color }) =>
+    color ? color :
+    type === 'beginner' ? tagColors.beginner.color :
+    type === 'intermediate' ? tagColors.intermediate.color :
+    type === 'advanced' ? tagColors.advanced.color :
+    type === 'technology' ? tagColors.technology.color :
+    type === 'role' ? tagColors.role.color :
+    tagColors.beginner.color};
+  transition: all 0.2s ease;
+  margin-right: 0.25rem;
+  margin-bottom: 0.25rem;
+  &:hover {
+    transform: translateY(-1px) scale(1.05);
+    filter: brightness(1.08);
+  }
+`;
+
+const CompanyTag = styled(Tag)<{ company: string }>`
+  background: ${({ company }) => getCompanyTagColor(company).bg};
+  color: ${({ company }) => getCompanyTagColor(company).color};
+`;
+
+const Badge = styled.span<{ difficulty: string }>`
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -254,30 +312,16 @@ const Badge = styled.span<{ difficulty: string; theme: Theme }>`
   border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 500;
-  background: ${props => {
-    switch (props.difficulty) {
-      case 'Easy':
-        return props.theme.colors.success + '20';
-      case 'Medium':
-        return props.theme.colors.warning + '20';
-      case 'Hard':
-        return props.theme.colors.error + '20';
-      default:
-        return props.theme.colors.background.hover;
-    }
-  }};
-  color: ${props => {
-    switch (props.difficulty) {
-      case 'Easy':
-        return props.theme.colors.success;
-      case 'Medium':
-        return props.theme.colors.warning;
-      case 'Hard':
-        return props.theme.colors.error;
-      default:
-        return props.theme.colors.text.primary;
-    }
-  }};
+  background: ${({ difficulty }) =>
+    difficulty === 'Easy' ? tagColors.beginner.bg :
+    difficulty === 'Medium' ? tagColors.intermediate.bg :
+    difficulty === 'Hard' ? tagColors.advanced.bg :
+    tagColors.beginner.bg};
+  color: ${({ difficulty }) =>
+    difficulty === 'Easy' ? tagColors.beginner.color :
+    difficulty === 'Medium' ? tagColors.intermediate.color :
+    difficulty === 'Hard' ? tagColors.advanced.color :
+    tagColors.beginner.color};
 `;
 
 const TagList = styled.div`
@@ -285,32 +329,6 @@ const TagList = styled.div`
   flex-wrap: wrap;
   gap: 0.5rem;
   overflow: hidden;
-`;
-
-const Tag = styled.span<{ theme: Theme }>`
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  background: ${props => props.theme.colors.background.hover};
-  color: ${props => props.theme.colors.text.secondary};
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 150px;
-
-  svg {
-    font-size: 0.9rem;
-    flex-shrink: 0;
-  }
-`;
-
-const CompanyTag = styled(Tag)<{ theme: Theme }>`
-  background: ${props => props.theme.colors.primary}10;
-  color: ${props => props.theme.colors.primary};
-  font-weight: 500;
 `;
 
 const TimeEstimate = styled.div<{ theme: Theme }>`
@@ -568,7 +586,7 @@ export default function SystemDesignProblemsPage() {
                   {problem.companies && (
                     <TagList>
                       {problem.companies.map(company => (
-                        <CompanyTag key={company}>
+                        <CompanyTag key={company} company={company}>
                           {getCompanyIcon(company)}
                           {company}
                         </CompanyTag>

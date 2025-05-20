@@ -266,46 +266,62 @@ const TagGroup = styled.div`
   margin-top: 1.5rem;
 `;
 
-const Tag = styled.span<{ type?: 'beginner' | 'intermediate' | 'advanced' | 'technology' }>`
+// Color palette for tags
+const tagColors = {
+  beginner: { bg: '#E0F7FA', color: '#00796B' },
+  intermediate: { bg: '#FFF3E0', color: '#F57C00' },
+  advanced: { bg: '#FCE4EC', color: '#C2185B' },
+  technology: { bg: '#E3F2FD', color: '#1976D2' },
+  role: { bg: '#EDE7F6', color: '#512DA8' },
+  company: {
+    Google: { bg: '#E8F0FE', color: '#4285F4' },
+    Meta: { bg: '#E7F3FF', color: '#1877F2' },
+    Amazon: { bg: '#FFF7E0', color: '#FF9900' },
+    Microsoft: { bg: '#EAF1FB', color: '#0078D4' },
+    Apple: { bg: '#F5F5F7', color: '#000000' },
+    default: { bg: '#F3E5F5', color: '#8E24AA' }
+  }
+};
+
+const getCompanyTagColor = (company: string) => {
+  return tagColors.company[company as keyof typeof tagColors.company] || tagColors.company.default;
+};
+
+const Tag = styled.span<{ type?: 'beginner' | 'intermediate' | 'advanced' | 'technology' | 'role', color?: string, bgColor?: string }>`
   display: inline-flex;
   align-items: center;
   padding: 0.375rem 0.875rem;
   border-radius: ${props => props.theme.borderRadius.full};
   font-size: 0.75rem;
   font-weight: 600;
-  background: ${props => {
-    switch (props.type) {
-      case 'beginner':
-        return 'rgba(34, 197, 94, 0.15)';
-      case 'intermediate':
-        return 'rgba(234, 179, 8, 0.15)';
-      case 'advanced':
-        return 'rgba(239, 68, 68, 0.15)';
-      case 'technology':
-        return 'rgba(59, 130, 246, 0.15)';
-      default:
-        return props.theme.colors.primary + '15';
-    }
-  }};
-  color: ${props => {
-    switch (props.type) {
-      case 'beginner':
-        return '#22c55e';
-      case 'intermediate':
-        return '#eab308';
-      case 'advanced':
-        return '#ef4444';
-      case 'technology':
-        return '#3b82f6';
-      default:
-        return props.theme.colors.primary;
-    }
-  }};
+  background: ${({ type, bgColor }) =>
+    bgColor ? bgColor :
+    type === 'beginner' ? tagColors.beginner.bg :
+    type === 'intermediate' ? tagColors.intermediate.bg :
+    type === 'advanced' ? tagColors.advanced.bg :
+    type === 'technology' ? tagColors.technology.bg :
+    type === 'role' ? tagColors.role.bg :
+    tagColors.beginner.bg};
+  color: ${({ type, color }) =>
+    color ? color :
+    type === 'beginner' ? tagColors.beginner.color :
+    type === 'intermediate' ? tagColors.intermediate.color :
+    type === 'advanced' ? tagColors.advanced.color :
+    type === 'technology' ? tagColors.technology.color :
+    type === 'role' ? tagColors.role.color :
+    tagColors.beginner.color};
   transition: all 0.2s ease;
-
+  margin-right: 0.25rem;
+  margin-bottom: 0.25rem;
   &:hover {
-    transform: translateY(-1px);
+    transform: translateY(-1px) scale(1.05);
+    filter: brightness(1.08);
   }
+`;
+
+const CompanyTag = styled(Tag)<{ company: string }>`
+  background: ${({ company }) => getCompanyTagColor(company).bg};
+  color: ${({ company }) => getCompanyTagColor(company).color};
 `;
 
 const TechIcon = styled.div`

@@ -262,49 +262,58 @@ const TagGroup = styled.div`
   margin-top: 1.5rem;
 `;
 
-const Tag = styled.span<{ type?: 'beginner' | 'intermediate' | 'advanced' | 'technology' | 'role' }>`
+// Color palette for tags
+const tagColors = {
+  beginner: { bg: '#E0F7FA', color: '#00796B' },
+  intermediate: { bg: '#FFF3E0', color: '#F57C00' },
+  advanced: { bg: '#FCE4EC', color: '#C2185B' },
+  technology: { bg: '#E3F2FD', color: '#1976D2' },
+  role: { bg: '#EDE7F6', color: '#512DA8' },
+  company: {
+    Google: { bg: '#E8F0FE', color: '#4285F4' },
+    Meta: { bg: '#E7F3FF', color: '#1877F2' },
+    Amazon: { bg: '#FFF7E0', color: '#FF9900' },
+    Microsoft: { bg: '#EAF1FB', color: '#0078D4' },
+    Apple: { bg: '#F5F5F7', color: '#000000' },
+    default: { bg: '#F3E5F5', color: '#8E24AA' }
+  }
+};
+
+// Helper for company tag colors
+const getCompanyTagColor = (company: string) => {
+  return tagColors.company[company as keyof typeof tagColors.company] || tagColors.company.default;
+};
+
+// Update Tag styled component
+const Tag = styled.span<{ type?: 'beginner' | 'intermediate' | 'advanced' | 'technology' | 'role', color?: string, bgColor?: string }>`
   display: inline-flex;
   align-items: center;
   padding: 0.375rem 0.875rem;
   border-radius: ${props => props.theme.borderRadius.full};
   font-size: 0.75rem;
   font-weight: 600;
-  background: ${props => {
-    switch (props.type) {
-      case 'beginner':
-        return 'rgba(34, 197, 94, 0.15)';
-      case 'intermediate':
-        return 'rgba(234, 179, 8, 0.15)';
-      case 'advanced':
-        return 'rgba(239, 68, 68, 0.15)';
-      case 'technology':
-        return 'rgba(59, 130, 246, 0.15)';
-      case 'role':
-        return 'rgba(139, 92, 246, 0.15)';
-      default:
-        return props.theme.colors.primary + '15';
-    }
-  }};
-  color: ${props => {
-    switch (props.type) {
-      case 'beginner':
-        return '#22c55e';
-      case 'intermediate':
-        return '#eab308';
-      case 'advanced':
-        return '#ef4444';
-      case 'technology':
-        return '#3b82f6';
-      case 'role':
-        return '#8b5cf6';
-      default:
-        return props.theme.colors.primary;
-    }
-  }};
+  background: ${({ type, bgColor }) =>
+    bgColor ? bgColor :
+    type === 'beginner' ? tagColors.beginner.bg :
+    type === 'intermediate' ? tagColors.intermediate.bg :
+    type === 'advanced' ? tagColors.advanced.bg :
+    type === 'technology' ? tagColors.technology.bg :
+    type === 'role' ? tagColors.role.bg :
+    tagColors.beginner.bg};
+  color: ${({ type, color }) =>
+    color ? color :
+    type === 'beginner' ? tagColors.beginner.color :
+    type === 'intermediate' ? tagColors.intermediate.color :
+    type === 'advanced' ? tagColors.advanced.color :
+    type === 'technology' ? tagColors.technology.color :
+    type === 'role' ? tagColors.role.color :
+    tagColors.beginner.color};
   transition: all 0.2s ease;
-
+  margin-right: 0.25rem;
+  margin-bottom: 0.25rem;
   &:hover {
-    transform: translateY(-1px);
+    transform: translateY(-1px) scale(1.05);
+    filter: brightness(1.08);
   }
 `;
 
@@ -665,6 +674,7 @@ const FilterCount = styled.span`
   font-weight: 600;
 `;
 
+// Update CompanyTag styled component
 const CompanyTag = styled.div<{ company: string }>`
   display: inline-flex;
   align-items: center;
@@ -673,38 +683,10 @@ const CompanyTag = styled.div<{ company: string }>`
   border-radius: ${props => props.theme.borderRadius.full};
   font-size: 0.75rem;
   font-weight: 600;
-  background: ${props => {
-    switch (props.company.toLowerCase()) {
-      case 'google':
-        return 'rgba(66, 133, 244, 0.15)';
-      case 'meta':
-        return 'rgba(24, 119, 242, 0.15)';
-      case 'amazon':
-        return 'rgba(255, 153, 0, 0.15)';
-      case 'microsoft':
-        return 'rgba(0, 120, 212, 0.15)';
-      case 'apple':
-        return 'rgba(0, 0, 0, 0.15)';
-      default:
-        return props.theme.colors.primary + '15';
-    }
-  }};
-  color: ${props => {
-    switch (props.company.toLowerCase()) {
-      case 'google':
-        return '#4285F4';
-      case 'meta':
-        return '#1877F2';
-      case 'amazon':
-        return '#FF9900';
-      case 'microsoft':
-        return '#0078D4';
-      case 'apple':
-        return '#000000';
-      default:
-        return props.theme.colors.primary;
-    }
-  }};
+  background: ${({ company }) => getCompanyTagColor(company).bg};
+  color: ${({ company }) => getCompanyTagColor(company).color};
+  margin-right: 0.25rem;
+  margin-bottom: 0.25rem;
 `;
 
 const RoleSpecificSection = styled.div`
@@ -773,6 +755,7 @@ const RoleGroup = styled.div`
   gap: 0.5rem;
 `;
 
+// Update RoleTag styled component
 const RoleTag = styled.div`
   display: inline-flex;
   align-items: center;
@@ -781,8 +764,10 @@ const RoleTag = styled.div`
   border-radius: ${props => props.theme.borderRadius.full};
   font-size: 0.75rem;
   font-weight: 600;
-  background: ${props => props.theme.colors.secondary + '15'};
-  color: ${props => props.theme.colors.secondary};
+  background: ${tagColors.role.bg};
+  color: ${tagColors.role.color};
+  margin-right: 0.25rem;
+  margin-bottom: 0.25rem;
 `;
 
 interface InterviewTopic {
@@ -842,7 +827,52 @@ const interviewTopics: InterviewTopic[] = [
     technologies: ['HTML', 'CSS', 'JavaScript'],
     roles: ['Frontend Developer', 'Web Developer']
   },
-  // ... rest of the interview topics ...
+  {
+    id: 'react-advanced',
+    title: 'Advanced React',
+    description: 'Deep dive into React patterns, hooks, context, and performance optimization.',
+    icon: <FaReact />,
+    tags: ['intermediate', 'advanced'],
+    technologies: ['React', 'TypeScript', 'Redux'],
+    roles: ['React Developer', 'Frontend Developer']
+  },
+  {
+    id: 'css-architecture',
+    title: 'CSS Architecture',
+    description: 'Learn BEM, CSS-in-JS, and scalable CSS patterns for large projects.',
+    icon: <FaCode />,
+    tags: ['intermediate'],
+    technologies: ['CSS', 'Sass', 'Styled Components'],
+    roles: ['Frontend Developer', 'UI Engineer']
+  },
+  {
+    id: 'performance',
+    title: 'Web Performance',
+    description: 'Optimize web apps for speed: lazy loading, code splitting, and Lighthouse.',
+    icon: <FaRocket />,
+    tags: ['advanced'],
+    technologies: ['JavaScript', 'React', 'Webpack'],
+    roles: ['Frontend Developer', 'Performance Engineer']
+  },
+  {
+    id: 'testing',
+    title: 'Testing & QA',
+    description: 'Unit, integration, and E2E testing with Jest, RTL, and Cypress.',
+    icon: <FaShieldAlt />,
+    tags: ['intermediate'],
+    technologies: ['Jest', 'Cypress', 'React Testing Library'],
+    roles: ['Frontend Developer', 'QA Engineer']
+  },
+  {
+    id: 'system-design',
+    title: 'System Design',
+    description: 'Design scalable frontend systems, micro-frontends, and SSR.',
+    icon: <FaServer />,
+    tags: ['advanced'],
+    technologies: ['React', 'Next.js', 'Micro-frontends'],
+    roles: ['Frontend Architect', 'Senior Developer']
+  },
+  // ...add more as needed...
 ];
 
 const dsaCategories: Category[] = [
@@ -912,7 +942,67 @@ const machineCodingProblems: MachineCodingProblem[] = [
       }
     ]
   },
-  // ... rest of the machine coding problems ...
+  {
+    id: 'autocomplete',
+    title: 'Search Autocomplete',
+    description: 'Build a search input with autocomplete functionality and debouncing.',
+    difficulty: 'medium',
+    category: 'javascript',
+    timeLimit: '30 mins',
+    techStack: ['JavaScript', 'HTML', 'CSS'],
+    companies: ['Google', 'Microsoft', 'Apple'],
+    roleSpecific: [
+      {
+        role: 'Frontend Developer',
+        questions: [
+          'How would you implement debouncing?',
+          'What\'s your approach to accessibility?',
+          'How would you handle API rate limiting?'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'kanban-board',
+    title: 'Kanban Board',
+    description: 'Build a drag-and-drop Kanban board with columns and cards.',
+    difficulty: 'hard',
+    category: 'react',
+    timeLimit: '90 mins',
+    techStack: ['React', 'TypeScript', 'HTML', 'CSS'],
+    companies: ['Atlassian', 'Meta'],
+    roleSpecific: [
+      {
+        role: 'Frontend Developer',
+        questions: [
+          'How would you implement drag-and-drop?',
+          'How would you persist board state?',
+          'How would you optimize for large boards?'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'file-uploader',
+    title: 'File Uploader',
+    description: 'Create a file uploader with progress bar and error handling.',
+    difficulty: 'medium',
+    category: 'javascript',
+    timeLimit: '40 mins',
+    techStack: ['JavaScript', 'HTML', 'CSS'],
+    companies: ['Dropbox', 'Google'],
+    roleSpecific: [
+      {
+        role: 'Frontend Developer',
+        questions: [
+          'How would you show upload progress?',
+          'How would you handle file validation?',
+          'How would you handle upload errors?'
+        ]
+      }
+    ]
+  },
+  // ...add more as needed...
 ];
 
 const frontendQuizzes: QuizProblem[] = [
@@ -935,7 +1025,64 @@ const frontendQuizzes: QuizProblem[] = [
       }
     ]
   },
-  // ... rest of the frontend quizzes ...
+  {
+    id: 'css-layout',
+    title: 'CSS Layout Quiz',
+    description: 'Challenge yourself with questions about CSS Grid, Flexbox, and modern layout techniques.',
+    category: 'css',
+    questions: 15,
+    timeLimit: '10 mins',
+    companies: ['Apple', 'Google', 'Meta'],
+    roleSpecific: [
+      {
+        role: 'Frontend Developer',
+        questions: [
+          'When would you choose Grid over Flexbox?',
+          'How would you create a responsive layout?',
+          'What\'s your approach to CSS architecture?'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'js-advanced',
+    title: 'Advanced JavaScript Quiz',
+    description: 'Closures, async/await, event loop, and tricky JS interview questions.',
+    category: 'javascript',
+    questions: 18,
+    timeLimit: '12 mins',
+    companies: ['Google', 'Amazon'],
+    roleSpecific: [
+      {
+        role: 'Frontend Developer',
+        questions: [
+          'Explain event delegation in JS.',
+          'What is a closure and where would you use it?',
+          'How does the event loop work?'
+        ]
+      }
+    ]
+  },
+  {
+    id: 'typescript-basics',
+    title: 'TypeScript Basics Quiz',
+    description: 'Types, interfaces, generics, and type guards in TypeScript.',
+    category: 'typescript',
+    questions: 14,
+    timeLimit: '10 mins',
+    companies: ['Microsoft', 'Meta'],
+    roleSpecific: [
+      {
+        role: 'Frontend Developer',
+        questions: [
+          'What is the difference between interface and type?',
+          'How do you use generics in TS?',
+          'What are type guards?'
+        ]
+      }
+    ]
+  },
+  // ...add more as needed...
 ];
 
 const InterviewPage: React.FC = () => {
@@ -1290,118 +1437,6 @@ const InterviewPage: React.FC = () => {
   return (
     <MainLayout>
       <PageContainer>
-        <FilterSidebar>
-          <FilterTitle>
-            <FaFilter />
-            Filters
-            {getActiveFiltersCount() > 0 && (
-              <FilterCount>{getActiveFiltersCount()}</FilterCount>
-            )}
-          </FilterTitle>
-
-          <FilterPresets>
-            <PresetButton onClick={() => applyPreset('beginner')}>
-              <span>Beginner Friendly</span>
-              <FaPlus size={14} />
-            </PresetButton>
-            <PresetButton onClick={() => applyPreset('intermediate')}>
-              <span>Intermediate Level</span>
-              <FaPlus size={14} />
-            </PresetButton>
-            <PresetButton onClick={() => applyPreset('advanced')}>
-              <span>Advanced Topics</span>
-              <FaPlus size={14} />
-            </PresetButton>
-            <PresetButton onClick={() => applyPreset('frontend')}>
-              <span>Frontend Focus</span>
-              <FaPlus size={14} />
-            </PresetButton>
-            <PresetButton onClick={() => applyPreset('react')}>
-              <span>React Specialized</span>
-              <FaPlus size={14} />
-            </PresetButton>
-          </FilterPresets>
-          
-          <FilterSection>
-            <FilterSectionHeader onClick={() => toggleFilterSection('difficulty')}>
-              <FilterSectionTitle>Difficulty Level</FilterSectionTitle>
-              {openFilterSections.difficulty ? <FaMinus size={14} /> : <FaPlus size={14} />}
-            </FilterSectionHeader>
-            <FilterSectionContent isOpen={openFilterSections.difficulty}>
-              <FilterChipGroup>
-                <FilterChip 
-                  active={selectedDifficulty.includes('beginner')}
-                  onClick={() => toggleDifficulty('beginner')}
-                >
-                  <span>Beginner</span>
-                </FilterChip>
-                <FilterChip 
-                  active={selectedDifficulty.includes('intermediate')}
-                  onClick={() => toggleDifficulty('intermediate')}
-                >
-                  <span>Intermediate</span>
-                </FilterChip>
-                <FilterChip 
-                  active={selectedDifficulty.includes('advanced')}
-                  onClick={() => toggleDifficulty('advanced')}
-                >
-                  <span>Advanced</span>
-                </FilterChip>
-              </FilterChipGroup>
-            </FilterSectionContent>
-          </FilterSection>
-
-          <FilterSection>
-            <FilterSectionHeader onClick={() => toggleFilterSection('technologies')}>
-              <FilterSectionTitle>Technologies</FilterSectionTitle>
-              {openFilterSections.technologies ? <FaMinus size={14} /> : <FaPlus size={14} />}
-            </FilterSectionHeader>
-            <FilterSectionContent isOpen={openFilterSections.technologies}>
-              <FilterChipGroup>
-                {allTechnologies.map(tech => (
-                  <FilterChip 
-                    key={tech}
-                    active={selectedTechnologies.includes(tech)}
-                    onClick={() => toggleTechnology(tech)}
-                  >
-                    <span>{tech}</span>
-                  </FilterChip>
-                ))}
-              </FilterChipGroup>
-            </FilterSectionContent>
-          </FilterSection>
-
-          <FilterSection>
-            <FilterSectionHeader onClick={() => toggleFilterSection('roles')}>
-              <FilterSectionTitle>Frontend Roles</FilterSectionTitle>
-              {openFilterSections.roles ? <FaMinus size={14} /> : <FaPlus size={14} />}
-            </FilterSectionHeader>
-            <FilterSectionContent isOpen={openFilterSections.roles}>
-              <FilterChipGroup>
-                {allRoles.map(role => (
-                  <FilterChip 
-                    key={role}
-                    active={selectedRoles.includes(role)}
-                    onClick={() => toggleRole(role)}
-                  >
-                    <span>{role}</span>
-                  </FilterChip>
-                ))}
-              </FilterChipGroup>
-            </FilterSectionContent>
-          </FilterSection>
-
-          {(selectedDifficulty.length > 0 || selectedTechnologies.length > 0 || selectedRoles.length > 0) && (
-            <ClearFiltersButton onClick={() => {
-              setSelectedDifficulty([]);
-              setSelectedTechnologies([]);
-              setSelectedRoles([]);
-            }}>
-              Clear All Filters
-            </ClearFiltersButton>
-          )}
-        </FilterSidebar>
-
         <ContentSection>
           <Header>
             <Title>Frontend Interview Prep</Title>
