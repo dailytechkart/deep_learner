@@ -238,6 +238,54 @@ export default function Profile() {
     timezone: 'UTC+5:30',
     language: 'English',
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('/api/user/profile');
+        if (!response.ok) {
+          throw new Error('Failed to fetch profile data');
+        }
+        const data = await response.json();
+        setProfileData(prev => ({
+          ...prev,
+          ...data,
+        }));
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+        console.error('Error fetching profile data:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (user) {
+      fetchProfileData();
+    }
+  }, [user]);
+
+  if (loading) {
+    return (
+      <ProfileContainer>
+        <ProfileCard>
+          <div>Loading profile data...</div>
+        </ProfileCard>
+      </ProfileContainer>
+    );
+  }
+
+  if (error) {
+    return (
+      <ProfileContainer>
+        <ProfileCard>
+          <div>Error: {error}</div>
+        </ProfileCard>
+      </ProfileContainer>
+    );
+  }
 
   const userStats = {
     completedTopics: 24,

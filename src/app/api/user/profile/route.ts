@@ -3,7 +3,9 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/lib/next-auth';
 import { getFirestore } from 'firebase-admin/firestore';
 
+// Force dynamic route handling
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 const db = getFirestore();
 
@@ -50,6 +52,7 @@ export async function GET() {
     }));
 
     return NextResponse.json({
+      ...userData,
       achievements,
       activities,
     });
