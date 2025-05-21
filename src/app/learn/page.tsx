@@ -25,6 +25,7 @@ import {
   FaCode,
   FaSpinner,
   FaLock,
+  FaTimes,
 } from 'react-icons/fa';
 import {
   SiJavascript,
@@ -75,6 +76,17 @@ const MainContent = styled.main`
   padding: 2rem;
   display: flex;
   gap: 2rem;
+
+  @media (max-width: 1024px) {
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+  }
 `;
 
 const FilterSidebar = styled.aside`
@@ -89,6 +101,15 @@ const FilterSidebar = styled.aside`
   box-shadow: ${props => props.theme.shadows.md};
   border: 1px solid ${props => props.theme.colors.border};
   transition: all 0.3s ease;
+
+  @media (max-width: 1024px) {
+    width: 280px;
+    padding: ${props => props.theme.spacing.md};
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 
   &:hover {
     box-shadow: ${props => props.theme.shadows.lg};
@@ -219,7 +240,39 @@ const CustomCheckbox = styled.span`
   }
 `;
 
-const FilterButton = styled.button<{ active?: boolean }>`
+const FilterButton = styled.button`
+  display: none;
+  align-items: center;
+  gap: ${props => props.theme.spacing.sm};
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+  background: ${props => props.theme.colors.background};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.md};
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: fixed;
+  bottom: 88px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  box-shadow: ${props => props.theme.shadows.md};
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+
+  &:hover {
+    background: ${props => props.theme.colors.backgroundAlt};
+  }
+`;
+
+interface FilterOptionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  active?: boolean;
+}
+
+const FilterOptionButton = styled.button<FilterOptionButtonProps>`
   padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
   border-radius: ${props => props.theme.borderRadius.md};
   border: 1px solid ${props => (props.active ? props.theme.colors.primary : 'transparent')};
@@ -309,6 +362,7 @@ const FilterSearchIcon = styled(FaSearch)`
 
 const CoursesSection = styled.div`
   flex: 1;
+  min-width: 0;
 `;
 
 const HeaderSection = styled.div`
@@ -321,6 +375,10 @@ const Title = styled.h1`
   color: ${props => props.theme.colors.text};
   margin-bottom: 1rem;
   transition: all ${props => props.theme.transitions.default};
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize['2xl']};
+  }
 `;
 
 const Description = styled.p`
@@ -329,6 +387,11 @@ const Description = styled.p`
   margin-bottom: 2rem;
   max-width: 800px;
   transition: all ${props => props.theme.transitions.default};
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize.md};
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const SearchBar = styled.div`
@@ -340,6 +403,10 @@ const SearchBar = styled.div`
   box-shadow: ${props => props.theme.shadows.sm};
   margin-bottom: ${props => props.theme.spacing.lg};
   border: 1px solid ${props => props.theme.colors.border};
+
+  @media (max-width: 768px) {
+    margin-bottom: ${props => props.theme.spacing.md};
+  }
 `;
 
 const SearchInput = styled.input`
@@ -365,6 +432,12 @@ const StatsBar = styled.div`
   display: flex;
   gap: ${props => props.theme.spacing.lg};
   margin-bottom: ${props => props.theme.spacing.xl};
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    gap: ${props => props.theme.spacing.md};
+    margin-bottom: ${props => props.theme.spacing.lg};
+  }
 `;
 
 const StatItem = styled.div`
@@ -397,6 +470,16 @@ const CourseRow = styled.div<{ isLocked?: boolean }>`
   border: 1px solid ${props => props.theme.colors.border};
   position: relative;
   overflow: hidden;
+
+  @media (max-width: 1024px) {
+    padding: ${props => props.theme.spacing.md};
+    gap: ${props => props.theme.spacing.md};
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: ${props => props.theme.spacing.sm};
+  }
 
   &:hover {
     transform: ${props => (props.isLocked ? 'none' : 'translateY(-2px)')};
@@ -440,6 +523,16 @@ const CourseImage = styled.div<{ category: string; isLocked?: boolean }>`
   justify-content: center;
   filter: ${props => (props.isLocked ? 'grayscale(0.5)' : 'none')};
   transition: all 0.3s ease;
+
+  @media (max-width: 1024px) {
+    width: 180px;
+    height: 108px;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 160px;
+  }
 `;
 
 const IconWrapper = styled.div`
@@ -465,6 +558,7 @@ const CourseContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: ${props => props.theme.spacing.sm};
+  min-width: 0;
 `;
 
 const CourseHeader = styled.div`
@@ -472,6 +566,11 @@ const CourseHeader = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   gap: ${props => props.theme.spacing.md};
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: ${props => props.theme.spacing.sm};
+  }
 `;
 
 const CourseTitle = styled.h3`
@@ -479,6 +578,11 @@ const CourseTitle = styled.h3`
   font-weight: ${props => props.theme.typography.fontWeight.semibold};
   color: ${props => props.theme.colors.text};
   margin: 0;
+  word-break: break-word;
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize.md};
+  }
 `;
 
 const CourseDescription = styled.p`
@@ -490,12 +594,18 @@ const CourseDescription = styled.p`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  word-break: break-word;
 `;
 
 const CourseMeta = styled.div`
   display: flex;
   gap: ${props => props.theme.spacing.md};
   margin-top: auto;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    gap: ${props => props.theme.spacing.sm};
+  }
 `;
 
 const MetaItem = styled.div`
@@ -565,6 +675,10 @@ const BadgeContainer = styled.div`
   display: flex;
   gap: ${props => props.theme.spacing.sm};
   flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const RoleBadge = styled.span<{ role: string }>`
@@ -958,6 +1072,69 @@ const MadeWithLove = styled.div`
   }
 `;
 
+const BottomSheet = styled.div<{ isOpen: boolean }>`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: ${props => props.theme.colors.background};
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: ${props => props.theme.spacing.lg};
+  z-index: 1001;
+  transform: translateY(${props => (props.isOpen ? '0' : '100%')});
+  transition: transform 0.3s ease;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: ${props => props.theme.shadows.lg};
+  border: 1px solid ${props => props.theme.colors.border};
+`;
+
+const BottomSheetHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: ${props => props.theme.spacing.lg};
+  padding-bottom: ${props => props.theme.spacing.md};
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+`;
+
+const BottomSheetTitle = styled.h3`
+  font-size: ${props => props.theme.typography.fontSize.xl};
+  font-weight: ${props => props.theme.typography.fontWeight.bold};
+  color: ${props => props.theme.colors.text};
+  margin: 0;
+`;
+
+const CloseButton = styled.button`
+  background: none;
+  border: none;
+  color: ${props => props.theme.colors.textSecondary};
+  cursor: pointer;
+  padding: ${props => props.theme.spacing.sm};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: ${props => props.theme.colors.text};
+  }
+`;
+
+const Overlay = styled.div<{ isOpen: boolean }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  opacity: ${props => (props.isOpen ? 1 : 0)};
+  visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
+  transition: all 0.3s ease;
+`;
+
 const LearnPage: React.FC = () => {
   const { isDarkMode } = useTheme();
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -970,6 +1147,7 @@ const LearnPage: React.FC = () => {
   const [isRoleOpen, setIsRoleOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [notifyStates, setNotifyStates] = useState<{ [key: string]: boolean }>({});
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
   // Get unique categories, difficulties, and roles
   const categories = ['all', ...new Set(learningTopics.map(topic => topic.category))];
@@ -1162,7 +1340,7 @@ const LearnPage: React.FC = () => {
                   </LoadingSpinner>
                 ) : filteredCategories.length > 0 ? (
                   filteredCategories.map(category => (
-                    <FilterButton
+                    <FilterOptionButton
                       key={category}
                       active={selectedCategories.includes(category)}
                       onClick={() =>
@@ -1190,7 +1368,7 @@ const LearnPage: React.FC = () => {
                           ? learningTopics.length
                           : learningTopics.filter(t => t.category === category).length}
                       </FilterCount>
-                    </FilterButton>
+                    </FilterOptionButton>
                   ))
                 ) : (
                   renderFilterNoResults()
@@ -1213,7 +1391,7 @@ const LearnPage: React.FC = () => {
                   </LoadingSpinner>
                 ) : filteredDifficulties.length > 0 ? (
                   filteredDifficulties.map(difficulty => (
-                    <FilterButton
+                    <FilterOptionButton
                       key={difficulty}
                       active={selectedDifficulties.includes(difficulty)}
                       onClick={() =>
@@ -1241,7 +1419,7 @@ const LearnPage: React.FC = () => {
                           ? learningTopics.length
                           : learningTopics.filter(t => t.difficulty === difficulty).length}
                       </FilterCount>
-                    </FilterButton>
+                    </FilterOptionButton>
                   ))
                 ) : (
                   renderFilterNoResults()
@@ -1261,7 +1439,7 @@ const LearnPage: React.FC = () => {
                   </LoadingSpinner>
                 ) : filteredRoles.length > 0 ? (
                   filteredRoles.map(role => (
-                    <FilterButton
+                    <FilterOptionButton
                       key={role}
                       active={selectedRoles.includes(role)}
                       onClick={() =>
@@ -1284,7 +1462,7 @@ const LearnPage: React.FC = () => {
                           ? learningTopics.length
                           : learningTopics.filter(t => t.role === role).length}
                       </FilterCount>
-                    </FilterButton>
+                    </FilterOptionButton>
                   ))
                 ) : (
                   renderFilterNoResults()
@@ -1398,6 +1576,186 @@ const LearnPage: React.FC = () => {
             )}
           </CoursesSection>
         </MainContent>
+
+        <FilterButton onClick={() => setIsBottomSheetOpen(true)}>
+          <FaFilter />
+          Filters
+          <span>
+            ({selectedCategories.length + selectedDifficulties.length + selectedRoles.length})
+          </span>
+        </FilterButton>
+
+        <Overlay isOpen={isBottomSheetOpen} onClick={() => setIsBottomSheetOpen(false)} />
+        <BottomSheet isOpen={isBottomSheetOpen}>
+          <BottomSheetHeader>
+            <BottomSheetTitle>Filters</BottomSheetTitle>
+            <CloseButton onClick={() => setIsBottomSheetOpen(false)}>
+              <FaTimes />
+            </CloseButton>
+          </BottomSheetHeader>
+
+          <FilterActions>
+            <span>
+              Selected:{' '}
+              {selectedCategories.length + selectedDifficulties.length + selectedRoles.length}
+            </span>
+            <ClearAllButton onClick={clearAllFilters}>Clear All</ClearAllButton>
+          </FilterActions>
+
+          <FilterSearch>
+            <FilterSearchIcon />
+            <FilterSearchInput
+              placeholder="Search filters..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+            />
+          </FilterSearch>
+
+          <FilterSection>
+            <SectionTitle
+              isOpen={isCategoryOpen}
+              onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+            >
+              Categories
+              <FaChevronDown />
+            </SectionTitle>
+            <FilterGroup isOpen={isCategoryOpen}>
+              {isLoading ? (
+                <LoadingSpinner>
+                  <FaSpinner />
+                </LoadingSpinner>
+              ) : filteredCategories.length > 0 ? (
+                filteredCategories.map(category => (
+                  <FilterOptionButton
+                    key={category}
+                    active={selectedCategories.includes(category)}
+                    onClick={() =>
+                      handleFilterChange(
+                        category,
+                        selectedCategories,
+                        setSelectedCategories,
+                        'category'
+                      )
+                    }
+                  >
+                    <FilterButtonContent>
+                      <FilterCheckboxWrapper>
+                        <FilterCheckbox
+                          type="checkbox"
+                          checked={selectedCategories.includes(category)}
+                          onChange={() => {}}
+                        />
+                        <CustomCheckbox />
+                      </FilterCheckboxWrapper>
+                      {category === 'all' ? 'All Categories' : category}
+                    </FilterButtonContent>
+                    <FilterCount>
+                      {category === 'all'
+                        ? learningTopics.length
+                        : learningTopics.filter(t => t.category === category).length}
+                    </FilterCount>
+                  </FilterOptionButton>
+                ))
+              ) : (
+                renderFilterNoResults()
+              )}
+            </FilterGroup>
+          </FilterSection>
+
+          <FilterSection>
+            <SectionTitle
+              isOpen={isDifficultyOpen}
+              onClick={() => setIsDifficultyOpen(!isDifficultyOpen)}
+            >
+              Difficulty
+              <FaChevronDown />
+            </SectionTitle>
+            <FilterGroup isOpen={isDifficultyOpen}>
+              {isLoading ? (
+                <LoadingSpinner>
+                  <FaSpinner />
+                </LoadingSpinner>
+              ) : filteredDifficulties.length > 0 ? (
+                filteredDifficulties.map(difficulty => (
+                  <FilterOptionButton
+                    key={difficulty}
+                    active={selectedDifficulties.includes(difficulty)}
+                    onClick={() =>
+                      handleFilterChange(
+                        difficulty,
+                        selectedDifficulties,
+                        setSelectedDifficulties,
+                        'difficulty'
+                      )
+                    }
+                  >
+                    <FilterButtonContent>
+                      <FilterCheckboxWrapper>
+                        <FilterCheckbox
+                          type="checkbox"
+                          checked={selectedDifficulties.includes(difficulty)}
+                          onChange={() => {}}
+                        />
+                        <CustomCheckbox />
+                      </FilterCheckboxWrapper>
+                      {difficulty === 'all' ? 'All Levels' : difficulty}
+                    </FilterButtonContent>
+                    <FilterCount>
+                      {difficulty === 'all'
+                        ? learningTopics.length
+                        : learningTopics.filter(t => t.difficulty === difficulty).length}
+                    </FilterCount>
+                  </FilterOptionButton>
+                ))
+              ) : (
+                renderFilterNoResults()
+              )}
+            </FilterGroup>
+          </FilterSection>
+
+          <FilterSection>
+            <SectionTitle isOpen={isRoleOpen} onClick={() => setIsRoleOpen(!isRoleOpen)}>
+              Role
+              <FaChevronDown />
+            </SectionTitle>
+            <FilterGroup isOpen={isRoleOpen}>
+              {isLoading ? (
+                <LoadingSpinner>
+                  <FaSpinner />
+                </LoadingSpinner>
+              ) : filteredRoles.length > 0 ? (
+                filteredRoles.map(role => (
+                  <FilterOptionButton
+                    key={role}
+                    active={selectedRoles.includes(role)}
+                    onClick={() =>
+                      handleFilterChange(role, selectedRoles, setSelectedRoles, 'role')
+                    }
+                  >
+                    <FilterButtonContent>
+                      <FilterCheckboxWrapper>
+                        <FilterCheckbox
+                          type="checkbox"
+                          checked={selectedRoles.includes(role)}
+                          onChange={() => {}}
+                        />
+                        <CustomCheckbox />
+                      </FilterCheckboxWrapper>
+                      {role === 'all' ? 'All Roles' : role}
+                    </FilterButtonContent>
+                    <FilterCount>
+                      {role === 'all'
+                        ? learningTopics.length
+                        : learningTopics.filter(t => t.role === role).length}
+                    </FilterCount>
+                  </FilterOptionButton>
+                ))
+              ) : (
+                renderFilterNoResults()
+              )}
+            </FilterGroup>
+          </FilterSection>
+        </BottomSheet>
       </PageContainer>
     </MainLayout>
   );

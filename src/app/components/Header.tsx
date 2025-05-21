@@ -275,7 +275,6 @@ const MobileMenuButton = styled.button`
   transition: all 0.2s ease;
   width: 40px;
   height: 40px;
-  display: flex;
   align-items: center;
   justify-content: center;
   touch-action: manipulation;
