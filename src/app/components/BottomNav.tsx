@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaBook, FaUsers, FaChartLine, FaUser, FaCode } from 'react-icons/fa';
+import { FaHome, FaBook, FaUser, FaClipboardList } from 'react-icons/fa';
 
 const BottomNavContainer = styled.nav`
   position: fixed;
@@ -105,10 +105,10 @@ const BottomNav = () => {
   const pathname = usePathname();
 
   const navItems = [
+    { href: '/dashboard', icon: <FaHome />, label: 'Home' },
     { href: '/learn', icon: <FaBook />, label: 'Learn' },
-    { href: '/practice', icon: <FaCode />, label: 'Practice' },
-    { href: '/community', icon: <FaUsers />, label: 'Community' },
-    { href: '/profile', icon: <FaUser />, label: 'Profile' },
+    { href: '/interview', icon: <FaClipboardList />, label: 'Interview' },
+    { href: '/account', icon: <FaUser />, label: 'Account' },
   ];
 
   return (

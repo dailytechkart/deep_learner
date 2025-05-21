@@ -13,6 +13,7 @@ import {
   FaSignOutAlt,
   FaBars,
   FaTimes,
+  FaCode,
 } from 'react-icons/fa';
 import { useTheme } from '@/app/context/ThemeContext';
 import { useAuth } from '@/app/context/AuthContext';
@@ -424,23 +425,29 @@ const Header: React.FC = () => {
               </NavIcon>
               Learn
             </NavLink>
-            <NavLink href="/projects">
+            <NavLink href="/practice">
               <NavIcon>
-                <FaRocket />
+                <FaCode />
               </NavIcon>
-              Projects
+              Practice
             </NavLink>
-            <NavLink href="/community">
+            <NavLink href="/system-design">
               <NavIcon>
                 <FaShieldAlt />
               </NavIcon>
-              Community
+              System Design
             </NavLink>
-            <NavLink href="/progress">
+            <NavLink href="/interview">
               <NavIcon>
                 <FaChartLine />
               </NavIcon>
-              Progress
+              Interview
+            </NavLink>
+            <NavLink href="/roadmap">
+              <NavIcon>
+                <FaRocket />
+              </NavIcon>
+              Roadmap
             </NavLink>
           </Nav>
 
