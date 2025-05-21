@@ -647,6 +647,53 @@ export const NotificationButton = styled.button`
   }
 `;
 
+export const HeroSection = styled.section`
+  min-height: 100vh;
+  padding: 8rem 2rem 4rem;
+  background: linear-gradient(
+    135deg,
+    ${props => props.theme.colors.backgroundAlt} 0%,
+    ${props => props.theme.colors.background} 100%
+  );
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  margin-top: 64px;
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 6rem 1rem 3rem;
+    margin-top: 56px;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: radial-gradient(
+      circle at 50% 50%,
+      ${props => props.theme.colors.primary}15 0%,
+      transparent 50%
+    );
+    animation: pulse 8s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+    50% {
+      transform: scale(1.2);
+      opacity: 0.8;
+    }
+  }
+`;
+
 export const HeroContent = styled.div`
   flex: 1;
   max-width: 600px;

@@ -8,6 +8,11 @@ const Footer = styled.footer`
   border-top: 1px solid ${props => props.theme.colors.border};
   padding: 4rem 2rem;
   margin-top: 4rem;
+
+  @media (max-width: 768px) {
+    padding: 3rem 1rem;
+    margin-top: 3rem;
+  }
 `;
 
 const FooterContent = styled.div`
@@ -17,8 +22,9 @@ const FooterContent = styled.div`
   grid-template-columns: repeat(4, 1fr);
   gap: 3rem;
 
-  @media (max-width: 1024px) {
+  @media (max-width: 1200px) {
     grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
   }
 
   @media (max-width: 768px) {
@@ -31,6 +37,11 @@ const FooterSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
+
+  @media (max-width: 768px) {
+    text-align: center;
+    align-items: center;
+  }
 `;
 
 const FooterTitle = styled.h3`
@@ -38,6 +49,10 @@ const FooterTitle = styled.h3`
   font-weight: ${props => props.theme.typography.fontWeight.bold};
   color: ${props => props.theme.colors.text};
   margin: 0;
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize.md};
+  }
 `;
 
 const FooterLink = styled.a`
@@ -48,6 +63,10 @@ const FooterLink = styled.a`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
 
   &:hover {
     color: ${props => props.theme.colors.primary};
@@ -60,18 +79,28 @@ const FooterText = styled.p`
   font-size: ${props => props.theme.typography.fontSize.sm};
   line-height: 1.6;
   margin: 0;
+  max-width: 300px;
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 `;
 
 const SocialLinks = styled.div`
   display: flex;
   gap: 1rem;
   margin-top: 1rem;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
 `;
 
 const SocialLink = styled.a`
   color: ${props => props.theme.colors.textSecondary};
   font-size: 1.25rem;
   transition: all 0.2s ease;
+  padding: 0.5rem;
 
   &:hover {
     color: ${props => props.theme.colors.primary};
@@ -93,6 +122,8 @@ const FooterBottom = styled.div`
   @media (max-width: 768px) {
     flex-direction: column;
     text-align: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
   }
 `;
 
@@ -108,6 +139,10 @@ const MadeWithLove = styled.div`
   gap: 0.5rem;
   color: ${props => props.theme.colors.textSecondary};
   font-size: ${props => props.theme.typography.fontSize.sm};
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
 
   svg {
     color: #e25555;

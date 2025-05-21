@@ -20,6 +20,10 @@ const LayoutContainer = styled.div`
   color: ${props => props.theme.colors.text};
   transition: all ${props => props.theme.transitions.default};
   padding-top: 24px; // Push content below the fixed promo strip
+
+  @media (max-width: 768px) {
+    padding-top: 20px;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -27,10 +31,21 @@ const ContentWrapper = styled.div`
   margin-top: 64px; // Height of the header
   transition: all ${props => props.theme.transitions.default};
   background: ${props => props.theme.colors.background};
+  padding: 0 2rem;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    margin-top: 56px;
+    padding: 0 1rem;
+  }
 `;
 
 const Main = styled.main`
   flex: 1;
+  width: 100%;
 `;
 
 const PromoStripText = styled.span`
@@ -48,6 +63,12 @@ const PromoStripText = styled.span`
   align-items: center;
   justify-content: center;
   text-shadow: 0 1px 2px #fff8, 0 0px 1px #ffd54f99;
+  padding: 0 1rem;
+
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+    padding: 0 0.5rem;
+  }
 `;
 
 const PromoStrip = styled.div`
@@ -61,6 +82,10 @@ const PromoStrip = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 480px) {
+    height: 20px;
+  }
 `;
 
 const PromoIcon = styled.span`

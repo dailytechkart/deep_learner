@@ -35,6 +35,8 @@ import {
 } from './components/StyledComponents';
 import { PageLayout } from './components/PageLayout';
 import { MainLayout } from '@/components/MainLayout';
+import Image from 'next/image';
+import { FaBook } from 'react-icons/fa';
 
 // Add new styled components for the companies section
 const CompaniesSection = styled.div`
@@ -42,6 +44,10 @@ const CompaniesSection = styled.div`
   background: ${props => props.theme.colors.backgroundAlt};
   overflow: hidden;
   position: relative;
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 2rem 0;
+  }
 `;
 
 const CompaniesTitle = styled.h3`
@@ -50,6 +56,11 @@ const CompaniesTitle = styled.h3`
   font-size: 1.25rem;
   margin-bottom: 2rem;
   font-weight: 500;
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const CompaniesCarousel = styled.div`
@@ -57,6 +68,10 @@ const CompaniesCarousel = styled.div`
   gap: 4rem;
   animation: scroll 40s linear infinite;
   width: max-content;
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    gap: 2rem;
+  }
 
   @keyframes scroll {
     0% {
@@ -75,6 +90,11 @@ const CompanyLogo = styled.div`
   align-items: center;
   justify-content: center;
   transition: transform 0.3s ease;
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    min-width: 120px;
+    height: 30px;
+  }
 
   &:hover {
     transform: scale(1.1);
@@ -103,6 +123,10 @@ const LandingHeader = styled.header`
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     padding: 1rem;
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 0.75rem;
   }
 `;
 
@@ -180,6 +204,10 @@ const HeroSection = styled.section`
   display: flex;
   align-items: center;
 
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 6rem 1rem 3rem;
+  }
+
   &::before {
     content: '';
     position: absolute;
@@ -221,6 +249,11 @@ const HeroContent = styled.div`
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
     text-align: center;
+    gap: 2rem;
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    gap: 1.5rem;
   }
 `;
 
@@ -241,6 +274,11 @@ const HeroTitle = styled.h1`
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
     font-size: 3rem;
   }
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const HeroSubtitle = styled.p`
@@ -248,7 +286,15 @@ const HeroSubtitle = styled.p`
   color: ${props => props.theme.colors.textSecondary};
   margin-bottom: 2rem;
   line-height: 1.6;
-  font-weight: 500;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    font-size: 1.25rem;
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 1.125rem;
+    margin-bottom: 1.5rem;
+  }
 `;
 
 const HeroDescription = styled.p`
@@ -261,7 +307,17 @@ const HeroDescription = styled.p`
 const HeroImage = styled.div`
   position: relative;
   width: 100%;
-  height: 500px;
+  height: 100%;
+  min-height: 400px;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    min-height: 300px;
+    order: -1;
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    min-height: 250px;
+  }
 
   img {
     width: 100%;
@@ -319,6 +375,10 @@ const BackgroundPattern = styled.div`
   background-size: 40px 40px;
   opacity: 0.5;
   pointer-events: none;
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    background-size: 20px 20px;
+  }
 `;
 
 const MobileMenuButton = styled.button`
@@ -335,7 +395,7 @@ const MobileMenuButton = styled.button`
   }
 `;
 
-const MobileMenu = styled.div<{ $isOpen: boolean }>`
+const MobileMenu = styled.div<{ isOpen: boolean }>`
   display: none;
   position: fixed;
   top: 64px;
@@ -343,11 +403,15 @@ const MobileMenu = styled.div<{ $isOpen: boolean }>`
   right: 0;
   background: ${props => props.theme.colors.background};
   padding: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 999;
+  box-shadow: 0 4px 6px ${props => props.theme.colors.border};
+  z-index: 1000;
+  transform: translateY(${props => (props.isOpen ? '0' : '-100%')});
+  transition: transform 0.3s ease;
 
   @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    display: ${props => (props.$isOpen ? 'block' : 'none')};
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 `;
 
@@ -360,10 +424,16 @@ const MobileNavLink = styled.a`
   padding: 1rem;
   border-radius: 8px;
   transition: all 0.2s ease;
+  text-align: center;
 
   &:hover {
     background: ${props => props.theme.colors.backgroundAlt};
     color: ${props => props.theme.colors.primary};
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    font-size: 1rem;
+    padding: 0.875rem;
   }
 `;
 
@@ -374,285 +444,213 @@ const MobileActions = styled.div`
   padding: 1rem;
   border-top: 1px solid ${props => props.theme.colors.border};
   margin-top: 1rem;
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    gap: 0.75rem;
+    padding: 0.875rem;
+  }
 `;
 
 const StyledSection = styled(Section)`
   background: ${props => props.theme.colors.backgroundAlt};
   padding: 4rem 2rem;
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 3rem 1rem;
+  }
 `;
 
 const GradientSection = styled(Section)`
   text-align: center;
   padding: 4rem 2rem;
   background: ${props => props.theme.colors.gradient1};
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: 3rem 1rem;
+  }
 `;
 
 const StyledCTAButton = styled(CTAButton)`
   background: ${props => props.theme.colors.background};
   color: ${props => props.theme.colors.primary};
+  min-width: 200px;
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    width: 100%;
+    min-width: unset;
+  }
+`;
+
+const ActionButton = styled.a<{ primary?: boolean; fullWidth?: boolean }>`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: ${props => props.theme.borderRadius.md};
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  background: ${props => (props.primary ? props.theme.colors.primary : 'transparent')};
+  color: ${props => (props.primary ? '#fff' : props.theme.colors.text)};
+  border: 1px solid
+    ${props => (props.primary ? props.theme.colors.primary : props.theme.colors.border)};
+  width: ${props => (props.fullWidth ? '100%' : 'auto')};
+
+  &:hover {
+    background: ${props =>
+      props.primary ? props.theme.colors.primaryDark : props.theme.colors.backgroundAlt};
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
+const HeroActions = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    justify-content: center;
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
 `;
 
 export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <MainLayout showBreadcrumb={false}>
-      <LandingContainer>
-        <Header />
-
-        <HeroSection aria-labelledby="hero-title">
-          <HeroContent>
-            <div>
-              <HeroTitle id="hero-title">Master Modern Frontend Development</HeroTitle>
-              <HeroSubtitle>
-                Learn by building real-world projects with expert guidance
-              </HeroSubtitle>
-              <HeroDescription>
-                Join thousands of developers who are learning modern frontend development through
-                our comprehensive curriculum, hands-on projects, and expert mentorship.
-              </HeroDescription>
-              <div role="group" aria-label="Call to action buttons">
-                <Link href="/signup" passHref>
-                  <LandingNavLink>Get Started</LandingNavLink>
-                </Link>
-                <Link href="/learn" passHref>
-                  <LandingNavLink>Explore Courses</LandingNavLink>
-                </Link>
-              </div>
-            </div>
-            <HeroImage>
-              <img
-                src="/hero-image.png"
-                alt="Frontend development illustration showing code and design elements"
-                width="600"
-                height="500"
-                loading="eager"
-              />
-            </HeroImage>
-          </HeroContent>
-        </HeroSection>
-
-        <StatsSection aria-labelledby="stats-title">
-          <SectionHeader>
-            <SectionTitle id="stats-title">Our Impact</SectionTitle>
-          </SectionHeader>
-          <div role="list">
-            <StatCard role="listitem">
-              <StatNumber>10,000+</StatNumber>
-              <StatLabel>Active Students</StatLabel>
-            </StatCard>
-            <StatCard role="listitem">
-              <StatNumber>50+</StatNumber>
-              <StatLabel>Interactive Courses</StatLabel>
-            </StatCard>
-            <StatCard role="listitem">
-              <StatNumber>100+</StatNumber>
-              <StatLabel>Real Projects</StatLabel>
-            </StatCard>
-            <StatCard role="listitem">
-              <StatNumber>24/7</StatNumber>
-              <StatLabel>Community Support</StatLabel>
-            </StatCard>
-          </div>
-        </StatsSection>
-
-        <CompaniesSection aria-labelledby="companies-title">
-          <CompaniesTitle id="companies-title">Trusted by developers at</CompaniesTitle>
-          <div style={{ overflow: 'hidden', position: 'relative' }}>
-            <CompaniesCarousel role="list" aria-label="Company logos">
-              <CompanyLogo role="listitem">
-                <img src="/companies/google.svg" alt="Google" width="160" height="40" />
-              </CompanyLogo>
-              <CompanyLogo role="listitem">
-                <img src="/companies/meta.svg" alt="Meta" width="160" height="40" />
-              </CompanyLogo>
-              <CompanyLogo role="listitem">
-                <img src="/companies/amazon.svg" alt="Amazon" width="160" height="40" />
-              </CompanyLogo>
-              <CompanyLogo role="listitem">
-                <img src="/companies/microsoft.svg" alt="Microsoft" width="160" height="40" />
-              </CompanyLogo>
-              <CompanyLogo role="listitem">
-                <img src="/companies/apple.svg" alt="Apple" width="160" height="40" />
-              </CompanyLogo>
-              <CompanyLogo role="listitem">
-                <img src="/companies/netflix.svg" alt="Netflix" width="160" height="40" />
-              </CompanyLogo>
-              <CompanyLogo role="listitem">
-                <img src="/companies/spotify.svg" alt="Spotify" width="160" height="40" />
-              </CompanyLogo>
-              <CompanyLogo role="listitem">
-                <img src="/companies/airbnb.svg" alt="Airbnb" width="160" height="40" />
-              </CompanyLogo>
-              <CompanyLogo role="listitem">
-                <img src="/companies/flipkart.svg" alt="Flipkart" width="160" height="40" />
-              </CompanyLogo>
-              <CompanyLogo role="listitem">
-                <img src="/companies/meesho.svg" alt="Meesho" width="160" height="40" />
-              </CompanyLogo>
-              <CompanyLogo role="listitem">
-                <img src="/companies/myntra.svg" alt="Myntra" width="160" height="40" />
-              </CompanyLogo>
-              <CompanyLogo role="listitem">
-                <img src="/companies/razorpay.svg" alt="Razorpay" width="160" height="40" />
-              </CompanyLogo>
-            </CompaniesCarousel>
-          </div>
-        </CompaniesSection>
-
-        <FeaturesSection id="features" aria-labelledby="features-title">
-          <SectionHeader>
-            <SectionTitle id="features-title">Why Choose Frontendly?</SectionTitle>
-          </SectionHeader>
-          <FeatureGrid role="list">
-            <FeatureCard role="listitem">
-              <FeatureIcon aria-hidden="true">📚</FeatureIcon>
-              <FeatureTitle>Comprehensive Curriculum</FeatureTitle>
-              <FeatureDescription>
-                Learn everything from HTML basics to advanced React patterns with our structured
-                learning path.
-              </FeatureDescription>
-            </FeatureCard>
-            <FeatureCard role="listitem">
-              <FeatureIcon aria-hidden="true">🚀</FeatureIcon>
-              <FeatureTitle>Project-Based Learning</FeatureTitle>
-              <FeatureDescription>
-                Build real-world projects that showcase your skills and enhance your portfolio
-              </FeatureDescription>
-            </FeatureCard>
-            <FeatureCard role="listitem">
-              <FeatureIcon aria-hidden="true">👥</FeatureIcon>
-              <FeatureTitle>Expert Community</FeatureTitle>
-              <FeatureDescription>
-                Connect with fellow learners and industry experts for guidance and support
-              </FeatureDescription>
-            </FeatureCard>
-          </FeatureGrid>
-        </FeaturesSection>
-
-        <StyledSection>
-          <SectionHeader>
-            <SectionTitle>Learning Paths</SectionTitle>
-            <HeroDescription style={{ maxWidth: '600px', margin: '1rem auto 2rem' }}>
-              Follow our structured learning paths to master frontend development step by step
-            </HeroDescription>
-          </SectionHeader>
-          <SectionContent>
-            <RoadmapSection id="roadmap" aria-labelledby="roadmap-title">
-              <SectionHeader>
-                <SectionTitle id="roadmap-title">Your Learning Journey</SectionTitle>
-              </SectionHeader>
-              <RoadmapTimeline role="list">
-                <RoadmapItem role="listitem">
-                  <RoadmapContent>
-                    <RoadmapTitle>Foundation</RoadmapTitle>
-                    <RoadmapDescription>
-                      Master the basics of HTML, CSS, and JavaScript with hands-on projects.
-                    </RoadmapDescription>
-                  </RoadmapContent>
-                </RoadmapItem>
-                <RoadmapItem role="listitem">
-                  <RoadmapContent>
-                    <RoadmapTitle>JavaScript Mastery</RoadmapTitle>
-                    <RoadmapDescription>
-                      Dive deep into modern JavaScript. Learn ES6+, async programming, and advanced
-                      concepts.
-                    </RoadmapDescription>
-                  </RoadmapContent>
-                </RoadmapItem>
-                <RoadmapItem role="listitem">
-                  <RoadmapContent>
-                    <RoadmapTitle>React Development</RoadmapTitle>
-                    <RoadmapDescription>
-                      Build modern web applications with React. Learn hooks, state management, and
-                      best practices.
-                    </RoadmapDescription>
-                  </RoadmapContent>
-                </RoadmapItem>
-                <RoadmapItem role="listitem">
-                  <RoadmapContent>
-                    <RoadmapTitle>TypeScript Integration</RoadmapTitle>
-                    <RoadmapDescription>
-                      Add type safety to your JavaScript code. Learn TypeScript fundamentals and
-                      integration with React.
-                    </RoadmapDescription>
-                  </RoadmapContent>
-                </RoadmapItem>
-              </RoadmapTimeline>
-            </RoadmapSection>
-          </SectionContent>
-        </StyledSection>
-
-        <TestimonialsSection id="testimonials" aria-labelledby="testimonials-title">
-          <SectionHeader>
-            <SectionTitle id="testimonials-title">What Our Students Say</SectionTitle>
-          </SectionHeader>
-          <div role="list">
-            <TestimonialCard role="listitem">
-              <TestimonialContent>
-                &ldquo;Frontendly helped me transition from a non-tech background to a frontend
-                developer role in just 6 months.&rdquo;
-              </TestimonialContent>
-              <TestimonialAuthor>
-                <TestimonialAvatar
-                  src="/avatars/user1.jpg"
-                  alt="Sarah Johnson"
-                  width="48"
-                  height="48"
-                />
-                <div>
-                  <strong>Sarah Johnson</strong>
-                  <TestimonialRole>Frontend Developer at TechCorp</TestimonialRole>
-                </div>
-              </TestimonialAuthor>
-            </TestimonialCard>
-            <TestimonialCard role="listitem">
-              <TestimonialContent>
-                &ldquo;The curriculum is well-structured and up-to-date. I learned more in 3 months
-                here than I did in a year of self-study.&rdquo;
-              </TestimonialContent>
-              <TestimonialAuthor>
-                <TestimonialAvatar
-                  src="/avatars/user2.jpg"
-                  alt="Mike Chen"
-                  width="48"
-                  height="48"
-                />
-                <div>
-                  <strong>Mike Chen</strong>
-                  <TestimonialRole>React Developer at StartupX</TestimonialRole>
-                </div>
-              </TestimonialAuthor>
-            </TestimonialCard>
-          </div>
-        </TestimonialsSection>
-
-        <GradientSection>
-          <SectionHeader>
-            <SectionTitle style={{ color: 'white' }}>Ready to Start Your Journey?</SectionTitle>
-            <HeroDescription style={{ maxWidth: '600px', margin: '0 auto 2rem', color: 'white' }}>
-              Join thousands of developers who have transformed their careers with Frontendly.
-            </HeroDescription>
-          </SectionHeader>
-          <SectionContent>
-            <div
-              style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}
-            >
+    <MainLayout>
+      <HeroSection>
+        <HeroContent>
+          <div>
+            <HeroTitle>Master Deep Learning with Interactive Projects</HeroTitle>
+            <HeroSubtitle>
+              Learn deep learning through hands-on projects, real-world applications, and expert
+              guidance. Start your journey to becoming an AI expert today.
+            </HeroSubtitle>
+            <HeroActions>
               <Link href="/signup" passHref>
-                <StyledCTAButton href="/signup">Get Started Free</StyledCTAButton>
+                <ActionButton primary>Get Started Free</ActionButton>
               </Link>
-              <Link href="/learn" passHref>
-                <CTAButton
-                  href="/learn"
-                  style={{ background: 'transparent', border: '2px solid white', color: 'white' }}
-                >
-                  Explore Courses
-                </CTAButton>
+              <Link href="#features" passHref>
+                <ActionButton>Learn More</ActionButton>
               </Link>
-            </div>
-          </SectionContent>
-        </GradientSection>
-      </LandingContainer>
+            </HeroActions>
+          </div>
+          <HeroImage>
+            <Image
+              src="/hero-image.png"
+              alt="Deep Learning Platform"
+              layout="fill"
+              objectFit="contain"
+              priority
+            />
+          </HeroImage>
+        </HeroContent>
+      </HeroSection>
+
+      <StatsSection aria-labelledby="stats-title">
+        <SectionHeader>
+          <SectionTitle id="stats-title">Our Impact</SectionTitle>
+        </SectionHeader>
+        <div role="list">
+          <StatCard role="listitem">
+            <StatNumber>24/7</StatNumber>
+            <StatLabel>Community Support</StatLabel>
+          </StatCard>
+        </div>
+      </StatsSection>
+
+      <FeaturesSection id="features" aria-labelledby="features-title">
+        <SectionHeader>
+          <SectionTitle id="features-title">Why Choose Us</SectionTitle>
+        </SectionHeader>
+        <FeatureGrid>
+          <FeatureCard>
+            <FeatureIcon>
+              <FaBook />
+            </FeatureIcon>
+            <FeatureTitle>Comprehensive Curriculum</FeatureTitle>
+            <FeatureDescription>
+              From basics to advanced concepts, our curriculum covers everything you need to master
+              deep learning.
+            </FeatureDescription>
+          </FeatureCard>
+          {/* Add more feature cards as needed */}
+        </FeatureGrid>
+      </FeaturesSection>
+
+      <RoadmapSection id="roadmap" aria-labelledby="roadmap-title">
+        <SectionHeader>
+          <SectionTitle id="roadmap-title">Your Learning Journey</SectionTitle>
+        </SectionHeader>
+        <RoadmapTimeline role="list">
+          <RoadmapItem role="listitem">
+            <RoadmapContent>
+              <RoadmapTitle>Foundation</RoadmapTitle>
+              <RoadmapDescription>
+                Master the basics of deep learning with hands-on projects.
+              </RoadmapDescription>
+            </RoadmapContent>
+          </RoadmapItem>
+          {/* Add more roadmap items as needed */}
+        </RoadmapTimeline>
+      </RoadmapSection>
+
+      <TestimonialsSection id="testimonials" aria-labelledby="testimonials-title">
+        <SectionHeader>
+          <SectionTitle id="testimonials-title">Success Stories</SectionTitle>
+        </SectionHeader>
+        <div role="list">
+          <TestimonialCard role="listitem">
+            <TestimonialContent>
+              &ldquo;The curriculum is well-structured and up-to-date. I learned more in 3 months
+              here than I did in a year of self-study.&rdquo;
+            </TestimonialContent>
+            <TestimonialAuthor>
+              <TestimonialAvatar src="/avatars/user2.jpg" alt="Mike Chen" width="48" height="48" />
+              <div>
+                <strong>Mike Chen</strong>
+                <TestimonialRole>AI Engineer at TechCorp</TestimonialRole>
+              </div>
+            </TestimonialAuthor>
+          </TestimonialCard>
+        </div>
+      </TestimonialsSection>
+
+      <GradientSection>
+        <SectionHeader>
+          <SectionTitle style={{ color: 'white' }}>Ready to Start Your Journey?</SectionTitle>
+          <HeroDescription style={{ maxWidth: '600px', margin: '0 auto 2rem', color: 'white' }}>
+            Join thousands of developers who have transformed their careers with DeepLearner.
+          </HeroDescription>
+        </SectionHeader>
+        <SectionContent>
+          <div
+            style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}
+          >
+            <Link href="/signup" passHref>
+              <StyledCTAButton href="/signup">Get Started Free</StyledCTAButton>
+            </Link>
+            <Link href="/learn" passHref>
+              <CTAButton
+                href="/learn"
+                style={{ background: 'transparent', border: '2px solid white', color: 'white' }}
+              >
+                Explore Courses
+              </CTAButton>
+            </Link>
+          </div>
+        </SectionContent>
+      </GradientSection>
     </MainLayout>
   );
 }
