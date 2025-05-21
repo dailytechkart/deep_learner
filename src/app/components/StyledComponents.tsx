@@ -1618,6 +1618,19 @@ export const AuthForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: ${props => props.theme.spacing.md};
+  width: 100%;
+`;
+
+export const AuthLink = styled.a`
+  color: ${props => props.theme.colors.primary};
+  text-decoration: none;
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: ${props => props.theme.colors.primaryDark};
+    text-decoration: underline;
+  }
 `;
 
 export const ErrorMessage = styled.div`

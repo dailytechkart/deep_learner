@@ -3,6 +3,8 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/lib/next-auth';
 import { getFirestore } from 'firebase-admin/firestore';
 
+export const dynamic = 'force-dynamic';
+
 const db = getFirestore();
 
 export async function GET() {
