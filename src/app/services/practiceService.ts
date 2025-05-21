@@ -1,7 +1,24 @@
-import { getFirestore, collection, query, where, getDocs, addDoc, updateDoc, doc, getDoc, Timestamp } from 'firebase/firestore';
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+  updateDoc,
+  doc,
+  getDoc,
+  Timestamp,
+} from 'firebase/firestore';
 import { getApp } from 'firebase/app';
 import { getAuthToken } from '../lib/client-auth';
-import { PracticeQuestion, UserPracticeProgress, UserPracticeStats, QuestionCategory, QuestionDifficulty } from '../types/practice';
+import {
+  PracticeQuestion,
+  UserPracticeProgress,
+  UserPracticeStats,
+  QuestionCategory,
+  QuestionDifficulty,
+} from '../types/practice';
 
 async function handleFirebaseError<T>(operation: () => Promise<T>): Promise<T> {
   try {
@@ -22,12 +39,15 @@ export const practiceService = {
       const db = getFirestore(getApp());
       const questionsRef = collection(db, 'questions');
       const snapshot = await getDocs(questionsRef);
-      return snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        createdAt: doc.data().createdAt.toDate(),
-        updatedAt: doc.data().updatedAt.toDate()
-      } as PracticeQuestion));
+      return snapshot.docs.map(
+        doc =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+            createdAt: doc.data().createdAt.toDate(),
+            updatedAt: doc.data().updatedAt.toDate(),
+          }) as PracticeQuestion
+      );
     });
   },
 
@@ -37,16 +57,21 @@ export const practiceService = {
       const questionsRef = collection(db, 'questions');
       const q = query(questionsRef, where('category', '==', category));
       const snapshot = await getDocs(q);
-      return snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-        createdAt: doc.data().createdAt.toDate(),
-        updatedAt: doc.data().updatedAt.toDate()
-      } as PracticeQuestion));
+      return snapshot.docs.map(
+        doc =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+            createdAt: doc.data().createdAt.toDate(),
+            updatedAt: doc.data().updatedAt.toDate(),
+          }) as PracticeQuestion
+      );
     });
   },
 
-  async createQuestion(question: Omit<PracticeQuestion, 'id' | 'createdAt' | 'updatedAt'>): Promise<string> {
+  async createQuestion(
+    question: Omit<PracticeQuestion, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<string> {
     return handleFirebaseError(async () => {
       const db = getFirestore(getApp());
       const questionsRef = collection(db, 'questions');
@@ -54,7 +79,7 @@ export const practiceService = {
       const docRef = await addDoc(questionsRef, {
         ...question,
         createdAt: now,
-        updatedAt: now
+        updatedAt: now,
       });
       return docRef.id;
     });
@@ -70,7 +95,7 @@ export const practiceService = {
       const db = getFirestore(getApp());
       const questionRef = doc(db, 'questions', questionId);
       const questionDoc = await getDoc(questionRef);
-      
+
       if (!questionDoc.exists()) {
         throw new Error('Question not found');
       }
@@ -89,7 +114,7 @@ export const practiceService = {
           isCorrect: isCorrect || progress.isCorrect,
           selectedOption,
           attemptedAt: now,
-          timeSpent
+          timeSpent,
         });
       } else {
         await addDoc(collection(db, 'users', userId, 'progress'), {
@@ -98,13 +123,13 @@ export const practiceService = {
           isCorrect,
           selectedOption,
           attemptedAt: now,
-          timeSpent
+          timeSpent,
         });
       }
 
       return {
         isCorrect,
-        points: isCorrect ? question.points : 0
+        points: isCorrect ? question.points : 0,
       };
     });
   },
@@ -114,7 +139,7 @@ export const practiceService = {
       const db = getFirestore(getApp());
       const progressRef = collection(db, 'users', userId, 'progress');
       const snapshot = await getDocs(progressRef);
-      
+
       const stats: { [key: string]: UserPracticeStats } = {};
 
       const docs = snapshot.docs;
@@ -122,7 +147,7 @@ export const practiceService = {
         const progress = docSnapshot.data() as UserPracticeProgress;
         const questionRef = doc(db, 'questions', progress.questionId);
         const questionDoc = await getDoc(questionRef);
-        
+
         if (questionDoc.exists()) {
           const question = questionDoc.data() as PracticeQuestion;
           const category = question.category;
@@ -134,7 +159,7 @@ export const practiceService = {
               totalAttempted: 0,
               correctAnswers: 0,
               totalPoints: 0,
-              lastAttempted: progress.attemptedAt
+              lastAttempted: progress.attemptedAt,
             };
           }
 
@@ -151,12 +176,15 @@ export const practiceService = {
     });
   },
 
-  async getUserQuestionProgress(userId: string, questionId: string): Promise<UserPracticeProgress | null> {
+  async getUserQuestionProgress(
+    userId: string,
+    questionId: string
+  ): Promise<UserPracticeProgress | null> {
     return handleFirebaseError(async () => {
       const db = getFirestore(getApp());
       const progressRef = doc(db, 'users', userId, 'progress', questionId);
       const progressDoc = await getDoc(progressRef);
-      
+
       if (!progressDoc.exists()) {
         return null;
       }
@@ -164,8 +192,8 @@ export const practiceService = {
       const data = progressDoc.data();
       return {
         ...data,
-        attemptedAt: data.attemptedAt.toDate()
+        attemptedAt: data.attemptedAt.toDate(),
       } as UserPracticeProgress;
     });
   },
-}; 
+};

@@ -55,13 +55,14 @@ const CategoryButton = styled(Link)<{ $isActive: boolean }>`
   width: 100%;
   padding: 0.75rem 1rem;
   border-radius: ${props => props.theme.borderRadius.md};
-  background-color: ${props => props.$isActive ? props.theme.colors.primary : 'transparent'};
-  color: ${props => props.$isActive ? '#FFFFFF' : props.theme.colors.text};
+  background-color: ${props => (props.$isActive ? props.theme.colors.primary : 'transparent')};
+  color: ${props => (props.$isActive ? '#FFFFFF' : props.theme.colors.text)};
   text-decoration: none;
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: ${props => props.$isActive ? props.theme.colors.primary : props.theme.colors.backgroundAlt};
+    background-color: ${props =>
+      props.$isActive ? props.theme.colors.primary : props.theme.colors.backgroundAlt};
   }
 `;
 
@@ -69,8 +70,9 @@ const CategoryCount = styled.span<{ $isActive: boolean }>`
   padding: 0.125rem 0.5rem;
   border-radius: 9999px;
   font-size: 0.75rem;
-  background-color: ${props => props.$isActive ? 'rgba(255, 255, 255, 0.2)' : props.theme.colors.backgroundAlt};
-  color: ${props => props.$isActive ? '#FFFFFF' : props.theme.colors.textSecondary};
+  background-color: ${props =>
+    props.$isActive ? 'rgba(255, 255, 255, 0.2)' : props.theme.colors.backgroundAlt};
+  color: ${props => (props.$isActive ? '#FFFFFF' : props.theme.colors.textSecondary)};
 `;
 
 export const Sidebar = ({ categories }: SidebarProps) => {
@@ -89,7 +91,7 @@ export const Sidebar = ({ categories }: SidebarProps) => {
 
         <Navigation>
           <CategoryList>
-            {categories.map((category) => (
+            {categories.map(category => (
               <CategoryButton
                 key={category.id}
                 href={`/category/${category.id}`}

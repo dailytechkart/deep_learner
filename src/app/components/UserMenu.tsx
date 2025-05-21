@@ -10,7 +10,7 @@ import {
   UserName,
   DropdownMenu,
   MenuItem,
-  MenuDivider
+  MenuDivider,
 } from './StyledComponents';
 
 export default function UserMenu() {
@@ -40,21 +40,15 @@ export default function UserMenu() {
         />
         <UserName>{user.displayName || user.email}</UserName>
       </UserButton>
-      
+
       {isOpen && (
         <DropdownMenu>
-          <MenuItem onClick={() => router.push('/profile')}>
-            Profile
-          </MenuItem>
-          <MenuItem onClick={() => router.push('/settings')}>
-            Settings
-          </MenuItem>
+          <MenuItem onClick={() => router.push('/profile')}>Profile</MenuItem>
+          <MenuItem onClick={() => router.push('/settings')}>Settings</MenuItem>
           <MenuDivider />
-          <MenuItem onClick={handleLogout}>
-            Sign Out
-          </MenuItem>
+          <MenuItem onClick={handleLogout}>Sign Out</MenuItem>
         </DropdownMenu>
       )}
     </UserMenuContainer>
   );
-} 
+}

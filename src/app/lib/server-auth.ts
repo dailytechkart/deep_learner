@@ -1,6 +1,9 @@
 import { cookies } from 'next/headers';
-import { auth as adminAuth } from './firebase-admin';
+import { getAuth } from 'firebase-admin/auth';
+import { adminApp } from './firebase-admin';
 import { NextRequest, NextResponse } from 'next/server';
+
+const adminAuth = getAuth(adminApp);
 
 export interface ServerSession {
   uid: string;
@@ -73,11 +76,11 @@ export async function revokeSessionCookie(): Promise<void> {
 
 export async function requireAuth(request: NextRequest): Promise<ServerSession> {
   const session = await getServerSession();
-  
+
   if (!session) {
     throw new Error('Authentication required');
   }
-  
+
   return session;
 }
 
@@ -87,10 +90,7 @@ export async function withAuth(handler: (session: ServerSession) => Promise<Next
       const session = await requireAuth(request);
       return await handler(session);
     } catch (error) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
   };
-} 
+}

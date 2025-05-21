@@ -19,11 +19,11 @@ export async function getServerSession(): Promise<Session | null> {
     return {
       user: {
         uid: decodedClaims.uid,
-        email: decodedClaims.email || ''
-      }
+        email: decodedClaims.email || '',
+      },
     };
   } catch (error) {
     console.error('Error verifying session:', error);
     return null;
   }
-} 
+}

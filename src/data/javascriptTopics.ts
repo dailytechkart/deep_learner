@@ -20,7 +20,7 @@ export const categories = [
   { id: 'react', name: 'React' },
   { id: 'design-patterns', name: 'Design Patterns' },
   { id: 'interviews', name: 'Interviews' },
-  { id: 'quizzes', name: 'Quizzes' }
+  { id: 'quizzes', name: 'Quizzes' },
 ] as const;
 
 export const javascriptTopics: Topic[] = [
@@ -54,26 +54,26 @@ console.log(x + y); // Output: 15
 
 // String manipulation
 let name = "JavaScript";
-console.log(name.toUpperCase()); // Output: JAVASCRIPT`
+console.log(name.toUpperCase()); // Output: JAVASCRIPT`,
     ],
     practice: [
       {
-        problem: "Write a program that prints your name and age.",
+        problem: 'Write a program that prints your name and age.',
         solution: `let name = "John";
 let age = 25;
-console.log("My name is " + name + " and I am " + age + " years old.");`
-      }
+console.log("My name is " + name + " and I am " + age + " years old.");`,
+      },
     ],
     quiz: {
-      question: "Which of the following is NOT a use case for JavaScript?",
+      question: 'Which of the following is NOT a use case for JavaScript?',
       options: [
-        "Frontend development",
-        "Backend development",
-        "Mobile app development",
-        "Operating system kernel development"
+        'Frontend development',
+        'Backend development',
+        'Mobile app development',
+        'Operating system kernel development',
       ],
-      correct: 3
-    }
+      correct: 3,
+    },
   },
   {
     id: 'variables',
@@ -126,24 +126,25 @@ let isTrue = true;
 let isFalse = false;
 console.log(isTrue && isFalse);  // AND: false
 console.log(isTrue || isFalse);  // OR: true
-console.log(!isTrue);            // NOT: false`
+console.log(!isTrue);            // NOT: false`,
     ],
     practice: [
       {
-        problem: "Create variables for a person's name, age, and whether they are a student. Then create a sentence using these variables.",
+        problem:
+          "Create variables for a person's name, age, and whether they are a student. Then create a sentence using these variables.",
         solution: `const name = "Alice";
 let age = 20;
 const isStudent = true;
 
 console.log(name + " is " + age + " years old and " + 
-  (isStudent ? "is" : "is not") + " a student.");`
-      }
+  (isStudent ? "is" : "is not") + " a student.");`,
+      },
     ],
     quiz: {
-      question: "Which keyword declares a block-scoped variable?",
-      options: ["var", "let", "function", "def"],
-      correct: 1
-    }
+      question: 'Which keyword declares a block-scoped variable?',
+      options: ['var', 'let', 'function', 'def'],
+      correct: 1,
+    },
   },
   {
     id: 'functions',
@@ -203,20 +204,21 @@ function processUser(name, callback) {
 
 // Higher-Order Function
 const numbers = [1, 2, 3, 4, 5];
-const doubled = numbers.map(num => num * 2);`
+const doubled = numbers.map(num => num * 2);`,
     ],
     practice: [
       {
-        problem: "Create a function that calculates the area of a rectangle and returns the result.",
+        problem:
+          'Create a function that calculates the area of a rectangle and returns the result.',
         solution: `function calculateArea(length, width) {
   return length * width;
 }
 
 // Using the function
 const area = calculateArea(5, 3);
-console.log("Area:", area); // Output: Area: 15`
-      }
-    ]
+console.log("Area:", area); // Output: Area: 15`,
+      },
+    ],
   },
   {
     id: 'objects',
@@ -280,11 +282,12 @@ const sum = numbers.reduce((acc, curr) => acc + curr, 0);
 const firstEven = numbers.find(num => num % 2 === 0);
 
 // Sort
-const sortedNumbers = numbers.sort((a, b) => a - b);`
+const sortedNumbers = numbers.sort((a, b) => a - b);`,
     ],
     practice: [
       {
-        problem: "Create an array of objects representing books with title and author properties. Then filter the books by a specific author.",
+        problem:
+          'Create an array of objects representing books with title and author properties. Then filter the books by a specific author.',
         solution: `const books = [
   { title: "The Hobbit", author: "J.R.R. Tolkien" },
   { title: "1984", author: "George Orwell" },
@@ -292,9 +295,9 @@ const sortedNumbers = numbers.sort((a, b) => a - b);`
 ];
 
 const tolkienBooks = books.filter(book => book.author === "J.R.R. Tolkien");
-console.log(tolkienBooks);`
-      }
-    ]
+console.log(tolkienBooks);`,
+      },
+    ],
   },
   {
     id: 'dom',
@@ -352,11 +355,11 @@ form.addEventListener("submit", (event) => {
   event.preventDefault();
   const formData = new FormData(form);
   console.log(formData.get("username"));
-});`
+});`,
     ],
     practice: [
       {
-        problem: "Create a button that changes the background color of a div when clicked.",
+        problem: 'Create a button that changes the background color of a div when clicked.',
         solution: `// HTML
 <div id="colorBox" style="width: 200px; height: 200px; background: #fff;"></div>
 <button id="changeColor">Change Color</button>
@@ -368,9 +371,9 @@ const button = document.getElementById("changeColor");
 button.addEventListener("click", () => {
   const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
   box.style.backgroundColor = randomColor;
-});`
-      }
-    ]
+});`,
+      },
+    ],
   },
   {
     id: 'async',
@@ -430,11 +433,11 @@ async function fetchMultiple() {
     fetch("/api/posts")
   ]);
   return { users, posts };
-}`
+}`,
     ],
     practice: [
       {
-        problem: "Create a function that fetches user data from an API and displays it.",
+        problem: 'Create a function that fetches user data from an API and displays it.',
         solution: `async function displayUserData() {
   try {
     const response = await fetch("https://api.example.com/user/1");
@@ -450,9 +453,9 @@ async function fetchMultiple() {
   } catch (error) {
     console.error("Error fetching user:", error);
   }
-}`
-      }
-    ]
+}`,
+      },
+    ],
   },
   {
     id: 'es6',
@@ -509,11 +512,11 @@ class Person {
 const value = object?.property?.nestedProperty;
 
 // Nullish Coalescing
-const value = input ?? defaultValue;`
+const value = input ?? defaultValue;`,
     ],
     practice: [
       {
-        problem: "Convert the following function to use ES6+ features:",
+        problem: 'Convert the following function to use ES6+ features:',
         solution: `// Old version
 function createUser(name, age, email) {
   var user = {
@@ -535,9 +538,9 @@ const createUser = (name, age, email) => ({
   sayHello() {
     return \`Hello, \${this.name}\`;
   }
-});`
-      }
-    ]
+});`,
+      },
+    ],
   },
   {
     id: 'error-handling',
@@ -600,11 +603,11 @@ async function fetchData() {
     console.error("Error fetching data:", error);
     throw error; // Re-throw if needed
   }
-}`
+}`,
     ],
     practice: [
       {
-        problem: "Create a function that validates user input and throws appropriate errors.",
+        problem: 'Create a function that validates user input and throws appropriate errors.',
         solution: `class ValidationError extends Error {
   constructor(message) {
     super(message);
@@ -634,9 +637,9 @@ try {
   } else {
     console.error("Unexpected error:", error);
   }
-}`
-      }
-    ]
+}`,
+      },
+    ],
   },
   {
     id: 'testing',
@@ -693,11 +696,12 @@ test("fetches user data", async () => {
   const user = await fetchUser(1);
   expect(user).toHaveProperty("name");
   expect(user).toHaveProperty("email");
-});`
+});`,
     ],
     practice: [
       {
-        problem: "Write tests for a function that calculates the total price of items in a shopping cart.",
+        problem:
+          'Write tests for a function that calculates the total price of items in a shopping cart.',
         solution: `// Implementation
 function calculateTotal(items) {
   return items.reduce((total, item) => total + (item.price * item.quantity), 0);
@@ -726,9 +730,9 @@ describe("calculateTotal", () => {
     const items = [{ price: 10, quantity: 0 }];
     expect(calculateTotal(items)).toBe(0);
   });
-});`
-      }
-    ]
+});`,
+      },
+    ],
   },
   {
     id: 'design-patterns',
@@ -795,11 +799,12 @@ class Subject {
 }
 const subject = new Subject();
 subject.subscribe(data => console.log('Observer:', data));
-subject.notify('Hello!');`
+subject.notify('Hello!');`,
     ],
     practice: [
       {
-        problem: "Implement a simple factory pattern that creates different types of shapes (Circle, Square) with a draw() method.",
+        problem:
+          'Implement a simple factory pattern that creates different types of shapes (Circle, Square) with a draw() method.',
         solution: `function ShapeFactory() {}
 ShapeFactory.prototype.createShape = function(type) {
   switch(type) {
@@ -815,9 +820,9 @@ const factory = new ShapeFactory();
 const circle = factory.createShape('circle');
 circle.draw(); // Drawing a circle
 const square = factory.createShape('square');
-square.draw(); // Drawing a square;`
-      }
-    ]
+square.draw(); // Drawing a square;`,
+      },
+    ],
   },
   {
     id: 'performance',
@@ -840,7 +845,7 @@ Best Practices:
 • Optimize loops and recursion
 • Batch DOM updates
 • Use requestAnimationFrame for animations
-• Avoid blocking the main thread` ,
+• Avoid blocking the main thread`,
     examples: [
       `// Debounce Example
 function debounce(fn, delay) {
@@ -879,11 +884,11 @@ function animateBox(box) {
     if (pos < 100) requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
-}`
+}`,
     ],
     practice: [
       {
-        problem: "Write a throttle function that limits how often a function can be called.",
+        problem: 'Write a throttle function that limits how often a function can be called.',
         solution: `function throttle(fn, limit) {
   let inThrottle;
   return function(...args) {
@@ -896,9 +901,9 @@ function animateBox(box) {
 }
 window.addEventListener('scroll', throttle(() => {
   console.log('Scrolled!');
-}, 300));`
-      }
-    ]
+}, 300));`,
+      },
+    ],
   },
   {
     id: 'security',
@@ -921,7 +926,7 @@ Best Practices:
 • Use HTTPS
 • Keep dependencies updated
 • Store secrets securely
-• Implement proper authentication and authorization` ,
+• Implement proper authentication and authorization`,
     examples: [
       `// Escaping user input (example for DOM)
 const userInput = '<img src=x onerror=alert(1) />';
@@ -938,17 +943,17 @@ const safeFunction = () => alert('Safe!');
 safeFunction();
 
 // Using CSP (meta tag example)
-// <meta http-equiv="Content-Security-Policy" content="default-src 'self'">`
+// <meta http-equiv="Content-Security-Policy" content="default-src 'self'">`,
     ],
     practice: [
       {
-        problem: "Sanitize a string to prevent XSS by removing < and > characters.",
+        problem: 'Sanitize a string to prevent XSS by removing < and > characters.',
         solution: `function sanitize(input) {
   return input.replace(/[<>]/g, '');
 }
-console.log(sanitize('<script>alert(1)</script>')); // scriptalert(1)/script`
-      }
-    ]
+console.log(sanitize('<script>alert(1)</script>')); // scriptalert(1)/script`,
+      },
+    ],
   },
   {
     id: 'closures',
@@ -1008,11 +1013,12 @@ function createButtons() {
       document.body.appendChild(button);
     })(i);
   }
-}`
+}`,
     ],
     practice: [
       {
-        problem: "Create a function that generates a greeting message. The function should remember the greeting style (formal or casual) and return a function that takes a name and returns the greeting.",
+        problem:
+          'Create a function that generates a greeting message. The function should remember the greeting style (formal or casual) and return a function that takes a name and returns the greeting.',
         solution: `function createGreeter(style) {
   const greeting = style === 'formal' ? 'Hello, ' : 'Hey, ';
   return function(name) {
@@ -1022,19 +1028,19 @@ function createButtons() {
 const formalGreeter = createGreeter('formal');
 const casualGreeter = createGreeter('casual');
 console.log(formalGreeter('John')); // "Hello, John!"
-console.log(casualGreeter('John')); // "Hey, John!"`
-      }
+console.log(casualGreeter('John')); // "Hey, John!"`,
+      },
     ],
     quiz: {
-      question: "What is a closure in JavaScript?",
+      question: 'What is a closure in JavaScript?',
       options: [
-        "A function that has no parameters",
-        "A function that remembers and can access variables from its outer scope",
-        "A function that only runs once",
-        "A function that returns a number"
+        'A function that has no parameters',
+        'A function that remembers and can access variables from its outer scope',
+        'A function that only runs once',
+        'A function that returns a number',
       ],
-      correct: 1
-    }
+      correct: 1,
+    },
   },
   {
     id: 'event-loop',
@@ -1082,11 +1088,12 @@ console.log("1");
 setTimeout(() => console.log("2"), 0);
 Promise.resolve().then(() => console.log("3"));
 console.log("4");
-// Output: 1, 4, 3, 2`
+// Output: 1, 4, 3, 2`,
     ],
     practice: [
       {
-        problem: "Write a function that prints numbers from 1 to 5 with a delay between each number. Use setTimeout to create the delays.",
+        problem:
+          'Write a function that prints numbers from 1 to 5 with a delay between each number. Use setTimeout to create the delays.',
         solution: `function printNumbers() {
   for (let i = 1; i <= 5; i++) {
     setTimeout(() => {
@@ -1095,19 +1102,19 @@ console.log("4");
   }
 }
 printNumbers();
-// Output: 1 (after 1 second), 2 (after 2 seconds), etc.`
-      }
+// Output: 1 (after 1 second), 2 (after 2 seconds), etc.`,
+      },
     ],
     quiz: {
-      question: "What is the main purpose of the Event Loop in JavaScript?",
+      question: 'What is the main purpose of the Event Loop in JavaScript?',
       options: [
-        "To make JavaScript run faster",
-        "To handle multiple tasks without blocking the main thread",
-        "To create infinite loops",
-        "To stop JavaScript from running"
+        'To make JavaScript run faster',
+        'To handle multiple tasks without blocking the main thread',
+        'To create infinite loops',
+        'To stop JavaScript from running',
       ],
-      correct: 1
-    }
+      correct: 1,
+    },
   },
   {
     id: 'react-intro',
@@ -1148,11 +1155,12 @@ function Counter() {
       </button>
     </div>
   );
-}`
+}`,
     ],
     practice: [
       {
-        problem: "Create a simple React component that displays a greeting message and a button to change the message.",
+        problem:
+          'Create a simple React component that displays a greeting message and a button to change the message.',
         solution: `function Greeting() {
   const [message, setMessage] = useState("Hello!");
   
@@ -1164,19 +1172,19 @@ function Counter() {
       </button>
     </div>
   );
-}`
-      }
+}`,
+      },
     ],
     quiz: {
-      question: "What is React primarily used for?",
+      question: 'What is React primarily used for?',
       options: [
-        "Backend development",
-        "Building user interfaces",
-        "Database management",
-        "Server configuration"
+        'Backend development',
+        'Building user interfaces',
+        'Database management',
+        'Server configuration',
       ],
-      correct: 1
-    }
+      correct: 1,
+    },
   },
   {
     id: 'react-hooks',
@@ -1218,11 +1226,12 @@ function DataFetcher() {
   }, []); // Empty array means run once
 
   return <div>{data ? data.name : 'Loading...'}</div>;
-}`
+}`,
     ],
     practice: [
       {
-        problem: "Create a component that fetches and displays a list of users using useState and useEffect hooks.",
+        problem:
+          'Create a component that fetches and displays a list of users using useState and useEffect hooks.',
         solution: `function UserList() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -1245,19 +1254,14 @@ function DataFetcher() {
       ))}
     </ul>
   );
-}`
-      }
+}`,
+      },
     ],
     quiz: {
-      question: "Which hook is used to add state to a functional component?",
-      options: [
-        "useEffect",
-        "useState",
-        "useContext",
-        "useReducer"
-      ],
-      correct: 1
-    }
+      question: 'Which hook is used to add state to a functional component?',
+      options: ['useEffect', 'useState', 'useContext', 'useReducer'],
+      correct: 1,
+    },
   },
   {
     id: 'system-design',
@@ -1311,11 +1315,11 @@ function getUser(id) {
   const user = fetchUserFromDB(id);
   cache.set(id, user);
   return user;
-}`
+}`,
     ],
     practice: [
       {
-        problem: "Design a simple URL shortening service. What components would you need?",
+        problem: 'Design a simple URL shortening service. What components would you need?',
         solution: `Components needed:
 1. URL Shortener Service
    - Generate short codes
@@ -1337,18 +1341,18 @@ function getUser(id) {
 
 5. Load Balancer
    - Distribute traffic
-   - Handle high load`
-      }
+   - Handle high load`,
+      },
     ],
     quiz: {
-      question: "What is the main purpose of a load balancer in system design?",
+      question: 'What is the main purpose of a load balancer in system design?',
       options: [
-        "To store data",
-        "To distribute traffic across servers",
-        "To generate random numbers",
-        "To compress files"
+        'To store data',
+        'To distribute traffic across servers',
+        'To generate random numbers',
+        'To compress files',
       ],
-      correct: 1
-    }
-  }
-]; 
+      correct: 1,
+    },
+  },
+];

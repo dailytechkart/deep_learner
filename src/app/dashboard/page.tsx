@@ -1,166 +1,294 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useRouter } from 'next/navigation';
-import { 
-  LineChart, 
-  Line, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  PieChart,
-  Pie,
-  Cell
-} from 'recharts';
-import { useAuth } from '../context/AuthContext';
+import Link from 'next/link';
+import { MainLayout } from '@/components/MainLayout';
 import {
-  PageContainer,
-  MainContent,
-  Section,
-  SectionHeader,
-  SectionTitle,
-  SectionActions,
-  ActionButton,
-  ProgressBar
-} from '../components/StyledComponents';
-import Sidebar from '../components/Sidebar';
+  FaCode,
+  FaBook,
+  FaChartLine,
+  FaTrophy,
+  FaCalendar,
+  FaStar,
+  FaFire,
+  FaCheck,
+  FaLock,
+  FaUnlock,
+} from 'react-icons/fa';
 
 // Styled Components
-const DashboardGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: ${props => props.theme.spacing.lg};
-  padding: ${props => props.theme.spacing.xl};
-  max-width: 1600px;
-  margin: 0 auto;
-`;
-
-const WelcomeSection = styled.div`
-  grid-column: span 12;
+const DashboardContainer = styled.div`
+  width: 100%;
+  min-height: 100vh;
   background: ${props => props.theme.colors.background};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  padding: ${props => props.theme.spacing.xl};
-  box-shadow: ${props => props.theme.shadows.sm};
-  border: 1px solid ${props => props.theme.colors.border};
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    flex-direction: column;
-    gap: ${props => props.theme.spacing.lg};
-    text-align: center;
-  }
+  flex-direction: column;
 `;
 
-const WelcomeContent = styled.div`
-  h1 {
-    font-size: ${props => props.theme.typography.h2.fontSize};
-    font-weight: ${props => props.theme.typography.h2.fontWeight};
-    color: ${props => props.theme.colors.text};
-    margin-bottom: ${props => props.theme.spacing.sm};
-  }
+const DashboardContent = styled.div`
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 
-  p {
-    color: ${props => props.theme.colors.textSecondary};
-    font-size: ${props => props.theme.typography.body1.fontSize};
+  @media (max-width: 768px) {
+    padding: 1rem;
   }
 `;
 
 const StatsGrid = styled.div`
-  grid-column: span 12;
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: ${props => props.theme.spacing.lg};
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const StatCard = styled.div`
+  width: 100%;
   background: ${props => props.theme.colors.background};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  padding: ${props => props.theme.spacing.lg};
-  box-shadow: ${props => props.theme.shadows.sm};
   border: 1px solid ${props => props.theme.colors.border};
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 12px;
+  padding: 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px ${props => props.theme.colors.border}15;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: ${props => props.theme.shadows.md};
+    box-shadow: 0 4px 8px ${props => props.theme.colors.border}25;
   }
 `;
 
-const StatTitle = styled.h3`
-  color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
-  margin-bottom: ${props => props.theme.spacing.sm};
-`;
-
-const StatValue = styled.div`
-  color: ${props => props.theme.colors.text};
-  font-size: ${props => props.theme.typography.h3.fontSize};
-  font-weight: ${props => props.theme.typography.h3.fontWeight};
-`;
-
-const ChartSection = styled.div`
-  grid-column: span 8;
-  background: ${props => props.theme.colors.background};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  padding: ${props => props.theme.spacing.lg};
-  box-shadow: ${props => props.theme.shadows.sm};
-  border: 1px solid ${props => props.theme.colors.border};
-
-  @media (max-width: ${props => props.theme.breakpoints.desktop}) {
-    grid-column: span 12;
-  }
-`;
-
-const ActivitySection = styled.div`
-  grid-column: span 4;
-  background: ${props => props.theme.colors.background};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  padding: ${props => props.theme.spacing.lg};
-  box-shadow: ${props => props.theme.shadows.sm};
-  border: 1px solid ${props => props.theme.colors.border};
-
-  @media (max-width: ${props => props.theme.breakpoints.desktop}) {
-    grid-column: span 12;
-  }
-`;
-
-const ActivityList = styled.div`
+const StatIcon = styled.div`
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  background: ${props => props.theme.colors.primary}15;
   display: flex;
-  flex-direction: column;
-  gap: ${props => props.theme.spacing.md};
+  align-items: center;
+  justify-content: center;
+  color: ${props => props.theme.colors.primary};
+  font-size: 1.75rem;
+`;
+
+const StatContent = styled.div`
+  h3 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: ${props => props.theme.colors.text};
+    margin-bottom: 0.25rem;
+  }
+  p {
+    color: ${props => props.theme.colors.textSecondary};
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+`;
+
+const Section = styled.div`
+  width: 100%;
+  background: ${props => props.theme.colors.background};
+  border-radius: 12px;
+  border: 1px solid ${props => props.theme.colors.border};
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px ${props => props.theme.colors.border}15;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+`;
+
+const SectionHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+`;
+
+const SectionTitle = styled.h2`
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: ${props => props.theme.colors.text};
+`;
+
+const ViewAll = styled(Link)`
+  color: ${props => props.theme.colors.primary};
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const ProblemGrid = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.25rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const ProblemCard = styled(Link)`
+  background: ${props => props.theme.colors.background};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: 10px;
+  padding: 1.25rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px ${props => props.theme.colors.border}15;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px ${props => props.theme.colors.border}25;
+  }
+`;
+
+const ProblemTitle = styled.h3`
+  color: ${props => props.theme.colors.text};
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+`;
+
+const ProblemMeta = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: ${props => props.theme.colors.textSecondary};
+  font-size: 0.875rem;
+`;
+
+const DifficultyBadge = styled.span<{ difficulty: string }>`
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: ${props =>
+    props.difficulty === 'Easy'
+      ? props.theme.colors.status.success + '20'
+      : props.difficulty === 'Medium'
+        ? props.theme.colors.status.warning + '20'
+        : props.theme.colors.status.error + '20'};
+  color: ${props =>
+    props.difficulty === 'Easy'
+      ? props.theme.colors.status.success
+      : props.difficulty === 'Medium'
+        ? props.theme.colors.status.warning
+        : props.theme.colors.status.error};
+`;
+
+const CourseCard = styled(Link)`
+  background: ${props => props.theme.colors.background};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px ${props => props.theme.colors.border}15;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px ${props => props.theme.colors.border}25;
+  }
+`;
+
+const CourseTitle = styled.h3`
+  color: ${props => props.theme.colors.text};
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+`;
+
+const CourseDescription = styled.p`
+  color: ${props => props.theme.colors.textSecondary};
+  font-size: 0.875rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+`;
+
+const ProgressContainer = styled.div`
+  margin-top: 1rem;
+`;
+
+const ProgressLabel = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  color: ${props => props.theme.colors.textSecondary};
+  font-size: 0.75rem;
+  font-weight: 500;
+`;
+
+const ProgressBar = styled.div<{ progress: number }>`
+  height: 6px;
+  background: ${props => props.theme.colors.backgroundAlt};
+  border-radius: 3px;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    display: block;
+    height: 100%;
+    width: ${props => props.progress}%;
+    background: ${props => props.theme.colors.primary};
+    transition: width 0.3s ease;
+  }
+`;
+
+const RecentActivity = styled.div`
+  background: ${props => props.theme.colors.background};
+  border-radius: 10px;
 `;
 
 const ActivityItem = styled.div`
   display: flex;
   align-items: center;
-  gap: ${props => props.theme.spacing.md};
-  padding: ${props => props.theme.spacing.md};
-  border-radius: ${props => props.theme.borderRadius.md};
-  background: ${props => props.theme.colors.backgroundAlt};
-  transition: transform 0.2s ease;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  transition: background-color 0.2s ease;
 
   &:hover {
-    transform: translateX(4px);
+    background: ${props => props.theme.colors.backgroundAlt};
+  }
+
+  &:last-child {
+    border-bottom: none;
   }
 `;
 
 const ActivityIcon = styled.div`
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  background: ${props => props.theme.colors.primary}20;
+  border-radius: 8px;
+  background: ${props => props.theme.colors.primary}15;
   display: flex;
   align-items: center;
   justify-content: center;
   color: ${props => props.theme.colors.primary};
+  font-size: 1.25rem;
 `;
 
 const ActivityContent = styled.div`
@@ -168,239 +296,217 @@ const ActivityContent = styled.div`
 
   h4 {
     color: ${props => props.theme.colors.text};
-    font-size: ${props => props.theme.typography.fontSize.sm};
-    font-weight: ${props => props.theme.typography.fontWeight.medium};
-    margin-bottom: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
   }
 
   p {
     color: ${props => props.theme.colors.textSecondary};
-    font-size: ${props => props.theme.typography.fontSize.xs};
+    font-size: 0.75rem;
   }
 `;
 
-const CourseSection = styled.div`
-  grid-column: span 12;
-  background: ${props => props.theme.colors.background};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  padding: ${props => props.theme.spacing.lg};
-  box-shadow: ${props => props.theme.shadows.sm};
-  border: 1px solid ${props => props.theme.colors.border};
-`;
-
-const CourseGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: ${props => props.theme.spacing.lg};
-  margin-top: ${props => props.theme.spacing.lg};
-`;
-
-const CourseCard = styled.div`
-  background: ${props => props.theme.colors.backgroundAlt};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  padding: ${props => props.theme.spacing.lg};
-  border: 1px solid ${props => props.theme.colors.border};
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${props => props.theme.shadows.md};
-  }
-`;
-
-const CourseHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
+const PremiumBadge = styled.span`
+  display: inline-flex;
   align-items: center;
-  margin-bottom: ${props => props.theme.spacing.md};
+  gap: 0.375rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  background: ${props => props.theme.colors.status.warning}20;
+  color: ${props => props.theme.colors.status.warning};
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-left: 0.5rem;
 `;
 
-const CourseTitle = styled.h3`
-  color: ${props => props.theme.colors.text};
-  font-size: ${props => props.theme.typography.fontSize.lg};
-  font-weight: ${props => props.theme.typography.fontWeight.semibold};
-`;
-
-const CourseProgress = styled.div`
-  margin-top: ${props => props.theme.spacing.md};
-`;
-
-const ProgressLabel = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: ${props => props.theme.spacing.xs};
-  color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-`;
-
-// Types
-interface SidebarProps {
-  selectedCategory?: string;
-  selectedFilter?: string;
-  onCategoryChange?: (category: string) => void;
-  onFilterChange?: (filter: string) => void;
-}
-
-interface ActivityData {
-  date: string;
-  hours: number;
-}
-
-interface RecentActivity {
-  id: number;
-  icon: string;
-  title: string;
-  time: string;
-}
-
-interface Course {
-  id: number;
-  title: string;
-  progress: number;
-  lastAccessed: string;
-}
-
-export default function Dashboard() {
-  const router = useRouter();
-  const { user } = useAuth();
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedFilter, setSelectedFilter] = useState('all');
-  const [userStats, setUserStats] = useState({
-    totalCourses: 12,
-    completedCourses: 4,
-    inProgressCourses: 3,
-    totalHours: 24
+export default function DashboardPage() {
+  const [stats] = useState({
+    problemsSolved: 42,
+    coursesCompleted: 3,
+    currentStreak: 7,
+    totalPoints: 1250,
   });
 
-  const [activityData] = useState<ActivityData[]>([
-    { date: 'Mon', hours: 2 },
-    { date: 'Tue', hours: 3 },
-    { date: 'Wed', hours: 1 },
-    { date: 'Thu', hours: 4 },
-    { date: 'Fri', hours: 2 },
-    { date: 'Sat', hours: 5 },
-    { date: 'Sun', hours: 3 }
-  ]);
-
-  const [recentActivity] = useState<RecentActivity[]>([
+  const [recentProblems] = useState([
     {
       id: 1,
-      icon: '📚',
-      title: 'Completed HTML & CSS Fundamentals',
-      time: '2 hours ago'
+      title: 'Implement Rate Limiter',
+      difficulty: 'Medium',
+      category: 'Backend',
+      isPremium: false,
     },
     {
       id: 2,
-      icon: '🎯',
-      title: 'Started JavaScript Essentials',
-      time: '1 day ago'
+      title: 'Design URL Shortener',
+      difficulty: 'Medium',
+      category: 'Backend',
+      isPremium: true,
     },
     {
       id: 3,
-      icon: '🏆',
-      title: 'Earned "Fast Learner" badge',
-      time: '2 days ago'
-    }
+      title: 'Build Authentication System',
+      difficulty: 'Hard',
+      category: 'Security',
+      isPremium: true,
+    },
   ]);
 
-  const [courses] = useState<Course[]>([
+  const [courses] = useState([
     {
       id: 1,
-      title: 'HTML & CSS Fundamentals',
+      title: 'System Design Fundamentals',
+      description:
+        'Master the core concepts of system design including scalability, reliability, and performance optimization.',
       progress: 75,
-      lastAccessed: '2 hours ago'
+      totalModules: 12,
+      completedModules: 9,
     },
     {
       id: 2,
-      title: 'JavaScript Essentials',
-      progress: 30,
-      lastAccessed: '1 day ago'
+      title: 'Advanced System Design Patterns',
+      description:
+        'Learn advanced patterns and best practices for building scalable and maintainable systems.',
+      progress: 45,
+      totalModules: 8,
+      completedModules: 4,
+    },
+  ]);
+
+  const [recentActivity] = useState([
+    {
+      id: 1,
+      type: 'problem',
+      title: 'Solved Design a Chat Application',
+      time: '2 hours ago',
+      icon: <FaCheck />,
+    },
+    {
+      id: 2,
+      type: 'course',
+      title: 'Completed System Design Fundamentals Module 3',
+      time: '1 day ago',
+      icon: <FaBook />,
     },
     {
       id: 3,
-      title: 'React Development',
-      progress: 0,
-      lastAccessed: 'Not started'
-    }
+      type: 'streak',
+      title: 'Maintained 7-day streak',
+      time: '2 days ago',
+      icon: <FaFire />,
+    },
   ]);
 
   return (
-    <PageContainer>
-      <Sidebar 
-        selectedCategory={selectedCategory}
-        selectedFilter={selectedFilter}
-        onCategoryChange={setSelectedCategory}
-        onFilterChange={setSelectedFilter}
-      />
-      <MainContent>
-        <DashboardGrid>
-          <WelcomeSection>
-            <WelcomeContent>
-              <h1>Welcome back, {user?.displayName || 'Learner'}!</h1>
-              <p>Track your progress and continue learning</p>
-            </WelcomeContent>
-          </WelcomeSection>
-
+    <MainLayout>
+      <DashboardContainer>
+        <DashboardContent>
           <StatsGrid>
             <StatCard>
-              <StatTitle>Total Courses</StatTitle>
-              <StatValue>{userStats.totalCourses}</StatValue>
+              <StatIcon>
+                <FaCode />
+              </StatIcon>
+              <StatContent>
+                <h3>{stats.problemsSolved}</h3>
+                <p>Problems Solved</p>
+              </StatContent>
             </StatCard>
             <StatCard>
-              <StatTitle>Completed Courses</StatTitle>
-              <StatValue>{userStats.completedCourses}</StatValue>
+              <StatIcon>
+                <FaBook />
+              </StatIcon>
+              <StatContent>
+                <h3>{stats.coursesCompleted}</h3>
+                <p>Courses Completed</p>
+              </StatContent>
             </StatCard>
             <StatCard>
-              <StatTitle>In Progress</StatTitle>
-              <StatValue>{userStats.inProgressCourses}</StatValue>
+              <StatIcon>
+                <FaFire />
+              </StatIcon>
+              <StatContent>
+                <h3>{stats.currentStreak}</h3>
+                <p>Day Streak</p>
+              </StatContent>
             </StatCard>
             <StatCard>
-              <StatTitle>Total Learning Hours</StatTitle>
-              <StatValue>{userStats.totalHours}</StatValue>
+              <StatIcon>
+                <FaTrophy />
+              </StatIcon>
+              <StatContent>
+                <h3>{stats.totalPoints}</h3>
+                <p>Total Points</p>
+              </StatContent>
             </StatCard>
           </StatsGrid>
 
-          <ChartSection>
+          <Section>
             <SectionHeader>
-              <SectionTitle>Learning Activity</SectionTitle>
+              <SectionTitle>Recent Problems</SectionTitle>
+              <ViewAll href="/problems">
+                View All
+                <FaChartLine size={14} />
+              </ViewAll>
             </SectionHeader>
-            <div style={{ height: '300px' }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={activityData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis 
-                    dataKey="date" 
-                    stroke="#6b7280"
-                    tick={{ fill: '#6b7280' }}
-                  />
-                  <YAxis 
-                    stroke="#6b7280"
-                    tick={{ fill: '#6b7280' }}
-                  />
-                  <Tooltip 
-                    contentStyle={{
-                      background: '#ffffff',
-                      border: '1px solid #e5e7eb',
-                      borderRadius: '0.375rem'
-                    }}
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="hours" 
-                    stroke="#2563eb" 
-                    strokeWidth={2}
-                    dot={{ fill: '#2563eb' }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </ChartSection>
+            <ProblemGrid>
+              {recentProblems.map(problem => (
+                <ProblemCard key={problem.id} href={`/problems/${problem.id}`}>
+                  <ProblemTitle>
+                    {problem.title}
+                    {problem.isPremium && (
+                      <PremiumBadge>
+                        <FaStar size={12} />
+                        Premium
+                      </PremiumBadge>
+                    )}
+                  </ProblemTitle>
+                  <ProblemMeta>
+                    <DifficultyBadge difficulty={problem.difficulty}>
+                      {problem.difficulty}
+                    </DifficultyBadge>
+                    <span>{problem.category}</span>
+                  </ProblemMeta>
+                </ProblemCard>
+              ))}
+            </ProblemGrid>
+          </Section>
 
-          <ActivitySection>
+          <Section>
+            <SectionHeader>
+              <SectionTitle>Your Courses</SectionTitle>
+              <ViewAll href="/courses">
+                View All
+                <FaBook size={14} />
+              </ViewAll>
+            </SectionHeader>
+            <ProblemGrid>
+              {courses.map(course => (
+                <CourseCard key={course.id} href={`/courses/${course.id}`}>
+                  <CourseTitle>{course.title}</CourseTitle>
+                  <CourseDescription>{course.description}</CourseDescription>
+                  <ProgressContainer>
+                    <ProgressLabel>
+                      <span>Progress</span>
+                      <span>
+                        {course.completedModules}/{course.totalModules} Modules
+                      </span>
+                    </ProgressLabel>
+                    <ProgressBar progress={course.progress} />
+                  </ProgressContainer>
+                </CourseCard>
+              ))}
+            </ProblemGrid>
+          </Section>
+
+          <Section>
             <SectionHeader>
               <SectionTitle>Recent Activity</SectionTitle>
+              <ViewAll href="/activity">
+                View All
+                <FaCalendar size={14} />
+              </ViewAll>
             </SectionHeader>
-            <ActivityList>
+            <RecentActivity>
               {recentActivity.map(activity => (
                 <ActivityItem key={activity.id}>
                   <ActivityIcon>{activity.icon}</ActivityIcon>
@@ -410,44 +516,10 @@ export default function Dashboard() {
                   </ActivityContent>
                 </ActivityItem>
               ))}
-            </ActivityList>
-          </ActivitySection>
-
-          <CourseSection>
-            <SectionHeader>
-              <SectionTitle>Your Courses</SectionTitle>
-              <SectionActions>
-                <ActionButton>View All Courses</ActionButton>
-              </SectionActions>
-            </SectionHeader>
-            <CourseGrid>
-              {courses.map(course => (
-                <CourseCard key={course.id}>
-                  <CourseHeader>
-                    <CourseTitle>{course.title}</CourseTitle>
-                  </CourseHeader>
-                  <CourseProgress>
-                    <ProgressLabel>
-                      <span>Progress</span>
-                      <span>{course.progress}%</span>
-                    </ProgressLabel>
-                    <ProgressBar progress={course.progress}>
-                      <div />
-                    </ProgressBar>
-                    <p style={{ 
-                      marginTop: '8px', 
-                      color: '#6b7280',
-                      fontSize: '0.875rem'
-                    }}>
-                      Last accessed: {course.lastAccessed}
-                    </p>
-                  </CourseProgress>
-                </CourseCard>
-              ))}
-            </CourseGrid>
-          </CourseSection>
-        </DashboardGrid>
-      </MainContent>
-    </PageContainer>
+            </RecentActivity>
+          </Section>
+        </DashboardContent>
+      </DashboardContainer>
+    </MainLayout>
   );
-} 
+}

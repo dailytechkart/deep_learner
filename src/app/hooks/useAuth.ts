@@ -18,22 +18,25 @@ export function useAuth() {
     const auth = getAuth(getApp());
     const unsubscribe = setupTokenRefresh();
 
-    const authListener = auth.onAuthStateChanged((user) => {
-      if (user) {
-        setUser({
-          uid: user.uid,
-          email: user.email,
-          emailVerified: user.emailVerified,
-        });
-      } else {
-        setUser(null);
+    const authListener = auth.onAuthStateChanged(
+      user => {
+        if (user) {
+          setUser({
+            uid: user.uid,
+            email: user.email,
+            emailVerified: user.emailVerified,
+          });
+        } else {
+          setUser(null);
+        }
+        setLoading(false);
+      },
+      error => {
+        console.error('Auth state change error:', error);
+        setError(error as Error);
+        setLoading(false);
       }
-      setLoading(false);
-    }, (error) => {
-      console.error('Auth state change error:', error);
-      setError(error as Error);
-      setLoading(false);
-    });
+    );
 
     return () => {
       authListener();
@@ -72,4 +75,4 @@ export function useAuth() {
     signIn,
     logout,
   };
-} 
+}

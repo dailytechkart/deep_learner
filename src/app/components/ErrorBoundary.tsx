@@ -14,7 +14,7 @@ const ErrorContainer = styled.div`
 `;
 
 const ErrorTitle = styled.h2`
-  color: ${props => props.theme.colors.error};
+  color: ${props => props.theme.colors.text};
   margin-bottom: ${props => props.theme.spacing.md};
 `;
 
@@ -70,16 +70,12 @@ export class ErrorBoundary extends React.Component<Props, State> {
       return (
         <ErrorContainer>
           <ErrorTitle>Something went wrong</ErrorTitle>
-          <ErrorMessage>
-            {this.state.error?.message || 'An unexpected error occurred'}
-          </ErrorMessage>
-          <RetryButton onClick={this.handleRetry}>
-            Try Again
-          </RetryButton>
+          <ErrorMessage>{this.state.error?.message || 'An unexpected error occurred'}</ErrorMessage>
+          <RetryButton onClick={this.handleRetry}>Try Again</RetryButton>
         </ErrorContainer>
       );
     }
 
     return this.props.children;
   }
-} 
+}

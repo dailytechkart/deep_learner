@@ -32,7 +32,7 @@ import {
   SidebarCategoryHeader,
   SidebarCategoryCount,
   SidebarQuickActions,
-  SidebarQuickActionButton
+  SidebarQuickActionButton,
 } from './StyledComponents';
 import Loader from './Loader';
 import Link from 'next/link';
@@ -49,7 +49,7 @@ const SidebarComponent: React.FC<SidebarProps> = ({
   selectedCategory,
   selectedFilter,
   onCategoryChange,
-  onFilterChange
+  onFilterChange,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
@@ -59,7 +59,7 @@ const SidebarComponent: React.FC<SidebarProps> = ({
   const stats = [
     { icon: '📚', value: '12', label: 'Topics Completed' },
     { icon: '⏱️', value: '24h', label: 'Time Spent' },
-    { icon: '🎯', value: '85%', label: 'Success Rate' }
+    { icon: '🎯', value: '85%', label: 'Success Rate' },
   ];
 
   const categories = [
@@ -67,7 +67,7 @@ const SidebarComponent: React.FC<SidebarProps> = ({
     { id: 'backend', name: 'Backend Development', icon: '⚙️', count: 12 },
     { id: 'database', name: 'Database', icon: '🗄️', count: 8 },
     { id: 'devops', name: 'DevOps', icon: '🚀', count: 10 },
-    { id: 'system-design', name: 'System Design', icon: '🏗️', count: 6 }
+    { id: 'system-design', name: 'System Design', icon: '🏗️', count: 6 },
   ];
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -156,10 +156,7 @@ const SidebarComponent: React.FC<SidebarProps> = ({
         <SidebarFilterGroup>
           <SidebarFilterLabel>Status</SidebarFilterLabel>
           <SidebarActions>
-            <FilterButton
-              active={selectedFilter === 'all'}
-              onClick={() => onFilterChange('all')}
-            >
+            <FilterButton active={selectedFilter === 'all'} onClick={() => onFilterChange('all')}>
               All
             </FilterButton>
             <FilterButton
@@ -214,4 +211,4 @@ const SidebarComponent: React.FC<SidebarProps> = ({
   );
 };
 
-export default SidebarComponent; 
+export default SidebarComponent;

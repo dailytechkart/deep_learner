@@ -1,7 +1,11 @@
+'use client';
+
 import React from 'react';
 import styled from 'styled-components';
 import CourseList from '../components/CourseList';
 import { useCourses } from '../hooks/useCourses';
+
+export const dynamic = 'force-dynamic';
 
 const CoursesContainer = styled.div`
   max-width: 1200px;
@@ -16,13 +20,13 @@ const CoursesHeader = styled.div`
 
 const Title = styled.h1`
   font-size: 2.5rem;
-  color: #1a1a1a;
+  color: ${props => props.theme.colors.text};
   margin-bottom: 1rem;
 `;
 
 const Subtitle = styled.p`
   font-size: 1.1rem;
-  color: #666;
+  color: ${props => props.theme.colors.textSecondary};
   max-width: 600px;
   margin: 0 auto;
 `;
@@ -36,17 +40,37 @@ const FilterSection = styled.div`
 
 const FilterButton = styled.button<{ active: boolean }>`
   padding: 0.5rem 1rem;
-  border: 2px solid ${props => props.active ? '#007bff' : '#e0e0e0'};
-  border-radius: 6px;
-  background: ${props => props.active ? '#007bff' : 'white'};
-  color: ${props => props.active ? 'white' : '#666'};
+  border: 2px solid
+    ${props => (props.active ? props.theme.colors.primary : props.theme.colors.border)};
+  border-radius: ${props => props.theme.borderRadius.md};
+  background: ${props => (props.active ? props.theme.colors.primary : 'transparent')};
+  color: ${props =>
+    props.active ? props.theme.colors.background : props.theme.colors.textSecondary};
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    border-color: #007bff;
-    color: ${props => props.active ? 'white' : '#007bff'};
+    border-color: ${props => props.theme.colors.primary};
+    color: ${props => (props.active ? props.theme.colors.background : props.theme.colors.primary)};
   }
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  color: ${props => props.theme.colors.textSecondary};
+`;
+
+const ErrorContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  color: ${props => props.theme.colors.textSecondary};
+  text-align: center;
+  padding: 1rem;
 `;
 
 const CoursesPage: React.FC = () => {
@@ -54,14 +78,14 @@ const CoursesPage: React.FC = () => {
   const { courses, userCourses, loading, error } = useCourses();
 
   const filteredCourses = React.useMemo(() => {
+    if (!courses || !userCourses) return [];
+
     if (activeFilter === 'all') return courses;
     if (activeFilter === 'enrolled') {
-      return courses.filter(course => 
-        userCourses.some(uc => uc.courseId === course.id)
-      );
+      return courses.filter(course => userCourses.some(uc => uc.courseId === course.id));
     }
     if (activeFilter === 'completed') {
-      return courses.filter(course => 
+      return courses.filter(course =>
         userCourses.some(uc => uc.courseId === course.id && uc.status === 'completed')
       );
     }
@@ -69,11 +93,19 @@ const CoursesPage: React.FC = () => {
   }, [courses, userCourses, activeFilter]);
 
   if (loading) {
-    return <div>Loading courses...</div>;
+    return (
+      <LoadingContainer>
+        <p>Loading courses...</p>
+      </LoadingContainer>
+    );
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <ErrorContainer>
+        <p>Error: {error}</p>
+      </ErrorContainer>
+    );
   }
 
   return (
@@ -81,16 +113,13 @@ const CoursesPage: React.FC = () => {
       <CoursesHeader>
         <Title>Explore Courses</Title>
         <Subtitle>
-          Discover a wide range of courses designed to help you master new skills
-          and advance your career.
+          Discover a wide range of courses designed to help you master new skills and advance your
+          career.
         </Subtitle>
       </CoursesHeader>
 
       <FilterSection>
-        <FilterButton
-          active={activeFilter === 'all'}
-          onClick={() => setActiveFilter('all')}
-        >
+        <FilterButton active={activeFilter === 'all'} onClick={() => setActiveFilter('all')}>
           All Courses
         </FilterButton>
         <FilterButton
@@ -112,4 +141,4 @@ const CoursesPage: React.FC = () => {
   );
 };
 
-export default CoursesPage; 
+export default CoursesPage;

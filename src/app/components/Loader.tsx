@@ -33,9 +33,12 @@ const LoaderContainer = styled.div<LoaderProps>`
   height: 100%;
   min-height: ${props => {
     switch (props.size) {
-      case 'sm': return '24px';
-      case 'lg': return '48px';
-      default: return '32px';
+      case 'sm':
+        return '24px';
+      case 'lg':
+        return '48px';
+      default:
+        return '32px';
     }
   }};
 `;
@@ -43,16 +46,22 @@ const LoaderContainer = styled.div<LoaderProps>`
 const Spinner = styled.div<LoaderProps>`
   width: ${props => {
     switch (props.size) {
-      case 'sm': return '20px';
-      case 'lg': return '40px';
-      default: return '30px';
+      case 'sm':
+        return '20px';
+      case 'lg':
+        return '40px';
+      default:
+        return '30px';
     }
   }};
   height: ${props => {
     switch (props.size) {
-      case 'sm': return '20px';
-      case 'lg': return '40px';
-      default: return '30px';
+      case 'sm':
+        return '20px';
+      case 'lg':
+        return '40px';
+      default:
+        return '30px';
     }
   }};
   border: 3px solid ${props => props.theme.colors.border};
@@ -64,16 +73,22 @@ const Spinner = styled.div<LoaderProps>`
 const PulseLoader = styled.div<LoaderProps>`
   width: ${props => {
     switch (props.size) {
-      case 'sm': return '20px';
-      case 'lg': return '40px';
-      default: return '30px';
+      case 'sm':
+        return '20px';
+      case 'lg':
+        return '40px';
+      default:
+        return '30px';
     }
   }};
   height: ${props => {
     switch (props.size) {
-      case 'sm': return '20px';
-      case 'lg': return '40px';
-      default: return '30px';
+      case 'sm':
+        return '20px';
+      case 'lg':
+        return '40px';
+      default:
+        return '30px';
     }
   }};
   background-color: ${props => props.color || props.theme.colors.primary};
@@ -85,9 +100,12 @@ const ShimmerLoader = styled.div<LoaderProps>`
   width: 100%;
   height: ${props => {
     switch (props.size) {
-      case 'sm': return '20px';
-      case 'lg': return '40px';
-      default: return '30px';
+      case 'sm':
+        return '20px';
+      case 'lg':
+        return '40px';
+      default:
+        return '30px';
     }
   }};
   background: linear-gradient(
@@ -111,4 +129,4 @@ const Loader: React.FC<LoaderProps> = ({ variant = 'spinner', size = 'md', color
   );
 };
 
-export default Loader; 
+export default Loader;

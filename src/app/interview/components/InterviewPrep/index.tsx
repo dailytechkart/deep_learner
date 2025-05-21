@@ -82,26 +82,29 @@ const resources = [
   {
     id: 'coding-interview',
     title: 'Coding Interview Guide',
-    description: 'Comprehensive guide covering data structures, algorithms, and problem-solving strategies.',
+    description:
+      'Comprehensive guide covering data structures, algorithms, and problem-solving strategies.',
     icon: '💻',
     tags: ['Algorithms', 'Data Structures', 'Problem Solving'],
-    href: '/interview/guides/coding'
+    href: '/interview/guides/coding',
   },
   {
     id: 'system-design',
     title: 'System Design Guide',
-    description: 'Learn how to design scalable systems and handle technical discussions effectively.',
+    description:
+      'Learn how to design scalable systems and handle technical discussions effectively.',
     icon: '🏗️',
     tags: ['Architecture', 'Scalability', 'Design Patterns'],
-    href: '/interview/guides/system-design'
+    href: '/interview/guides/system-design',
   },
   {
     id: 'behavioral',
     title: 'Behavioral Interview Guide',
-    description: 'Master behavioral questions and learn how to showcase your experience effectively.',
+    description:
+      'Master behavioral questions and learn how to showcase your experience effectively.',
     icon: '🤝',
     tags: ['Communication', 'Leadership', 'Experience'],
-    href: '/interview/guides/behavioral'
+    href: '/interview/guides/behavioral',
   },
   {
     id: 'resume',
@@ -109,7 +112,7 @@ const resources = [
     description: 'Learn how to create an impressive resume and portfolio that stands out.',
     icon: '📄',
     tags: ['Resume', 'Portfolio', 'Career'],
-    href: '/interview/guides/resume'
+    href: '/interview/guides/resume',
   },
   {
     id: 'negotiation',
@@ -117,7 +120,7 @@ const resources = [
     description: 'Tips and strategies for negotiating your compensation package effectively.',
     icon: '💰',
     tags: ['Salary', 'Benefits', 'Negotiation'],
-    href: '/interview/guides/negotiation'
+    href: '/interview/guides/negotiation',
   },
   {
     id: 'company-research',
@@ -125,20 +128,20 @@ const resources = [
     description: 'Learn how to research companies and prepare for company-specific interviews.',
     icon: '🔍',
     tags: ['Research', 'Company Culture', 'Preparation'],
-    href: '/interview/guides/company-research'
-  }
+    href: '/interview/guides/company-research',
+  },
 ];
 
 export const InterviewPrep: React.FC = () => {
   return (
     <ResourcesGrid>
-      {resources.map((resource) => (
+      {resources.map(resource => (
         <ResourceCard key={resource.id} href={resource.href}>
           <ResourceIcon>{resource.icon}</ResourceIcon>
           <ResourceTitle>{resource.title}</ResourceTitle>
           <ResourceDescription>{resource.description}</ResourceDescription>
           <ResourceMeta>
-            {resource.tags.map((tag) => (
+            {resource.tags.map(tag => (
               <ResourceTag key={tag}>{tag}</ResourceTag>
             ))}
           </ResourceMeta>
@@ -146,4 +149,4 @@ export const InterviewPrep: React.FC = () => {
       ))}
     </ResourcesGrid>
   );
-}; 
+};

@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { withAuth, ServerSession, requireAuth } from '@/app/lib/server-auth';
 
-export const GET = withAuth(async (session: ServerSession) => {
+export async function GET(request: NextRequest) {
   try {
-    // Example of accessing user data from session
+    const session = await requireAuth(request);
     const { uid, email, role } = session;
 
     // Your protected API logic here
@@ -19,14 +19,11 @@ export const GET = withAuth(async (session: ServerSession) => {
     return NextResponse.json(data);
   } catch (error) {
     console.error('Error in protected GET:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-});
+}
 
-export const POST = async (request: NextRequest) => {
+export async function POST(request: NextRequest) {
   try {
     const session = await requireAuth(request);
     const { uid } = session;
@@ -42,9 +39,6 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json(data);
   } catch (error) {
     console.error('Error in protected POST:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-}; 
+}

@@ -8,222 +8,269 @@ export interface Topic {
   category: string;
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
   estimatedTime: string;
+  role:
+    | 'SDE1'
+    | 'SDE2'
+    | 'SDE3'
+    | 'Frontend Specialist'
+    | 'Frontend Architect'
+    | 'UI/UX Developer'
+    | 'Frontend Performance Engineer';
 }
 
 export const learningTopics: Topic[] = [
-  // JavaScript Topics
+  // SDE1 Frontend Topics
   {
-    id: 'js-basics',
-    title: 'JavaScript Fundamentals',
-    description: 'Master the core concepts of JavaScript including variables, functions, and control flow.',
+    id: 'sde1-html-css',
+    title: 'HTML5 & CSS3 Fundamentals',
+    description:
+      'Master modern HTML5 semantics, CSS3 layouts, and responsive design principles. Essential for SDE1 frontend role.',
     progress: 0,
     totalLessons: 12,
     completedLessons: 0,
-    category: 'JavaScript',
+    category: 'Frontend',
     difficulty: 'Beginner',
-    estimatedTime: '4 hours'
+    estimatedTime: '4 hours',
+    role: 'SDE1',
   },
   {
-    id: 'js-advanced',
-    title: 'Advanced JavaScript',
-    description: 'Deep dive into advanced concepts like closures, prototypes, and async programming.',
+    id: 'sde1-js-basics',
+    title: 'JavaScript Essentials',
+    description:
+      'Learn core JavaScript concepts, DOM manipulation, and basic event handling for frontend development.',
     progress: 0,
     totalLessons: 15,
     completedLessons: 0,
     category: 'JavaScript',
-    difficulty: 'Advanced',
-    estimatedTime: '6 hours'
-  },
-
-  // CSS Topics
-  {
-    id: 'css-basics',
-    title: 'CSS Fundamentals',
-    description: 'Learn the basics of CSS including selectors, properties, and layout techniques.',
-    progress: 0,
-    totalLessons: 10,
-    completedLessons: 0,
-    category: 'CSS',
     difficulty: 'Beginner',
-    estimatedTime: '3 hours'
+    estimatedTime: '5 hours',
+    role: 'SDE1',
   },
   {
-    id: 'css-advanced',
-    title: 'Advanced CSS',
-    description: 'Master advanced CSS concepts like animations, transforms, and responsive design.',
-    progress: 0,
-    totalLessons: 12,
-    completedLessons: 0,
-    category: 'CSS',
-    difficulty: 'Intermediate',
-    estimatedTime: '5 hours'
-  },
-
-  // React Topics
-  {
-    id: 'react-basics',
+    id: 'sde1-react-basics',
     title: 'React Fundamentals',
-    description: 'Learn the basics of React including components, props, and state management.',
+    description:
+      'Master React basics including components, props, state, and hooks for building interactive UIs.',
     progress: 0,
     totalLessons: 14,
     completedLessons: 0,
     category: 'React',
     difficulty: 'Beginner',
-    estimatedTime: '5 hours'
+    estimatedTime: '6 hours',
+    role: 'SDE1',
   },
   {
-    id: 'react-advanced',
-    title: 'Advanced React',
-    description: 'Deep dive into advanced React concepts like hooks, context, and performance optimization.',
+    id: 'sde1-git-basics',
+    title: 'Version Control & Collaboration',
+    description:
+      'Learn Git fundamentals, branching strategies, and collaboration workflows for frontend teams.',
+    progress: 0,
+    totalLessons: 8,
+    completedLessons: 0,
+    category: 'DevOps',
+    difficulty: 'Beginner',
+    estimatedTime: '3 hours',
+    role: 'SDE1',
+  },
+
+  // SDE2 Frontend Topics
+  {
+    id: 'sde2-advanced-react',
+    title: 'Advanced React Patterns',
+    description:
+      'Deep dive into React hooks, context, performance optimization, and advanced component patterns.',
     progress: 0,
     totalLessons: 16,
     completedLessons: 0,
     category: 'React',
-    difficulty: 'Advanced',
-    estimatedTime: '7 hours'
-  },
-
-  // CI/CD Topics
-  {
-    id: 'cicd-basics',
-    title: 'CI/CD Fundamentals',
-    description: 'Learn the basics of Continuous Integration and Continuous Deployment.',
-    progress: 0,
-    totalLessons: 8,
-    completedLessons: 0,
-    category: 'CI/CD',
     difficulty: 'Intermediate',
-    estimatedTime: '4 hours'
+    estimatedTime: '7 hours',
+    role: 'SDE2',
   },
   {
-    id: 'cicd-advanced',
-    title: 'Advanced CI/CD',
-    description: 'Master advanced CI/CD concepts including pipeline optimization and deployment strategies.',
-    progress: 0,
-    totalLessons: 10,
-    completedLessons: 0,
-    category: 'CI/CD',
-    difficulty: 'Advanced',
-    estimatedTime: '6 hours'
-  },
-
-  // Testing Topics
-  {
-    id: 'testing-basics',
-    title: 'Testing Fundamentals',
-    description: 'Learn the basics of software testing including unit, integration, and end-to-end testing.',
-    progress: 0,
-    totalLessons: 12,
-    completedLessons: 0,
-    category: 'Testing',
-    difficulty: 'Beginner',
-    estimatedTime: '4 hours'
-  },
-  {
-    id: 'testing-advanced',
-    title: 'Advanced Testing',
-    description: 'Master advanced testing concepts including test-driven development and automated testing.',
+    id: 'sde2-state-management',
+    title: 'State Management Solutions',
+    description:
+      'Master Redux, Context API, and other state management solutions for complex applications.',
     progress: 0,
     totalLessons: 14,
     completedLessons: 0,
+    category: 'Frontend',
+    difficulty: 'Intermediate',
+    estimatedTime: '6 hours',
+    role: 'SDE2',
+  },
+  {
+    id: 'sde2-testing',
+    title: 'Frontend Testing',
+    description:
+      'Learn unit testing, integration testing, and E2E testing for React applications using Jest and Cypress.',
+    progress: 0,
+    totalLessons: 12,
+    completedLessons: 0,
     category: 'Testing',
-    difficulty: 'Advanced',
-    estimatedTime: '6 hours'
-  },
-
-  // System Design Topics
-  {
-    id: 'system-design-basics',
-    title: 'System Design Fundamentals',
-    description: 'Learn the basics of system design including architecture patterns and scalability.',
-    progress: 0,
-    totalLessons: 10,
-    completedLessons: 0,
-    category: 'System Design',
     difficulty: 'Intermediate',
-    estimatedTime: '5 hours'
+    estimatedTime: '5 hours',
+    role: 'SDE2',
   },
   {
-    id: 'system-design-advanced',
-    title: 'Advanced System Design',
-    description: 'Master advanced system design concepts including microservices and distributed systems.',
+    id: 'sde2-performance',
+    title: 'Frontend Performance',
+    description:
+      'Master performance optimization techniques, code splitting, and bundle optimization.',
     progress: 0,
-    totalLessons: 12,
-    completedLessons: 0,
-    category: 'System Design',
-    difficulty: 'Advanced',
-    estimatedTime: '7 hours'
-  },
-
-  // Security Topics
-  {
-    id: 'security-basics',
-    title: 'Web Security Fundamentals',
-    description: 'Learn the basics of web security including authentication, authorization, and common vulnerabilities.',
-    progress: 0,
-    totalLessons: 10,
-    completedLessons: 0,
-    category: 'Security',
-    difficulty: 'Intermediate',
-    estimatedTime: '4 hours'
-  },
-  {
-    id: 'security-advanced',
-    title: 'Advanced Security',
-    description: 'Master advanced security concepts including encryption, secure coding practices, and threat modeling.',
-    progress: 0,
-    totalLessons: 12,
-    completedLessons: 0,
-    category: 'Security',
-    difficulty: 'Advanced',
-    estimatedTime: '6 hours'
-  },
-
-  // SEO Topics
-  {
-    id: 'seo-basics',
-    title: 'SEO Fundamentals',
-    description: 'Learn the basics of Search Engine Optimization including keywords, meta tags, and content optimization.',
-    progress: 0,
-    totalLessons: 8,
-    completedLessons: 0,
-    category: 'SEO',
-    difficulty: 'Beginner',
-    estimatedTime: '3 hours'
-  },
-  {
-    id: 'seo-advanced',
-    title: 'Advanced SEO',
-    description: 'Master advanced SEO concepts including technical SEO, link building, and analytics.',
-    progress: 0,
-    totalLessons: 10,
-    completedLessons: 0,
-    category: 'SEO',
-    difficulty: 'Intermediate',
-    estimatedTime: '5 hours'
-  },
-
-  // Performance Topics
-  {
-    id: 'performance-basics',
-    title: 'Performance Optimization',
-    description: 'Learn the basics of web performance optimization including loading speed and rendering optimization.',
-    progress: 0,
-    totalLessons: 10,
+    totalLessons: 15,
     completedLessons: 0,
     category: 'Performance',
     difficulty: 'Intermediate',
-    estimatedTime: '4 hours'
+    estimatedTime: '6 hours',
+    role: 'SDE2',
+  },
+
+  // SDE3 Frontend Topics
+  {
+    id: 'sde3-architecture',
+    title: 'Frontend Architecture',
+    description:
+      'Design scalable frontend architectures, micro-frontends, and advanced design patterns.',
+    progress: 0,
+    totalLessons: 16,
+    completedLessons: 0,
+    category: 'Architecture',
+    difficulty: 'Advanced',
+    estimatedTime: '8 hours',
+    role: 'SDE3',
   },
   {
-    id: 'performance-advanced',
-    title: 'Advanced Performance',
-    description: 'Master advanced performance concepts including caching strategies and code optimization.',
+    id: 'sde3-system-design',
+    title: 'Frontend System Design',
+    description:
+      'Master frontend system design principles, scalability, and distributed frontend systems.',
+    progress: 0,
+    totalLessons: 14,
+    completedLessons: 0,
+    category: 'System Design',
+    difficulty: 'Advanced',
+    estimatedTime: '7 hours',
+    role: 'SDE3',
+  },
+  {
+    id: 'sde3-leadership',
+    title: 'Technical Leadership',
+    description: 'Learn frontend team leadership, mentoring, and technical decision making.',
+    progress: 0,
+    totalLessons: 12,
+    completedLessons: 0,
+    category: 'Leadership',
+    difficulty: 'Advanced',
+    estimatedTime: '6 hours',
+    role: 'SDE3',
+  },
+
+  // Frontend Specialist Topics
+  {
+    id: 'specialist-advanced-css',
+    title: 'Advanced CSS & Animations',
+    description: 'Master advanced CSS techniques, animations, and modern layout systems.',
+    progress: 0,
+    totalLessons: 15,
+    completedLessons: 0,
+    category: 'Frontend',
+    difficulty: 'Advanced',
+    estimatedTime: '7 hours',
+    role: 'Frontend Specialist',
+  },
+  {
+    id: 'specialist-accessibility',
+    title: 'Web Accessibility',
+    description: 'Learn WCAG guidelines, ARIA, and creating accessible web applications.',
+    progress: 0,
+    totalLessons: 12,
+    completedLessons: 0,
+    category: 'Frontend',
+    difficulty: 'Advanced',
+    estimatedTime: '6 hours',
+    role: 'Frontend Specialist',
+  },
+
+  // Frontend Architect Topics
+  {
+    id: 'architect-micro-frontends',
+    title: 'Micro-Frontends Architecture',
+    description: 'Design and implement micro-frontends architecture for large-scale applications.',
+    progress: 0,
+    totalLessons: 16,
+    completedLessons: 0,
+    category: 'Architecture',
+    difficulty: 'Advanced',
+    estimatedTime: '8 hours',
+    role: 'Frontend Architect',
+  },
+  {
+    id: 'architect-design-systems',
+    title: 'Design Systems Architecture',
+    description: 'Create and maintain scalable design systems and component libraries.',
+    progress: 0,
+    totalLessons: 14,
+    completedLessons: 0,
+    category: 'Architecture',
+    difficulty: 'Advanced',
+    estimatedTime: '7 hours',
+    role: 'Frontend Architect',
+  },
+
+  // UI/UX Developer Topics
+  {
+    id: 'uiux-motion-design',
+    title: 'Motion Design & Animation',
+    description:
+      'Master advanced motion design principles and animation techniques for web applications.',
+    progress: 0,
+    totalLessons: 12,
+    completedLessons: 0,
+    category: 'UI/UX',
+    difficulty: 'Advanced',
+    estimatedTime: '6 hours',
+    role: 'UI/UX Developer',
+  },
+  {
+    id: 'uiux-interaction-design',
+    title: 'Advanced Interaction Design',
+    description: 'Learn advanced interaction design patterns and user experience optimization.',
+    progress: 0,
+    totalLessons: 14,
+    completedLessons: 0,
+    category: 'UI/UX',
+    difficulty: 'Advanced',
+    estimatedTime: '7 hours',
+    role: 'UI/UX Developer',
+  },
+
+  // Frontend Performance Engineer Topics
+  {
+    id: 'performance-optimization',
+    title: 'Advanced Performance Optimization',
+    description:
+      'Master advanced performance optimization techniques and tools for web applications.',
+    progress: 0,
+    totalLessons: 15,
+    completedLessons: 0,
+    category: 'Performance',
+    difficulty: 'Advanced',
+    estimatedTime: '7 hours',
+    role: 'Frontend Performance Engineer',
+  },
+  {
+    id: 'performance-monitoring',
+    title: 'Performance Monitoring & Analytics',
+    description:
+      'Learn advanced performance monitoring, metrics collection, and optimization strategies.',
     progress: 0,
     totalLessons: 12,
     completedLessons: 0,
     category: 'Performance',
     difficulty: 'Advanced',
-    estimatedTime: '6 hours'
-  }
-]; 
+    estimatedTime: '6 hours',
+    role: 'Frontend Performance Engineer',
+  },
+];

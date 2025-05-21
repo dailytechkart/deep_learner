@@ -6,14 +6,11 @@ export async function POST(request: NextRequest) {
     const { idToken } = await request.json();
 
     if (!idToken) {
-      return NextResponse.json(
-        { error: 'ID token is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'ID token is required' }, { status: 400 });
     }
 
     const sessionCookie = await createSessionCookie(idToken);
-    
+
     return NextResponse.json(
       { success: true },
       {
@@ -25,17 +22,14 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     console.error('Error in auth POST:', error);
-    return NextResponse.json(
-      { error: 'Authentication failed' },
-      { status: 401 }
-    );
+    return NextResponse.json({ error: 'Authentication failed' }, { status: 401 });
   }
 }
 
 export async function DELETE() {
   try {
     await revokeSessionCookie();
-    
+
     return NextResponse.json(
       { success: true },
       {
@@ -47,9 +41,6 @@ export async function DELETE() {
     );
   } catch (error) {
     console.error('Error in auth DELETE:', error);
-    return NextResponse.json(
-      { error: 'Logout failed' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Logout failed' }, { status: 500 });
   }
-} 
+}

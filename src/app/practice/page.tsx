@@ -11,6 +11,8 @@ import {
   SectionContent,
 } from '../components/StyledComponents';
 
+export const dynamic = 'force-dynamic';
+
 const PracticeContainer = styled.div`
   display: flex;
   height: calc(100vh - 64px);
@@ -97,7 +99,7 @@ const RequirementItem = styled.li`
   line-height: 1.5;
 
   &:before {
-    content: "•";
+    content: '•';
     color: ${props => props.theme.colors.primary};
     font-weight: bold;
   }
@@ -124,7 +126,8 @@ const ResizeHandle = styled.div`
   transition: background 0.2s ease;
   position: relative;
 
-  &:hover, &:active {
+  &:hover,
+  &:active {
     background: ${props => props.theme.colors.primary};
   }
 
@@ -141,7 +144,8 @@ const ResizeHandle = styled.div`
     transition: opacity 0.2s ease;
   }
 
-  &:hover::after, &:active::after {
+  &:hover::after,
+  &:active::after {
     opacity: 1;
   }
 `;
@@ -257,25 +261,33 @@ export default App;`,
 export default function PracticePage() {
   const [editorHeight, setEditorHeight] = useState(50);
   const [isResizing, setIsResizing] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedStatus, setSelectedStatus] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<string>('newest');
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     setIsResizing(true);
     e.preventDefault();
   }, []);
 
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    if (!isResizing) return;
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (!isResizing) return;
 
-    const container = document.querySelector('.sp-layout') as HTMLElement;
-    if (!container) return;
+      const container = document.querySelector('.sp-layout') as HTMLElement;
+      if (!container) return;
 
-    const containerRect = container.getBoundingClientRect();
-    const newHeight = ((e.clientY - containerRect.top) / containerRect.height) * 100;
-    
-    // Limit the height between 20% and 80%
-    const clampedHeight = Math.min(Math.max(newHeight, 20), 80);
-    setEditorHeight(clampedHeight);
-  }, [isResizing]);
+      const containerRect = container.getBoundingClientRect();
+      const newHeight = ((e.clientY - containerRect.top) / containerRect.height) * 100;
+
+      // Limit the height between 20% and 80%
+      const clampedHeight = Math.min(Math.max(newHeight, 20), 80);
+      setEditorHeight(clampedHeight);
+    },
+    [isResizing]
+  );
 
   const handleMouseUp = useCallback(() => {
     setIsResizing(false);
@@ -295,7 +307,7 @@ export default function PracticePage() {
 
   return (
     <PageContainer style={{ padding: 0, height: '100vh', overflow: 'hidden' }}>
-      <Header />
+      <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} />
       <PracticeContainer>
         <ProblemSection>
           <ProblemHeader>
@@ -308,49 +320,41 @@ export default function PracticePage() {
           </ProblemHeader>
 
           <ProblemDescription>
-            Create a simple Todo List application that allows users to manage their tasks efficiently. 
-            The application should be responsive, user-friendly, and implement all the core features 
-            of a modern todo list.
+            Create a simple Todo List application that allows users to manage their tasks
+            efficiently. The application should be responsive, user-friendly, and implement all the
+            core features of a modern todo list.
           </ProblemDescription>
 
-          <SectionTitle>Requirements</SectionTitle>
+          <SectionTitle>Let&apos;s practice system design problems</SectionTitle>
           <RequirementsList>
             <RequirementItem>
               Implement a form to add new todos with a text input and submit button
             </RequirementItem>
-            <RequirementItem>
-              Display a list of todos with their completion status
-            </RequirementItem>
+            <RequirementItem>Display a list of todos with their completion status</RequirementItem>
             <RequirementItem>
               Allow users to toggle todo completion status by clicking on the todo
             </RequirementItem>
-            <RequirementItem>
-              Add a delete button to remove todos
-            </RequirementItem>
+            <RequirementItem>Add a delete button to remove todos</RequirementItem>
             <RequirementItem>
               Implement filtering functionality (All, Active, Completed)
             </RequirementItem>
           </RequirementsList>
 
-          <SectionTitle>Bonus Features</SectionTitle>
+          <SectionTitle>Let&apos;s solve real-world system design challenges</SectionTitle>
           <RequirementsList>
             <RequirementItem>
               Add local storage persistence to save todos between sessions
             </RequirementItem>
-            <RequirementItem>
-              Implement due dates for todos with date picker
-            </RequirementItem>
-            <RequirementItem>
-              Add categories or tags for better organization
-            </RequirementItem>
+            <RequirementItem>Implement due dates for todos with date picker</RequirementItem>
+            <RequirementItem>Add categories or tags for better organization</RequirementItem>
           </RequirementsList>
 
           <HintSection>
             <HintTitle>💡 Hint</HintTitle>
             <ProblemDescription>
-              Consider using React's useState and useEffect hooks for state management. 
-              For styling, you can use CSS modules or styled-components. Don't forget to 
-              handle edge cases like empty todos and duplicate entries.
+              Consider using React's useState and useEffect hooks for state management. For styling,
+              you can use CSS modules or styled-components. Don't forget to handle edge cases like
+              empty todos and duplicate entries.
             </ProblemDescription>
           </HintSection>
         </ProblemSection>
@@ -369,7 +373,7 @@ export default function PracticePage() {
               showConsoleButton: true,
               showRefreshButton: true,
               autorun: true,
-              recompileMode: "immediate",
+              recompileMode: 'immediate',
               recompileDelay: 300,
             }}
             theme="dark"
@@ -382,4 +386,4 @@ export default function PracticePage() {
       </PracticeContainer>
     </PageContainer>
   );
-} 
+}

@@ -4,7 +4,7 @@ const withMDX = createMDX({
   options: {
     remarkPlugins: [],
     rehypePlugins: [],
-    providerImportSource: "@mdx-js/react",
+    providerImportSource: '@mdx-js/react',
   },
 });
 
@@ -14,4 +14,4 @@ const nextConfig = {
   swcMinify: true,
 };
 
-export default withMDX(nextConfig); 
+export default withMDX(nextConfig);

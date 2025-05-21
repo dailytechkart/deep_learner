@@ -36,7 +36,7 @@ const SearchIconContainer = styled.div`
 const SearchIcon = styled.svg`
   height: 1.25rem;
   width: 1.25rem;
-  color: ${props => props.theme.colors.text.secondary};
+  color: ${props => props.theme.colors.textSecondary};
 `;
 
 interface SearchBarProps {
@@ -45,14 +45,18 @@ interface SearchBarProps {
   onChange?: (value: string) => void;
 }
 
-export default function SearchBar({ placeholder = 'Search...', value = '', onChange }: SearchBarProps) {
+export default function SearchBar({
+  placeholder = 'Search...',
+  value = '',
+  onChange,
+}: SearchBarProps) {
   return (
     <SearchContainer>
       <SearchInput
         type="text"
         placeholder={placeholder}
         value={value}
-        onChange={(e) => onChange?.(e.target.value)}
+        onChange={e => onChange?.(e.target.value)}
       />
       <SearchIconContainer>
         <SearchIcon
@@ -71,4 +75,4 @@ export default function SearchBar({ placeholder = 'Search...', value = '', onCha
       </SearchIconContainer>
     </SearchContainer>
   );
-} 
+}

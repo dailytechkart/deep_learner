@@ -31,18 +31,18 @@ const DifficultyBadge = styled.span<{ $difficulty: 'Easy' | 'Medium' | 'Hard' }>
     switch (props.$difficulty) {
       case 'Easy':
         return `
-          background: ${props.theme.colors.success}20;
-          color: ${props.theme.colors.success};
+          background: ${props.theme.colors.status.success}20;
+          color: ${props.theme.colors.status.success};
         `;
       case 'Medium':
         return `
-          background: ${props.theme.colors.warning}20;
-          color: ${props.theme.colors.warning};
+          background: ${props.theme.colors.status.warning}20;
+          color: ${props.theme.colors.status.warning};
         `;
       case 'Hard':
         return `
-          background: ${props.theme.colors.error}20;
-          color: ${props.theme.colors.error};
+          background: ${props.theme.colors.status.error}20;
+          color: ${props.theme.colors.status.error};
         `;
     }
   }}
@@ -136,20 +136,20 @@ const problems: Record<string, Problem> = {
       {
         input: 'nums = [2,7,11,15], target = 9',
         output: '[0,1]',
-        explanation: 'Because nums[0] + nums[1] == 9, we return [0, 1].'
+        explanation: 'Because nums[0] + nums[1] == 9, we return [0, 1].',
       },
       {
         input: 'nums = [3,2,4], target = 6',
-        output: '[1,2]'
-      }
+        output: '[1,2]',
+      },
     ],
     constraints: [
       '2 <= nums.length <= 104',
       '-109 <= nums[i] <= 109',
       '-109 <= target <= 109',
-      'Only one valid answer exists.'
-    ]
-  }
+      'Only one valid answer exists.',
+    ],
+  },
 };
 
 export default function ProblemStatement({ problemId }: { problemId: string }) {
@@ -163,9 +163,7 @@ export default function ProblemStatement({ problemId }: { problemId: string }) {
     <ProblemContainer>
       <ProblemHeader>
         <Title>{problem.title}</Title>
-        <DifficultyBadge $difficulty={problem.difficulty}>
-          {problem.difficulty}
-        </DifficultyBadge>
+        <DifficultyBadge $difficulty={problem.difficulty}>{problem.difficulty}</DifficultyBadge>
       </ProblemHeader>
 
       <Section>
@@ -181,9 +179,7 @@ export default function ProblemStatement({ problemId }: { problemId: string }) {
             <CodeBlock>
               <div>Input: {example.input}</div>
               <div>Output: {example.output}</div>
-              {example.explanation && (
-                <div>Explanation: {example.explanation}</div>
-              )}
+              {example.explanation && <div>Explanation: {example.explanation}</div>}
             </CodeBlock>
           </ExampleContainer>
         ))}
@@ -199,4 +195,4 @@ export default function ProblemStatement({ problemId }: { problemId: string }) {
       </Section>
     </ProblemContainer>
   );
-} 
+}

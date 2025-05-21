@@ -26,8 +26,9 @@ const Checkbox = styled.div<{ checked: boolean }>`
   width: 1.25rem;
   height: 1.25rem;
   border-radius: 0.25rem;
-  border: 2px solid ${props => props.checked ? props.theme.colors.primary : props.theme.colors.border};
-  background-color: ${props => props.checked ? props.theme.colors.primary : 'transparent'};
+  border: 2px solid
+    ${props => (props.checked ? props.theme.colors.primary : props.theme.colors.border)};
+  background-color: ${props => (props.checked ? props.theme.colors.primary : 'transparent')};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,14 +44,14 @@ const CheckIcon = styled.svg<{ checked: boolean }>`
   width: 0.75rem;
   height: 0.75rem;
   color: ${props => props.theme.colors.background};
-  opacity: ${props => props.checked ? 1 : 0};
+  opacity: ${props => (props.checked ? 1 : 0)};
   transition: opacity 0.2s ease;
 `;
 
 const Label = styled.span<{ checked: boolean }>`
   flex: 1;
-  color: ${props => props.checked ? props.theme.colors.textSecondary : props.theme.colors.text};
-  text-decoration: ${props => props.checked ? 'line-through' : 'none'};
+  color: ${props => (props.checked ? props.theme.colors.textSecondary : props.theme.colors.text)};
+  text-decoration: ${props => (props.checked ? 'line-through' : 'none')};
   transition: all 0.2s ease;
 `;
 
@@ -69,7 +70,7 @@ interface ChecklistProps {
 export default function Checklist({ items, onToggle, className }: ChecklistProps) {
   return (
     <ChecklistContainer className={className}>
-      {items.map((item) => (
+      {items.map(item => (
         <ChecklistItemWrapper key={item.id}>
           <Checkbox checked={item.completed} onClick={() => onToggle(item.id)}>
             <CheckIcon
@@ -90,4 +91,4 @@ export default function Checklist({ items, onToggle, className }: ChecklistProps
       ))}
     </ChecklistContainer>
   );
-} 
+}

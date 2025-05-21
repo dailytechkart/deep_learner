@@ -11,4 +11,4 @@ const CoursePage: React.FC<CoursePageProps> = ({ params }) => {
   return <CourseDetail courseId={params.courseId} />;
 };
 
-export default CoursePage; 
+export default CoursePage;

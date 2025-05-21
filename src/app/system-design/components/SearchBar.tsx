@@ -33,16 +33,20 @@ interface SearchBarProps {
   placeholder?: string;
 }
 
-export default function SearchBar({ value, onChange, placeholder = 'Search problems...' }: SearchBarProps) {
+export default function SearchBar({
+  value,
+  onChange,
+  placeholder = 'Search problems...',
+}: SearchBarProps) {
   return (
     <SearchContainer>
       <SearchInput
         type="text"
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={e => onChange(e.target.value)}
         placeholder={placeholder}
         aria-label="Search problems"
       />
     </SearchContainer>
   );
-} 
+}

@@ -22,7 +22,11 @@ export const Title = styled.h1`
   font-size: 2.5rem;
   font-weight: 800;
   margin: 0 0 1rem;
-  background: linear-gradient(135deg, ${props => props.theme.colors.primary} 0%, ${props => props.theme.colors.secondary} 100%);
+  background: linear-gradient(
+    135deg,
+    ${props => props.theme.colors.primary} 0%,
+    ${props => props.theme.colors.secondary} 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.02em;
@@ -169,7 +173,11 @@ export const ProgressBar = styled.div<{ progress: number }>`
     display: block;
     width: ${props => props.progress}%;
     height: 100%;
-    background: linear-gradient(90deg, ${props => props.theme.colors.primary} 0%, ${props => props.theme.colors.secondary} 100%);
+    background: linear-gradient(
+      90deg,
+      ${props => props.theme.colors.primary} 0%,
+      ${props => props.theme.colors.secondary} 100%
+    );
     border-radius: 2px;
     transition: width 0.3s ease;
   }
@@ -203,4 +211,4 @@ export const Stat = styled.div`
   svg {
     color: ${props => props.theme.colors.primary};
   }
-`; 
+`;

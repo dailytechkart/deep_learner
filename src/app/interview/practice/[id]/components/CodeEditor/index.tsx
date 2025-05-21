@@ -103,8 +103,8 @@ function twoSum(nums, target) {
  */
 function twoSum(nums: number[], target: number): number[] {
     // Write your code here
-}`
-  }
+}`,
+  },
 };
 
 export default function CodeEditor({ problemId }: { problemId: string }) {
@@ -134,9 +134,7 @@ export default function CodeEditor({ problemId }: { problemId: string }) {
           </LanguageSelector>
         </ToolbarLeft>
         <ToolbarRight>
-          <ThemeToggle onClick={toggleTheme}>
-            {isDarkMode ? '🌞 Light' : '🌙 Dark'}
-          </ThemeToggle>
+          <ThemeToggle onClick={toggleTheme}>{isDarkMode ? '🌞 Light' : '🌙 Dark'}</ThemeToggle>
         </ToolbarRight>
       </EditorToolbar>
       <EditorWrapper>
@@ -159,10 +157,10 @@ export default function CodeEditor({ problemId }: { problemId: string }) {
             suggestOnTriggerCharacters: true,
             formatOnPaste: true,
             formatOnType: true,
-            snippetSuggestions: 'inline'
+            snippetSuggestions: 'inline',
           }}
         />
       </EditorWrapper>
     </EditorContainer>
   );
-} 
+}

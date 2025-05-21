@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useCourses } from '../hooks/useCourses';
@@ -53,7 +55,7 @@ const ProgressBar = styled.div<{ progress: number }>`
     display: block;
     height: 100%;
     width: ${props => props.progress}%;
-    background: #4CAF50;
+    background: #4caf50;
     transition: width 0.3s ease-in-out;
   }
 `;
@@ -68,11 +70,12 @@ const LessonCard = styled.div<{ isCompleted: boolean; isCurrent: boolean }>`
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-left: 4px solid ${props => {
-    if (props.isCompleted) return '#4CAF50';
-    if (props.isCurrent) return '#007bff';
-    return '#e0e0e0';
-  }};
+  border-left: 4px solid
+    ${props => {
+      if (props.isCompleted) return '#4CAF50';
+      if (props.isCurrent) return '#007bff';
+      return '#e0e0e0';
+    }};
   cursor: pointer;
   transition: transform 0.2s ease-in-out;
 
@@ -108,13 +111,7 @@ interface CourseDetailProps {
 const CourseDetail: React.FC<CourseDetailProps> = ({ courseId }) => {
   const [selectedLesson, setSelectedLesson] = useState<string | null>(null);
   const [courseProgress, setCourseProgress] = useState<UserProgress | null>(null);
-  const {
-    courses,
-    loading,
-    error,
-    updateProgress,
-    getCourseProgress
-  } = useCourses();
+  const { courses, loading, error, updateProgress, getCourseProgress } = useCourses();
 
   const course = courses.find((c: Course) => c.id === courseId);
 
@@ -198,18 +195,16 @@ const CourseDetail: React.FC<CourseDetailProps> = ({ courseId }) => {
           <div>{currentLesson.content}</div>
           {currentLesson.videoUrl && (
             <div style={{ marginTop: '1rem' }}>
-              <video
-                controls
-                width="100%"
-                src={currentLesson.videoUrl}
-              />
+              <video controls width="100%" src={currentLesson.videoUrl} />
             </div>
           )}
           <button
-            onClick={() => handleLessonComplete(
-              currentLesson.id,
-              !courseProgress?.completedLessons.includes(currentLesson.id)
-            )}
+            onClick={() =>
+              handleLessonComplete(
+                currentLesson.id,
+                !courseProgress?.completedLessons.includes(currentLesson.id)
+              )
+            }
           >
             {courseProgress?.completedLessons.includes(currentLesson.id)
               ? 'Mark as Incomplete'
@@ -221,4 +216,4 @@ const CourseDetail: React.FC<CourseDetailProps> = ({ courseId }) => {
   );
 };
 
-export default CourseDetail; 
+export default CourseDetail;

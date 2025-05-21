@@ -2,8 +2,24 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { Layout, Section, SectionHeader, SectionTitle, SectionContent, Grid } from '../../components/Layout';
+import {
+  Layout,
+  Section,
+  SectionHeader,
+  SectionTitle,
+  SectionContent,
+  Grid,
+} from '../../components/Layout';
 import Link from 'next/link';
+import {
+  PageContainer,
+  MainContent,
+  Title,
+  Description,
+  Content,
+} from '../../components/StyledComponents';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
+import SEO from '@/components/SEO';
 
 const Card = styled.div`
   background: ${props => props.theme.colors.background};
@@ -66,177 +82,177 @@ export default function SystemDesignPatternsPage() {
   const patterns = [
     {
       title: 'Component Architecture',
-      description: 'Design reusable, maintainable, and scalable component hierarchies for modern web applications.',
+      description:
+        'Design reusable, maintainable, and scalable component hierarchies for modern web applications.',
       category: 'Frontend',
-      link: '/system-design/patterns/component-architecture'
+      link: '/system-design/patterns/component-architecture',
     },
     {
       title: 'State Management',
-      description: 'Implement efficient state management patterns for complex frontend applications.',
+      description:
+        'Implement efficient state management patterns for complex frontend applications.',
       category: 'Frontend',
-      link: '/system-design/patterns/state-management'
+      link: '/system-design/patterns/state-management',
     },
     {
       title: 'Micro Frontends',
-      description: 'Break down frontend monoliths into smaller, independently deployable applications.',
+      description:
+        'Break down frontend monoliths into smaller, independently deployable applications.',
       category: 'Frontend',
-      link: '/system-design/patterns/micro-frontends'
+      link: '/system-design/patterns/micro-frontends',
     },
     {
       title: 'Load Balancer Pattern',
-      description: 'Distribute incoming network traffic across multiple servers to ensure high availability and reliability.',
+      description:
+        'Distribute incoming network traffic across multiple servers to ensure high availability and reliability.',
       category: 'Backend',
-      link: '/system-design/patterns/load-balancer'
+      link: '/system-design/patterns/load-balancer',
     },
     {
       title: 'Caching Pattern',
-      description: 'Store frequently accessed data in memory to improve response time and reduce database load.',
+      description:
+        'Store frequently accessed data in memory to improve response time and reduce database load.',
       category: 'Backend',
-      link: '/system-design/patterns/caching'
+      link: '/system-design/patterns/caching',
     },
     {
       title: 'Circuit Breaker Pattern',
-      description: 'Prevent cascading failures by detecting and handling faults in distributed systems.',
+      description:
+        'Prevent cascading failures by detecting and handling faults in distributed systems.',
       category: 'Backend',
-      link: '/system-design/patterns/circuit-breaker'
+      link: '/system-design/patterns/circuit-breaker',
     },
     {
       title: 'Event-Driven Architecture',
-      description: 'Design systems that communicate through events, enabling loose coupling and scalability.',
+      description:
+        'Design systems that communicate through events, enabling loose coupling and scalability.',
       category: 'Architecture',
-      link: '/system-design/patterns/event-driven'
+      link: '/system-design/patterns/event-driven',
     },
     {
       title: 'Microservices Pattern',
-      description: 'Break down applications into small, independent services that can be developed and deployed separately.',
+      description:
+        'Break down applications into small, independent services that can be developed and deployed separately.',
       category: 'Architecture',
-      link: '/system-design/patterns/microservices'
+      link: '/system-design/patterns/microservices',
     },
     {
       title: 'Database Sharding',
-      description: 'Split a database into smaller, more manageable pieces to improve performance and scalability.',
+      description:
+        'Split a database into smaller, more manageable pieces to improve performance and scalability.',
       category: 'Backend',
-      link: '/system-design/patterns/sharding'
-    }
+      link: '/system-design/patterns/sharding',
+    },
   ];
 
   return (
-    <Layout
-      title="System Design Patterns"
-      description="Explore common system design patterns and learn how to apply them to build scalable, reliable, and efficient systems."
-    >
-      <Section>
-        <SectionHeader>
-          <SectionTitle>Frontend Patterns</SectionTitle>
-        </SectionHeader>
-        <SectionContent>
-          <Grid>
-            {patterns
-              .filter(pattern => pattern.category === 'Frontend')
-              .map((pattern, index) => (
-                <Card key={index}>
-                  <Badge>{pattern.category}</Badge>
-                  <CardTitle>{pattern.title}</CardTitle>
-                  <CardDescription>{pattern.description}</CardDescription>
-                  <CardLink href={pattern.link}>
-                    Learn More →
-                  </CardLink>
-                </Card>
-              ))}
-          </Grid>
-        </SectionContent>
-      </Section>
+    <>
+      <SEO
+        title="System Design Patterns"
+        description="Learn about common system design patterns and architectural solutions. Understand how to apply these patterns to build scalable and maintainable systems."
+        keywords={[
+          'system design',
+          'design patterns',
+          'architecture patterns',
+          'scalability patterns',
+          'distributed systems',
+          'microservices',
+          'event-driven architecture',
+        ]}
+      />
+      <PageContainer>
+        <MainContent>
+          <Breadcrumbs
+            items={[{ label: 'System Design', href: '/system-design' }, { label: 'Patterns' }]}
+          />
+          <Title>System Design Patterns</Title>
+          <Description>
+            Learn about common system design patterns and architectural solutions. Understand how to
+            apply these patterns to build scalable and maintainable systems.
+          </Description>
 
-      <Section>
-        <SectionHeader>
-          <SectionTitle>Backend Patterns</SectionTitle>
-        </SectionHeader>
-        <SectionContent>
-          <Grid>
-            {patterns
-              .filter(pattern => pattern.category === 'Backend')
-              .map((pattern, index) => (
-                <Card key={index}>
-                  <Badge>{pattern.category}</Badge>
-                  <CardTitle>{pattern.title}</CardTitle>
-                  <CardDescription>{pattern.description}</CardDescription>
-                  <CardLink href={pattern.link}>
-                    Learn More →
-                  </CardLink>
-                </Card>
-              ))}
-          </Grid>
-        </SectionContent>
-      </Section>
+          <Section>
+            <SectionTitle>Microservices Architecture</SectionTitle>
+            <Content>
+              <p>
+                Breaking down applications into small, independent services that communicate through
+                APIs. Benefits include:
+              </p>
+              <ul>
+                <li>Independent deployment and scaling</li>
+                <li>Technology diversity</li>
+                <li>Fault isolation</li>
+                <li>Team autonomy</li>
+              </ul>
+            </Content>
+          </Section>
 
-      <Section>
-        <SectionHeader>
-          <SectionTitle>Architecture Patterns</SectionTitle>
-        </SectionHeader>
-        <SectionContent>
-          <Grid>
-            {patterns
-              .filter(pattern => pattern.category === 'Architecture')
-              .map((pattern, index) => (
-                <Card key={index}>
-                  <Badge>{pattern.category}</Badge>
-                  <CardTitle>{pattern.title}</CardTitle>
-                  <CardDescription>{pattern.description}</CardDescription>
-                  <CardLink href={pattern.link}>
-                    Learn More →
-                  </CardLink>
-                </Card>
-              ))}
-          </Grid>
-        </SectionContent>
-      </Section>
+          <Section>
+            <SectionTitle>Event-Driven Architecture</SectionTitle>
+            <Content>
+              <p>
+                Using events to trigger and communicate between decoupled services. Key components:
+              </p>
+              <ul>
+                <li>Event producers and consumers</li>
+                <li>Message brokers</li>
+                <li>Event stores</li>
+                <li>Event processing patterns</li>
+              </ul>
+            </Content>
+          </Section>
 
-      <Section>
-        <SectionHeader>
-          <SectionTitle>About Design Patterns</SectionTitle>
-        </SectionHeader>
-        <SectionContent>
-          <p>
-            System design patterns are reusable solutions to common problems in software architecture.
-            They help you build systems that are scalable, reliable, and maintainable.
-          </p>
-          <p>
-            Frontend patterns focus on:
-          </p>
-          <ul>
-            <li>Component architecture and composition</li>
-            <li>State management and data flow</li>
-            <li>Performance optimization</li>
-            <li>Code splitting and lazy loading</li>
-            <li>Micro frontend architecture</li>
-          </ul>
-          <p>
-            Backend patterns address:
-          </p>
-          <ul>
-            <li>Scalability and load balancing</li>
-            <li>Caching and performance</li>
-            <li>Fault tolerance and reliability</li>
-            <li>Database design and optimization</li>
-            <li>Service communication</li>
-          </ul>
-          <p>
-            Architecture patterns provide high-level solutions for:
-          </p>
-          <ul>
-            <li>System decomposition</li>
-            <li>Service boundaries</li>
-            <li>Event-driven communication</li>
-            <li>Distributed systems</li>
-            <li>Cross-cutting concerns</li>
-          </ul>
-          <p>
-            Explore the patterns above to learn more about their use cases, implementation details,
-            and best practices. Each pattern includes real-world examples and practical guidance
-            for implementation.
-          </p>
-        </SectionContent>
-      </Section>
-    </Layout>
+          <Section>
+            <SectionTitle>Circuit Breaker Pattern</SectionTitle>
+            <Content>
+              <p>
+                Preventing cascading failures in distributed systems by monitoring for failures and
+                stopping the flow of requests when necessary.
+              </p>
+              <h3>States</h3>
+              <ul>
+                <li>Closed (normal operation)</li>
+                <li>Open (failing fast)</li>
+                <li>Half-open (testing recovery)</li>
+              </ul>
+            </Content>
+          </Section>
+
+          <Section>
+            <SectionTitle>CQRS Pattern</SectionTitle>
+            <Content>
+              <p>
+                Command Query Responsibility Segregation separates read and write operations for
+                better scalability and performance.
+              </p>
+              <h3>Components</h3>
+              <ul>
+                <li>Command model (write operations)</li>
+                <li>Query model (read operations)</li>
+                <li>Event sourcing</li>
+                <li>Materialized views</li>
+              </ul>
+            </Content>
+          </Section>
+
+          <Section>
+            <SectionTitle>Load Balancing Patterns</SectionTitle>
+            <Content>
+              <p>
+                Distributing incoming network traffic across multiple servers to ensure reliability
+                and performance.
+              </p>
+              <h3>Strategies</h3>
+              <ul>
+                <li>Round-robin</li>
+                <li>Least connections</li>
+                <li>IP hash</li>
+                <li>Weighted distribution</li>
+              </ul>
+            </Content>
+          </Section>
+        </MainContent>
+      </PageContainer>
+    </>
   );
-} 
+}

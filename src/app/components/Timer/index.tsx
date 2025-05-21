@@ -6,11 +6,7 @@ interface TimerProps {
   className?: string;
 }
 
-export const Timer: React.FC<TimerProps> = ({
-  initialTime,
-  onComplete,
-  className = '',
-}) => {
+export const Timer: React.FC<TimerProps> = ({ initialTime, onComplete, className = '' }) => {
   const [timeLeft, setTimeLeft] = useState(initialTime);
   const [isRunning, setIsRunning] = useState(false);
 
@@ -19,7 +15,7 @@ export const Timer: React.FC<TimerProps> = ({
 
     if (isRunning && timeLeft > 0) {
       interval = setInterval(() => {
-        setTimeLeft((prev) => {
+        setTimeLeft(prev => {
           if (prev <= 1) {
             setIsRunning(false);
             onComplete?.();
@@ -36,9 +32,7 @@ export const Timer: React.FC<TimerProps> = ({
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds
-      .toString()
-      .padStart(2, '0')}`;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
   const toggleTimer = () => {
@@ -52,9 +46,7 @@ export const Timer: React.FC<TimerProps> = ({
 
   return (
     <div className={`flex flex-col items-center space-y-4 ${className}`}>
-      <div className="text-4xl font-mono font-bold text-gray-900">
-        {formatTime(timeLeft)}
-      </div>
+      <div className="text-4xl font-mono font-bold text-gray-900">{formatTime(timeLeft)}</div>
       <div className="flex space-x-4">
         <button
           onClick={toggleTimer}
@@ -71,4 +63,4 @@ export const Timer: React.FC<TimerProps> = ({
       </div>
     </div>
   );
-}; 
+};

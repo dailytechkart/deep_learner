@@ -112,9 +112,9 @@ const mockInterviews = [
       '15-minute system design discussion',
       'Detailed feedback and suggestions',
       'Real-time coding environment',
-      'Video recording available'
+      'Video recording available',
     ],
-    href: '/interview/mock/technical'
+    href: '/interview/mock/technical',
   },
   {
     id: 'behavioral',
@@ -126,10 +126,10 @@ const mockInterviews = [
       'STAR method practice',
       'Leadership & teamwork scenarios',
       'Personalized feedback',
-      'Follow-up resources'
+      'Follow-up resources',
     ],
-    href: '/interview/mock/behavioral'
-  }
+    href: '/interview/mock/behavioral',
+  },
 ];
 
 export const MockInterviews: React.FC = () => {
@@ -151,11 +151,9 @@ export const MockInterviews: React.FC = () => {
             ))}
           </FeaturesList>
 
-          <ActionButton href={interview.href}>
-            Schedule Interview
-          </ActionButton>
+          <ActionButton href={interview.href}>Schedule Interview</ActionButton>
         </InterviewCard>
       ))}
     </MockInterviewsContainer>
   );
-}; 
+};

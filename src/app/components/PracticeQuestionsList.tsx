@@ -33,15 +33,15 @@ const Filters = styled.div`
 
 const FilterButton = styled.button<{ active?: boolean }>`
   padding: 8px 16px;
-  border: 2px solid ${props => props.active ? '#2196F3' : '#e0e0e0'};
+  border: 2px solid ${props => (props.active ? '#2196F3' : '#e0e0e0')};
   border-radius: 6px;
-  background: ${props => props.active ? '#E3F2FD' : 'white'};
-  color: ${props => props.active ? '#2196F3' : '#666'};
+  background: ${props => (props.active ? '#E3F2FD' : 'white')};
+  color: ${props => (props.active ? '#2196F3' : '#666')};
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: ${props => props.active ? '#2196F3' : '#bdbdbd'};
+    border-color: ${props => (props.active ? '#2196F3' : '#bdbdbd')};
   }
 `;
 
@@ -146,26 +146,26 @@ export const PracticeQuestionsList: React.FC = () => {
           All
         </FilterButton>
         <FilterButton
-          active={selectedCategory === 'html'}
-          onClick={() => handleCategoryChange('html')}
+          active={selectedCategory === QuestionCategory.HTML}
+          onClick={() => handleCategoryChange(QuestionCategory.HTML)}
         >
           HTML
         </FilterButton>
         <FilterButton
-          active={selectedCategory === 'css'}
-          onClick={() => handleCategoryChange('css')}
+          active={selectedCategory === QuestionCategory.CSS}
+          onClick={() => handleCategoryChange(QuestionCategory.CSS)}
         >
           CSS
         </FilterButton>
         <FilterButton
-          active={selectedCategory === 'javascript'}
-          onClick={() => handleCategoryChange('javascript')}
+          active={selectedCategory === QuestionCategory.JAVASCRIPT}
+          onClick={() => handleCategoryChange(QuestionCategory.JAVASCRIPT)}
         >
           JavaScript
         </FilterButton>
         <FilterButton
-          active={selectedCategory === 'react'}
-          onClick={() => handleCategoryChange('react')}
+          active={selectedCategory === QuestionCategory.REACT}
+          onClick={() => handleCategoryChange(QuestionCategory.REACT)}
         >
           React
         </FilterButton>
@@ -185,4 +185,4 @@ export const PracticeQuestionsList: React.FC = () => {
       ))}
     </Container>
   );
-}; 
+};

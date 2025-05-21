@@ -1,8 +1,26 @@
 'use client';
 
-import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
+import React, {
+  useState,
+  useRef,
+  useLayoutEffect,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import styled, { css } from 'styled-components';
-import { FaCheckCircle, FaCircle, FaDotCircle, FaInfoCircle, FaChevronLeft, FaChevronRight, FaCheck, FaClock, FaBook, FaCode } from 'react-icons/fa';
+import {
+  FaCheckCircle,
+  FaCircle,
+  FaDotCircle,
+  FaInfoCircle,
+  FaChevronLeft,
+  FaChevronRight,
+  FaCheck,
+  FaClock,
+  FaBook,
+  FaCode,
+} from 'react-icons/fa';
 import Link from 'next/link';
 import ReactFlow, {
   Background,
@@ -36,7 +54,7 @@ import {
   ProgressBar,
   SectionProgress,
   SectionStats,
-  Stat
+  Stat,
 } from './RoadmapPage.styled';
 
 const NODE_COLOR = '#fffbe6';
@@ -121,8 +139,8 @@ const roadmapData: RoadmapNode[] = [
             label: 'Tailwind Plugins',
             description: 'Typography, forms, custom plugins.',
             roles: ['SDE2'],
-          }
-        ]
+          },
+        ],
       },
       {
         id: 'architecture',
@@ -156,7 +174,7 @@ const roadmapData: RoadmapNode[] = [
             description: 'Pure functions, immutability, map/filter/reduce.',
             roles: ['SDE2', 'SDE3'],
           },
-        ]
+        ],
       },
       {
         id: 'ts',
@@ -267,18 +285,19 @@ const RoleFilterBar = styled.div`
 const RoleChip = styled.button<{ active: boolean }>`
   padding: 8px 18px;
   border-radius: 999px;
-  border: 2px solid ${({ active, theme }) => active ? theme.colors.primary : theme.colors.border};
-  background: ${({ active, theme }) => active ? theme.colors.primary : 'white'};
-  color: ${({ active, theme }) => active ? '#fff' : theme.colors.text};
+  border: 2px solid ${({ active, theme }) => (active ? theme.colors.primary : theme.colors.border)};
+  background: ${({ active, theme }) => (active ? theme.colors.primary : 'white')};
+  color: ${({ active, theme }) => (active ? '#fff' : theme.colors.text)};
   font-size: 0.95em;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   outline: none;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   &:hover {
     border-color: ${({ theme }) => theme.colors.primary};
-    background: ${({ active, theme }) => active ? theme.colors.primary : 'rgba(108, 99, 255, 0.08)'};
+    background: ${({ active, theme }) =>
+      active ? theme.colors.primary : 'rgba(108, 99, 255, 0.08)'};
     transform: translateY(-1px);
   }
   &:active {
@@ -305,12 +324,18 @@ const TreeColumn = styled.div`
   padding: 20px 0;
 `;
 
-const NodeBubble = styled.div<{ highlighted: boolean; expanded: boolean; level: number; isStep: boolean }>`
-  background: ${({ isStep }) => isStep ? '#f0f7ff' : NODE_COLOR};
-  border: 2.5px solid ${({ isStep }) => isStep ? '#4a90e2' : NODE_BORDER};
+const NodeBubble = styled.div<{
+  highlighted: boolean;
+  expanded: boolean;
+  level: number;
+  isStep: boolean;
+}>`
+  background: ${({ isStep }) => (isStep ? '#f0f7ff' : NODE_COLOR)};
+  border: 2.5px solid ${({ isStep }) => (isStep ? '#4a90e2' : NODE_BORDER)};
   border-radius: 32px;
   padding: 20px 28px 18px 28px;
-  box-shadow: 0 4px 16px ${({ isStep }) => isStep ? 'rgba(74,144,226,0.08)' : 'rgba(247,201,72,0.08)'};
+  box-shadow: 0 4px 16px
+    ${({ isStep }) => (isStep ? 'rgba(74,144,226,0.08)' : 'rgba(247,201,72,0.08)')};
   transition: all 0.2s ease;
   cursor: pointer;
   z-index: 1;
@@ -319,13 +344,17 @@ const NodeBubble = styled.div<{ highlighted: boolean; expanded: boolean; level: 
   align-items: center;
   min-width: 260px;
   max-width: 100%;
-  opacity: ${({ highlighted }) => highlighted ? 1 : 0.5};
-  transform: ${({ level }) => level > 0 ? `translateX(${level * 20}px)` : 'none'};
+  opacity: ${({ highlighted }) => (highlighted ? 1 : 0.5)};
+  transform: ${({ level }) => (level > 0 ? `translateX(${level * 20}px)` : 'none')};
   &:hover {
-    box-shadow: 0 8px 32px ${({ isStep }) => isStep ? 'rgba(74,144,226,0.15)' : 'rgba(247,201,72,0.15)'};
-    border-color: ${({ isStep }) => isStep ? '#4a90e2' : '#f7b500'};
-    background: ${({ isStep }) => isStep ? '#e6f0ff' : '#fff9d6'};
-    transform: ${({ level }) => level > 0 ? `translateX(${level * 20}px) translateY(-2px) scale(1.012)` : 'translateY(-2px) scale(1.012)'};
+    box-shadow: 0 8px 32px
+      ${({ isStep }) => (isStep ? 'rgba(74,144,226,0.15)' : 'rgba(247,201,72,0.15)')};
+    border-color: ${({ isStep }) => (isStep ? '#4a90e2' : '#f7b500')};
+    background: ${({ isStep }) => (isStep ? '#e6f0ff' : '#fff9d6')};
+    transform: ${({ level }) =>
+      level > 0
+        ? `translateX(${level * 20}px) translateY(-2px) scale(1.012)`
+        : 'translateY(-2px) scale(1.012)'};
   }
 `;
 
@@ -402,12 +431,14 @@ const ExpandButton = styled.button`
 
 const Chevron = styled.span<{ expanded: boolean }>`
   display: inline-block;
-  transition: transform 0.22s cubic-bezier(.4,2,.6,1);
+  transition: transform 0.22s cubic-bezier(0.4, 2, 0.6, 1);
   font-size: 1.1em;
   margin-right: 2px;
-  ${({ expanded }) => expanded && css`
-    transform: rotate(90deg);
-  `}
+  ${({ expanded }) =>
+    expanded &&
+    css`
+      transform: rotate(90deg);
+    `}
 `;
 
 const ConnectorSVG = styled.svg`
@@ -460,7 +491,7 @@ const RoleSection = styled.div`
   padding: 32px;
   background: white;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 `;
 
 const RoleHeader = styled.div`
@@ -512,24 +543,22 @@ const FlowRow = styled.div`
 `;
 
 const FlowNode = styled.div<{ active: boolean; isChild?: boolean }>`
-  background: ${({ active, isChild }) =>
-    isChild ? '#f0f4ff' : active ? '#fffbe6' : '#f7f7fa'};
+  background: ${({ active, isChild }) => (isChild ? '#f0f4ff' : active ? '#fffbe6' : '#f7f7fa')};
   border: 2px solid
-    ${({ active, isChild }) =>
-      isChild ? '#bfcfff' : active ? '#f7c948' : '#e3e8ff'};
+    ${({ active, isChild }) => (isChild ? '#bfcfff' : active ? '#f7c948' : '#e3e8ff')};
   border-radius: 20px;
   box-shadow: ${({ active, isChild }) =>
     isChild
       ? '0 2px 8px rgba(108,99,255,0.08)'
       : active
-      ? '0 4px 16px rgba(247,201,72,0.10)'
-      : '0 2px 8px rgba(108,99,255,0.04)'};
+        ? '0 4px 16px rgba(247,201,72,0.10)'
+        : '0 2px 8px rgba(108,99,255,0.04)'};
   padding: 18px 18px 14px 18px;
   min-width: 200px;
   max-width: 260px;
   min-height: 120px;
   position: relative;
-  transition: all 0.22s cubic-bezier(.4,2,.6,1);
+  transition: all 0.22s cubic-bezier(0.4, 2, 0.6, 1);
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -538,10 +567,11 @@ const FlowNode = styled.div<{ active: boolean; isChild?: boolean }>`
   height: 100%;
   overflow: visible;
   outline: none;
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     border-color: #4a90e2;
     background: ${({ isChild }) => (isChild ? '#e6f0ff' : '#fff9d6')};
-    box-shadow: 0 8px 32px rgba(74,144,226,0.13);
+    box-shadow: 0 8px 32px rgba(74, 144, 226, 0.13);
   }
 `;
 
@@ -553,10 +583,16 @@ const ChildNodesContainer = styled.div`
   position: relative;
   justify-content: flex-start;
   flex-wrap: wrap;
-  animation: fadeIn 0.4s cubic-bezier(.4,2,.6,1);
+  animation: fadeIn 0.4s cubic-bezier(0.4, 2, 0.6, 1);
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-16px); }
-    to { opacity: 1; transform: none; }
+    from {
+      opacity: 0;
+      transform: translateY(-16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
 `;
 
@@ -594,9 +630,11 @@ const RoleNavBtn = styled.button<{ active: boolean }>`
   cursor: pointer;
   transition: all 0.2s;
   outline: none;
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     border-color: ${({ theme }) => theme.colors.primary};
-    background: ${({ active, theme }) => (active ? theme.colors.primary : 'rgba(108, 99, 255, 0.08)')};
+    background: ${({ active, theme }) =>
+      active ? theme.colors.primary : 'rgba(108, 99, 255, 0.08)'};
     color: ${({ active, theme }) => (active ? '#fff' : theme.colors.primary)};
   }
 `;
@@ -615,7 +653,7 @@ const StepNumberCircle = styled.div<{ active: boolean }>`
   margin-bottom: 10px;
   margin-right: 12px;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(108,99,255,0.06);
+  box-shadow: 0 2px 8px rgba(108, 99, 255, 0.06);
 `;
 
 const StepTitle = styled.h3`
@@ -639,7 +677,8 @@ const StepExpandBtn = styled.button`
   align-items: center;
   border-radius: 4px;
   transition: background 0.2s;
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background: #e6f0ff;
     outline: none;
   }
@@ -662,7 +701,8 @@ const StartLearningBtn = styled.button`
   font-weight: 700;
   cursor: pointer;
   transition: background 0.2s;
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background: #ffe066;
     outline: none;
   }
@@ -676,7 +716,8 @@ const CompleteCheck = styled.button<{ completed: boolean }>`
   margin-right: 10px;
   cursor: pointer;
   transition: color 0.2s;
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     color: #4caf50;
     outline: none;
   }
@@ -689,7 +730,12 @@ const RoleOverview = styled.div`
   margin-bottom: 18px;
 `;
 
-function getTreeLevels(nodes: RoadmapNode[], expandedNodes: Record<string, boolean>, level = 0, levels: RoadmapNode[][] = []): RoadmapNode[][] {
+function getTreeLevels(
+  nodes: RoadmapNode[],
+  expandedNodes: Record<string, boolean>,
+  level = 0,
+  levels: RoadmapNode[][] = []
+): RoadmapNode[][] {
   if (!levels[level]) levels[level] = [];
   nodes.forEach(node => {
     levels[level].push(node);
@@ -708,7 +754,9 @@ function getStatusIcon(status: RoadmapNode['status']) {
 
 function useNodePositions(treeLevels: RoadmapNode[][]) {
   const nodeRefs = useRef<{ [id: string]: HTMLDivElement | null }>({});
-  const [positions, setPositions] = useState<{ [id: string]: { x: number; y: number; width: number; height: number } }>({});
+  const [positions, setPositions] = useState<{
+    [id: string]: { x: number; y: number; width: number; height: number };
+  }>({});
   const isMounted = useRef(true);
   const rafRef = useRef<number>();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -734,11 +782,13 @@ function useNodePositions(treeLevels: RoadmapNode[][]) {
           };
 
           const currentPos = positions[id];
-          if (!currentPos || 
-              currentPos.x !== newPos.x || 
-              currentPos.y !== newPos.y || 
-              currentPos.width !== newPos.width || 
-              currentPos.height !== newPos.height) {
+          if (
+            !currentPos ||
+            currentPos.x !== newPos.x ||
+            currentPos.y !== newPos.y ||
+            currentPos.width !== newPos.width ||
+            currentPos.height !== newPos.height
+          ) {
             newPositions[id] = newPos;
             hasChanges = true;
           } else {
@@ -784,10 +834,11 @@ function useNodePositions(treeLevels: RoadmapNode[][]) {
 }
 
 const roleDescriptions = {
-  SDE1: "Start your frontend journey with these fundamental skills. Focus on mastering the basics before moving to more advanced topics.",
-  SDE2: "Build upon your foundation with intermediate concepts. Learn to create more complex applications and improve your development workflow.",
-  SDE3: "Advance your expertise with advanced topics. Focus on performance, architecture, and leading technical decisions.",
-  Senior: "Master the full spectrum of frontend development. Lead technical initiatives and mentor others in their growth."
+  SDE1: 'Start your frontend journey with these fundamental skills. Focus on mastering the basics before moving to more advanced topics.',
+  SDE2: 'Build upon your foundation with intermediate concepts. Learn to create more complex applications and improve your development workflow.',
+  SDE3: 'Advance your expertise with advanced topics. Focus on performance, architecture, and leading technical decisions.',
+  Senior:
+    'Master the full spectrum of frontend development. Lead technical initiatives and mentor others in their growth.',
 };
 
 const roleSteps = {
@@ -806,8 +857,8 @@ const roleSteps = {
           id: 'html-semantic',
           label: 'Semantic HTML',
           description: 'header, nav, main, section, article, footer, and accessibility.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'css-basics',
@@ -823,8 +874,8 @@ const roleSteps = {
           id: 'css-box-model',
           label: 'Box Model',
           description: 'Margin, padding, border, and box-sizing.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'css-layout',
@@ -840,8 +891,8 @@ const roleSteps = {
           id: 'grid',
           label: 'CSS Grid',
           description: 'Grid container, items, and complex layouts.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'responsive-design',
@@ -857,8 +908,8 @@ const roleSteps = {
           id: 'mobile-first',
           label: 'Mobile-First Design',
           description: 'Mobile-first approach and responsive images.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'js-basics',
@@ -874,8 +925,8 @@ const roleSteps = {
           id: 'js-functions',
           label: 'Functions & Scope',
           description: 'Function declarations, expressions, and scope.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'js-dom',
@@ -891,8 +942,8 @@ const roleSteps = {
           id: 'dom-events',
           label: 'Event Handling',
           description: 'Event listeners, event delegation, and common events.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'js-es6',
@@ -908,8 +959,8 @@ const roleSteps = {
           id: 'es6-modules',
           label: 'Modules & Classes',
           description: 'ES6 modules, classes, and inheritance.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'js-async',
@@ -925,8 +976,8 @@ const roleSteps = {
           id: 'async-await',
           label: 'Async/Await',
           description: 'Async functions, await operator, and error handling.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'js-apis',
@@ -942,8 +993,8 @@ const roleSteps = {
           id: 'local-storage',
           label: 'Storage APIs',
           description: 'localStorage, sessionStorage, and cookies.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'js-debugging',
@@ -959,9 +1010,9 @@ const roleSteps = {
           id: 'error-handling',
           label: 'Error Handling',
           description: 'Try-catch, error types, and debugging strategies.',
-        }
-      ]
-    }
+        },
+      ],
+    },
   ],
   SDE2: [
     {
@@ -978,8 +1029,8 @@ const roleSteps = {
           id: 'react-jsx',
           label: 'JSX & Rendering',
           description: 'JSX syntax, conditional rendering, and lists.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'react-hooks',
@@ -995,8 +1046,8 @@ const roleSteps = {
           id: 'custom-hooks',
           label: 'Custom Hooks',
           description: 'Creating and using custom hooks.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'react-routing',
@@ -1012,8 +1063,8 @@ const roleSteps = {
           id: 'route-params',
           label: 'Route Parameters',
           description: 'Dynamic routes and URL parameters.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'state-management',
@@ -1029,8 +1080,8 @@ const roleSteps = {
           id: 'redux-basics',
           label: 'Redux Basics',
           description: 'Actions, reducers, and store setup.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'form-handling',
@@ -1046,8 +1097,8 @@ const roleSteps = {
           id: 'form-libraries',
           label: 'Form Libraries',
           description: 'Formik, React Hook Form, and validation.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'testing',
@@ -1063,8 +1114,8 @@ const roleSteps = {
           id: 'react-testing',
           label: 'React Testing Library',
           description: 'Component testing and best practices.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'performance',
@@ -1080,8 +1131,8 @@ const roleSteps = {
           id: 'code-splitting',
           label: 'Code Splitting',
           description: 'Dynamic imports and lazy loading.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'styling',
@@ -1097,8 +1148,8 @@ const roleSteps = {
           id: 'styled-components',
           label: 'Styled Components',
           description: 'CSS-in-JS and component styling.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'authentication',
@@ -1114,8 +1165,8 @@ const roleSteps = {
           id: 'protected-routes',
           label: 'Protected Routes',
           description: 'Route protection and auth guards.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'deployment',
@@ -1131,9 +1182,9 @@ const roleSteps = {
           id: 'deployment-platforms',
           label: 'Deployment Platforms',
           description: 'Vercel, Netlify, and AWS deployment.',
-        }
-      ]
-    }
+        },
+      ],
+    },
   ],
   SDE3: [
     {
@@ -1150,8 +1201,8 @@ const roleSteps = {
           id: 'design-patterns',
           label: 'Design Patterns',
           description: 'Common patterns and best practices.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'state-architecture',
@@ -1167,8 +1218,8 @@ const roleSteps = {
           id: 'state-patterns',
           label: 'State Patterns',
           description: 'State machines and complex state patterns.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'performance-advanced',
@@ -1184,8 +1235,8 @@ const roleSteps = {
           id: 'optimization',
           label: 'Advanced Optimization',
           description: 'Virtualization, windowing, and rendering optimization.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'testing-advanced',
@@ -1201,8 +1252,8 @@ const roleSteps = {
           id: 'e2e-testing',
           label: 'E2E Testing',
           description: 'Cypress and Playwright for E2E testing.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'security',
@@ -1218,8 +1269,8 @@ const roleSteps = {
           id: 'auth-security',
           label: 'Auth Security',
           description: 'Secure authentication and authorization.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'micro-frontends',
@@ -1235,8 +1286,8 @@ const roleSteps = {
           id: 'mf-advanced',
           label: 'Advanced Patterns',
           description: 'State management and communication between micro-frontends.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'ssr',
@@ -1252,8 +1303,8 @@ const roleSteps = {
           id: 'ssr-patterns',
           label: 'SSR Patterns',
           description: 'Data fetching and hydration patterns.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'monitoring',
@@ -1269,8 +1320,8 @@ const roleSteps = {
           id: 'analytics',
           label: 'Analytics',
           description: 'User tracking and performance monitoring.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'accessibility',
@@ -1286,8 +1337,8 @@ const roleSteps = {
           id: 'a11y-testing',
           label: 'Accessibility Testing',
           description: 'Automated and manual accessibility testing.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'internationalization',
@@ -1303,9 +1354,9 @@ const roleSteps = {
           id: 'i18n-advanced',
           label: 'Advanced i18n',
           description: 'Formatting, pluralization, and RTL support.',
-        }
-      ]
-    }
+        },
+      ],
+    },
   ],
   Senior: [
     {
@@ -1322,8 +1373,8 @@ const roleSteps = {
           id: 'code-reviews',
           label: 'Code Reviews',
           description: 'Effective code review practices and feedback.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'team-management',
@@ -1339,8 +1390,8 @@ const roleSteps = {
           id: 'mentoring',
           label: 'Mentoring',
           description: 'Technical mentoring and career development.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'process-improvement',
@@ -1356,8 +1407,8 @@ const roleSteps = {
           id: 'ci-cd',
           label: 'CI/CD',
           description: 'Setting up and maintaining CI/CD pipelines.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'quality-assurance',
@@ -1373,8 +1424,8 @@ const roleSteps = {
           id: 'metrics',
           label: 'Quality Metrics',
           description: 'Measuring and improving code quality.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'innovation',
@@ -1390,8 +1441,8 @@ const roleSteps = {
           id: 'poc',
           label: 'Proof of Concepts',
           description: 'Creating and evaluating technical POCs.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'cross-functional',
@@ -1407,8 +1458,8 @@ const roleSteps = {
           id: 'communication',
           label: 'Technical Communication',
           description: 'Effective communication with non-technical stakeholders.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'security-leadership',
@@ -1424,8 +1475,8 @@ const roleSteps = {
           id: 'security-audits',
           label: 'Security Audits',
           description: 'Conducting and managing security audits.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'performance-leadership',
@@ -1441,8 +1492,8 @@ const roleSteps = {
           id: 'monitoring',
           label: 'Performance Monitoring',
           description: 'Setting up and maintaining performance monitoring.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'documentation',
@@ -1458,8 +1509,8 @@ const roleSteps = {
           id: 'knowledge-base',
           label: 'Knowledge Base',
           description: 'Building and maintaining team knowledge bases.',
-        }
-      ]
+        },
+      ],
     },
     {
       id: 'community',
@@ -1475,31 +1526,47 @@ const roleSteps = {
           id: 'speaking',
           label: 'Speaking & Writing',
           description: 'Sharing knowledge through talks and articles.',
-        }
-      ]
-    }
-  ]
+        },
+      ],
+    },
+  ],
 };
 
 // Helper: Convert roadmap data to Mermaid mindmap string
-function roadmapToMermaidMindmap(steps: any[], completedSteps: Record<string, boolean>, level = 0): string {
-  return steps.map(step => {
-    const isComplete = completedSteps[step.id];
-    const emoji = isComplete ? '✅' : (level === 0 ? '🟡' : '🔹');
-    const label = `${emoji} ${step.label.replace(/\n/g, ' ')}`;
-    const children = step.children ? roadmapToMermaidMindmap(step.children, completedSteps, level + 1) : '';
-    return `${'  '.repeat(level + 1)}${label}${children ? `\n${children}` : ''}`;
-  }).join('\n');
+function roadmapToMermaidMindmap(
+  steps: any[],
+  completedSteps: Record<string, boolean>,
+  level = 0
+): string {
+  return steps
+    .map(step => {
+      const isComplete = completedSteps[step.id];
+      const emoji = isComplete ? '✅' : level === 0 ? '🟡' : '🔹';
+      const label = `${emoji} ${step.label.replace(/\n/g, ' ')}`;
+      const children = step.children
+        ? roadmapToMermaidMindmap(step.children, completedSteps, level + 1)
+        : '';
+      return `${'  '.repeat(level + 1)}${label}${children ? `\n${children}` : ''}`;
+    })
+    .join('\n');
 }
 
 const RoadmapPage = () => {
   const { searchQuery, setSearchQuery } = useSearch();
   const [completedItems, setCompletedItems] = useState<Record<string, boolean>>({});
 
+  const handleSearchChange: Dispatch<SetStateAction<string>> = value => {
+    if (typeof value === 'function') {
+      setSearchQuery(value(searchQuery));
+    } else {
+      setSearchQuery(value);
+    }
+  };
+
   const toggleItem = (itemId: string) => {
     setCompletedItems(prev => ({
       ...prev,
-      [itemId]: !prev[itemId]
+      [itemId]: !prev[itemId],
     }));
   };
 
@@ -1514,13 +1581,13 @@ const RoadmapPage = () => {
       <CardContent>
         <ul>
           {items.map((item, index) => (
-            <li 
+            <li
               key={index}
               onClick={() => toggleItem(`${sectionId}-${index}`)}
-              style={{ 
+              style={{
                 cursor: 'pointer',
                 textDecoration: completedItems[`${sectionId}-${index}`] ? 'line-through' : 'none',
-                opacity: completedItems[`${sectionId}-${index}`] ? 0.7 : 1
+                opacity: completedItems[`${sectionId}-${index}`] ? 0.7 : 1,
               }}
             >
               {item}
@@ -1538,16 +1605,15 @@ const RoadmapPage = () => {
           {items.length} total
         </Stat>
       </SectionStats>
-      <ProgressBar progress={getSectionProgress(items.map((_, index) => `${sectionId}-${index}`))} />
+      <ProgressBar
+        progress={getSectionProgress(items.map((_, index) => `${sectionId}-${index}`))}
+      />
     </RoadmapCard>
   );
 
   return (
     <Container>
-      <Header 
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-      />
+      <Header searchQuery={searchQuery} onSearchChange={handleSearchChange} />
       <Content>
         <Title>Frontend Development Roadmap</Title>
         <Description>
@@ -1561,24 +1627,21 @@ const RoadmapPage = () => {
             <FaBook /> Essential knowledge for every frontend developer
           </SectionProgress>
           <RoadmapGrid>
-            {renderCard('HTML5 & Accessibility', [
-              'Semantic HTML',
-              'Forms & Validation',
-              'ARIA & Accessibility',
-              'SEO Best Practices'
-            ], 'html')}
-            {renderCard('CSS3 & Layout', [
-              'Flexbox & Grid',
-              'Responsive Design',
-              'CSS Variables',
-              'CSS Architecture'
-            ], 'css')}
-            {renderCard('JavaScript Fundamentals', [
-              'ES6+ Features',
-              'DOM Manipulation',
-              'Async Programming',
-              'Error Handling'
-            ], 'js')}
+            {renderCard(
+              'HTML5 & Accessibility',
+              ['Semantic HTML', 'Forms & Validation', 'ARIA & Accessibility', 'SEO Best Practices'],
+              'html'
+            )}
+            {renderCard(
+              'CSS3 & Layout',
+              ['Flexbox & Grid', 'Responsive Design', 'CSS Variables', 'CSS Architecture'],
+              'css'
+            )}
+            {renderCard(
+              'JavaScript Fundamentals',
+              ['ES6+ Features', 'DOM Manipulation', 'Async Programming', 'Error Handling'],
+              'js'
+            )}
           </RoadmapGrid>
         </RoadmapSection>
 
@@ -1588,24 +1651,21 @@ const RoadmapPage = () => {
             <FaCode /> Modern tools and frameworks for building web applications
           </SectionProgress>
           <RoadmapGrid>
-            {renderCard('React Ecosystem', [
-              'React Core Concepts',
-              'Hooks & Custom Hooks',
-              'State Management',
-              'React Router'
-            ], 'react')}
-            {renderCard('Next.js & SSR', [
-              'Pages & Routing',
-              'Data Fetching',
-              'API Routes',
-              'Deployment'
-            ], 'next')}
-            {renderCard('TypeScript', [
-              'Type System',
-              'Interfaces & Types',
-              'Generics',
-              'Type Safety'
-            ], 'ts')}
+            {renderCard(
+              'React Ecosystem',
+              ['React Core Concepts', 'Hooks & Custom Hooks', 'State Management', 'React Router'],
+              'react'
+            )}
+            {renderCard(
+              'Next.js & SSR',
+              ['Pages & Routing', 'Data Fetching', 'API Routes', 'Deployment'],
+              'next'
+            )}
+            {renderCard(
+              'TypeScript',
+              ['Type System', 'Interfaces & Types', 'Generics', 'Type Safety'],
+              'ts'
+            )}
           </RoadmapGrid>
         </RoadmapSection>
 
@@ -1615,24 +1675,21 @@ const RoadmapPage = () => {
             <FaCode /> Advanced concepts and best practices
           </SectionProgress>
           <RoadmapGrid>
-            {renderCard('State Management', [
-              'Redux Toolkit',
-              'Context API',
-              'Zustand/Jotai',
-              'React Query'
-            ], 'state')}
-            {renderCard('Testing & Quality', [
-              'Jest & React Testing',
-              'E2E Testing',
-              'Performance Testing',
-              'Code Quality Tools'
-            ], 'testing')}
-            {renderCard('Build Tools & Optimization', [
-              'Webpack/Vite',
-              'Code Splitting',
-              'Bundle Analysis',
-              'Performance Optimization'
-            ], 'build')}
+            {renderCard(
+              'State Management',
+              ['Redux Toolkit', 'Context API', 'Zustand/Jotai', 'React Query'],
+              'state'
+            )}
+            {renderCard(
+              'Testing & Quality',
+              ['Jest & React Testing', 'E2E Testing', 'Performance Testing', 'Code Quality Tools'],
+              'testing'
+            )}
+            {renderCard(
+              'Build Tools & Optimization',
+              ['Webpack/Vite', 'Code Splitting', 'Bundle Analysis', 'Performance Optimization'],
+              'build'
+            )}
           </RoadmapGrid>
         </RoadmapSection>
 
@@ -1642,24 +1699,21 @@ const RoadmapPage = () => {
             <FaCode /> Cutting-edge technologies and practices
           </SectionProgress>
           <RoadmapGrid>
-            {renderCard('Styling Solutions', [
-              'Styled Components',
-              'Tailwind CSS',
-              'CSS Modules',
-              'Design Systems'
-            ], 'styling')}
-            {renderCard('Advanced Patterns', [
-              'Micro Frontends',
-              'Server Components',
-              'Progressive Web Apps',
-              'Web Workers'
-            ], 'patterns')}
-            {renderCard('DevOps & CI/CD', [
-              'Git & GitHub',
-              'Docker Basics',
-              'CI/CD Pipelines',
-              'Monitoring & Analytics'
-            ], 'devops')}
+            {renderCard(
+              'Styling Solutions',
+              ['Styled Components', 'Tailwind CSS', 'CSS Modules', 'Design Systems'],
+              'styling'
+            )}
+            {renderCard(
+              'Advanced Patterns',
+              ['Micro Frontends', 'Server Components', 'Progressive Web Apps', 'Web Workers'],
+              'patterns'
+            )}
+            {renderCard(
+              'DevOps & CI/CD',
+              ['Git & GitHub', 'Docker Basics', 'CI/CD Pipelines', 'Monitoring & Analytics'],
+              'devops'
+            )}
           </RoadmapGrid>
         </RoadmapSection>
       </Content>
@@ -1667,4 +1721,4 @@ const RoadmapPage = () => {
   );
 };
 
-export default RoadmapPage; 
+export default RoadmapPage;

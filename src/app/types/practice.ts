@@ -4,13 +4,17 @@ export enum QuestionCategory {
   SYSTEM_DESIGN = 'SYSTEM_DESIGN',
   DATABASE = 'DATABASE',
   NETWORKING = 'NETWORKING',
-  SECURITY = 'SECURITY'
+  SECURITY = 'SECURITY',
+  HTML = 'HTML',
+  CSS = 'CSS',
+  JAVASCRIPT = 'JAVASCRIPT',
+  REACT = 'REACT',
 }
 
 export enum QuestionDifficulty {
   EASY = 'EASY',
   MEDIUM = 'MEDIUM',
-  HARD = 'HARD'
+  HARD = 'HARD',
 }
 
 export interface PracticeQuestion {
@@ -43,4 +47,4 @@ export interface UserPracticeStats {
   correctAnswers: number;
   totalPoints: number;
   lastAttempted: Date;
-} 
+}

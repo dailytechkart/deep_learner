@@ -1,302 +1,225 @@
 'use client';
 
-import React from 'react';
-import styled from 'styled-components';
-import { Layout, Section, SectionHeader, SectionTitle, SectionContent, Grid } from '../../components/Layout';
-import Link from 'next/link';
+import React, { useState, useMemo, useEffect } from 'react';
+import SEO from '@/components/SEO';
+import { problems } from './data/problems';
+import { ProblemCard } from './components/ProblemCard';
+import { SearchBar } from './components/SearchBar';
+import { Filters } from './components/Filters';
+import {
+  PageContainer,
+  PageHeader,
+  HeaderContent,
+  PageTitle,
+  MainContent,
+  ProblemsSection,
+  ProblemsGrid,
+  NoResults,
+  LoaderContainer,
+  Loader,
+  PaginationContainer,
+  PaginationButton,
+  SortContainer,
+  SortSelect,
+  ResultsCount,
+} from './styles/PageStyles';
 
-const Card = styled.div`
-  background: ${props => props.theme.colors.background};
-  border: 1px solid ${props => props.theme.colors.border};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  padding: ${props => props.theme.spacing.lg};
-  transition: all ${props => props.theme.transitions.default};
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+export const dynamic = 'force-dynamic';
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${props => props.theme.shadows.md};
-    border-color: ${props => props.theme.colors.primary};
-  }
-`;
-
-const CardTitle = styled.h3`
-  font-size: ${props => props.theme.typography.h3.fontSize};
-  font-weight: ${props => props.theme.typography.h3.fontWeight};
-  color: ${props => props.theme.colors.text};
-  margin-bottom: ${props => props.theme.spacing.md};
-`;
-
-const CardDescription = styled.p`
-  color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.typography.body2.fontSize};
-  margin-bottom: ${props => props.theme.spacing.lg};
-  flex: 1;
-`;
-
-const CardLink = styled(Link)`
-  color: ${props => props.theme.colors.primary};
-  text-decoration: none;
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
-  display: inline-flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing.sm};
-  transition: all ${props => props.theme.transitions.default};
-
-  &:hover {
-    color: ${props => props.theme.colors.secondary};
-    gap: ${props => props.theme.spacing.md};
-  }
-`;
-
-const Badge = styled.span<{ difficulty: 'Easy' | 'Medium' | 'Hard' }>`
-  background: ${props => {
-    switch (props.difficulty) {
-      case 'Easy':
-        return props.theme.colors.success + '20';
-      case 'Medium':
-        return props.theme.colors.warning + '20';
-      case 'Hard':
-        return props.theme.colors.error + '20';
-      default:
-        return props.theme.colors.backgroundAlt;
-    }
-  }};
-  color: ${props => {
-    switch (props.difficulty) {
-      case 'Easy':
-        return props.theme.colors.success;
-      case 'Medium':
-        return props.theme.colors.warning;
-      case 'Hard':
-        return props.theme.colors.error;
-      default:
-        return props.theme.colors.textSecondary;
-    }
-  }};
-  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
-  border-radius: ${props => props.theme.borderRadius.full};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
-  margin-bottom: ${props => props.theme.spacing.md};
-  display: inline-block;
-`;
-
-const TagList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${props => props.theme.spacing.sm};
-  margin-bottom: ${props => props.theme.spacing.lg};
-`;
-
-const Tag = styled.span`
-  background: ${props => props.theme.colors.backgroundAlt};
-  color: ${props => props.theme.colors.textSecondary};
-  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
-  border-radius: ${props => props.theme.borderRadius.full};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
-`;
+const ITEMS_PER_PAGE = 12;
+const SORT_OPTIONS = [
+  { value: 'popularity', label: 'Most Popular' },
+  { value: 'difficulty', label: 'Difficulty' },
+  { value: 'newest', label: 'Newest First' },
+  { value: 'oldest', label: 'Oldest First' },
+];
 
 export default function SystemDesignProblemsPage() {
-  const problems = [
-    {
-      title: 'Design a Real-time Dashboard',
-      description: 'Create a scalable dashboard with real-time data updates, efficient state management, and optimized rendering.',
-      difficulty: 'Hard' as const,
-      tags: ['Frontend', 'Real-time', 'State Management', 'Performance'],
-      link: '/system-design/problems/real-time-dashboard'
-    },
-    {
-      title: 'Design a Micro Frontend Architecture',
-      description: 'Implement a micro frontend architecture for a large e-commerce application with independent deployments.',
-      difficulty: 'Hard' as const,
-      tags: ['Frontend', 'Micro Frontends', 'Module Federation', 'Build System'],
-      link: '/system-design/problems/micro-frontend'
-    },
-    {
-      title: 'Design a Frontend Caching System',
-      description: 'Implement an efficient caching strategy for a content-heavy web application with offline support.',
-      difficulty: 'Medium' as const,
-      tags: ['Frontend', 'Caching', 'Service Worker', 'Performance'],
-      link: '/system-design/problems/frontend-caching'
-    },
-    {
-      title: 'Design a Progressive Web App',
-      description: 'Create a PWA with offline support, push notifications, and efficient data synchronization.',
-      difficulty: 'Medium' as const,
-      tags: ['Frontend', 'PWA', 'Service Worker', 'Offline First'],
-      link: '/system-design/problems/pwa'
-    },
-    {
-      title: 'Design a URL Shortener',
-      description: 'Create a service that converts long URLs into shorter, more manageable links.',
-      difficulty: 'Easy' as const,
-      tags: ['Backend', 'Scalability', 'Caching', 'Database Design'],
-      link: '/system-design/problems/url-shortener'
-    },
-    {
-      title: 'Design a Rate Limiter',
-      description: 'Implement a system that limits the number of requests a user can make within a time window.',
-      difficulty: 'Medium' as const,
-      tags: ['Backend', 'Distributed Systems', 'Caching', 'Performance'],
-      link: '/system-design/problems/rate-limiter'
-    },
-    {
-      title: 'Design a Distributed Cache',
-      description: 'Build a distributed caching system that can handle high throughput and maintain consistency.',
-      difficulty: 'Hard' as const,
-      tags: ['Backend', 'Distributed Systems', 'Consistency', 'Performance'],
-      link: '/system-design/problems/distributed-cache'
-    },
-    {
-      title: 'Design a Real-time Chat System',
-      description: 'Create a scalable chat application that supports real-time messaging and presence.',
-      difficulty: 'Medium' as const,
-      tags: ['Full Stack', 'Real-time', 'WebSocket', 'Scalability'],
-      link: '/system-design/problems/chat-system'
-    },
-    {
-      title: 'Design a Search Engine',
-      description: 'Build a search engine that can efficiently index and search through large amounts of data.',
-      difficulty: 'Hard' as const,
-      tags: ['Backend', 'Search', 'Indexing', 'Distributed Systems'],
-      link: '/system-design/problems/search-engine'
-    },
-    {
-      title: 'Design a Payment System',
-      description: 'Create a secure and reliable payment processing system that can handle high transaction volumes.',
-      difficulty: 'Hard' as const,
-      tags: ['Backend', 'Security', 'Transactions', 'Reliability'],
-      link: '/system-design/problems/payment-system'
-    }
-  ];
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
+  const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortBy, setSortBy] = useState('popularity');
+
+  useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const filteredProblems = useMemo(() => {
+    return problems.filter(problem => {
+      const matchesSearch =
+        searchQuery === '' ||
+        problem.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        problem.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        problem.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        problem.keyConcepts.some(concept =>
+          concept.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+      const matchesTopics =
+        selectedTopics.length === 0 ||
+        selectedTopics.some(topic =>
+          problem.tags.some(tag => tag.toLowerCase().includes(topic.toLowerCase()))
+        );
+
+      const matchesCompanies =
+        selectedCompanies.length === 0 ||
+        selectedCompanies.some(company => problem.companies.includes(company));
+
+      const matchesDifficulty =
+        selectedDifficulties.length === 0 || selectedDifficulties.includes(problem.difficulty);
+
+      return matchesSearch && matchesTopics && matchesCompanies && matchesDifficulty;
+    });
+  }, [searchQuery, selectedTopics, selectedCompanies, selectedDifficulties]);
+
+  const sortedProblems = useMemo(() => {
+    return [...filteredProblems].sort((a, b) => {
+      switch (sortBy) {
+        case 'popularity':
+          return b.popularity - a.popularity;
+        case 'difficulty':
+          const difficultyOrder = { Easy: 0, Medium: 1, Hard: 2 };
+          return difficultyOrder[b.difficulty] - difficultyOrder[a.difficulty];
+        case 'newest':
+          return new Date(b.lastUpdated).getTime() - new Date(a.lastUpdated).getTime();
+        case 'oldest':
+          return new Date(a.lastUpdated).getTime() - new Date(b.lastUpdated).getTime();
+        default:
+          return 0;
+      }
+    });
+  }, [filteredProblems, sortBy]);
+
+  const paginatedProblems = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return sortedProblems.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [sortedProblems, currentPage]);
+
+  const totalPages = Math.ceil(sortedProblems.length / ITEMS_PER_PAGE);
+
+  const handleTopicChange = (topic: string) => {
+    setSelectedTopics(prev =>
+      prev.includes(topic) ? prev.filter(t => t !== topic) : [...prev, topic]
+    );
+    setCurrentPage(1);
+  };
+
+  const handleCompanyChange = (company: string) => {
+    setSelectedCompanies(prev =>
+      prev.includes(company) ? prev.filter(c => c !== company) : [...prev, company]
+    );
+    setCurrentPage(1);
+  };
+
+  const handleDifficultyChange = (difficulty: string) => {
+    setSelectedDifficulties(prev =>
+      prev.includes(difficulty) ? prev.filter(d => d !== difficulty) : [...prev, difficulty]
+    );
+    setCurrentPage(1);
+  };
+
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSortBy(e.target.value);
+    setCurrentPage(1);
+  };
 
   return (
-    <Layout
-      title="System Design Problems"
-      description="Practice your system design skills with real-world problems. Each problem includes detailed requirements and guidance for implementation."
-    >
-      <Section>
-        <SectionHeader>
-          <SectionTitle>Frontend Problems</SectionTitle>
-        </SectionHeader>
-        <SectionContent>
-          <Grid>
-            {problems
-              .filter(problem => problem.tags.includes('Frontend'))
-              .map((problem, index) => (
-                <Card key={index}>
-                  <Badge difficulty={problem.difficulty}>{problem.difficulty}</Badge>
-                  <CardTitle>{problem.title}</CardTitle>
-                  <CardDescription>{problem.description}</CardDescription>
-                  <TagList>
-                    {problem.tags.map((tag, tagIndex) => (
-                      <Tag key={tagIndex}>{tag}</Tag>
-                    ))}
-                  </TagList>
-                  <CardLink href={problem.link}>
-                    Start Problem →
-                  </CardLink>
-                </Card>
-              ))}
-          </Grid>
-        </SectionContent>
-      </Section>
-
-      <Section>
-        <SectionHeader>
-          <SectionTitle>Backend Problems</SectionTitle>
-        </SectionHeader>
-        <SectionContent>
-          <Grid>
-            {problems
-              .filter(problem => problem.tags.includes('Backend'))
-              .map((problem, index) => (
-                <Card key={index}>
-                  <Badge difficulty={problem.difficulty}>{problem.difficulty}</Badge>
-                  <CardTitle>{problem.title}</CardTitle>
-                  <CardDescription>{problem.description}</CardDescription>
-                  <TagList>
-                    {problem.tags.map((tag, tagIndex) => (
-                      <Tag key={tagIndex}>{tag}</Tag>
-                    ))}
-                  </TagList>
-                  <CardLink href={problem.link}>
-                    Start Problem →
-                  </CardLink>
-                </Card>
-              ))}
-          </Grid>
-        </SectionContent>
-      </Section>
-
-      <Section>
-        <SectionHeader>
-          <SectionTitle>Full Stack Problems</SectionTitle>
-        </SectionHeader>
-        <SectionContent>
-          <Grid>
-            {problems
-              .filter(problem => problem.tags.includes('Full Stack'))
-              .map((problem, index) => (
-                <Card key={index}>
-                  <Badge difficulty={problem.difficulty}>{problem.difficulty}</Badge>
-                  <CardTitle>{problem.title}</CardTitle>
-                  <CardDescription>{problem.description}</CardDescription>
-                  <TagList>
-                    {problem.tags.map((tag, tagIndex) => (
-                      <Tag key={tagIndex}>{tag}</Tag>
-                    ))}
-                  </TagList>
-                  <CardLink href={problem.link}>
-                    Start Problem →
-                  </CardLink>
-                </Card>
-              ))}
-          </Grid>
-        </SectionContent>
-      </Section>
-
-      <Section>
-        <SectionHeader>
-          <SectionTitle>How to Practice</SectionTitle>
-        </SectionHeader>
-        <SectionContent>
-          <p>
-            System design problems are a great way to practice and improve your architectural skills.
-            Each problem presents a real-world scenario that you need to solve by designing a scalable,
-            reliable, and efficient system.
-          </p>
-          <p>
-            When approaching frontend problems:
-          </p>
-          <ul>
-            <li>Consider component architecture and state management</li>
-            <li>Plan for performance optimization and code splitting</li>
-            <li>Think about user experience and accessibility</li>
-            <li>Consider browser compatibility and progressive enhancement</li>
-            <li>Plan for offline support and data synchronization</li>
-          </ul>
-          <p>
-            When approaching backend problems:
-          </p>
-          <ul>
-            <li>Start by understanding the requirements and constraints</li>
-            <li>Consider scalability, reliability, and performance aspects</li>
-            <li>Think about data models and API design</li>
-            <li>Plan for failure scenarios and edge cases</li>
-            <li>Consider trade-offs in your design decisions</li>
-          </ul>
-          <p>
-            Each problem includes detailed requirements, constraints, and guidance to help you
-            practice effectively. Take your time to think through the design and consider
-            different approaches before implementing your solution.
-          </p>
-        </SectionContent>
-      </Section>
-    </Layout>
+    <>
+      <SEO
+        title="System Design Problems | Deep Learner"
+        description="Practice system design problems with detailed solutions. Learn how to design scalable and efficient systems."
+        keywords={[
+          'system design',
+          'frontend',
+          'backend',
+          'full stack',
+          'distributed systems',
+          'cloud',
+          'database',
+          'security',
+        ]}
+      />
+      <PageContainer>
+        <PageHeader>
+          <HeaderContent>
+            <PageTitle>System Design Problems</PageTitle>
+          </HeaderContent>
+        </PageHeader>
+        <MainContent>
+          <Filters
+            problems={problems}
+            selectedTopics={selectedTopics}
+            selectedCompanies={selectedCompanies}
+            selectedDifficulties={selectedDifficulties}
+            onTopicChange={handleTopicChange}
+            onCompanyChange={handleCompanyChange}
+            onDifficultyChange={handleDifficultyChange}
+          />
+          <ProblemsSection>
+            <SearchBar value={searchQuery} onChange={setSearchQuery} />
+            <SortContainer>
+              <ResultsCount>
+                {filteredProblems.length} {filteredProblems.length === 1 ? 'problem' : 'problems'}{' '}
+                found
+              </ResultsCount>
+              <SortSelect value={sortBy} onChange={handleSortChange}>
+                {SORT_OPTIONS.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </SortSelect>
+            </SortContainer>
+            {isLoading ? (
+              <LoaderContainer>
+                <Loader />
+              </LoaderContainer>
+            ) : paginatedProblems.length > 0 ? (
+              <>
+                <ProblemsGrid>
+                  {paginatedProblems.map(problem => (
+                    <ProblemCard key={problem.id} problem={problem} />
+                  ))}
+                </ProblemsGrid>
+                {totalPages > 1 && (
+                  <PaginationContainer>
+                    <PaginationButton
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                    >
+                      Previous
+                    </PaginationButton>
+                    <span>
+                      Page {currentPage} of {totalPages}
+                    </span>
+                    <PaginationButton
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      disabled={currentPage === totalPages}
+                    >
+                      Next
+                    </PaginationButton>
+                  </PaginationContainer>
+                )}
+              </>
+            ) : (
+              <NoResults>
+                <h3>No Problems Found</h3>
+                <p>
+                  Try adjusting your search query or filters to find what you&apos;re looking for.
+                </p>
+              </NoResults>
+            )}
+          </ProblemsSection>
+        </MainContent>
+      </PageContainer>
+    </>
   );
-} 
+}

@@ -44,4 +44,4 @@ export interface UserCourse {
   enrolledAt: Date;
   status: 'not_started' | 'in_progress' | 'completed';
   progress: number;
-} 
+}
