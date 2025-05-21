@@ -36,7 +36,7 @@ const SearchIconContainer = styled.div`
 const SearchIcon = styled.svg`
   height: 1.25rem;
   width: 1.25rem;
-  color: ${props => props.theme.colors.text.secondary};
+  color: ${props => props.theme.colors.textSecondary};
 `;
 
 interface SearchBarProps {

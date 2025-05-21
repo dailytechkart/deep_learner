@@ -23,6 +23,8 @@ import {
 import MainLayout from '@/components/MainLayout';
 import { useTheme } from '@/app/context/ThemeContext';
 
+export const dynamic = 'force-dynamic';
+
 // Styled Components
 const PageContainer = styled.div`
   display: flex;
@@ -30,6 +32,17 @@ const PageContainer = styled.div`
   padding: 2rem;
   max-width: 1400px;
   margin: 0 auto;
+
+  @media (max-width: 1024px) {
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+    gap: 1rem;
+    flex-direction: column;
+  }
 `;
 
 const ContentSection = styled.div`
@@ -41,6 +54,10 @@ const Header = styled.div`
   text-align: left;
   margin-bottom: 4rem;
   padding: 0;
+
+  @media (max-width: 768px) {
+    margin-bottom: 2rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -49,6 +66,11 @@ const Title = styled.h1`
   margin-bottom: 1.5rem;
   font-weight: ${props => props.theme.typography.fontWeight.bold};
   line-height: 1.2;
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize['3xl']};
+    margin-bottom: 1rem;
+  }
 `;
 
 const Description = styled.p`
@@ -56,12 +78,22 @@ const Description = styled.p`
   color: ${props => props.theme.colors.textSecondary};
   max-width: 800px;
   line-height: 1.7;
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize.md};
+  }
 `;
 
 const StatsBar = styled.div`
   display: flex;
   gap: 2rem;
   margin: 2rem 0;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
 `;
 
 const StatItem = styled.div`
@@ -70,86 +102,109 @@ const StatItem = styled.div`
   gap: 0.75rem;
   color: ${props => props.theme.colors.textSecondary};
   font-size: ${props => props.theme.typography.fontSize.sm};
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize.xs};
+  }
 `;
 
 const StatIcon = styled.div`
   color: ${props => props.theme.colors.primary};
+  font-size: 1.25rem;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const ProblemsCTA = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  background: ${props => props.theme.colors.primary}10;
-  border: 2px solid ${props => props.theme.colors.primary};
+  background: ${props => props.theme.colors.backgroundAlt};
   border-radius: ${props => props.theme.borderRadius.lg};
-  padding: 2rem 2.5rem;
-  margin: 2.5rem 0 2rem 0;
-  box-shadow: 0 4px 24px ${props => props.theme.colors.primary}15;
+  padding: 2rem;
+  margin-top: 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+
+  @media (max-width: 1024px) {
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
   @media (max-width: 768px) {
     flex-direction: column;
-    align-items: flex-start;
-    padding: 1.25rem 1rem;
+    padding: 1.25rem;
     gap: 1rem;
+    margin-top: 2rem;
   }
 `;
 
 const ProblemsCTAText = styled.div`
   display: flex;
-  align-items: center;
-  gap: 1.25rem;
+  gap: 1.5rem;
+  align-items: flex-start;
+
   @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+    gap: 1rem;
   }
 `;
 
 const ProblemsCTAIcon = styled.div`
   color: ${props => props.theme.colors.primary};
-  font-size: 2.2rem;
-  display: flex;
-  align-items: center;
+  font-size: 2rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
 `;
 
 const ProblemsCTAContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
+  flex: 1;
 `;
 
-const ProblemsCTAHeading = styled.div`
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: ${props => props.theme.colors.primary};
+const ProblemsCTAHeading = styled.h3`
+  font-size: ${props => props.theme.typography.fontSize.xl};
+  color: ${props => props.theme.colors.text};
+  margin-bottom: 0.5rem;
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize.lg};
+  }
 `;
 
-const ProblemsCTADesc = styled.div`
-  font-size: 1rem;
+const ProblemsCTADesc = styled.p`
   color: ${props => props.theme.colors.textSecondary};
+  font-size: ${props => props.theme.typography.fontSize.md};
+  line-height: 1.6;
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize.sm};
+  }
 `;
 
 const ProblemsButton = styled.a`
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
   background: ${props => props.theme.colors.primary};
-  color: #fff;
-  font-size: 1.1rem;
-  font-weight: 700;
-  border: none;
-  border-radius: ${props => props.theme.borderRadius.full};
-  padding: 0.85rem 2.25rem;
+  color: white;
+  border-radius: ${props => props.theme.borderRadius.md};
+  font-weight: 500;
   text-decoration: none;
-  box-shadow: 0 2px 12px ${props => props.theme.colors.primary}30;
-  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
-  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
   &:hover {
-    background: ${props => props.theme.colors.secondary};
-    color: #fff;
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 4px 18px ${props => props.theme.colors.primary}40;
+    background: ${props => props.theme.colors.primaryDark};
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0.875rem;
   }
 `;
 
@@ -177,7 +232,9 @@ const TopicCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
   border: 1px solid ${props => props.theme.colors.border};
 
   &:hover {
@@ -218,7 +275,9 @@ const TagGroup = styled.div`
   gap: 0.5rem;
 `;
 
-const Tag = styled.span<{ type: 'beginner' | 'intermediate' | 'advanced' | 'technology' | 'role' | 'premium' }>`
+const Tag = styled.span<{
+  type: 'beginner' | 'intermediate' | 'advanced' | 'technology' | 'role' | 'premium';
+}>`
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
@@ -327,8 +386,8 @@ const PremiumBadge = styled.div`
   align-items: center;
   gap: 0.25rem;
   padding: 0.25rem 0.75rem;
-  background: #FFF8E1;
-  color: #FF8F00;
+  background: #fff8e1;
+  color: #ff8f00;
   border-radius: ${props => props.theme.borderRadius.full};
   font-size: 0.75rem;
   font-weight: 600;
@@ -336,76 +395,76 @@ const PremiumBadge = styled.div`
 `;
 
 const SectionHeading = styled.h2`
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: ${props => props.theme.colors.primary};
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  font-size: ${props => props.theme.typography.fontSize['2xl']};
+  color: ${props => props.theme.colors.text};
+  margin-bottom: 1rem;
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize.xl};
+    margin-bottom: 0.75rem;
+  }
 `;
 
 const SectionDescription = styled.p`
-  font-size: 1.1rem;
   color: ${props => props.theme.colors.textSecondary};
   margin-bottom: 2rem;
-  line-height: 1.6;
+  font-size: ${props => props.theme.typography.fontSize.md};
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize.sm};
+  }
 `;
 
 const TabContainer = styled.div`
   margin-bottom: 2rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const TabBar = styled.div`
   display: flex;
-  align-items: center;
-  gap: 2.5rem;
-  position: relative;
-  border-bottom: 1px solid ${props => props.theme.colors.border};
+  gap: 1rem;
   padding-bottom: 0.5rem;
-  background: transparent;
+  min-width: max-content;
+
+  @media (max-width: 768px) {
+    gap: 0.5rem;
+  }
 `;
 
 const StyledTab = styled.button<{ active: boolean }>`
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  font-size: 1.1rem;
-  font-weight: ${props => (props.active ? 700 : 500)};
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: ${props => props.theme.borderRadius.md};
+  font-weight: 500;
   color: ${props => (props.active ? props.theme.colors.primary : props.theme.colors.textSecondary)};
-  background: ${props => (props.active ? props.theme.colors.primary + '10' : 'transparent')};
-  border: none;
-  outline: none;
+  background: ${props => (props.active ? props.theme.colors.backgroundAlt : 'transparent')};
+  border: 1px solid
+    ${props => (props.active ? props.theme.colors.primary : props.theme.colors.border)};
   cursor: pointer;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.75rem 0.75rem 0 0;
-  position: relative;
-  transition: color 0.2s, background 0.2s;
-
-  & svg {
-    color: ${props => (props.active ? props.theme.colors.primary : props.theme.colors.textSecondary)};
-    font-size: 1.2em;
-    transition: color 0.2s;
-  }
+  transition: all 0.2s ease;
+  white-space: nowrap;
 
   &:hover {
+    background: ${props => props.theme.colors.backgroundAlt};
     color: ${props => props.theme.colors.primary};
-    background: ${props => props.theme.colors.primary + '08'};
-    & svg {
-      color: ${props => props.theme.colors.primary};
-    }
   }
 
-  &::after {
-    content: '';
-    display: ${props => (props.active ? 'block' : 'none')};
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -0.5rem;
-    height: 3px;
-    background: ${props => props.theme.colors.primary};
-    border-radius: 2px 2px 0 0;
+  @media (max-width: 768px) {
+    padding: 0.5rem 1rem;
+    font-size: ${props => props.theme.typography.fontSize.sm};
   }
 `;
 
@@ -427,7 +486,8 @@ const systemDesignTopics: SystemDesignTopic[] = [
   {
     id: 'frontend-architecture',
     title: 'Frontend Architecture',
-    description: 'Design scalable frontend applications with modern patterns, state management, and component architecture.',
+    description:
+      'Design scalable frontend applications with modern patterns, state management, and component architecture.',
     icon: <FaReact />,
     tags: ['intermediate', 'premium'],
     technologies: ['React', 'TypeScript', 'State Management'],
@@ -436,7 +496,8 @@ const systemDesignTopics: SystemDesignTopic[] = [
   {
     id: 'micro-frontends',
     title: 'Micro-Frontends',
-    description: 'Implement micro-frontend architecture for large-scale applications with independent deployment.',
+    description:
+      'Implement micro-frontend architecture for large-scale applications with independent deployment.',
     icon: <FaLaptopCode />,
     tags: ['advanced', 'premium'],
     technologies: ['Module Federation', 'Webpack', 'Single-SPA'],
@@ -445,7 +506,8 @@ const systemDesignTopics: SystemDesignTopic[] = [
   {
     id: 'frontend-performance',
     title: 'Frontend Performance',
-    description: 'Optimize frontend applications for speed, including code splitting, caching, and bundle optimization.',
+    description:
+      'Optimize frontend applications for speed, including code splitting, caching, and bundle optimization.',
     icon: <FaCode />,
     tags: ['intermediate'],
     technologies: ['Webpack', 'Vite', 'Performance Monitoring'],
@@ -454,7 +516,8 @@ const systemDesignTopics: SystemDesignTopic[] = [
   {
     id: 'progressive-web-apps',
     title: 'Progressive Web Apps',
-    description: 'Design and implement PWAs with offline support, push notifications, and app-like experience.',
+    description:
+      'Design and implement PWAs with offline support, push notifications, and app-like experience.',
     icon: <FaMobile />,
     tags: ['intermediate'],
     technologies: ['Service Workers', 'Web App Manifest', 'IndexedDB'],
@@ -463,7 +526,8 @@ const systemDesignTopics: SystemDesignTopic[] = [
   {
     id: 'frontend-security',
     title: 'Frontend Security',
-    description: 'Implement secure frontend applications with proper authentication, authorization, and data protection.',
+    description:
+      'Implement secure frontend applications with proper authentication, authorization, and data protection.',
     icon: <FaShieldAlt />,
     tags: ['advanced', 'premium'],
     technologies: ['OAuth', 'JWT', 'CSP'],
@@ -531,7 +595,7 @@ const systemDesignTopics: SystemDesignTopic[] = [
     tags: ['intermediate'],
     technologies: ['ARIA', 'Screen Readers', 'Keyboard Navigation'],
     roles: ['Frontend Developer', 'Accessibility Expert'],
-  }
+  },
 ];
 
 const SystemDesignPage: React.FC = () => {
@@ -539,33 +603,43 @@ const SystemDesignPage: React.FC = () => {
   const [selectedDifficulty, setSelectedDifficulty] = useState<string[]>([]);
   const [selectedTechnologies, setSelectedTechnologies] = useState<string[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
-  const [activeTab, setActiveTab] = useState<'all' | 'frontend' | 'performance' | 'architecture' | 'security'>('all');
+  const [activeTab, setActiveTab] = useState<
+    'all' | 'frontend' | 'performance' | 'architecture' | 'security'
+  >('all');
 
-  const allTechnologies = Array.from(new Set(systemDesignTopics.flatMap(topic => topic.technologies)));
+  const allTechnologies = Array.from(
+    new Set(systemDesignTopics.flatMap(topic => topic.technologies))
+  );
   const allRoles = Array.from(new Set(systemDesignTopics.flatMap(topic => topic.roles)));
 
   const getTopicsByCategory = (category: string) => {
     switch (category) {
       case 'frontend':
-        return systemDesignTopics.filter(topic => 
-          topic.roles.some(role => role.includes('Frontend')) ||
-          topic.technologies.some(tech => ['React', 'TypeScript', 'Webpack', 'Vite'].includes(tech))
+        return systemDesignTopics.filter(
+          topic =>
+            topic.roles.some(role => role.includes('Frontend')) ||
+            topic.technologies.some(tech =>
+              ['React', 'TypeScript', 'Webpack', 'Vite'].includes(tech)
+            )
         );
       case 'performance':
-        return systemDesignTopics.filter(topic => 
-          topic.roles.some(role => role.includes('Performance')) ||
-          topic.title.toLowerCase().includes('performance') ||
-          topic.title.toLowerCase().includes('caching')
+        return systemDesignTopics.filter(
+          topic =>
+            topic.roles.some(role => role.includes('Performance')) ||
+            topic.title.toLowerCase().includes('performance') ||
+            topic.title.toLowerCase().includes('caching')
         );
       case 'architecture':
-        return systemDesignTopics.filter(topic => 
-          topic.title.toLowerCase().includes('architecture') ||
-          topic.title.toLowerCase().includes('system')
+        return systemDesignTopics.filter(
+          topic =>
+            topic.title.toLowerCase().includes('architecture') ||
+            topic.title.toLowerCase().includes('system')
         );
       case 'security':
-        return systemDesignTopics.filter(topic => 
-          topic.roles.some(role => role.includes('Security')) ||
-          topic.title.toLowerCase().includes('security')
+        return systemDesignTopics.filter(
+          topic =>
+            topic.roles.some(role => role.includes('Security')) ||
+            topic.title.toLowerCase().includes('security')
         );
       default:
         return systemDesignTopics;
@@ -590,9 +664,9 @@ const SystemDesignPage: React.FC = () => {
           <Header>
             <Title>System Design Mastery</Title>
             <Description>
-              Master the art of designing scalable, reliable, and efficient systems. From distributed
-              systems to cloud architecture, learn everything you need to excel in system design
-              interviews and real-world applications.
+              Master the art of designing scalable, reliable, and efficient systems. From
+              distributed systems to cloud architecture, learn everything you need to excel in
+              system design interviews and real-world applications.
             </Description>
 
             <StatsBar>
@@ -624,13 +698,11 @@ const SystemDesignPage: React.FC = () => {
                 <ProblemsCTAContent>
                   <ProblemsCTAHeading>Practice System Design Problems</ProblemsCTAHeading>
                   <ProblemsCTADesc>
-                    Ready to apply your knowledge? Jump into real-world system design problems and sharpen your skills with hands-on practice.
+                    Ready to apply your knowledge? Jump into real-world system design problems and
+                    sharpen your skills with hands-on practice.
                   </ProblemsCTADesc>
                 </ProblemsCTAContent>
               </ProblemsCTAText>
-              <ProblemsButton href="/system-design/problems">
-                Go to Problems
-              </ProblemsButton>
             </ProblemsCTA>
           </Header>
 
@@ -642,10 +714,16 @@ const SystemDesignPage: React.FC = () => {
               <StyledTab active={activeTab === 'frontend'} onClick={() => setActiveTab('frontend')}>
                 <FaReact /> Frontend
               </StyledTab>
-              <StyledTab active={activeTab === 'performance'} onClick={() => setActiveTab('performance')}>
+              <StyledTab
+                active={activeTab === 'performance'}
+                onClick={() => setActiveTab('performance')}
+              >
                 <FaCode /> Performance
               </StyledTab>
-              <StyledTab active={activeTab === 'architecture'} onClick={() => setActiveTab('architecture')}>
+              <StyledTab
+                active={activeTab === 'architecture'}
+                onClick={() => setActiveTab('architecture')}
+              >
                 <FaLaptopCode /> Architecture
               </StyledTab>
               <StyledTab active={activeTab === 'security'} onClick={() => setActiveTab('security')}>
@@ -674,11 +752,13 @@ const SystemDesignPage: React.FC = () => {
                 <TopicTitle>{topic.title}</TopicTitle>
                 <TopicDescription>{topic.description}</TopicDescription>
                 <TagGroup>
-                  {topic.tags.filter(tag => tag !== 'premium').map(tag => (
-                    <Tag key={tag} type={tag as 'beginner' | 'intermediate' | 'advanced'}>
-                      {tag.charAt(0).toUpperCase() + tag.slice(1)}
-                    </Tag>
-                  ))}
+                  {topic.tags
+                    .filter(tag => tag !== 'premium')
+                    .map(tag => (
+                      <Tag key={tag} type={tag as 'beginner' | 'intermediate' | 'advanced'}>
+                        {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                      </Tag>
+                    ))}
                   {topic.technologies.map(tech => (
                     <Tag key={tech} type="technology">
                       {tech}

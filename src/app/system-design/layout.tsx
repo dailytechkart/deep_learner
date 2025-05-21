@@ -1,31 +1,39 @@
 'use client';
 
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { useAuth } from '../context/AuthContext';
 import Header from '../components/Header';
 import { useTheme } from '../context/ThemeContext';
 import { useSearch } from '../context/SearchContext';
 
+const Container = styled.div`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
+
 const MainContent = styled.main`
-  min-height: calc(100vh - 64px); // Subtract header height
-  background: ${props => props.theme.colors.background};
-  color: ${props => props.theme.colors.text};
+  flex: 1;
+  padding-top: 64px;
 `;
 
 export default function SystemDesignLayout({ children }: { children: React.ReactNode }) {
   const { isDarkMode, toggleTheme } = useTheme();
   const { searchQuery, setSearchQuery } = useSearch();
 
+  const handleSearchChange: Dispatch<SetStateAction<string>> = value => {
+    if (typeof value === 'function') {
+      setSearchQuery(value(searchQuery));
+    } else {
+      setSearchQuery(value);
+    }
+  };
+
   return (
-    <>
-      <Header
-        isDarkMode={isDarkMode}
-        onThemeToggle={toggleTheme}
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-      />
+    <Container>
+      <Header searchQuery={searchQuery} onSearchChange={handleSearchChange} />
       <MainContent>{children}</MainContent>
-    </>
+    </Container>
   );
 }

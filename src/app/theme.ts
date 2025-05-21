@@ -178,7 +178,7 @@ declare module 'styled-components' {
 
 export const lightTheme: DefaultTheme = {
   colors: {
-    primary: '#20c997',
+    primary: '#04AA6D',
     primaryDark: '#357abd',
     secondary: '#666666',
     background: '#ffffff',
@@ -340,7 +340,7 @@ export const lightTheme: DefaultTheme = {
 
 export const darkTheme: DefaultTheme = {
   colors: {
-    primary: '#20c997',
+    primary: '#04AA6D',
     primaryDark: '#4a8cd2',
     secondary: '#666666',
     background: '#1a1a1a',

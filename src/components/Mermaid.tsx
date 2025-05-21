@@ -21,7 +21,7 @@ const Mermaid: React.FC<MermaidProps> = ({ chart, id }) => {
   useEffect(() => {
     let isMounted = true;
     console.log('Initializing Mermaid with chart:', chart);
-    
+
     try {
       mermaid.initialize({
         startOnLoad: true,
@@ -49,7 +49,9 @@ const Mermaid: React.FC<MermaidProps> = ({ chart, id }) => {
     } catch (err: unknown) {
       console.error('Mermaid initialization error:', err);
       if (isMounted) {
-        setError(`Failed to initialize Mermaid: ${err instanceof Error ? err.message : 'Unknown error'}`);
+        setError(
+          `Failed to initialize Mermaid: ${err instanceof Error ? err.message : 'Unknown error'}`
+        );
         setSvg('');
       }
     }
@@ -61,15 +63,17 @@ const Mermaid: React.FC<MermaidProps> = ({ chart, id }) => {
 
   if (error) {
     return (
-      <div style={{ 
-        color: 'red', 
-        textAlign: 'center',
-        padding: '1rem',
-        background: '#fff1f0',
-        border: '1px solid #ffccc7',
-        borderRadius: '4px',
-        margin: '1rem 0'
-      }}>
+      <div
+        style={{
+          color: 'red',
+          textAlign: 'center',
+          padding: '1rem',
+          background: '#fff1f0',
+          border: '1px solid #ffccc7',
+          borderRadius: '4px',
+          margin: '1rem 0',
+        }}
+      >
         {error}
       </div>
     );
@@ -78,14 +82,14 @@ const Mermaid: React.FC<MermaidProps> = ({ chart, id }) => {
   return (
     <div
       className="mermaid"
-      style={{ 
-        width: '100%', 
-        overflowX: 'auto', 
+      style={{
+        width: '100%',
+        overflowX: 'auto',
         background: 'transparent',
         minHeight: '100px',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
       }}
       dangerouslySetInnerHTML={{ __html: svg }}
     />

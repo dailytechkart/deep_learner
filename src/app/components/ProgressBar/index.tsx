@@ -14,16 +14,16 @@ const ProgressHeader = styled.div`
 `;
 
 const ProgressLabel = styled.span`
-  color: ${props => props.theme.colors.text.DEFAULT};
+  color: ${props => props.theme.colors.text};
 `;
 
 const ProgressValue = styled.span`
-  color: ${props => props.theme.colors.text.secondary};
+  color: ${props => props.theme.colors.textSecondary};
 `;
 
 const ProgressTrack = styled.div`
   height: 0.5rem;
-  background-color: ${props => props.theme.colors.background.alt};
+  background-color: ${props => props.theme.colors.backgroundAlt};
   border-radius: 9999px;
   overflow: hidden;
 `;

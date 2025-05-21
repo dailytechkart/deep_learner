@@ -36,7 +36,8 @@ import {
 import { PageLayout } from './components/PageLayout';
 import { MainLayout } from '@/components/MainLayout';
 import Image from 'next/image';
-import { FaBook } from 'react-icons/fa';
+import { FaBook, FaCode, FaReact, FaJs, FaCss3Alt, FaHtml5, FaNodeJs } from 'react-icons/fa';
+import Head from 'next/head';
 
 // Add new styled components for the companies section
 const CompaniesSection = styled.div`
@@ -527,130 +528,213 @@ export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <MainLayout>
-      <HeroSection>
-        <HeroContent>
-          <div>
-            <HeroTitle>Master Deep Learning with Interactive Projects</HeroTitle>
-            <HeroSubtitle>
-              Learn deep learning through hands-on projects, real-world applications, and expert
-              guidance. Start your journey to becoming an AI expert today.
-            </HeroSubtitle>
-            <HeroActions>
+    <>
+      <Head>
+        <title>Deep Learner - Master Frontend Development with Interactive Projects</title>
+        <meta
+          name="description"
+          content="Learn frontend development through hands-on projects, real-world applications, and expert guidance. Master HTML, CSS, JavaScript, React, and modern web development tools."
+        />
+        <meta
+          name="keywords"
+          content="frontend development, web development, HTML, CSS, JavaScript, React, TypeScript, web design, responsive design, UI/UX, frontend frameworks"
+        />
+        <meta property="og:title" content="Deep Learner - Master Frontend Development" />
+        <meta
+          property="og:description"
+          content="Learn frontend development through hands-on projects and expert guidance. Start your journey to becoming a frontend expert today."
+        />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Deep Learner - Master Frontend Development" />
+        <meta
+          name="twitter:description"
+          content="Learn frontend development through hands-on projects and expert guidance. Start your journey to becoming a frontend expert today."
+        />
+      </Head>
+
+      <MainLayout>
+        <HeroSection>
+          <HeroContent>
+            <div>
+              <HeroTitle>Master Frontend Development with Interactive Projects</HeroTitle>
+              <HeroSubtitle>
+                Learn modern frontend development through hands-on projects, real-world
+                applications, and expert guidance. Master HTML, CSS, JavaScript, React, and more to
+                build responsive, accessible, and performant web applications.
+              </HeroSubtitle>
+              <HeroActions>
+                <Link href="/signup" passHref>
+                  <ActionButton primary>Get Started Free</ActionButton>
+                </Link>
+                <Link href="#features" passHref>
+                  <ActionButton>Learn More</ActionButton>
+                </Link>
+              </HeroActions>
+            </div>
+            <HeroImage>
+              <Image
+                src="/hero-image.png"
+                alt="Frontend Development Platform"
+                layout="fill"
+                objectFit="contain"
+                priority
+              />
+            </HeroImage>
+          </HeroContent>
+        </HeroSection>
+
+        <StatsSection aria-labelledby="stats-title">
+          <SectionHeader>
+            <SectionTitle id="stats-title">Our Impact</SectionTitle>
+          </SectionHeader>
+          <div role="list">
+            <StatCard role="listitem">
+              <StatNumber>10K+</StatNumber>
+              <StatLabel>Active Learners</StatLabel>
+            </StatCard>
+            <StatCard role="listitem">
+              <StatNumber>500+</StatNumber>
+              <StatLabel>Interactive Projects</StatLabel>
+            </StatCard>
+            <StatCard role="listitem">
+              <StatNumber>24/7</StatNumber>
+              <StatLabel>Community Support</StatLabel>
+            </StatCard>
+          </div>
+        </StatsSection>
+
+        <FeaturesSection id="features" aria-labelledby="features-title">
+          <SectionHeader>
+            <SectionTitle id="features-title">Why Choose Us</SectionTitle>
+          </SectionHeader>
+          <FeatureGrid>
+            <FeatureCard>
+              <FeatureIcon>
+                <FaHtml5 />
+              </FeatureIcon>
+              <FeatureTitle>Modern Web Technologies</FeatureTitle>
+              <FeatureDescription>
+                Master HTML5, CSS3, JavaScript (ES6+), and modern frameworks like React, Vue, and
+                Angular.
+              </FeatureDescription>
+            </FeatureCard>
+            <FeatureCard>
+              <FeatureIcon>
+                <FaReact />
+              </FeatureIcon>
+              <FeatureTitle>Frontend Frameworks</FeatureTitle>
+              <FeatureDescription>
+                Learn popular frameworks and libraries including React, Redux, Next.js, and
+                TypeScript.
+              </FeatureDescription>
+            </FeatureCard>
+            <FeatureCard>
+              <FeatureIcon>
+                <FaCss3Alt />
+              </FeatureIcon>
+              <FeatureTitle>Responsive Design</FeatureTitle>
+              <FeatureDescription>
+                Create beautiful, responsive layouts using modern CSS techniques and best practices.
+              </FeatureDescription>
+            </FeatureCard>
+            <FeatureCard>
+              <FeatureIcon>
+                <FaJs />
+              </FeatureIcon>
+              <FeatureTitle>JavaScript Mastery</FeatureTitle>
+              <FeatureDescription>
+                Deep dive into JavaScript fundamentals, advanced concepts, and modern development
+                patterns.
+              </FeatureDescription>
+            </FeatureCard>
+          </FeatureGrid>
+        </FeaturesSection>
+
+        <RoadmapSection id="roadmap" aria-labelledby="roadmap-title">
+          <SectionHeader>
+            <SectionTitle id="roadmap-title">Your Learning Journey</SectionTitle>
+          </SectionHeader>
+          <RoadmapTimeline role="list">
+            <RoadmapItem role="listitem">
+              <RoadmapContent>
+                <RoadmapTitle>Foundation</RoadmapTitle>
+                <RoadmapDescription>
+                  Master HTML5, CSS3, and JavaScript fundamentals with hands-on projects.
+                </RoadmapDescription>
+              </RoadmapContent>
+            </RoadmapItem>
+            <RoadmapItem role="listitem">
+              <RoadmapContent>
+                <RoadmapTitle>Advanced Frontend</RoadmapTitle>
+                <RoadmapDescription>
+                  Learn React, TypeScript, and modern frontend development tools and practices.
+                </RoadmapDescription>
+              </RoadmapContent>
+            </RoadmapItem>
+            <RoadmapItem role="listitem">
+              <RoadmapContent>
+                <RoadmapTitle>Performance & Optimization</RoadmapTitle>
+                <RoadmapDescription>
+                  Master frontend performance optimization, accessibility, and best practices.
+                </RoadmapDescription>
+              </RoadmapContent>
+            </RoadmapItem>
+          </RoadmapTimeline>
+        </RoadmapSection>
+
+        <TestimonialsSection id="testimonials" aria-labelledby="testimonials-title">
+          <SectionHeader>
+            <SectionTitle id="testimonials-title">Success Stories</SectionTitle>
+          </SectionHeader>
+          <div role="list">
+            <TestimonialCard role="listitem">
+              <TestimonialContent>
+                &ldquo;The curriculum is well-structured and up-to-date. I learned more in 3 months
+                here than I did in a year of self-study.&rdquo;
+              </TestimonialContent>
+              <TestimonialAuthor>
+                <TestimonialAvatar
+                  src="/avatars/user2.jpg"
+                  alt="Mike Chen"
+                  width="48"
+                  height="48"
+                />
+                <div>
+                  <strong>Mike Chen</strong>
+                  <TestimonialRole>AI Engineer at TechCorp</TestimonialRole>
+                </div>
+              </TestimonialAuthor>
+            </TestimonialCard>
+          </div>
+        </TestimonialsSection>
+
+        <GradientSection>
+          <SectionHeader>
+            <SectionTitle style={{ color: 'white' }}>Ready to Start Your Journey?</SectionTitle>
+            <HeroDescription style={{ maxWidth: '600px', margin: '0 auto 2rem', color: 'white' }}>
+              Join thousands of developers who have transformed their careers with DeepLearner.
+            </HeroDescription>
+          </SectionHeader>
+          <SectionContent>
+            <div
+              style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}
+            >
               <Link href="/signup" passHref>
-                <ActionButton primary>Get Started Free</ActionButton>
+                <StyledCTAButton href="/signup">Get Started Free</StyledCTAButton>
               </Link>
-              <Link href="#features" passHref>
-                <ActionButton>Learn More</ActionButton>
+              <Link href="/learn" passHref>
+                <CTAButton
+                  href="/learn"
+                  style={{ background: 'transparent', border: '2px solid white', color: 'white' }}
+                >
+                  Explore Courses
+                </CTAButton>
               </Link>
-            </HeroActions>
-          </div>
-          <HeroImage>
-            <Image
-              src="/hero-image.png"
-              alt="Deep Learning Platform"
-              layout="fill"
-              objectFit="contain"
-              priority
-            />
-          </HeroImage>
-        </HeroContent>
-      </HeroSection>
-
-      <StatsSection aria-labelledby="stats-title">
-        <SectionHeader>
-          <SectionTitle id="stats-title">Our Impact</SectionTitle>
-        </SectionHeader>
-        <div role="list">
-          <StatCard role="listitem">
-            <StatNumber>24/7</StatNumber>
-            <StatLabel>Community Support</StatLabel>
-          </StatCard>
-        </div>
-      </StatsSection>
-
-      <FeaturesSection id="features" aria-labelledby="features-title">
-        <SectionHeader>
-          <SectionTitle id="features-title">Why Choose Us</SectionTitle>
-        </SectionHeader>
-        <FeatureGrid>
-          <FeatureCard>
-            <FeatureIcon>
-              <FaBook />
-            </FeatureIcon>
-            <FeatureTitle>Comprehensive Curriculum</FeatureTitle>
-            <FeatureDescription>
-              From basics to advanced concepts, our curriculum covers everything you need to master
-              deep learning.
-            </FeatureDescription>
-          </FeatureCard>
-          {/* Add more feature cards as needed */}
-        </FeatureGrid>
-      </FeaturesSection>
-
-      <RoadmapSection id="roadmap" aria-labelledby="roadmap-title">
-        <SectionHeader>
-          <SectionTitle id="roadmap-title">Your Learning Journey</SectionTitle>
-        </SectionHeader>
-        <RoadmapTimeline role="list">
-          <RoadmapItem role="listitem">
-            <RoadmapContent>
-              <RoadmapTitle>Foundation</RoadmapTitle>
-              <RoadmapDescription>
-                Master the basics of deep learning with hands-on projects.
-              </RoadmapDescription>
-            </RoadmapContent>
-          </RoadmapItem>
-          {/* Add more roadmap items as needed */}
-        </RoadmapTimeline>
-      </RoadmapSection>
-
-      <TestimonialsSection id="testimonials" aria-labelledby="testimonials-title">
-        <SectionHeader>
-          <SectionTitle id="testimonials-title">Success Stories</SectionTitle>
-        </SectionHeader>
-        <div role="list">
-          <TestimonialCard role="listitem">
-            <TestimonialContent>
-              &ldquo;The curriculum is well-structured and up-to-date. I learned more in 3 months
-              here than I did in a year of self-study.&rdquo;
-            </TestimonialContent>
-            <TestimonialAuthor>
-              <TestimonialAvatar src="/avatars/user2.jpg" alt="Mike Chen" width="48" height="48" />
-              <div>
-                <strong>Mike Chen</strong>
-                <TestimonialRole>AI Engineer at TechCorp</TestimonialRole>
-              </div>
-            </TestimonialAuthor>
-          </TestimonialCard>
-        </div>
-      </TestimonialsSection>
-
-      <GradientSection>
-        <SectionHeader>
-          <SectionTitle style={{ color: 'white' }}>Ready to Start Your Journey?</SectionTitle>
-          <HeroDescription style={{ maxWidth: '600px', margin: '0 auto 2rem', color: 'white' }}>
-            Join thousands of developers who have transformed their careers with DeepLearner.
-          </HeroDescription>
-        </SectionHeader>
-        <SectionContent>
-          <div
-            style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}
-          >
-            <Link href="/signup" passHref>
-              <StyledCTAButton href="/signup">Get Started Free</StyledCTAButton>
-            </Link>
-            <Link href="/learn" passHref>
-              <CTAButton
-                href="/learn"
-                style={{ background: 'transparent', border: '2px solid white', color: 'white' }}
-              >
-                Explore Courses
-              </CTAButton>
-            </Link>
-          </div>
-        </SectionContent>
-      </GradientSection>
-    </MainLayout>
+            </div>
+          </SectionContent>
+        </GradientSection>
+      </MainLayout>
+    </>
   );
 }

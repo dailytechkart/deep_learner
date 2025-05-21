@@ -11,6 +11,8 @@ import {
   SectionContent,
 } from '../components/StyledComponents';
 
+export const dynamic = 'force-dynamic';
+
 const PracticeContainer = styled.div`
   display: flex;
   height: calc(100vh - 64px);
@@ -259,6 +261,11 @@ export default App;`,
 export default function PracticePage() {
   const [editorHeight, setEditorHeight] = useState(50);
   const [isResizing, setIsResizing] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedStatus, setSelectedStatus] = useState<string>('all');
+  const [sortBy, setSortBy] = useState<string>('newest');
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     setIsResizing(true);
@@ -300,7 +307,7 @@ export default function PracticePage() {
 
   return (
     <PageContainer style={{ padding: 0, height: '100vh', overflow: 'hidden' }}>
-      <Header />
+      <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} />
       <PracticeContainer>
         <ProblemSection>
           <ProblemHeader>

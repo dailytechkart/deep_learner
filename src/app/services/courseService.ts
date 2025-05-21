@@ -17,9 +17,17 @@ const COURSES_COLLECTION = 'courses';
 const USER_COURSES_COLLECTION = 'userCourses';
 const USER_PROGRESS_COLLECTION = 'userProgress';
 
+const ensureDb = () => {
+  if (!db) {
+    throw new Error('Firestore is not initialized');
+  }
+  return db;
+};
+
 export const courseService = {
   // Get all courses
   async getAllCourses(): Promise<Course[]> {
+    const db = ensureDb();
     const coursesRef = collection(db, COURSES_COLLECTION);
     const snapshot = await getDocs(coursesRef);
     return snapshot.docs.map(doc => ({
@@ -32,6 +40,7 @@ export const courseService = {
 
   // Get a single course
   async getCourse(courseId: string): Promise<Course | null> {
+    const db = ensureDb();
     const courseRef = doc(db, COURSES_COLLECTION, courseId);
     const courseDoc = await getDoc(courseRef);
 
@@ -47,6 +56,7 @@ export const courseService = {
 
   // Get user's enrolled courses
   async getUserCourses(userId: string): Promise<UserCourse[]> {
+    const db = ensureDb();
     const userCoursesRef = collection(db, USER_COURSES_COLLECTION);
     const q = query(userCoursesRef, where('userId', '==', userId), orderBy('enrolledAt', 'desc'));
 
@@ -59,6 +69,7 @@ export const courseService = {
 
   // Enroll user in a course
   async enrollUserInCourse(userId: string, courseId: string): Promise<void> {
+    const db = ensureDb();
     const userCourseRef = doc(db, USER_COURSES_COLLECTION, `${userId}_${courseId}`);
     const userProgressRef = doc(db, USER_PROGRESS_COLLECTION, `${userId}_${courseId}`);
 
@@ -91,6 +102,7 @@ export const courseService = {
     lessonId: string,
     isCompleted: boolean
   ): Promise<void> {
+    const db = ensureDb();
     const progressRef = doc(db, USER_PROGRESS_COLLECTION, `${userId}_${courseId}`);
     const userCourseRef = doc(db, USER_COURSES_COLLECTION, `${userId}_${courseId}`);
 
@@ -133,6 +145,7 @@ export const courseService = {
 
   // Get user's progress for a specific course
   async getUserCourseProgress(userId: string, courseId: string): Promise<UserProgress | null> {
+    const db = ensureDb();
     const progressRef = doc(db, USER_PROGRESS_COLLECTION, `${userId}_${courseId}`);
     const progressDoc = await getDoc(progressRef);
 

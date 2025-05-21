@@ -3,18 +3,25 @@ import 'styled-components';
 declare module 'styled-components' {
   export interface DefaultTheme {
     colors: {
+      primary: string;
+      secondary: string;
+      accent1: string;
+      accent2: string;
       background: string;
       backgroundAlt: string;
+      backgroundHover: string;
       text: string;
       textSecondary: string;
       border: string;
-      primary: string;
-      secondary: string;
-      accent: string;
-      success: string;
-      error: string;
-      warning: string;
-      info: string;
+      systemDesign: {
+        architecture: string;
+        patterns: string;
+        scalability: string;
+        security: string;
+        performance: string;
+        reliability: string;
+        maintainability: string;
+      };
       code: {
         background: string;
         text: string;
@@ -71,7 +78,17 @@ declare module 'styled-components' {
       md: string;
       lg: string;
       xl: string;
-      xxl: string;
+    };
+    breakpoints: {
+      sm: string;
+      md: string;
+      lg: string;
+      xl: string;
+    };
+    fonts: {
+      body: string;
+      heading: string;
+      monospace: string;
     };
     borderRadius: {
       small: string;
@@ -84,4 +101,4 @@ declare module 'styled-components' {
       slow: string;
     };
   }
-} 
+}

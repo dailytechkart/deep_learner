@@ -1,6 +1,7 @@
 import React from 'react';
 import { TestimonialCard } from '../TestimonialCard';
-import { Container, Section, SectionHeader, SectionTitle } from '../TailwindComponents';
+import { TestimonialsSection, SectionHeader, SectionTitle } from '../StyledComponents';
+import styled from 'styled-components';
 
 interface Testimonial {
   id: string;
@@ -19,22 +20,34 @@ interface TestimonialListProps {
   title?: string;
 }
 
+const TestimonialsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: ${props => props.theme.spacing.lg};
+
+  @media (min-width: ${props => props.theme.breakpoints.tablet}) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: ${props => props.theme.breakpoints.desktop}) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`;
+
 export const TestimonialList: React.FC<TestimonialListProps> = ({
   testimonials,
   title = 'What Our Users Say',
 }) => {
   return (
-    <Section>
-      <Container>
-        <SectionHeader>
-          <SectionTitle>{title}</SectionTitle>
-        </SectionHeader>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {testimonials.map(testimonial => (
-            <TestimonialCard key={testimonial.id} testimonial={testimonial} />
-          ))}
-        </div>
-      </Container>
-    </Section>
+    <TestimonialsSection>
+      <SectionHeader>
+        <SectionTitle>{title}</SectionTitle>
+      </SectionHeader>
+      <TestimonialsGrid>
+        {testimonials.map(testimonial => (
+          <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+        ))}
+      </TestimonialsGrid>
+    </TestimonialsSection>
   );
 };

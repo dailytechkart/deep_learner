@@ -331,23 +331,23 @@ export default function DashboardPage() {
   const [recentProblems] = useState([
     {
       id: 1,
-      title: 'Design a Chat Application',
-      difficulty: 'Hard',
-      category: 'System Design',
-      isPremium: true,
-    },
-    {
-      id: 2,
       title: 'Implement Rate Limiter',
       difficulty: 'Medium',
-      category: 'System Design',
+      category: 'Backend',
       isPremium: false,
     },
     {
-      id: 3,
+      id: 2,
       title: 'Design URL Shortener',
       difficulty: 'Medium',
-      category: 'System Design',
+      category: 'Backend',
+      isPremium: true,
+    },
+    {
+      id: 3,
+      title: 'Build Authentication System',
+      difficulty: 'Hard',
+      category: 'Security',
       isPremium: true,
     },
   ]);
@@ -443,14 +443,14 @@ export default function DashboardPage() {
           <Section>
             <SectionHeader>
               <SectionTitle>Recent Problems</SectionTitle>
-              <ViewAll href="/system-design/problems">
+              <ViewAll href="/problems">
                 View All
                 <FaChartLine size={14} />
               </ViewAll>
             </SectionHeader>
             <ProblemGrid>
               {recentProblems.map(problem => (
-                <ProblemCard key={problem.id} href={`/system-design/problems/${problem.id}`}>
+                <ProblemCard key={problem.id} href={`/problems/${problem.id}`}>
                   <ProblemTitle>
                     {problem.title}
                     {problem.isPremium && (

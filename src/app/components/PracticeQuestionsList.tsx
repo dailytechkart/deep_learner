@@ -146,26 +146,26 @@ export const PracticeQuestionsList: React.FC = () => {
           All
         </FilterButton>
         <FilterButton
-          active={selectedCategory === 'html'}
-          onClick={() => handleCategoryChange('html')}
+          active={selectedCategory === QuestionCategory.HTML}
+          onClick={() => handleCategoryChange(QuestionCategory.HTML)}
         >
           HTML
         </FilterButton>
         <FilterButton
-          active={selectedCategory === 'css'}
-          onClick={() => handleCategoryChange('css')}
+          active={selectedCategory === QuestionCategory.CSS}
+          onClick={() => handleCategoryChange(QuestionCategory.CSS)}
         >
           CSS
         </FilterButton>
         <FilterButton
-          active={selectedCategory === 'javascript'}
-          onClick={() => handleCategoryChange('javascript')}
+          active={selectedCategory === QuestionCategory.JAVASCRIPT}
+          onClick={() => handleCategoryChange(QuestionCategory.JAVASCRIPT)}
         >
           JavaScript
         </FilterButton>
         <FilterButton
-          active={selectedCategory === 'react'}
-          onClick={() => handleCategoryChange('react')}
+          active={selectedCategory === QuestionCategory.REACT}
+          onClick={() => handleCategoryChange(QuestionCategory.REACT)}
         >
           React
         </FilterButton>

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Badge } from '../TailwindComponents';
+import { Badge } from '../Badge';
 
 interface ProblemCardProps {
   problem: {

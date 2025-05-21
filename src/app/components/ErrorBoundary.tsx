@@ -14,7 +14,7 @@ const ErrorContainer = styled.div`
 `;
 
 const ErrorTitle = styled.h2`
-  color: ${props => props.theme.colors.error};
+  color: ${props => props.theme.colors.text};
   margin-bottom: ${props => props.theme.spacing.md};
 `;
 

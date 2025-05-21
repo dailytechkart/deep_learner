@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { courseService } from '../services/courseService';
 import { Course, UserCourse, UserProgress } from '../types/course';

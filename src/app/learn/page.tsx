@@ -14,7 +14,6 @@ import {
   FaClock,
   FaUsers,
   FaBook,
-  FaJs,
   FaReact,
   FaCss3Alt,
   FaGitAlt,
@@ -27,38 +26,7 @@ import {
   FaLock,
   FaTimes,
 } from 'react-icons/fa';
-import {
-  SiJavascript,
-  SiTypescript,
-  SiNextdotjs,
-  SiTailwindcss,
-  SiJest,
-  SiCypress,
-  SiWebpack,
-  SiVite,
-  SiDocker,
-  SiKubernetes,
-  SiJenkins,
-  SiGithubactions,
-  SiJunit5,
-  SiTestinglibrary,
-  SiCucumber,
-  SiSelenium,
-  SiPostman,
-  SiNewrelic,
-  SiDatadog,
-  SiGrafana,
-  SiPrometheus,
-  SiSentry,
-  SiGoogleanalytics,
-  SiHotjar,
-  SiContentful,
-  SiWordpress,
-  SiShopify,
-  SiMagento,
-  SiWoo,
-  SiBigcommerce,
-} from 'react-icons/si';
+import { SiJavascript, SiJest } from 'react-icons/si';
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -94,17 +62,17 @@ const FilterSidebar = styled.aside`
   flex-shrink: 0;
   background: ${props => props.theme.colors.background};
   border-radius: ${props => props.theme.borderRadius.lg};
-  padding: ${props => props.theme.spacing.lg};
+  padding: 1.5rem;
   height: fit-content;
   position: sticky;
   top: 2rem;
-  box-shadow: ${props => props.theme.shadows.md};
+  box-shadow: ${props => props.theme.shadows.lg};
   border: 1px solid ${props => props.theme.colors.border};
   transition: all 0.3s ease;
 
   @media (max-width: 1024px) {
     width: 280px;
-    padding: ${props => props.theme.spacing.md};
+    padding: 1.25rem;
   }
 
   @media (max-width: 768px) {
@@ -113,6 +81,7 @@ const FilterSidebar = styled.aside`
 
   &:hover {
     box-shadow: ${props => props.theme.shadows.lg};
+    transform: translateY(-2px);
   }
 `;
 
@@ -122,12 +91,15 @@ const FilterHeader = styled.div`
   gap: ${props => props.theme.spacing.sm};
   margin-bottom: ${props => props.theme.spacing.xl};
   padding-bottom: ${props => props.theme.spacing.md};
-  border-bottom: 1px solid ${props => props.theme.colors.border};
+  border-bottom: 2px solid ${props => props.theme.colors.primary}20;
 `;
 
 const FilterIcon = styled(FaFilter)`
   color: ${props => props.theme.colors.primary};
-  font-size: 1.2rem;
+  font-size: 1.25rem;
+  background: ${props => props.theme.colors.primary}10;
+  padding: 0.5rem;
+  border-radius: ${props => props.theme.borderRadius.full};
 `;
 
 const FilterTitle = styled.h3`
@@ -137,35 +109,25 @@ const FilterTitle = styled.h3`
   margin: 0;
 `;
 
-const FilterSection = styled.div`
-  margin-bottom: ${props => props.theme.spacing.xl};
-  background: ${props => props.theme.colors.backgroundAlt};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  padding: ${props => props.theme.spacing.md};
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${props => props.theme.shadows.sm};
-  }
-`;
-
 const FilterActions = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: ${props => props.theme.spacing.lg};
-  padding-bottom: ${props => props.theme.spacing.md};
-  border-bottom: 1px solid ${props => props.theme.colors.border};
+  padding: 0.75rem;
+  background: ${props => props.theme.colors.backgroundAlt};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  border: 1px solid ${props => props.theme.colors.border};
 `;
 
 const ClearAllButton = styled.button`
-  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.md};
+  padding: 0.5rem 1rem;
   border-radius: ${props => props.theme.borderRadius.md};
   border: 1px solid ${props => props.theme.colors.border};
-  background: transparent;
+  background: ${props => props.theme.colors.background};
   color: ${props => props.theme.colors.textSecondary};
   font-size: ${props => props.theme.typography.fontSize.sm};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
@@ -175,68 +137,21 @@ const ClearAllButton = styled.button`
   &:hover {
     color: ${props => props.theme.colors.primary};
     border-color: ${props => props.theme.colors.primary};
-    background: ${props => props.theme.colors.backgroundAlt};
+    background: ${props => props.theme.colors.primary}10;
   }
 `;
 
-const FilterCheckboxWrapper = styled.div`
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  margin-right: ${props => props.theme.spacing.sm};
-`;
+const FilterSection = styled.div`
+  margin-bottom: ${props => props.theme.spacing.xl};
+  background: ${props => props.theme.colors.backgroundAlt};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  padding: 1rem;
+  transition: all 0.3s ease;
+  border: 1px solid ${props => props.theme.colors.border};
 
-const FilterCheckbox = styled.input`
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-
-  &:checked + span {
-    background-color: ${props => props.theme.colors.primary};
-    border-color: ${props => props.theme.colors.primary};
-  }
-
-  &:checked + span:after {
-    opacity: 1;
-  }
-
-  &:focus + span {
-    box-shadow: 0 0 0 2px ${props => props.theme.colors.primary}20;
-  }
-`;
-
-const CustomCheckbox = styled.span`
-  position: relative;
-  height: 18px;
-  width: 18px;
-  background-color: ${props => props.theme.colors.background};
-  border: 2px solid ${props => props.theme.colors.border};
-  border-radius: 4px;
-  transition: all 0.2s ease;
-  display: inline-block;
-
-  &:after {
-    content: '';
-    position: absolute;
-    display: none;
-    left: 5px;
-    top: 2px;
-    width: 4px;
-    height: 8px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-
-  ${FilterCheckbox}:checked + & {
-    &:after {
-      display: block;
-      opacity: 1;
-    }
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${props => props.theme.shadows.md};
   }
 `;
 
@@ -272,68 +187,58 @@ interface FilterOptionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonE
   active?: boolean;
 }
 
-const FilterOptionButton = styled.button<FilterOptionButtonProps>`
-  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
-  border-radius: ${props => props.theme.borderRadius.md};
-  border: 1px solid ${props => (props.active ? props.theme.colors.primary : 'transparent')};
-  background: ${props =>
-    props.active ? props.theme.colors.primary : props.theme.colors.background};
-  color: ${props => (props.active ? '#FFFFFF' : props.theme.colors.text)};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: left;
+const FilterOptionButton = styled.button<{ active: boolean }>`
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: relative;
-  overflow: hidden;
-  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  border-radius: ${props => props.theme.borderRadius.md};
+  border: 1px solid
+    ${props => (props.active ? props.theme.colors.primary : props.theme.colors.border)};
+  background: ${props =>
+    props.active ? `${props.theme.colors.primary}10` : props.theme.colors.background};
+  color: ${props => (props.active ? props.theme.colors.primary : props.theme.colors.text)};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  cursor: pointer;
+  transition: all 0.2s ease;
 
   &:hover {
-    transform: translateX(4px);
+    background: ${props => props.theme.colors.primary}10;
     border-color: ${props => props.theme.colors.primary};
-    background: ${props =>
-      props.active ? props.theme.colors.primary : props.theme.colors.backgroundAlt};
+    color: ${props => props.theme.colors.primary};
   }
 
-  &:active {
-    transform: translateX(2px);
+  &:last-child {
+    margin-bottom: 0;
   }
 `;
 
 const FilterButtonContent = styled.div`
   display: flex;
   align-items: center;
-  gap: ${props => props.theme.spacing.sm};
-  flex: 1;
+  gap: 0.75rem;
 `;
 
 const FilterCount = styled.span`
   background: ${props => props.theme.colors.backgroundAlt};
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: ${props => props.theme.typography.fontSize.xs};
   color: ${props => props.theme.colors.textSecondary};
-  transition: all 0.2s ease;
-  min-width: 24px;
-  text-align: center;
-
-  ${FilterButton}:hover & {
-    background: ${props => props.theme.colors.background};
-  }
+  padding: 0.25rem 0.5rem;
+  border-radius: ${props => props.theme.borderRadius.full};
+  font-size: ${props => props.theme.typography.fontSize.xs};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
 `;
 
 const FilterSearch = styled.div`
-  margin-bottom: ${props => props.theme.spacing.lg};
   position: relative;
+  margin-bottom: ${props => props.theme.spacing.lg};
 `;
 
 const FilterSearchInput = styled.input`
   width: 100%;
-  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
-  padding-left: 2.5rem;
-  border-radius: ${props => props.theme.borderRadius.md};
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border-radius: ${props => props.theme.borderRadius.lg};
   border: 1px solid ${props => props.theme.colors.border};
   background: ${props => props.theme.colors.backgroundAlt};
   color: ${props => props.theme.colors.text};
@@ -343,7 +248,7 @@ const FilterSearchInput = styled.input`
   &:focus {
     outline: none;
     border-color: ${props => props.theme.colors.primary};
-    box-shadow: 0 0 0 2px ${props => props.theme.colors.primary}20;
+    box-shadow: 0 0 0 3px ${props => props.theme.colors.primary}20;
   }
 
   &::placeholder {
@@ -353,7 +258,7 @@ const FilterSearchInput = styled.input`
 
 const FilterSearchIcon = styled(FaSearch)`
   position: absolute;
-  left: ${props => props.theme.spacing.md};
+  left: 1rem;
   top: 50%;
   transform: translateY(-50%);
   color: ${props => props.theme.colors.textSecondary};
@@ -458,6 +363,37 @@ const CoursesGrid = styled.div`
   gap: ${props => props.theme.spacing.md};
 `;
 
+const PremiumTag = styled.span`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: ${props => props.theme.borderRadius.full};
+  background: linear-gradient(135deg, #ffd700, #ffa500);
+  color: #000;
+  font-size: ${props => props.theme.typography.fontSize.xs};
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  box-shadow: 0 2px 8px rgba(255, 165, 0, 0.3);
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+  opacity: 1;
+  visibility: visible;
+
+  svg {
+    font-size: 0.875rem;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 165, 0, 0.4);
+  }
+`;
+
 const CourseRow = styled.div<{ isLocked?: boolean }>`
   background: ${props => props.theme.colors.background};
   border-radius: ${props => props.theme.borderRadius.lg};
@@ -469,7 +405,7 @@ const CourseRow = styled.div<{ isLocked?: boolean }>`
   cursor: ${props => (props.isLocked ? 'default' : 'pointer')};
   border: 1px solid ${props => props.theme.colors.border};
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 
   @media (max-width: 1024px) {
     padding: ${props => props.theme.spacing.md};
@@ -719,39 +655,39 @@ interface FilterGroupProps {
   isOpen: boolean;
 }
 
-const SectionTitle = styled.h4<SectionTitleProps>`
-  font-size: ${props => props.theme.typography.fontSize.md};
-  font-weight: ${props => props.theme.typography.fontWeight.semibold};
-  color: ${props => props.theme.colors.text};
-  margin-bottom: ${props => (props.isOpen ? props.theme.spacing.md : 0)};
+const SectionTitle = styled.button<{ isOpen: boolean }>`
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  cursor: pointer;
-  padding: ${props => props.theme.spacing.sm};
+  padding: 0.75rem;
+  background: ${props => props.theme.colors.background};
+  border: 1px solid ${props => props.theme.colors.border};
   border-radius: ${props => props.theme.borderRadius.md};
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSize.md};
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  cursor: pointer;
   transition: all 0.2s ease;
 
-  &:hover {
-    background: ${props => props.theme.colors.background};
+  svg {
+    transition: transform 0.2s ease;
+    transform: rotate(${props => (props.isOpen ? '180deg' : '0')});
   }
 
-  svg {
-    transition: transform 0.3s ease;
-    transform: rotate(${props => (props.isOpen ? '180deg' : '0deg')});
-    color: ${props => props.theme.colors.primary};
+  &:hover {
+    background: ${props => props.theme.colors.primary}10;
+    border-color: ${props => props.theme.colors.primary};
   }
 `;
 
-const FilterGroup = styled.div<FilterGroupProps>`
-  display: flex;
-  flex-direction: column;
-  gap: ${props => props.theme.spacing.sm};
-  max-height: ${props => (props.isOpen ? '500px' : '0')};
-  overflow: hidden;
-  transition: all 0.3s ease;
-  padding: ${props => (props.isOpen ? props.theme.spacing.sm : 0)};
-  opacity: ${props => (props.isOpen ? 1 : 0)};
+const FilterGroup = styled.div<{ isOpen: boolean }>`
+  display: ${props => (props.isOpen ? 'block' : 'none')};
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background: ${props => props.theme.colors.background};
+  border-radius: ${props => props.theme.borderRadius.md};
+  border: 1px solid ${props => props.theme.colors.border};
 `;
 
 const LoadingSpinner = styled.div`
@@ -1133,6 +1069,67 @@ const Overlay = styled.div<{ isOpen: boolean }>`
   opacity: ${props => (props.isOpen ? 1 : 0)};
   visibility: ${props => (props.isOpen ? 'visible' : 'hidden')};
   transition: all 0.3s ease;
+`;
+
+const FilterCheckboxWrapper = styled.div`
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-right: ${props => props.theme.spacing.sm};
+`;
+
+const FilterCheckbox = styled.input`
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+
+  &:checked + span {
+    background-color: ${props => props.theme.colors.primary};
+    border-color: ${props => props.theme.colors.primary};
+  }
+
+  &:checked + span:after {
+    opacity: 1;
+  }
+
+  &:focus + span {
+    box-shadow: 0 0 0 2px ${props => props.theme.colors.primary}20;
+  }
+`;
+
+const CustomCheckbox = styled.span`
+  position: relative;
+  height: 18px;
+  width: 18px;
+  background-color: ${props => props.theme.colors.background};
+  border: 2px solid ${props => props.theme.colors.border};
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: inline-block;
+
+  &:after {
+    content: '';
+    position: absolute;
+    display: none;
+    left: 5px;
+    top: 2px;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  ${FilterCheckbox}:checked + & {
+    &:after {
+      display: block;
+      opacity: 1;
+    }
+  }
 `;
 
 const LearnPage: React.FC = () => {
@@ -1520,6 +1517,10 @@ const LearnPage: React.FC = () => {
                   const isLocked = isCourseLocked(index);
                   return (
                     <CourseRow key={topic.id} isLocked={isLocked}>
+                      <PremiumTag>
+                        <FaStar />
+                        Premium
+                      </PremiumTag>
                       <CourseImage category={topic.category} isLocked={isLocked}>
                         <IconWrapper>{getCategoryIcon(topic.category)}</IconWrapper>
                       </CourseImage>

@@ -1,13 +1,6 @@
 'use client';
 
 import styled from 'styled-components';
-import {
-  PageContainer,
-  Section,
-  SectionHeader,
-  SectionTitle,
-  SectionContent,
-} from '../../components/StyledComponents';
 
 const LayoutContainer = styled.div`
   display: flex;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '../TailwindComponents';
+import styled from 'styled-components';
 
 interface Activity {
   id: string;
@@ -13,20 +13,87 @@ interface RecentActivityProps {
   activities: Activity[];
 }
 
-export const RecentActivity: React.FC<RecentActivityProps> = ({ activities }) => {
-  const getStatusColor = (status: Activity['status']) => {
-    switch (status) {
-      case 'completed':
-        return 'text-green-600';
-      case 'in_progress':
-        return 'text-yellow-600';
-      case 'failed':
-        return 'text-red-600';
-      default:
-        return 'text-gray-600';
-    }
-  };
+const Card = styled.div`
+  background: ${props => props.theme.colors.backgroundAlt};
+  border-radius: ${props => props.theme.borderRadius.md};
+  box-shadow: ${props => props.theme.shadows.sm};
+  overflow: hidden;
+`;
 
+const CardHeader = styled.div`
+  padding: ${props => props.theme.spacing.md};
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+`;
+
+const CardTitle = styled.h3`
+  font-size: ${props => props.theme.typography.h3.fontSize};
+  font-weight: ${props => props.theme.typography.h3.fontWeight};
+  color: ${props => props.theme.colors.text};
+  margin: 0;
+`;
+
+const CardContent = styled.div`
+  padding: ${props => props.theme.spacing.md};
+`;
+
+const ActivityList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing.md};
+`;
+
+const ActivityItem = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: ${props => props.theme.spacing.md};
+  padding: ${props => props.theme.spacing.sm};
+  border-radius: ${props => props.theme.borderRadius.sm};
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: ${props => props.theme.colors.backgroundHover};
+  }
+`;
+
+const ActivityIcon = styled.span`
+  font-size: 1.25rem;
+`;
+
+const ActivityContent = styled.div`
+  flex: 1;
+`;
+
+const ActivityTitle = styled.h4`
+  font-size: ${props => props.theme.typography.body2.fontSize};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  color: ${props => props.theme.colors.text};
+  margin: 0 0 ${props => props.theme.spacing.xs};
+`;
+
+const ActivityTimestamp = styled.p`
+  font-size: ${props => props.theme.typography.caption.fontSize};
+  color: ${props => props.theme.colors.textSecondary};
+  margin: 0;
+`;
+
+const ActivityStatus = styled.span<{ status: Activity['status'] }>`
+  font-size: ${props => props.theme.typography.body2.fontSize};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  color: ${props => {
+    switch (props.status) {
+      case 'completed':
+        return props.theme.colors.status.success;
+      case 'in_progress':
+        return props.theme.colors.status.warning;
+      case 'failed':
+        return props.theme.colors.status.error;
+      default:
+        return props.theme.colors.textSecondary;
+    }
+  }};
+`;
+
+export const RecentActivity: React.FC<RecentActivityProps> = ({ activities }) => {
   const getStatusIcon = (status: Activity['status']) => {
     switch (status) {
       case 'completed':
@@ -46,23 +113,20 @@ export const RecentActivity: React.FC<RecentActivityProps> = ({ activities }) =>
         <CardTitle>Recent Activity</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <ActivityList>
           {activities.map(activity => (
-            <div
-              key={activity.id}
-              className="flex items-start space-x-4 p-3 rounded-lg hover:bg-gray-50"
-            >
-              <span className="text-lg">{getStatusIcon(activity.status)}</span>
-              <div className="flex-1">
-                <h4 className="text-sm font-medium text-gray-900">{activity.title}</h4>
-                <p className="text-xs text-gray-500">{activity.timestamp}</p>
-              </div>
-              <span className={`text-sm font-medium ${getStatusColor(activity.status)}`}>
+            <ActivityItem key={activity.id}>
+              <ActivityIcon>{getStatusIcon(activity.status)}</ActivityIcon>
+              <ActivityContent>
+                <ActivityTitle>{activity.title}</ActivityTitle>
+                <ActivityTimestamp>{activity.timestamp}</ActivityTimestamp>
+              </ActivityContent>
+              <ActivityStatus status={activity.status}>
                 {activity.status.replace('_', ' ')}
-              </span>
-            </div>
+              </ActivityStatus>
+            </ActivityItem>
           ))}
-        </div>
+        </ActivityList>
       </CardContent>
     </Card>
   );

@@ -30,17 +30,7 @@ const firebaseAdminConfig = {
 };
 
 // Initialize Firebase Admin
-let adminApp;
-try {
-  const apps = getApps();
-  if (!apps.length) {
-    adminApp = initializeApp(firebaseAdminConfig);
-  } else {
-    adminApp = apps[0];
-  }
-} catch (error) {
-  console.error('Error initializing Firebase Admin:', error);
-  throw new Error('Failed to initialize Firebase Admin SDK. Please check your credentials.');
-}
+const adminApp = getApps().length === 0 ? initializeApp(firebaseAdminConfig) : getApps()[0];
 
+export { adminApp };
 export const adminAuth = getAuth(adminApp);

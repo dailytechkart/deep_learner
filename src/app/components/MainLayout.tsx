@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Header from './Header';
 
@@ -23,9 +23,11 @@ interface MainLayoutProps {
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+
   return (
     <LayoutContainer>
-      <Header />
+      <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} />
       <Main>{children}</Main>
     </LayoutContainer>
   );

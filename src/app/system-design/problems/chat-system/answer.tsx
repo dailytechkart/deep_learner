@@ -3,7 +3,20 @@
 import React, { ReactNode } from 'react';
 import Mermaid from '@/components/Mermaid';
 import styled from 'styled-components';
-import { FaRocket, FaClock, FaUsers, FaLock, FaLink, FaTachometerAlt, FaComments, FaBell, FaSearch, FaCreditCard, FaFile, FaShoppingCart, FaCar, FaBriefcase, FaVideo } from 'react-icons/fa';
+import {
+  FaRocket,
+  FaClock,
+  FaUsers,
+  FaTachometerAlt,
+  FaComments,
+  FaBell,
+  FaSearch,
+  FaCreditCard,
+  FaFile,
+  FaShoppingCart,
+  FaBriefcase,
+  FaVideo,
+} from 'react-icons/fa';
 import { MainLayout } from '@/components/MainLayout';
 
 const hldDiagram = `flowchart TD
@@ -250,7 +263,7 @@ const ListItem = styled.li`
   padding-left: 1.5rem;
 
   &:before {
-    content: "•";
+    content: '•';
     position: absolute;
     left: 0;
     color: ${({ theme }) => theme.colors.primary};
@@ -431,11 +444,6 @@ const StatItem = styled.div`
   background: ${({ theme }) => theme.colors.backgroundAlt};
   border-radius: ${({ theme }) => theme.borderRadius.sm};
   border: 1px solid ${({ theme }) => theme.colors.border};
-`;
-
-const StatIcon = styled.div`
-  color: ${({ theme }) => theme.colors.primary};
-  font-size: 0.8rem;
 `;
 
 const ProblemIcon = styled.div`
@@ -727,7 +735,7 @@ const systemDesignProblems = [
     difficulty: 'Medium',
     timeEstimate: '45-60 min',
     icon: <FaBriefcase />,
-  }
+  },
 ];
 
 const ProblemCategory = styled.div`
@@ -785,7 +793,7 @@ const ChatSystemAnswer = () => {
 
       window.scrollTo({
         top: offsetPosition,
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
       setActiveSection(sectionId);
     }
@@ -793,8 +801,17 @@ const ChatSystemAnswer = () => {
 
   React.useEffect(() => {
     const handleScroll = () => {
-      const sections = ['overview', 'requirements', 'architecture', 'data-model', 'message-flow', 'scaling', 'security', 'monitoring'];
-      
+      const sections = [
+        'overview',
+        'requirements',
+        'architecture',
+        'data-model',
+        'message-flow',
+        'scaling',
+        'security',
+        'monitoring',
+      ];
+
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
@@ -813,7 +830,7 @@ const ChatSystemAnswer = () => {
 
   const leftPanel = (
     <LeftPanel>
-      {systemDesignProblems.map((problem) => (
+      {systemDesignProblems.map(problem => (
         <ProblemLink
           key={problem.id}
           href={`/system-design/problems/${problem.id}`}
@@ -822,9 +839,7 @@ const ChatSystemAnswer = () => {
           <ProblemIcon>{problem.icon}</ProblemIcon>
           <ProblemTitle>{problem.title}</ProblemTitle>
           <ProblemMeta>
-            <DifficultyBadge difficulty={problem.difficulty}>
-              {problem.difficulty}
-            </DifficultyBadge>
+            <DifficultyBadge difficulty={problem.difficulty}>{problem.difficulty}</DifficultyBadge>
             <span>{problem.timeEstimate}</span>
           </ProblemMeta>
         </ProblemLink>
@@ -839,49 +854,49 @@ const ChatSystemAnswer = () => {
           <RightPanelSectionTitle>Table of Contents</RightPanelSectionTitle>
         </SectionHeader>
         <InfoContent>
-          <TableOfContentsLink 
+          <TableOfContentsLink
             onClick={() => scrollToSection('overview')}
             className={activeSection === 'overview' ? 'active' : ''}
           >
             Overview
           </TableOfContentsLink>
-          <TableOfContentsLink 
+          <TableOfContentsLink
             onClick={() => scrollToSection('requirements')}
             className={activeSection === 'requirements' ? 'active' : ''}
           >
             Requirements
           </TableOfContentsLink>
-          <TableOfContentsLink 
+          <TableOfContentsLink
             onClick={() => scrollToSection('architecture')}
             className={activeSection === 'architecture' ? 'active' : ''}
           >
             High-Level Design
           </TableOfContentsLink>
-          <TableOfContentsLink 
+          <TableOfContentsLink
             onClick={() => scrollToSection('data-model')}
             className={activeSection === 'data-model' ? 'active' : ''}
           >
             Data Model
           </TableOfContentsLink>
-          <TableOfContentsLink 
+          <TableOfContentsLink
             onClick={() => scrollToSection('message-flow')}
             className={activeSection === 'message-flow' ? 'active' : ''}
           >
             Message Flow
           </TableOfContentsLink>
-          <TableOfContentsLink 
+          <TableOfContentsLink
             onClick={() => scrollToSection('scaling')}
             className={activeSection === 'scaling' ? 'active' : ''}
           >
             Scaling Considerations
           </TableOfContentsLink>
-          <TableOfContentsLink 
+          <TableOfContentsLink
             onClick={() => scrollToSection('security')}
             className={activeSection === 'security' ? 'active' : ''}
           >
             Security
           </TableOfContentsLink>
-          <TableOfContentsLink 
+          <TableOfContentsLink
             onClick={() => scrollToSection('monitoring')}
             className={activeSection === 'monitoring' ? 'active' : ''}
           >
@@ -993,7 +1008,9 @@ const ChatSystemAnswer = () => {
               <ListItem>Message search functionality</ListItem>
               <ListItem>File sharing capabilities</ListItem>
             </List>
-            <strong style={{ display: 'block', marginTop: '1.5rem' }}>Non-Functional Requirements:</strong>
+            <strong style={{ display: 'block', marginTop: '1.5rem' }}>
+              Non-Functional Requirements:
+            </strong>
             <List>
               <ListItem>High availability (99.99%)</ListItem>
               <ListItem>Low latency (&lt;100ms for message delivery)</ListItem>
@@ -1035,7 +1052,8 @@ const ChatSystemAnswer = () => {
               <Mermaid chart={dataModelDiagram} />
             </DiagramContainer>
             <DiagramCaption>
-              Entity relationship diagram showing the data model for users, conversations, messages, and message statuses.
+              Entity relationship diagram showing the data model for users, conversations, messages,
+              and message statuses.
             </DiagramCaption>
             <p style={{ margin: '0 0 2.2rem 0' }}>
               The data model is designed for efficient querying and scaling, with separate
@@ -1142,4 +1160,4 @@ const ChatSystemAnswer = () => {
   );
 };
 
-export default ChatSystemAnswer; 
+export default ChatSystemAnswer;

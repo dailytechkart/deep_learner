@@ -1,5 +1,12 @@
 import React from 'react';
-import { Card, CardContent } from '../TailwindComponents';
+import styled from 'styled-components';
+import {
+  TestimonialCard as StyledTestimonialCard,
+  TestimonialContent,
+  TestimonialAuthor,
+  TestimonialAvatar,
+  TestimonialRole,
+} from '../StyledComponents';
 
 interface TestimonialCardProps {
   testimonial: {
@@ -15,50 +22,43 @@ interface TestimonialCardProps {
   };
 }
 
+const StarRating = styled.div`
+  display: flex;
+  gap: ${props => props.theme.spacing.xs};
+  margin-bottom: ${props => props.theme.spacing.md};
+`;
+
+const Star = styled.span<{ $active: boolean }>`
+  color: ${props => (props.$active ? props.theme.colors.primary : props.theme.colors.border)};
+  font-size: ${props => props.theme.typography.fontSize.lg};
+`;
+
 export const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial }) => {
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }).map((_, index) => (
-      <span
-        key={index}
-        className={`text-lg ${index < rating ? 'text-yellow-400' : 'text-gray-300'}`}
-      >
+      <Star key={index} $active={index < rating}>
         ★
-      </span>
+      </Star>
     ));
   };
 
   return (
-    <Card className="h-full">
-      <CardContent className="p-6">
-        <div className="flex flex-col h-full">
-          {/* Rating */}
-          <div className="flex mb-4">{renderStars(testimonial.rating)}</div>
-
-          {/* Content */}
-          <p className="text-gray-600 mb-6 flex-grow">&ldquo;{testimonial.content}&rdquo;</p>
-
-          {/* Author */}
-          <div className="flex items-center">
-            {testimonial.author.avatar ? (
-              <img
-                src={testimonial.author.avatar}
-                alt={testimonial.author.name}
-                className="w-12 h-12 rounded-full mr-4"
-              />
-            ) : (
-              <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center text-xl font-semibold mr-4">
-                {testimonial.author.name.charAt(0)}
-              </div>
-            )}
-            <div>
-              <h4 className="font-semibold text-gray-900">{testimonial.author.name}</h4>
-              <p className="text-sm text-gray-500">
-                {testimonial.author.role} at {testimonial.author.company}
-              </p>
-            </div>
-          </div>
+    <StyledTestimonialCard>
+      <StarRating>{renderStars(testimonial.rating)}</StarRating>
+      <TestimonialContent>&ldquo;{testimonial.content}&rdquo;</TestimonialContent>
+      <TestimonialAuthor>
+        {testimonial.author.avatar ? (
+          <TestimonialAvatar src={testimonial.author.avatar} alt={testimonial.author.name} />
+        ) : (
+          <TestimonialAvatar as="div">{testimonial.author.name.charAt(0)}</TestimonialAvatar>
+        )}
+        <div>
+          <strong>{testimonial.author.name}</strong>
+          <TestimonialRole>
+            {testimonial.author.role} at {testimonial.author.company}
+          </TestimonialRole>
         </div>
-      </CardContent>
-    </Card>
+      </TestimonialAuthor>
+    </StyledTestimonialCard>
   );
 };

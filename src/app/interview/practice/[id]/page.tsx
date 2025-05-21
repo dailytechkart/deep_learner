@@ -115,13 +115,13 @@ const TestResultItem = styled.div<{ $status: 'success' | 'error' | 'pending' }>`
     switch (props.$status) {
       case 'success':
         return `
-          background: ${props.theme.colors.success}20;
-          color: ${props.theme.colors.success};
+          background: ${props.theme.colors.status.success}20;
+          color: ${props.theme.colors.status.success};
         `;
       case 'error':
         return `
-          background: ${props.theme.colors.error}20;
-          color: ${props.theme.colors.error};
+          background: ${props.theme.colors.status.error}20;
+          color: ${props.theme.colors.status.error};
         `;
       default:
         return `
@@ -137,9 +137,9 @@ const StatusIcon = styled.span<{ $status: 'success' | 'error' | 'pending' }>`
   ${props => {
     switch (props.$status) {
       case 'success':
-        return 'color: ${props.theme.colors.success};';
+        return 'color: ${props.theme.colors.status.success};';
       case 'error':
-        return 'color: ${props.theme.colors.error};';
+        return 'color: ${props.theme.colors.status.error};';
       default:
         return 'color: ${props.theme.colors.textSecondary};';
     }
@@ -159,6 +159,7 @@ export default function PracticeProblemPage({ params }: PageProps) {
       message: string;
     }>
   >([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleRunTests = () => {
     // Mock test results
@@ -176,7 +177,7 @@ export default function PracticeProblemPage({ params }: PageProps) {
 
   return (
     <PracticeContainer>
-      <Header />
+      <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} />
       <MainContent>
         <LeftPanel>
           <ProblemStatement problemId={params.id} />

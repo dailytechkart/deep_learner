@@ -152,7 +152,7 @@ export const PracticeQuestion: React.FC<PracticeQuestionProps> = ({ question, on
   return (
     <QuestionContainer>
       <QuestionHeader>
-        <QuestionTitle>{question.title}</QuestionTitle>
+        <QuestionTitle>{question.question}</QuestionTitle>
         <QuestionMeta>
           <span>{question.category}</span>
           <span>{question.difficulty}</span>

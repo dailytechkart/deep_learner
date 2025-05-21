@@ -5,6 +5,10 @@ export enum QuestionCategory {
   DATABASE = 'DATABASE',
   NETWORKING = 'NETWORKING',
   SECURITY = 'SECURITY',
+  HTML = 'HTML',
+  CSS = 'CSS',
+  JAVASCRIPT = 'JAVASCRIPT',
+  REACT = 'REACT',
 }
 
 export enum QuestionDifficulty {

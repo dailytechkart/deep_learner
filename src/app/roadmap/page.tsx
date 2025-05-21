@@ -1,6 +1,13 @@
 'use client';
 
-import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
+import React, {
+  useState,
+  useRef,
+  useLayoutEffect,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import styled, { css } from 'styled-components';
 import {
   FaCheckCircle,
@@ -1548,6 +1555,14 @@ const RoadmapPage = () => {
   const { searchQuery, setSearchQuery } = useSearch();
   const [completedItems, setCompletedItems] = useState<Record<string, boolean>>({});
 
+  const handleSearchChange: Dispatch<SetStateAction<string>> = value => {
+    if (typeof value === 'function') {
+      setSearchQuery(value(searchQuery));
+    } else {
+      setSearchQuery(value);
+    }
+  };
+
   const toggleItem = (itemId: string) => {
     setCompletedItems(prev => ({
       ...prev,
@@ -1598,7 +1613,7 @@ const RoadmapPage = () => {
 
   return (
     <Container>
-      <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+      <Header searchQuery={searchQuery} onSearchChange={handleSearchChange} />
       <Content>
         <Title>Frontend Development Roadmap</Title>
         <Description>

@@ -43,12 +43,17 @@ import {
 } from 'react-icons/si';
 
 const PageContainer = styled.div`
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
   display: flex;
-  gap: 3rem;
-  position: relative;
+  gap: 2rem;
+
+  @media (max-width: 768px) {
+    padding: 0.75rem;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
 `;
 
 const FilterSidebar = styled.div`
@@ -68,6 +73,110 @@ const FilterSidebar = styled.div`
   &:hover {
     box-shadow: ${props => props.theme.shadows.md};
   }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const MobileFilterToggle = styled.button`
+  display: none;
+`;
+
+const MobileFilterDrawer = styled.div<{ isOpen: boolean }>`
+  display: none;
+`;
+
+const MobileFilterHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  position: sticky;
+  top: 0;
+  background: ${props => props.theme.colors.background};
+  z-index: 1;
+`;
+
+const MobileFilterTitle = styled.h3`
+  font-size: ${props => props.theme.typography.fontSize.xl};
+  color: ${props => props.theme.colors.text};
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+`;
+
+const CloseButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: ${props => props.theme.borderRadius.full};
+  background: ${props => props.theme.colors.backgroundAlt};
+  border: 1px solid ${props => props.theme.colors.border};
+  color: ${props => props.theme.colors.text};
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${props => props.theme.colors.primary + '15'};
+    border-color: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.colors.primary};
+  }
+`;
+
+const MobileFilterContent = styled.div`
+  padding: 1rem;
+  padding-bottom: 6rem;
+
+  @media (max-width: 768px) {
+    padding: 0.75rem;
+    padding-bottom: 6rem;
+  }
+`;
+
+const MobileFilterActions = styled.div`
+  position: fixed;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background: ${props => props.theme.colors.background};
+  border-top: 1px solid ${props => props.theme.colors.border};
+  display: flex;
+  gap: 1rem;
+  z-index: 1001;
+  box-shadow: 0 -4px 6px -1px ${props => props.theme.colors.border};
+`;
+
+const MobileFilterButton = styled.button`
+  flex: 1;
+  padding: 0.75rem;
+  border-radius: ${props => props.theme.borderRadius.lg};
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+`;
+
+const ApplyButton = styled(MobileFilterButton)`
+  background: ${props => props.theme.colors.primary};
+  color: white;
+  border: none;
+
+  &:hover {
+    background: ${props => props.theme.colors.secondary};
+  }
+`;
+
+const ResetButton = styled(MobileFilterButton)`
+  background: transparent;
+  color: ${props => props.theme.colors.textSecondary};
+  border: 1px solid ${props => props.theme.colors.border};
+
+  &:hover {
+    background: ${props => props.theme.colors.backgroundAlt};
+    color: ${props => props.theme.colors.text};
+  }
 `;
 
 const FilterTitle = styled.h3`
@@ -83,7 +192,7 @@ const FilterTitle = styled.h3`
 `;
 
 const FilterSection = styled.div`
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid ${props => props.theme.colors.border};
 
@@ -91,6 +200,11 @@ const FilterSection = styled.div`
     border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
   }
 `;
 
@@ -100,6 +214,13 @@ const FilterSectionHeader = styled.div`
   justify-content: space-between;
   margin-bottom: 1rem;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    margin-bottom: 0.75rem;
+    padding: 0.5rem;
+    background: ${props => props.theme.colors.background};
+    border-radius: ${props => props.theme.borderRadius.md};
+  }
 `;
 
 const FilterSectionTitle = styled.h4`
@@ -111,21 +232,24 @@ const FilterSectionTitle = styled.h4`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-
-  &::before {
-    content: '';
-    display: block;
-    width: 4px;
-    height: 16px;
-    background: ${props => props.theme.colors.primary};
-    border-radius: ${props => props.theme.borderRadius.full};
-  }
 `;
 
 const FilterSectionContent = styled.div<{ isOpen: boolean }>`
   max-height: ${props => (props.isOpen ? '500px' : '0')};
   overflow: hidden;
   transition: max-height 0.3s ease;
+`;
+
+const FilterChipGroup = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+
+  @media (max-width: 768px) {
+    gap: 0.375rem;
+    margin-top: 0.375rem;
+  }
 `;
 
 const FilterChip = styled.button<{ active?: boolean }>`
@@ -157,28 +281,34 @@ const FilterChip = styled.button<{ active?: boolean }>`
     transform: translateY(0);
   }
 
-  span {
-    position: relative;
-    z-index: 1;
+  @media (max-width: 768px) {
+    padding: 0.5rem 0.75rem;
+    font-size: ${props => props.theme.typography.fontSize.xs};
+    margin: 0;
+    flex: 1;
+    min-width: calc(50% - 0.1875rem);
+    justify-content: center;
   }
-`;
-
-const FilterChipGroup = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
 `;
 
 const ContentSection = styled.div`
   flex: 1;
   min-width: 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const Header = styled.div`
   text-align: left;
   margin-bottom: 4rem;
   padding: 0;
+
+  @media (max-width: 768px) {
+    margin-bottom: 1.25rem;
+    padding: 0.5rem 0;
+  }
 `;
 
 const Title = styled.h1`
@@ -187,6 +317,12 @@ const Title = styled.h1`
   margin-bottom: 1.5rem;
   font-weight: ${props => props.theme.typography.fontWeight.bold};
   line-height: 1.2;
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize['2xl']};
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
 `;
 
 const Description = styled.p`
@@ -194,12 +330,29 @@ const Description = styled.p`
   color: ${props => props.theme.colors.textSecondary};
   max-width: 800px;
   line-height: 1.7;
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize.md};
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+  }
 `;
 
 const StatsBar = styled.div`
   display: flex;
   gap: 2rem;
   margin: 2rem 0;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1rem 0;
+    justify-content: space-between;
+    background: ${props => props.theme.colors.backgroundAlt};
+    padding: 0.75rem;
+    border-radius: ${props => props.theme.borderRadius.lg};
+    border: 1px solid ${props => props.theme.colors.border};
+  }
 `;
 
 const StatItem = styled.div`
@@ -208,6 +361,16 @@ const StatItem = styled.div`
   gap: 0.75rem;
   color: ${props => props.theme.colors.textSecondary};
   font-size: ${props => props.theme.typography.fontSize.sm};
+
+  @media (max-width: 768px) {
+    flex: 1;
+    min-width: 120px;
+    font-size: ${props => props.theme.typography.fontSize.xs};
+    justify-content: center;
+    padding: 0.5rem;
+    background: ${props => props.theme.colors.background};
+    border-radius: ${props => props.theme.borderRadius.md};
+  }
 `;
 
 const StatIcon = styled.div`
@@ -228,6 +391,8 @@ const TopicsGrid = styled.div`
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 1rem;
   }
 `;
 
@@ -252,20 +417,8 @@ const TopicCard = styled.div`
     }
   }
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: ${props => props.theme.colors.primary};
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  &:hover::before {
-    opacity: 1;
+  @media (max-width: 768px) {
+    padding: 1.5rem;
   }
 `;
 
@@ -274,6 +427,11 @@ const TopicIcon = styled.div`
   color: ${props => props.theme.colors.primary};
   margin-bottom: 2rem;
   transition: transform 0.3s ease;
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 const TopicTitle = styled.h3`
@@ -282,6 +440,11 @@ const TopicTitle = styled.h3`
   margin-bottom: 1rem;
   font-weight: ${props => props.theme.typography.fontWeight.semibold};
   line-height: 1.3;
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize.lg};
+    margin-bottom: 0.5rem;
+  }
 `;
 
 const TopicDescription = styled.p`
@@ -289,6 +452,12 @@ const TopicDescription = styled.p`
   color: ${props => props.theme.colors.textSecondary};
   line-height: 1.7;
   margin-bottom: 1.5rem;
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize.sm};
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
 `;
 
 const TagGroup = styled.div`
@@ -296,6 +465,11 @@ const TagGroup = styled.div`
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: 1.5rem;
+
+  @media (max-width: 768px) {
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
 `;
 
 // Color palette for tags
@@ -404,34 +578,61 @@ const ClearFiltersButton = styled.button`
 `;
 
 const TabContainer = styled.div`
-  margin-top: 2rem;
+  margin-bottom: 2rem;
   border-bottom: 1px solid ${props => props.theme.colors.border};
+
+  @media (max-width: 768px) {
+    margin: 0 -0.75rem 1rem;
+    padding: 0 0.75rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    background: ${props => props.theme.colors.backgroundAlt};
+    border-radius: ${props => props.theme.borderRadius.lg};
+    border: 1px solid ${props => props.theme.colors.border};
+    padding: 0.5rem;
+  }
 `;
 
 const TabList = styled.div`
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   margin-bottom: -1px;
+
+  @media (max-width: 768px) {
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+    width: max-content;
+  }
 `;
 
 const Tab = styled.button<{ active: boolean }>`
-  padding: 1rem 2rem;
-  font-size: ${props => props.theme.typography.fontSize.lg};
-  font-weight: ${props => props.theme.typography.fontWeight.bold};
-  color: ${props => (props.active ? props.theme.colors.primary : props.theme.colors.textSecondary)};
-  border-bottom: 3px solid ${props => (props.active ? props.theme.colors.primary : 'transparent')};
-  background: ${props => (props.active ? props.theme.colors.primary + '08' : 'transparent')};
-  border-radius: 1.5rem 1.5rem 0 0;
-  transition: all 0.2s;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  background: none;
+  color: ${props => (props.active ? props.theme.colors.primary : props.theme.colors.textSecondary)};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
   cursor: pointer;
-  box-shadow: ${props => (props.active ? `0 2px 12px ${props.theme.colors.primary}11` : 'none')};
+  border-bottom: 2px solid ${props => (props.active ? props.theme.colors.primary : 'transparent')};
+  transition: all 0.2s ease;
+  white-space: nowrap;
+
   &:hover {
     color: ${props => props.theme.colors.primary};
-    background: ${props => props.theme.colors.primary + '10'};
-    transform: translateY(-2px) scale(1.03);
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.5rem 0.75rem;
+    font-size: ${props => props.theme.typography.fontSize.sm};
+    border-radius: ${props => props.theme.borderRadius.md};
+    background: ${props => (props.active ? props.theme.colors.primary + '15' : 'transparent')};
+    border-bottom: none;
   }
 `;
 
@@ -442,16 +643,38 @@ const TabContent = styled.div`
 const ListContainer = styled.div`
   display: flex;
   gap: 2rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+  }
 `;
 
 const ListSidebar = styled.div`
   width: 280px;
   flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 
 const ListContent = styled.div`
   flex: 1;
   min-width: 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const CategoryCard = styled.div<{ active?: boolean }>`
@@ -469,6 +692,17 @@ const CategoryCard = styled.div<{ active?: boolean }>`
     transform: translateX(4px);
     border-color: ${props => props.theme.colors.primary};
   }
+
+  @media (max-width: 768px) {
+    margin-bottom: 0;
+    min-width: 200px;
+    flex: 0 0 auto;
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
 `;
 
 const CategoryTitle = styled.h4`
@@ -476,56 +710,45 @@ const CategoryTitle = styled.h4`
   color: ${props => props.theme.colors.text};
   margin-bottom: 0.25rem;
   font-weight: ${props => props.theme.typography.fontWeight.medium};
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize.sm};
+    margin-bottom: 0.125rem;
+  }
 `;
 
 const CategoryCount = styled.span`
   font-size: ${props => props.theme.typography.fontSize.sm};
   color: ${props => props.theme.colors.textSecondary};
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize.xs};
+  }
 `;
 
 const ProblemCard = styled.div`
   background: ${props => props.theme.colors.backgroundAlt};
-  border-radius: ${props => props.theme.borderRadius.xl};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.lg};
   padding: 1.5rem;
   margin-bottom: 1rem;
-  border: 1px solid ${props => props.theme.colors.border};
-  transition: all 0.2s ease;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
 
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${props => props.theme.shadows.md};
-    border-color: ${props => props.theme.colors.primary};
-
-    .problem-icon {
-      transform: scale(1.1);
-    }
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: ${props => props.theme.colors.primary};
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  &:hover::before {
-    opacity: 1;
+  @media (max-width: 768px) {
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: ${props => props.theme.borderRadius.md};
   }
 `;
 
 const ProblemHeader = styled.div`
   display: flex;
-  align-items: flex-start;
   gap: 1rem;
   margin-bottom: 1rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
 `;
 
 const ProblemIcon = styled.div`
@@ -546,6 +769,11 @@ const ProblemTitle = styled.h3`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize.md};
+    line-height: 1.4;
+  }
 `;
 
 const ProblemDescription = styled.p`
@@ -553,16 +781,28 @@ const ProblemDescription = styled.p`
   color: ${props => props.theme.colors.textSecondary};
   margin-bottom: 1rem;
   line-height: 1.6;
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize.sm};
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+  }
 `;
 
 const ProblemMeta = styled.div`
   display: flex;
+  gap: 1.5rem;
+  margin: 1rem 0;
   flex-wrap: wrap;
-  gap: 1rem;
-  align-items: center;
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid ${props => props.theme.colors.border};
+
+  @media (max-width: 768px) {
+    gap: 0.75rem;
+    margin: 0.75rem 0;
+    flex-direction: column;
+    background: ${props => props.theme.colors.background};
+    padding: 0.75rem;
+    border-radius: ${props => props.theme.borderRadius.md};
+  }
 `;
 
 const ProblemDifficulty = styled.span<{ difficulty: 'easy' | 'medium' | 'hard' }>`
@@ -601,27 +841,20 @@ const ProblemStats = styled.div`
 `;
 
 const SearchBar = styled.div`
-  position: relative;
-  margin-bottom: 2rem;
   display: flex;
+  align-items: center;
   gap: 1rem;
-`;
-
-const SearchInput = styled.input`
-  flex: 1;
-  padding: 1rem 1.5rem;
-  padding-left: 3rem;
-  border-radius: ${props => props.theme.borderRadius.full};
-  border: 1px solid ${props => props.theme.colors.border};
+  margin-bottom: 1.5rem;
   background: ${props => props.theme.colors.backgroundAlt};
-  color: ${props => props.theme.colors.text};
-  font-size: ${props => props.theme.typography.fontSize.md};
-  transition: all 0.2s ease;
+  padding: 0.75rem 1rem;
+  border-radius: ${props => props.theme.borderRadius.lg};
+  border: 1px solid ${props => props.theme.colors.border};
 
-  &:focus {
-    outline: none;
-    border-color: ${props => props.theme.colors.primary};
-    box-shadow: 0 0 0 2px ${props => props.theme.colors.primary + '20'};
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
   }
 `;
 
@@ -633,21 +866,48 @@ const SearchIcon = styled.div`
   color: ${props => props.theme.colors.textSecondary};
 `;
 
-const SortButton = styled.button`
-  padding: 0 1.5rem;
-  border-radius: ${props => props.theme.borderRadius.full};
-  border: 1px solid ${props => props.theme.colors.border};
-  background: ${props => props.theme.colors.backgroundAlt};
-  color: ${props => props.theme.colors.textSecondary};
+const SearchInput = styled.input`
+  flex: 1;
+  border: none;
+  background: none;
+  color: ${props => props.theme.colors.text};
   font-size: ${props => props.theme.typography.fontSize.md};
+  outline: none;
+  padding: 0.5rem 0.5rem 0.5rem 2rem;
+  position: relative;
+
+  &::placeholder {
+    color: ${props => props.theme.colors.textSecondary};
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    font-size: ${props => props.theme.typography.fontSize.sm};
+  }
+`;
+
+const SortButton = styled.button`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.md};
+  background: ${props => props.theme.colors.background};
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
 
   &:hover {
-    border-color: ${props => props.theme.colors.primary};
-    color: ${props => props.theme.colors.primary};
+    background: ${props => props.theme.colors.backgroundAlt};
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem;
   }
 `;
 
@@ -752,6 +1012,11 @@ const RoleSpecificSection = styled.div`
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 1px solid ${props => props.theme.colors.border};
+
+  @media (max-width: 768px) {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+  }
 `;
 
 const RoleSpecificTitle = styled.h4`
@@ -761,6 +1026,11 @@ const RoleSpecificTitle = styled.h4`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize.xs};
+    margin-bottom: 0.5rem;
+  }
 `;
 
 const RoleSpecificList = styled.ul`
@@ -781,6 +1051,11 @@ const RoleSpecificItem = styled.li`
     position: absolute;
     left: 0.5rem;
     color: ${props => props.theme.colors.primary};
+  }
+
+  @media (max-width: 768px) {
+    font-size: ${props => props.theme.typography.fontSize.xs};
+    margin-bottom: 0.25rem;
   }
 `;
 
@@ -834,6 +1109,12 @@ const ActionBar = styled.div`
   align-items: center;
   gap: 1rem;
   margin-top: 1.25rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
 `;
 
 const StartButton = styled.button`
@@ -846,12 +1127,17 @@ const StartButton = styled.button`
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 2px 8px ${props => props.theme.colors.primary}22;
-  transition:
-    background 0.2s,
-    transform 0.15s;
+  transition: all 0.2s ease;
+
   &:hover {
     background: ${props => props.theme.colors.secondary};
     transform: translateY(-2px) scale(1.04);
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    font-size: ${props => props.theme.typography.fontSize.sm};
   }
 `;
 
@@ -882,6 +1168,60 @@ const SectionDescription = styled.p`
   color: ${props => props.theme.colors.textSecondary};
   margin-bottom: 2rem;
   line-height: 1.6;
+`;
+
+const QuickFilterSection = styled.div`
+  display: none;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    background: ${props => props.theme.colors.backgroundAlt};
+    padding: 0.75rem;
+    border-radius: ${props => props.theme.borderRadius.lg};
+    border: 1px solid ${props => props.theme.colors.border};
+    margin: 0.75rem 0;
+  }
+`;
+
+const QuickFilterChip = styled.button<{ active?: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: ${props => props.theme.borderRadius.full};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid
+    ${props => (props.active ? props.theme.colors.primary : props.theme.colors.border)};
+  background: ${props =>
+    props.active ? props.theme.colors.primary + '15' : props.theme.colors.background};
+  color: ${props => (props.active ? props.theme.colors.primary : props.theme.colors.textSecondary)};
+
+  &:hover {
+    background: ${props => props.theme.colors.primary + '15'};
+    border-color: ${props => props.theme.colors.primary};
+    color: ${props => props.theme.colors.primary};
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.375rem 0.75rem;
+    font-size: ${props => props.theme.typography.fontSize.xs};
+    flex: 1;
+    min-width: calc(33.33% - 0.33rem);
+    justify-content: center;
+  }
 `;
 
 interface InterviewTopic {
@@ -1234,6 +1574,51 @@ const InterviewPage: React.FC = () => {
       selectedRoles.length === 0 || topic.roles.some(role => selectedRoles.includes(role));
     return matchesDifficulty && matchesTechnology && matchesRole;
   });
+
+  const quickFilters = [
+    { label: 'Beginner', type: 'difficulty', value: 'beginner' },
+    { label: 'Intermediate', type: 'difficulty', value: 'intermediate' },
+    { label: 'Advanced', type: 'difficulty', value: 'advanced' },
+    { label: 'React', type: 'technology', value: 'React' },
+    { label: 'JavaScript', type: 'technology', value: 'JavaScript' },
+    { label: 'TypeScript', type: 'technology', value: 'TypeScript' },
+    { label: 'CSS', type: 'technology', value: 'CSS' },
+    { label: 'Frontend', type: 'role', value: 'Frontend Developer' },
+    { label: 'React Dev', type: 'role', value: 'React Developer' },
+  ];
+
+  const handleQuickFilter = (type: string, value: string) => {
+    switch (type) {
+      case 'difficulty':
+        setSelectedDifficulty(prev =>
+          prev.includes(value) ? prev.filter(d => d !== value) : [...prev, value]
+        );
+        break;
+      case 'technology':
+        setSelectedTechnologies(prev =>
+          prev.includes(value) ? prev.filter(t => t !== value) : [...prev, value]
+        );
+        break;
+      case 'role':
+        setSelectedRoles(prev =>
+          prev.includes(value) ? prev.filter(r => r !== value) : [...prev, value]
+        );
+        break;
+    }
+  };
+
+  const isQuickFilterActive = (type: string, value: string) => {
+    switch (type) {
+      case 'difficulty':
+        return selectedDifficulty.includes(value);
+      case 'technology':
+        return selectedTechnologies.includes(value);
+      case 'role':
+        return selectedRoles.includes(value);
+      default:
+        return false;
+    }
+  };
 
   const toggleDifficulty = (difficulty: string) => {
     setSelectedDifficulty(prev =>
@@ -1676,6 +2061,18 @@ const InterviewPage: React.FC = () => {
           </Header>
 
           {renderActiveFilters()}
+
+          <QuickFilterSection>
+            {quickFilters.map(filter => (
+              <QuickFilterChip
+                key={`${filter.type}-${filter.value}`}
+                active={isQuickFilterActive(filter.type, filter.value)}
+                onClick={() => handleQuickFilter(filter.type, filter.value)}
+              >
+                {filter.label}
+              </QuickFilterChip>
+            ))}
+          </QuickFilterSection>
 
           <TabContainer>
             <TabList>

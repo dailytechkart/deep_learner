@@ -10,7 +10,7 @@ import {
   SectionTitle,
   Content,
 } from '../../components/StyledComponents';
-import Breadcrumbs from '@/components/Breadcrumbs';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import SEO from '@/components/SEO';
 
 export default function SystemDesignBasicsPage() {

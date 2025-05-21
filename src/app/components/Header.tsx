@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useState, useRef, useEffect, Dispatch, SetStateAction } from 'react';
+import styled, { DefaultTheme } from 'styled-components';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import {
@@ -16,51 +16,86 @@ import {
   FaCode,
 } from 'react-icons/fa';
 import { useTheme } from '@/app/context/ThemeContext';
-import { useAuth } from '@/app/context/AuthContext';
+import { useAuth } from '@/app/hooks/useAuth';
 import Logo from './Logo';
 import MobileHeader from './MobileHeader';
 import BottomNav from './BottomNav';
+import SearchBar from './SearchBar';
+import UserMenu from './UserMenu';
+import { Theme } from '@/app/styles/theme';
+
+interface HeaderProps {
+  searchQuery: string;
+  onSearchChange: Dispatch<SetStateAction<string>>;
+}
+
+interface LogoProps {
+  onClick?: () => void;
+}
+
+interface UserMenuProps {
+  user: any; // Replace with your User type
+  onSignOut: () => Promise<void>;
+}
 
 const HeaderContainer = styled.header`
-  width: 100%;
-  background: ${props => props.theme.colors.background};
-  border-bottom: 1px solid ${props => props.theme.colors.border};
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 9999;
-  backdrop-filter: blur(8px);
-  background: ${props => props.theme.colors.background}dd;
-  transition: all 0.3s ease;
   height: 64px;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
+  background: ${({ theme }) => theme.colors.background};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  z-index: 1000;
 `;
 
 const HeaderContent = styled.div`
-  max-width: 1400px;
+  max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0 2rem;
-  height: 100%;
+  justify-content: space-between;
+`;
 
-  @media (max-width: 768px) {
-    padding: 0 1rem;
+const LeftSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 24px;
+`;
+
+const RightSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px;
+`;
+
+const UserMenuContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+`;
+
+const NavLink = styled(Link)`
+  color: ${({ theme }) => theme.colors.text};
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: ${({ theme }) => theme.borderRadius.sm};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.backgroundAlt};
   }
 `;
 
 const LogoLink = styled(Link)`
   text-decoration: none;
-  transition: all 0.2s ease;
-
-  &:hover {
-    transform: translateY(-1px);
-  }
+  display: flex;
+  align-items: center;
 `;
 
 const Nav = styled.nav`
@@ -73,41 +108,9 @@ const Nav = styled.nav`
   }
 `;
 
-const NavLink = styled(Link)`
-  color: ${props => props.theme.colors.textSecondary};
-  text-decoration: none;
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem;
-
-  &:hover {
-    color: ${props => props.theme.colors.primary};
-    transform: translateY(-1px);
-  }
-
-  &:focus-visible {
-    outline: 2px solid ${props => props.theme.colors.primary};
-    outline-offset: 2px;
-  }
-`;
-
 const NavIcon = styled.div`
   color: ${props => props.theme.colors.primary};
   font-size: 1rem;
-`;
-
-const RightSection = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-
-  @media (max-width: 768px) {
-    gap: 1rem;
-  }
 `;
 
 const ThemeToggle = styled.button`
@@ -127,135 +130,6 @@ const ThemeToggle = styled.button`
   &:hover {
     color: ${props => props.theme.colors.primary};
     background: ${props => props.theme.colors.backgroundAlt};
-  }
-
-  &:focus-visible {
-    outline: 2px solid ${props => props.theme.colors.primary};
-    outline-offset: 2px;
-  }
-`;
-
-const UserMenu = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-`;
-
-const UserAvatar = styled.button`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: ${props => props.theme.colors.primary};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: white;
-  font-weight: ${props => props.theme.typography.fontWeight.bold};
-  border: none;
-  padding: 0;
-
-  @media (max-width: 480px) {
-    width: 36px;
-    height: 36px;
-  }
-
-  &:hover {
-    transform: scale(1.05);
-  }
-
-  &:focus-visible {
-    outline: 2px solid ${props => props.theme.colors.primary};
-    outline-offset: 2px;
-  }
-`;
-
-const UserDropdown = styled.div<{ isOpen: boolean }>`
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: ${props => props.theme.colors.background};
-  border-radius: ${props => props.theme.borderRadius.md};
-  box-shadow: ${props => props.theme.shadows.md};
-  padding: 0.5rem;
-  min-width: 200px;
-  display: ${props => (props.isOpen ? 'block' : 'none')};
-  margin-top: 0.5rem;
-  border: 1px solid ${props => props.theme.colors.border};
-  animation: ${props => (props.isOpen ? 'slideDown' : 'slideUp')} 0.2s ease;
-  z-index: 1001;
-
-  @media (max-width: 480px) {
-    min-width: 180px;
-    right: -0.5rem;
-  }
-
-  @keyframes slideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes slideUp {
-    from {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    to {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-  }
-`;
-
-const DropdownItem = styled(Link)`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  color: ${props => props.theme.colors.text};
-  text-decoration: none;
-  border-radius: ${props => props.theme.borderRadius.sm};
-  transition: all 0.2s ease;
-  font-size: ${props => props.theme.typography.fontSize.sm};
-
-  &:hover {
-    background: ${props => props.theme.colors.backgroundAlt};
-    color: ${props => props.theme.colors.primary};
-  }
-
-  &:focus-visible {
-    outline: 2px solid ${props => props.theme.colors.primary};
-    outline-offset: 2px;
-  }
-`;
-
-const SignOutButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  color: ${props => props.theme.colors.text};
-  text-decoration: none;
-  border-radius: ${props => props.theme.borderRadius.sm};
-  transition: all 0.2s ease;
-  background: none;
-  border: none;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  font-size: ${props => props.theme.typography.fontSize.sm};
-
-  &:hover {
-    background: ${props => props.theme.colors.backgroundAlt};
-    color: ${props => props.theme.colors.primary};
   }
 
   &:focus-visible {
@@ -365,146 +239,70 @@ const MobileActions = styled.div`
   }
 `;
 
-const Header: React.FC = () => {
-  const { isDarkMode, toggleTheme } = useTheme();
-  const { user, signOut } = useAuth();
+const StyledLogo = styled(Logo)<LogoProps>``;
+const StyledUserMenu = styled(UserMenu)<UserMenuProps>``;
+
+const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange }) => {
   const router = useRouter();
   const pathname = usePathname();
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const { isDarkMode, toggleTheme } = useTheme();
+  const { user, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
+
+  const handleLogoClick = () => {
+    router.push('/');
+  };
+
+  const handleSearch = (query: string) => {
+    onSearchChange(query);
+  };
+
+  const handleSignOut = async () => {
+    await logout();
+    router.push('/');
+  };
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const handleUserMenuClick = () => {
-    setIsUserMenuOpen(!isUserMenuOpen);
-  };
-
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      router.push('/login');
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
-
-  const handleClickOutside = (e: MouseEvent) => {
-    if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
-      setIsUserMenuOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
-  // Close mobile menu when route changes
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
-
   return (
-    <>
-      <HeaderContainer>
-        <HeaderContent>
+    <HeaderContainer>
+      <HeaderContent>
+        <LeftSection>
           <LogoLink href="/">
-            <Logo />
+            <StyledLogo onClick={handleLogoClick} />
           </LogoLink>
-
-          <Nav>
-            <NavLink href="/learn">
-              <NavIcon>
-                <FaBook />
-              </NavIcon>
-              Learn
-            </NavLink>
-            <NavLink href="/practice">
-              <NavIcon>
-                <FaCode />
-              </NavIcon>
-              Practice
-            </NavLink>
-            <NavLink href="/system-design">
-              <NavIcon>
-                <FaShieldAlt />
-              </NavIcon>
-              System Design
-            </NavLink>
-            <NavLink href="/interview">
-              <NavIcon>
-                <FaChartLine />
-              </NavIcon>
-              Interview
-            </NavLink>
-            <NavLink href="/roadmap">
-              <NavIcon>
-                <FaRocket />
-              </NavIcon>
-              Roadmap
-            </NavLink>
-          </Nav>
-
-          <RightSection>
-            <ThemeToggle onClick={toggleTheme} aria-label="Toggle theme">
-              {isDarkMode ? '🌞' : '🌙'}
-            </ThemeToggle>
-
-            {user ? (
-              <UserMenu ref={userMenuRef}>
-                <UserAvatar onClick={handleUserMenuClick} aria-label="User menu">
-                  {user.email?.[0].toUpperCase()}
-                </UserAvatar>
-                <UserDropdown isOpen={isUserMenuOpen}>
-                  <DropdownItem href="/profile">
-                    <FaUser />
-                    Profile
-                  </DropdownItem>
-                  <SignOutButton onClick={handleSignOut}>
-                    <FaSignOutAlt />
-                    Sign Out
-                  </SignOutButton>
-                </UserDropdown>
-              </UserMenu>
-            ) : (
-              <NavLink href="/login">Sign In</NavLink>
-            )}
-
-            <MobileMenuButton onClick={toggleMobileMenu} aria-label="Toggle mobile menu">
-              {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
-            </MobileMenuButton>
-          </RightSection>
-        </HeaderContent>
-      </HeaderContainer>
-      <MobileHeader onMenuClick={toggleMobileMenu} />
-      <BottomNav />
-      <MobileMenu isOpen={isMobileMenuOpen}>
-        <MobileNavLink href="/learn" onClick={() => setIsMobileMenuOpen(false)}>
-          Learn
-        </MobileNavLink>
-        <MobileNavLink href="/projects" onClick={() => setIsMobileMenuOpen(false)}>
-          Projects
-        </MobileNavLink>
-        <MobileNavLink href="/community" onClick={() => setIsMobileMenuOpen(false)}>
-          Community
-        </MobileNavLink>
-        <MobileNavLink href="/progress" onClick={() => setIsMobileMenuOpen(false)}>
-          Progress
-        </MobileNavLink>
-        {!user && (
-          <MobileActions>
-            <MobileNavLink href="/login" onClick={() => setIsMobileMenuOpen(false)}>
-              Sign In
-            </MobileNavLink>
-          </MobileActions>
-        )}
-      </MobileMenu>
-    </>
+          <SearchBar value={searchQuery} onChange={handleSearch} placeholder="Search problems..." />
+        </LeftSection>
+        <RightSection>
+          {user ? (
+            <UserMenuContainer ref={userMenuRef}>
+              <StyledUserMenu user={user} onSignOut={handleSignOut} />
+            </UserMenuContainer>
+          ) : (
+            <NavLink href="/login">Sign In</NavLink>
+          )}
+        </RightSection>
+      </HeaderContent>
+    </HeaderContainer>
   );
 };
 

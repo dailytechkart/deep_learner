@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import Header from '@/app/components/Header';
 import { AppFooter } from './Footer';
-import { FaLock } from 'react-icons/fa';
+import { useSearch } from '../app/context/SearchContext';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -62,7 +62,9 @@ const PromoStripText = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  text-shadow: 0 1px 2px #fff8, 0 0px 1px #ffd54f99;
+  text-shadow:
+    0 1px 2px #fff8,
+    0 0px 1px #ffd54f99;
   padding: 0 1rem;
 
   @media (max-width: 480px) {
@@ -88,60 +90,24 @@ const PromoStrip = styled.div`
   }
 `;
 
-const PromoIcon = styled.span`
-  display: flex;
-  align-items: center;
-  font-size: 1.5rem;
-  color: #ff8f00;
-  animation: pulse 1.2s infinite alternate;
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.15); }
-  }
-`;
+export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+  const { searchQuery, setSearchQuery } = useSearch();
 
-const PromoText = styled.span`
-  font-weight: 700;
-  color: #b26a00;
-`;
+  const handleSearchChange: Dispatch<SetStateAction<string>> = value => {
+    if (typeof value === 'function') {
+      setSearchQuery(value(searchQuery));
+    } else {
+      setSearchQuery(value);
+    }
+  };
 
-const PromoButton = styled.a`
-  background: #ff8f00;
-  color: #fff;
-  font-weight: 700;
-  font-size: 1.05rem;
-  border: none;
-  border-radius: 999px;
-  padding: 0.7rem 2rem;
-  text-decoration: none;
-  box-shadow: 0 2px 12px #ff8f0030;
-  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-  cursor: pointer;
-  outline: none;
-  position: relative;
-  overflow: hidden;
-  &:hover {
-    background: #ffa726;
-    color: #fff;
-    transform: scale(1.04);
-    box-shadow: 0 4px 18px #ff8f0040;
-  }
-`;
-
-export const MainLayout: React.FC<MainLayoutProps> = ({
-  children,
-  className,
-  showBreadcrumb = true,
-}) => {
   return (
     <>
-      <PromoStrip>
-        <PromoStripText>
-          Get Premium Content Access at 90% OFF – Only ₹499!
-        </PromoStripText>
-      </PromoStrip>
       <LayoutContainer>
-        <Header />
+        <PromoStrip>
+          <PromoStripText>Get Premium Content Access at 90% OFF – Only ₹499!</PromoStripText>
+        </PromoStrip>
+        <Header searchQuery={searchQuery} onSearchChange={handleSearchChange} />
         <ContentWrapper>
           <Main>{children}</Main>
         </ContentWrapper>

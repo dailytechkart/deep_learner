@@ -9,7 +9,7 @@ const Layout = styled.div`
   height: 100vh;
   min-height: 100vh;
   background: ${({ theme }) => theme.colors.background};
-  font-family: ${({ theme }) => theme.typography.fontFamily};
+  font-family: ${({ theme }) => theme.fonts.body};
 `;
 
 const LeftPanel = styled.nav<{ isOpen?: boolean }>`
@@ -23,7 +23,7 @@ const LeftPanel = styled.nav<{ isOpen?: boolean }>`
   position: relative;
   margin-top: 80px;
   transition: ${({ theme }) => theme.transitions.default};
-  box-shadow: ${({ theme }) => theme.shadows.medium};
+  box-shadow: ${({ theme }) => theme.shadows.md};
 
   @media (max-width: 768px) {
     position: fixed;
@@ -57,7 +57,7 @@ const RightPanel = styled.aside`
   position: relative;
   margin-top: 80px;
   transition: ${({ theme }) => theme.transitions.default};
-  box-shadow: ${({ theme }) => theme.shadows.medium};
+  box-shadow: ${({ theme }) => theme.shadows.md};
   padding: ${({ theme }) => theme.spacing.lg};
   overflow-y: auto;
 
@@ -75,9 +75,9 @@ const BreadcrumbContainer = styled.nav`
   position: sticky;
   top: 80px;
   z-index: 10;
-  box-shadow: ${({ theme }) => theme.shadows.small};
+  box-shadow: ${({ theme }) => theme.shadows.sm};
   color: ${({ theme }) => theme.colors.textSecondary};
-  font-size: ${({ theme }) => theme.typography.fontSize.small};
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
 `;
 
 interface SystemDesignLayoutProps {

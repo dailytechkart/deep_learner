@@ -1,6 +1,9 @@
 import { cookies } from 'next/headers';
-import { auth as adminAuth } from './firebase-admin';
+import { getAuth } from 'firebase-admin/auth';
+import { adminApp } from './firebase-admin';
 import { NextRequest, NextResponse } from 'next/server';
+
+const adminAuth = getAuth(adminApp);
 
 export interface ServerSession {
   uid: string;

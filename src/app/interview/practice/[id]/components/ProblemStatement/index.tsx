@@ -31,18 +31,18 @@ const DifficultyBadge = styled.span<{ $difficulty: 'Easy' | 'Medium' | 'Hard' }>
     switch (props.$difficulty) {
       case 'Easy':
         return `
-          background: ${props.theme.colors.success}20;
-          color: ${props.theme.colors.success};
+          background: ${props.theme.colors.status.success}20;
+          color: ${props.theme.colors.status.success};
         `;
       case 'Medium':
         return `
-          background: ${props.theme.colors.warning}20;
-          color: ${props.theme.colors.warning};
+          background: ${props.theme.colors.status.warning}20;
+          color: ${props.theme.colors.status.warning};
         `;
       case 'Hard':
         return `
-          background: ${props.theme.colors.error}20;
-          color: ${props.theme.colors.error};
+          background: ${props.theme.colors.status.error}20;
+          color: ${props.theme.colors.status.error};
         `;
     }
   }}

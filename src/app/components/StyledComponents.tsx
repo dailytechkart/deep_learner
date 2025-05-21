@@ -615,7 +615,7 @@ export const Badge = styled.span`
   position: absolute;
   top: -5px;
   right: -5px;
-  background: ${props => props.theme.colors.error};
+  background: ${props => props.theme.colors.status.error};
   color: white;
   font-size: 0.75rem;
   font-weight: 600;
@@ -1622,8 +1622,8 @@ export const AuthForm = styled.form`
 
 export const ErrorMessage = styled.div`
   padding: ${props => props.theme.spacing.md};
-  background-color: ${props => props.theme.colors.error}15;
-  color: ${props => props.theme.colors.error};
+  background-color: ${props => props.theme.colors.status.error}15;
+  color: ${props => props.theme.colors.status.error};
   border-radius: ${props => props.theme.borderRadius.md};
   font-size: ${props => props.theme.typography.fontSize.sm};
 `;
