@@ -2,183 +2,34 @@
 
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import MainLayout from '@/components/MainLayout';
-import { useTheme } from '@/app/context/ThemeContext';
 import {
+  FaBook,
   FaServer,
   FaDatabase,
-  FaNetworkWired,
   FaCloud,
+  FaMicrochip,
+  FaNetworkWired,
   FaShieldAlt,
-  FaChartLine,
-  FaCogs,
   FaUsers,
+  FaStar,
+  FaReact,
   FaCode,
-  FaLaptopCode,
   FaMobile,
   FaGlobe,
-  FaReact,
-  FaNodeJs,
-  FaAws,
-  FaFilter,
+  FaLaptopCode,
+  FaTools,
+  FaQuestionCircle,
 } from 'react-icons/fa';
-import {
-  SiTypescript,
-  SiJavascript,
-  SiNextdotjs,
-  SiTailwindcss,
-  SiRedux,
-  SiWebpack,
-} from 'react-icons/si';
+import MainLayout from '@/components/MainLayout';
+import { useTheme } from '@/app/context/ThemeContext';
 
+// Styled Components
 const PageContainer = styled.div`
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem;
-  display: flex;
-  gap: 3rem;
-  position: relative;
-`;
-
-const FilterSidebar = styled.div`
-  width: 320px;
-  flex-shrink: 0;
-  background: ${props => props.theme.colors.backgroundAlt};
-  border-radius: ${props => props.theme.borderRadius.xl};
-  padding: 2rem;
-  height: fit-content;
-  position: sticky;
-  top: 84px;
-  border: 1px solid ${props => props.theme.colors.border};
-  align-self: flex-start;
-  box-shadow: ${props => props.theme.shadows.sm};
-  transition: all 0.3s ease;
-
-  &:hover {
-    box-shadow: ${props => props.theme.shadows.md};
-  }
-`;
-
-const FilterTitle = styled.h3`
-  font-size: ${props => props.theme.typography.fontSize.xl};
-  color: ${props => props.theme.colors.text};
-  margin-bottom: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-weight: ${props => props.theme.typography.fontWeight.semibold};
-  padding-bottom: 1rem;
-  border-bottom: 2px solid ${props => props.theme.colors.primary + '20'};
-`;
-
-const FilterSection = styled.div`
-  margin-bottom: 2.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid ${props => props.theme.colors.border};
-
-  &:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-  }
-`;
-
-const FilterSectionTitle = styled.h4`
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  color: ${props => props.theme.colors.textSecondary};
-  margin-bottom: 1.25rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  &::before {
-    content: '';
-    display: block;
-    width: 4px;
-    height: 16px;
-    background: ${props => props.theme.colors.primary};
-    border-radius: ${props => props.theme.borderRadius.full};
-  }
-`;
-
-const FilterChip = styled.button<{ active?: boolean }>`
-  display: inline-flex;
-  align-items: center;
-  padding: 0.75rem 1.25rem;
-  border-radius: ${props => props.theme.borderRadius.full};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  font-weight: 500;
-  margin: 0.25rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 1px solid
-    ${props => (props.active ? props.theme.colors.primary : props.theme.colors.border)};
-  background: ${props => (props.active ? props.theme.colors.primary + '15' : 'transparent')};
-  color: ${props => (props.active ? props.theme.colors.primary : props.theme.colors.textSecondary)};
-  position: relative;
-  overflow: hidden;
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: ${props => props.theme.colors.primary};
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-
-  &:hover {
-    background: ${props => props.theme.colors.primary + '15'};
-    border-color: ${props => props.theme.colors.primary};
-    color: ${props => props.theme.colors.primary};
-    transform: translateY(-1px);
-    box-shadow: ${props => props.theme.shadows.sm};
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  span {
-    position: relative;
-    z-index: 1;
-  }
-`;
-
-const FilterChipGroup = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-`;
-
-const ClearFiltersButton = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  border-radius: ${props => props.theme.borderRadius.full};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  font-weight: 500;
-  color: ${props => props.theme.colors.textSecondary};
-  background: transparent;
-  border: 1px solid ${props => props.theme.colors.border};
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin-top: 1rem;
-  width: 100%;
-
-  &:hover {
-    background: ${props => props.theme.colors.primary + '15'};
-    border-color: ${props => props.theme.colors.primary};
-    color: ${props => props.theme.colors.primary};
-  }
 `;
 
 const ContentSection = styled.div`
@@ -207,6 +58,101 @@ const Description = styled.p`
   line-height: 1.7;
 `;
 
+const StatsBar = styled.div`
+  display: flex;
+  gap: 2rem;
+  margin: 2rem 0;
+`;
+
+const StatItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: ${props => props.theme.colors.textSecondary};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+`;
+
+const StatIcon = styled.div`
+  color: ${props => props.theme.colors.primary};
+`;
+
+const ProblemsCTA = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  background: ${props => props.theme.colors.primary}10;
+  border: 2px solid ${props => props.theme.colors.primary};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  padding: 2rem 2.5rem;
+  margin: 2.5rem 0 2rem 0;
+  box-shadow: 0 4px 24px ${props => props.theme.colors.primary}15;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem 1rem;
+    gap: 1rem;
+  }
+`;
+
+const ProblemsCTAText = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+`;
+
+const ProblemsCTAIcon = styled.div`
+  color: ${props => props.theme.colors.primary};
+  font-size: 2.2rem;
+  display: flex;
+  align-items: center;
+`;
+
+const ProblemsCTAContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+`;
+
+const ProblemsCTAHeading = styled.div`
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: ${props => props.theme.colors.primary};
+`;
+
+const ProblemsCTADesc = styled.div`
+  font-size: 1rem;
+  color: ${props => props.theme.colors.textSecondary};
+`;
+
+const ProblemsButton = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: ${props => props.theme.colors.primary};
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: ${props => props.theme.borderRadius.full};
+  padding: 0.85rem 2.25rem;
+  text-decoration: none;
+  box-shadow: 0 2px 12px ${props => props.theme.colors.primary}30;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+  &:hover {
+    background: ${props => props.theme.colors.secondary};
+    color: #fff;
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 4px 18px ${props => props.theme.colors.primary}40;
+  }
+`;
+
 const TopicsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -226,405 +172,529 @@ const TopicsGrid = styled.div`
 
 const TopicCard = styled.div`
   background: ${props => props.theme.colors.backgroundAlt};
-  border-radius: ${props => props.theme.borderRadius.xl};
-  padding: 2.5rem;
-  transition: all 0.3s ease;
+  border-radius: ${props => props.theme.borderRadius.lg};
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
   border: 1px solid ${props => props.theme.colors.border};
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  box-shadow: ${props => props.theme.shadows.sm};
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: ${props => props.theme.shadows.lg};
-    border-color: ${props => props.theme.colors.primary};
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px ${props => props.theme.colors.border}40;
   }
+`;
+
+const TopicIcon = styled.div`
+  width: 48px;
+  height: 48px;
+  border-radius: ${props => props.theme.borderRadius.full};
+  background: ${props => props.theme.colors.primary}20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: ${props => props.theme.colors.primary};
+`;
+
+const TopicTitle = styled.h3`
+  font-size: ${props => props.theme.typography.fontSize.xl};
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  color: ${props => props.theme.colors.text};
+  margin: 0;
+`;
+
+const TopicDescription = styled.p`
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  color: ${props => props.theme.colors.textSecondary};
+  line-height: 1.6;
+  margin: 0;
+`;
+
+const TagGroup = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+`;
+
+const Tag = styled.span<{ type: 'beginner' | 'intermediate' | 'advanced' | 'technology' | 'role' | 'premium' }>`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: ${props => props.theme.borderRadius.full};
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: ${props => {
+    switch (props.type) {
+      case 'beginner':
+        return '#E0F7FA';
+      case 'intermediate':
+        return '#FFF3E0';
+      case 'advanced':
+        return '#FCE4EC';
+      case 'technology':
+        return '#E3F2FD';
+      case 'role':
+        return '#EDE7F6';
+      case 'premium':
+        return '#FFF8E1';
+      default:
+        return '#F5F5F5';
+    }
+  }};
+  color: ${props => {
+    switch (props.type) {
+      case 'beginner':
+        return '#00796B';
+      case 'intermediate':
+        return '#F57C00';
+      case 'advanced':
+        return '#C2185B';
+      case 'technology':
+        return '#1976D2';
+      case 'role':
+        return '#512DA8';
+      case 'premium':
+        return '#FF8F00';
+      default:
+        return '#616161';
+    }
+  }};
+`;
+
+const ActionBar = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid ${props => props.theme.colors.border};
+`;
+
+const StartButton = styled.button`
+  background: ${props => props.theme.colors.primary};
+  color: #fff;
+  border: none;
+  border-radius: ${props => props.theme.borderRadius.full};
+  padding: 0.75rem 1.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px ${props => props.theme.colors.primary}40;
+  transition: all 0.2s ease;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
 
   &::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 4px;
+    width: 100%;
     height: 100%;
-    background: ${props => props.theme.colors.primary};
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
   }
 
-  &:hover::before {
-    opacity: 1;
+  &:hover {
+    background: ${props => props.theme.colors.secondary};
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px ${props => props.theme.colors.primary}50;
+
+    &::before {
+      transform: translateX(100%);
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `;
 
-const TopicIcon = styled.div`
-  font-size: 2.75rem;
-  color: ${props => props.theme.colors.primary};
-  margin-bottom: 2rem;
-  transition: transform 0.3s ease;
-
-  ${TopicCard}:hover & {
-    transform: scale(1.1);
-  }
-`;
-
-const TopicTitle = styled.h3`
-  font-size: ${props => props.theme.typography.fontSize.xl};
-  color: ${props => props.theme.colors.text};
-  margin-bottom: 1rem;
-  font-weight: ${props => props.theme.typography.fontWeight.semibold};
-  line-height: 1.3;
-`;
-
-const TopicDescription = styled.p`
-  font-size: ${props => props.theme.typography.fontSize.md};
-  color: ${props => props.theme.colors.textSecondary};
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
-`;
-
-const TagGroup = styled.div`
+const PremiumBadge = styled.div`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
-`;
-
-// Color palette for tags
-const tagColors = {
-  beginner: { bg: '#E0F7FA', color: '#00796B' },
-  intermediate: { bg: '#FFF3E0', color: '#F57C00' },
-  advanced: { bg: '#FCE4EC', color: '#C2185B' },
-  technology: { bg: '#E3F2FD', color: '#1976D2' },
-  role: { bg: '#EDE7F6', color: '#512DA8' },
-  company: {
-    Google: { bg: '#E8F0FE', color: '#4285F4' },
-    Meta: { bg: '#E7F3FF', color: '#1877F2' },
-    Amazon: { bg: '#FFF7E0', color: '#FF9900' },
-    Microsoft: { bg: '#EAF1FB', color: '#0078D4' },
-    Apple: { bg: '#F5F5F7', color: '#000000' },
-    default: { bg: '#F3E5F5', color: '#8E24AA' },
-  },
-};
-
-const getCompanyTagColor = (company: string) => {
-  return tagColors.company[company as keyof typeof tagColors.company] || tagColors.company.default;
-};
-
-const Tag = styled.span<{
-  type?: 'beginner' | 'intermediate' | 'advanced' | 'technology' | 'role';
-  color?: string;
-  bgColor?: string;
-}>`
-  display: inline-flex;
   align-items: center;
-  padding: 0.375rem 0.875rem;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  background: #FFF8E1;
+  color: #FF8F00;
   border-radius: ${props => props.theme.borderRadius.full};
   font-size: 0.75rem;
   font-weight: 600;
-  background: ${({ type, bgColor }) =>
-    bgColor
-      ? bgColor
-      : type === 'beginner'
-        ? tagColors.beginner.bg
-        : type === 'intermediate'
-          ? tagColors.intermediate.bg
-          : type === 'advanced'
-            ? tagColors.advanced.bg
-            : type === 'technology'
-              ? tagColors.technology.bg
-              : type === 'role'
-                ? tagColors.role.bg
-                : tagColors.beginner.bg};
-  color: ${({ type, color }) =>
-    color
-      ? color
-      : type === 'beginner'
-        ? tagColors.beginner.color
-        : type === 'intermediate'
-          ? tagColors.intermediate.color
-          : type === 'advanced'
-            ? tagColors.advanced.color
-            : type === 'technology'
-              ? tagColors.technology.color
-              : type === 'role'
-                ? tagColors.role.color
-                : tagColors.beginner.color};
-  transition: all 0.2s ease;
-  margin-right: 0.25rem;
-  margin-bottom: 0.25rem;
+  box-shadow: 0 2px 8px rgba(255, 143, 0, 0.2);
+`;
+
+const SectionHeading = styled.h2`
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: ${props => props.theme.colors.primary};
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+`;
+
+const SectionDescription = styled.p`
+  font-size: 1.1rem;
+  color: ${props => props.theme.colors.textSecondary};
+  margin-bottom: 2rem;
+  line-height: 1.6;
+`;
+
+const TabContainer = styled.div`
+  margin-bottom: 2rem;
+`;
+
+const TabBar = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  position: relative;
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  padding-bottom: 0.5rem;
+  background: transparent;
+`;
+
+const StyledTab = styled.button<{ active: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: ${props => (props.active ? 700 : 500)};
+  color: ${props => (props.active ? props.theme.colors.primary : props.theme.colors.textSecondary)};
+  background: ${props => (props.active ? props.theme.colors.primary + '10' : 'transparent')};
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem 0.75rem 0 0;
+  position: relative;
+  transition: color 0.2s, background 0.2s;
+
+  & svg {
+    color: ${props => (props.active ? props.theme.colors.primary : props.theme.colors.textSecondary)};
+    font-size: 1.2em;
+    transition: color 0.2s;
+  }
+
   &:hover {
-    transform: translateY(-1px) scale(1.05);
-    filter: brightness(1.08);
+    color: ${props => props.theme.colors.primary};
+    background: ${props => props.theme.colors.primary + '08'};
+    & svg {
+      color: ${props => props.theme.colors.primary};
+    }
+  }
+
+  &::after {
+    content: '';
+    display: ${props => (props.active ? 'block' : 'none')};
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.5rem;
+    height: 3px;
+    background: ${props => props.theme.colors.primary};
+    border-radius: 2px 2px 0 0;
   }
 `;
 
-const CompanyTag = styled(Tag)<{ company: string }>`
-  background: ${({ company }) => getCompanyTagColor(company).bg};
-  color: ${({ company }) => getCompanyTagColor(company).color};
+const TabContent = styled.div`
+  margin-top: 2rem;
 `;
 
-const TechIcon = styled.div`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  margin-right: 0.5rem;
-  color: inherit;
-  opacity: 0.9;
-`;
+interface SystemDesignTopic {
+  id: string;
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+  tags: string[];
+  technologies: string[];
+  roles: string[];
+}
 
-const frontendTopics = [
+const systemDesignTopics: SystemDesignTopic[] = [
   {
-    id: 'react-architecture',
-    title: 'React Architecture',
-    description:
-      'Learn advanced React patterns, component design, state management, and performance optimization techniques.',
+    id: 'frontend-architecture',
+    title: 'Frontend Architecture',
+    description: 'Design scalable frontend applications with modern patterns, state management, and component architecture.',
     icon: <FaReact />,
-    tags: ['intermediate'],
-    technologies: ['React', 'TypeScript', 'Redux'],
+    tags: ['intermediate', 'premium'],
+    technologies: ['React', 'TypeScript', 'State Management'],
+    roles: ['Frontend Architect', 'Senior Frontend Developer'],
   },
   {
-    id: 'nextjs',
-    title: 'Next.js & SSR',
-    description:
-      'Master server-side rendering, static generation, and advanced Next.js features for production applications.',
-    icon: <SiNextdotjs />,
+    id: 'micro-frontends',
+    title: 'Micro-Frontends',
+    description: 'Implement micro-frontend architecture for large-scale applications with independent deployment.',
+    icon: <FaLaptopCode />,
+    tags: ['advanced', 'premium'],
+    technologies: ['Module Federation', 'Webpack', 'Single-SPA'],
+    roles: ['Frontend Architect', 'Tech Lead'],
+  },
+  {
+    id: 'frontend-performance',
+    title: 'Frontend Performance',
+    description: 'Optimize frontend applications for speed, including code splitting, caching, and bundle optimization.',
+    icon: <FaCode />,
     tags: ['intermediate'],
-    technologies: ['Next.js', 'React', 'TypeScript'],
+    technologies: ['Webpack', 'Vite', 'Performance Monitoring'],
+    roles: ['Frontend Developer', 'Performance Engineer'],
+  },
+  {
+    id: 'progressive-web-apps',
+    title: 'Progressive Web Apps',
+    description: 'Design and implement PWAs with offline support, push notifications, and app-like experience.',
+    icon: <FaMobile />,
+    tags: ['intermediate'],
+    technologies: ['Service Workers', 'Web App Manifest', 'IndexedDB'],
+    roles: ['Frontend Developer', 'Mobile Developer'],
+  },
+  {
+    id: 'frontend-security',
+    title: 'Frontend Security',
+    description: 'Implement secure frontend applications with proper authentication, authorization, and data protection.',
+    icon: <FaShieldAlt />,
+    tags: ['advanced', 'premium'],
+    technologies: ['OAuth', 'JWT', 'CSP'],
+    roles: ['Frontend Developer', 'Security Engineer'],
   },
   {
     id: 'state-management',
     title: 'State Management',
-    description:
-      'Explore different state management solutions, from local state to global state management patterns.',
-    icon: <SiRedux />,
-    tags: ['intermediate'],
-    technologies: ['Redux', 'Context', 'Zustand'],
-  },
-  {
-    id: 'typescript',
-    title: 'TypeScript Patterns',
-    description:
-      'Learn TypeScript best practices, type system, and advanced patterns for robust frontend development.',
-    icon: <SiTypescript />,
-    tags: ['intermediate'],
-    technologies: ['TypeScript', 'React', 'Node.js'],
-  },
-  {
-    id: 'performance',
-    title: 'Frontend Performance',
-    description:
-      'Master performance optimization techniques, code splitting, and bundle optimization strategies.',
-    icon: <SiWebpack />,
-    tags: ['advanced'],
-    technologies: ['Webpack', 'React', 'JavaScript'],
-  },
-  {
-    id: 'styling',
-    title: 'CSS & Styling',
-    description:
-      'Learn modern CSS techniques, styling patterns, and best practices for maintainable styles.',
-    icon: <SiTailwindcss />,
-    tags: ['intermediate'],
-    technologies: ['Tailwind', 'CSS', 'Styled Components'],
-  },
-  {
-    id: 'testing',
-    title: 'Testing Strategies',
-    description:
-      'Master frontend testing techniques, from unit tests to end-to-end testing approaches.',
+    description: 'Design efficient state management solutions for complex frontend applications.',
     icon: <FaCode />,
     tags: ['intermediate'],
-    technologies: ['Jest', 'React Testing', 'Cypress'],
+    technologies: ['Redux', 'MobX', 'Zustand'],
+    roles: ['Frontend Developer', 'State Management Expert'],
   },
   {
-    id: 'security',
-    title: 'Frontend Security',
-    description:
-      'Learn about frontend security best practices, authentication, and data protection.',
-    icon: <FaShieldAlt />,
+    id: 'frontend-testing',
+    title: 'Frontend Testing',
+    description: 'Implement comprehensive testing strategies for frontend applications.',
+    icon: <FaCode />,
+    tags: ['intermediate'],
+    technologies: ['Jest', 'React Testing Library', 'Cypress'],
+    roles: ['Frontend Developer', 'QA Engineer'],
+  },
+  {
+    id: 'frontend-monitoring',
+    title: 'Frontend Monitoring',
+    description: 'Design and implement frontend monitoring and error tracking systems.',
+    icon: <FaCode />,
+    tags: ['intermediate'],
+    technologies: ['Sentry', 'LogRocket', 'New Relic'],
+    roles: ['Frontend Developer', 'Performance Engineer'],
+  },
+  {
+    id: 'frontend-caching',
+    title: 'Frontend Caching',
+    description: 'Implement efficient caching strategies for frontend applications.',
+    icon: <FaCode />,
+    tags: ['intermediate'],
+    technologies: ['Service Workers', 'IndexedDB', 'LocalStorage'],
+    roles: ['Frontend Developer', 'Performance Engineer'],
+  },
+  {
+    id: 'frontend-build',
+    title: 'Frontend Build Systems',
+    description: 'Design and optimize frontend build systems for large-scale applications.',
+    icon: <FaCode />,
     tags: ['advanced'],
-    technologies: ['JWT', 'OAuth', 'CORS'],
+    technologies: ['Webpack', 'Vite', 'Rollup'],
+    roles: ['Frontend Developer', 'Build Engineer'],
   },
   {
-    id: 'deployment',
-    title: 'Deployment & CI/CD',
-    description:
-      'Master deployment strategies, CI/CD pipelines, and cloud hosting for frontend applications.',
-    icon: <FaAws />,
+    id: 'frontend-ssr',
+    title: 'Server-Side Rendering',
+    description: 'Implement SSR strategies for improved performance and SEO.',
+    icon: <FaCode />,
+    tags: ['advanced', 'premium'],
+    technologies: ['Next.js', 'Nuxt.js', 'Remix'],
+    roles: ['Frontend Developer', 'Full Stack Developer'],
+  },
+  {
+    id: 'frontend-accessibility',
+    title: 'Frontend Accessibility',
+    description: 'Design accessible frontend applications following WCAG guidelines.',
+    icon: <FaCode />,
     tags: ['intermediate'],
-    technologies: ['AWS', 'Vercel', 'Netlify'],
-  },
-  {
-    id: 'mobile',
-    title: 'Mobile-First Design',
-    description:
-      'Learn responsive design patterns, mobile optimization, and progressive web app development.',
-    icon: <FaMobile />,
-    tags: ['intermediate'],
-    technologies: ['PWA', 'Responsive', 'Mobile'],
-  },
-  {
-    id: 'accessibility',
-    title: 'Accessibility',
-    description:
-      'Master web accessibility standards, ARIA patterns, and inclusive design practices.',
-    icon: <FaUsers />,
-    tags: ['intermediate'],
-    technologies: ['WCAG', 'ARIA', 'Semantic HTML'],
-  },
-  {
-    id: 'architecture',
-    title: 'Frontend Architecture',
-    description:
-      'Learn about frontend architecture patterns, micro-frontends, and scalable application design.',
-    icon: <FaLaptopCode />,
-    tags: ['advanced'],
-    technologies: ['Micro-frontends', 'Monorepo', 'Architecture'],
-  },
-];
-
-const getTechIcon = (tech: string) => {
-  switch (tech) {
-    case 'React':
-      return <FaReact />;
-    case 'TypeScript':
-      return <SiTypescript />;
-    case 'Next.js':
-      return <SiNextdotjs />;
-    case 'Redux':
-      return <SiRedux />;
-    case 'Tailwind':
-      return <SiTailwindcss />;
-    case 'Webpack':
-      return <SiWebpack />;
-    case 'JavaScript':
-      return <SiJavascript />;
-    default:
-      return null;
+    technologies: ['ARIA', 'Screen Readers', 'Keyboard Navigation'],
+    roles: ['Frontend Developer', 'Accessibility Expert'],
   }
-};
+];
 
 const SystemDesignPage: React.FC = () => {
   const { isDarkMode } = useTheme();
   const [selectedDifficulty, setSelectedDifficulty] = useState<string[]>([]);
   const [selectedTechnologies, setSelectedTechnologies] = useState<string[]>([]);
+  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+  const [activeTab, setActiveTab] = useState<'all' | 'frontend' | 'performance' | 'architecture' | 'security'>('all');
 
-  const allTechnologies = Array.from(new Set(frontendTopics.flatMap(topic => topic.technologies)));
+  const allTechnologies = Array.from(new Set(systemDesignTopics.flatMap(topic => topic.technologies)));
+  const allRoles = Array.from(new Set(systemDesignTopics.flatMap(topic => topic.roles)));
 
-  const filteredTopics = frontendTopics.filter(topic => {
+  const getTopicsByCategory = (category: string) => {
+    switch (category) {
+      case 'frontend':
+        return systemDesignTopics.filter(topic => 
+          topic.roles.some(role => role.includes('Frontend')) ||
+          topic.technologies.some(tech => ['React', 'TypeScript', 'Webpack', 'Vite'].includes(tech))
+        );
+      case 'performance':
+        return systemDesignTopics.filter(topic => 
+          topic.roles.some(role => role.includes('Performance')) ||
+          topic.title.toLowerCase().includes('performance') ||
+          topic.title.toLowerCase().includes('caching')
+        );
+      case 'architecture':
+        return systemDesignTopics.filter(topic => 
+          topic.title.toLowerCase().includes('architecture') ||
+          topic.title.toLowerCase().includes('system')
+        );
+      case 'security':
+        return systemDesignTopics.filter(topic => 
+          topic.roles.some(role => role.includes('Security')) ||
+          topic.title.toLowerCase().includes('security')
+        );
+      default:
+        return systemDesignTopics;
+    }
+  };
+
+  const filteredTopics = getTopicsByCategory(activeTab).filter(topic => {
     const matchesDifficulty =
       selectedDifficulty.length === 0 || topic.tags.some(tag => selectedDifficulty.includes(tag));
     const matchesTechnology =
       selectedTechnologies.length === 0 ||
       topic.technologies.some(tech => selectedTechnologies.includes(tech));
-    return matchesDifficulty && matchesTechnology;
+    const matchesRole =
+      selectedRoles.length === 0 || topic.roles.some(role => selectedRoles.includes(role));
+    return matchesDifficulty && matchesTechnology && matchesRole;
   });
-
-  const toggleDifficulty = (difficulty: string) => {
-    setSelectedDifficulty(prev =>
-      prev.includes(difficulty) ? prev.filter(d => d !== difficulty) : [...prev, difficulty]
-    );
-  };
-
-  const toggleTechnology = (tech: string) => {
-    setSelectedTechnologies(prev =>
-      prev.includes(tech) ? prev.filter(t => t !== tech) : [...prev, tech]
-    );
-  };
 
   return (
     <MainLayout>
       <PageContainer>
-        <FilterSidebar>
-          <FilterTitle>
-            <FaFilter />
-            Filters
-          </FilterTitle>
-
-          <FilterSection>
-            <FilterSectionTitle>Difficulty Level</FilterSectionTitle>
-            <FilterChipGroup>
-              <FilterChip
-                active={selectedDifficulty.includes('beginner')}
-                onClick={() => toggleDifficulty('beginner')}
-              >
-                <span>Beginner</span>
-              </FilterChip>
-              <FilterChip
-                active={selectedDifficulty.includes('intermediate')}
-                onClick={() => toggleDifficulty('intermediate')}
-              >
-                <span>Intermediate</span>
-              </FilterChip>
-              <FilterChip
-                active={selectedDifficulty.includes('advanced')}
-                onClick={() => toggleDifficulty('advanced')}
-              >
-                <span>Advanced</span>
-              </FilterChip>
-            </FilterChipGroup>
-          </FilterSection>
-
-          <FilterSection>
-            <FilterSectionTitle>Technologies</FilterSectionTitle>
-            <FilterChipGroup>
-              {allTechnologies.map(tech => (
-                <FilterChip
-                  key={tech}
-                  active={selectedTechnologies.includes(tech)}
-                  onClick={() => toggleTechnology(tech)}
-                >
-                  <span>{tech}</span>
-                </FilterChip>
-              ))}
-            </FilterChipGroup>
-          </FilterSection>
-
-          {(selectedDifficulty.length > 0 || selectedTechnologies.length > 0) && (
-            <ClearFiltersButton
-              onClick={() => {
-                setSelectedDifficulty([]);
-                setSelectedTechnologies([]);
-              }}
-            >
-              Clear All Filters
-            </ClearFiltersButton>
-          )}
-        </FilterSidebar>
-
         <ContentSection>
           <Header>
-            <Title>Frontend System Design</Title>
+            <Title>System Design Mastery</Title>
             <Description>
-              Master the art of designing scalable, maintainable, and performant frontend
-              applications. Learn from real-world examples and best practices used by top tech
-              companies.
+              Master the art of designing scalable, reliable, and efficient systems. From distributed
+              systems to cloud architecture, learn everything you need to excel in system design
+              interviews and real-world applications.
             </Description>
+
+            <StatsBar>
+              <StatItem>
+                <StatIcon>
+                  <FaBook />
+                </StatIcon>
+                <span>100+ Design Patterns</span>
+              </StatItem>
+              <StatItem>
+                <StatIcon>
+                  <FaServer />
+                </StatIcon>
+                <span>50+ Case Studies</span>
+              </StatItem>
+              <StatItem>
+                <StatIcon>
+                  <FaUsers />
+                </StatIcon>
+                <span>5k+ Success Stories</span>
+              </StatItem>
+            </StatsBar>
+
+            <ProblemsCTA>
+              <ProblemsCTAText>
+                <ProblemsCTAIcon>
+                  <FaQuestionCircle />
+                </ProblemsCTAIcon>
+                <ProblemsCTAContent>
+                  <ProblemsCTAHeading>Practice System Design Problems</ProblemsCTAHeading>
+                  <ProblemsCTADesc>
+                    Ready to apply your knowledge? Jump into real-world system design problems and sharpen your skills with hands-on practice.
+                  </ProblemsCTADesc>
+                </ProblemsCTAContent>
+              </ProblemsCTAText>
+              <ProblemsButton href="/system-design/problems">
+                Go to Problems
+              </ProblemsButton>
+            </ProblemsCTA>
           </Header>
+
+          <TabContainer>
+            <TabBar>
+              <StyledTab active={activeTab === 'all'} onClick={() => setActiveTab('all')}>
+                <FaServer /> Topics
+              </StyledTab>
+              <StyledTab active={activeTab === 'frontend'} onClick={() => setActiveTab('frontend')}>
+                <FaReact /> Frontend
+              </StyledTab>
+              <StyledTab active={activeTab === 'performance'} onClick={() => setActiveTab('performance')}>
+                <FaCode /> Performance
+              </StyledTab>
+              <StyledTab active={activeTab === 'architecture'} onClick={() => setActiveTab('architecture')}>
+                <FaLaptopCode /> Architecture
+              </StyledTab>
+              <StyledTab active={activeTab === 'security'} onClick={() => setActiveTab('security')}>
+                <FaShieldAlt /> Security
+              </StyledTab>
+            </TabBar>
+          </TabContainer>
+
+          <SectionHeading>
+            <FaServer /> System Design Topics
+          </SectionHeading>
+          <SectionDescription>
+            Explore comprehensive system design topics and patterns. Click a topic to start learning
+            and practicing system design concepts.
+          </SectionDescription>
 
           <TopicsGrid>
             {filteredTopics.map(topic => (
               <TopicCard key={topic.id}>
-                <TopicIcon>{topic.icon}</TopicIcon>
+                {topic.tags.includes('premium') && (
+                  <PremiumBadge>
+                    <FaStar size={12} /> Premium
+                  </PremiumBadge>
+                )}
+                <TopicIcon className="topic-icon">{topic.icon}</TopicIcon>
                 <TopicTitle>{topic.title}</TopicTitle>
                 <TopicDescription>{topic.description}</TopicDescription>
                 <TagGroup>
-                  {topic.tags.map(tag => (
+                  {topic.tags.filter(tag => tag !== 'premium').map(tag => (
                     <Tag key={tag} type={tag as 'beginner' | 'intermediate' | 'advanced'}>
                       {tag.charAt(0).toUpperCase() + tag.slice(1)}
                     </Tag>
                   ))}
                   {topic.technologies.map(tech => (
                     <Tag key={tech} type="technology">
-                      <TechIcon>{getTechIcon(tech)}</TechIcon>
                       {tech}
                     </Tag>
                   ))}
+                  {topic.roles.map(role => (
+                    <Tag key={role} type="role">
+                      {role}
+                    </Tag>
+                  ))}
                 </TagGroup>
+                <ActionBar>
+                  <StartButton>
+                    {topic.tags.includes('premium') ? 'Upgrade to Access' : 'Start Learning'}
+                  </StartButton>
+                </ActionBar>
               </TopicCard>
             ))}
           </TopicsGrid>

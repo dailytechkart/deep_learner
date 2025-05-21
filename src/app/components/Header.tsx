@@ -15,7 +15,7 @@ const HeaderContainer = styled.header`
   border-bottom: 1px solid ${props => props.theme.colors.border};
   /* padding: 1rem 2rem; */
   position: fixed;
-  top: 0;
+  top: 24px;
   left: 0;
   right: 0;
   z-index: 1000;
