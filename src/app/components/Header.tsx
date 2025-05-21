@@ -13,7 +13,7 @@ const HeaderContainer = styled.header`
   width: 100%;
   background: ${props => props.theme.colors.background};
   border-bottom: 1px solid ${props => props.theme.colors.border};
-  padding: 1rem 2rem;
+  /* padding: 1rem 2rem; */
   position: fixed;
   top: 0;
   left: 0;

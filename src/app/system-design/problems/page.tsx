@@ -224,10 +224,13 @@ const SearchBar = styled.div`
 
 const ProblemsGrid = styled.div`
   flex: 1;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: ${props => props.theme.spacing.lg};
   align-content: start;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 ${props => props.theme.spacing.lg};
 `;
 
 const Card = styled(motion.div)`
@@ -240,13 +243,15 @@ const Card = styled(motion.div)`
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: ${props => props.theme.spacing.md};
+  gap: ${props => props.theme.spacing.sm};
   overflow: hidden;
+  width: 100%;
 
   &:hover {
     transform: translateY(-4px);
     box-shadow: ${props => props.theme.shadows.lg};
     border-color: ${props => props.theme.colors.primary};
+    background: ${props => props.theme.colors.backgroundAlt};
   }
 
   &::before {
@@ -254,8 +259,8 @@ const Card = styled(motion.div)`
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    height: 4px;
+    width: 4px;
+    height: 100%;
     background: ${props => props.theme.colors.primary};
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -271,42 +276,28 @@ const CardHeader = styled.div`
   justify-content: space-between;
   align-items: flex-start;
   gap: ${props => props.theme.spacing.md};
-  position: relative;
-  padding-right: 100px;
 `;
 
-const CardTitle = styled.h3<{ theme: Theme }>`
-  font-size: 1.2rem;
-  font-weight: 600;
+const CardTitle = styled.h3`
+  font-size: ${props => props.theme.typography.fontSize.lg};
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  color: ${props => props.theme.colors.text};
   margin: 0;
-  color: ${props => props.theme.colors.text.primary};
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  flex: 1;
+  line-height: 1.3;
 `;
 
-const CardDescription = styled.p<{ theme: Theme }>`
-  font-size: 0.95rem;
-  color: ${props => props.theme.colors.text.secondary};
+const CardDescription = styled.p`
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  color: ${props => props.theme.colors.textSecondary};
+  line-height: 1.5;
   margin: 0;
-  line-height: 1.6;
-  flex: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 `;
 
 const CardFooter = styled.div`
-  margin-top: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid ${props => props.theme.colors.border};
+  gap: ${props => props.theme.spacing.sm};
+  margin-top: ${props => props.theme.spacing.sm};
 `;
 
 const CardMeta = styled.div`
@@ -316,190 +307,151 @@ const CardMeta = styled.div`
   flex-wrap: wrap;
 `;
 
-const PremiumBadge = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: linear-gradient(135deg, #FFD700, #FFA500);
-  color: #000;
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  display: flex;
+const Badge = styled.span<{ difficulty: string }>`
+  display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1;
-  white-space: nowrap;
+  gap: ${props => props.theme.spacing.xs};
+  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
+  border-radius: ${props => props.theme.borderRadius.sm};
+  font-size: ${props => props.theme.typography.fontSize.xs};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  background: ${props => 
+    props.difficulty === 'Easy' 
+      ? '#4CAF50'
+      : props.difficulty === 'Medium'
+      ? '#FF9800'
+      : '#F44336'};
+  color: white;
 `;
 
-const PopularityBadge = styled.div<{ theme: Theme }>`
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: ${props => props.theme.colors.primary};
-  color: white;
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  display: flex;
+const TimeEstimate = styled.span`
+  display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-  z-index: 1;
-  white-space: nowrap;
+  gap: ${props => props.theme.spacing.xs};
+  color: ${props => props.theme.colors.textSecondary};
+  font-size: ${props => props.theme.typography.fontSize.xs};
 `;
 
 const TagList = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  gap: ${props => props.theme.spacing.xs};
 `;
 
-const Tag = styled.span<{
-  type?: 'beginner' | 'intermediate' | 'advanced' | 'technology' | 'role';
-  color?: string;
-  bgColor?: string;
-}>`
+const Tag = styled.span`
+  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
+  border-radius: ${props => props.theme.borderRadius.sm};
+  background: ${props => props.theme.colors.primary}15;
+  color: ${props => props.theme.colors.primary};
+  font-size: ${props => props.theme.typography.fontSize.xs};
+  border: 1px solid ${props => props.theme.colors.primary}30;
+`;
+
+const CompanyTag = styled.span<{ company: string }>`
   display: inline-flex;
   align-items: center;
-  padding: 0.375rem 0.875rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  background: ${({ type, bgColor }) =>
-    bgColor
-      ? bgColor
-      : type === 'beginner'
-        ? tagColors.beginner.bg
-        : type === 'intermediate'
-          ? tagColors.intermediate.bg
-          : type === 'advanced'
-            ? tagColors.advanced.bg
-            : type === 'technology'
-              ? tagColors.technology.bg
-              : type === 'role'
-                ? tagColors.role.bg
-                : tagColors.beginner.bg};
-  color: ${({ type, color }) =>
-    color
-      ? color
-      : type === 'beginner'
-        ? tagColors.beginner.color
-        : type === 'intermediate'
-          ? tagColors.intermediate.color
-          : type === 'advanced'
-            ? tagColors.advanced.color
-            : type === 'technology'
-              ? tagColors.technology.color
-              : type === 'role'
-                ? tagColors.role.color
-                : tagColors.beginner.color};
-  transition: all 0.2s ease;
-  &:hover {
-    transform: translateY(-1px);
-    filter: brightness(1.08);
+  gap: ${props => props.theme.spacing.xs};
+  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
+  border-radius: ${props => props.theme.borderRadius.sm};
+  background: ${props => props.theme.colors.backgroundAlt};
+  color: ${props => props.theme.colors.textSecondary};
+  font-size: ${props => props.theme.typography.fontSize.xs};
+  border: 1px solid ${props => props.theme.colors.border};
+
+  svg {
+    font-size: ${props => props.theme.typography.fontSize.xs};
   }
 `;
 
-const CompanyTag = styled(Tag)<{ company: string }>`
-  background: ${({ company }) => getCompanyTagColor(company).bg};
-  color: ${({ company }) => getCompanyTagColor(company).color};
+const LastUpdated = styled.span`
   display: inline-flex;
   align-items: center;
-  gap: 0.375rem;
+  gap: ${props => props.theme.spacing.xs};
+  color: ${props => props.theme.colors.textSecondary};
+  font-size: ${props => props.theme.typography.fontSize.xs};
+  margin-top: ${props => props.theme.spacing.xs};
 `;
 
-const Badge = styled.span<{ difficulty: string }>`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.375rem 0.875rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  background: ${({ difficulty }) =>
-    difficulty === 'Easy'
-      ? tagColors.beginner.bg
-      : difficulty === 'Medium'
-        ? tagColors.intermediate.bg
-        : difficulty === 'Hard'
-          ? tagColors.advanced.bg
-          : tagColors.beginner.bg};
-  color: ${({ difficulty }) =>
-    difficulty === 'Easy'
-      ? tagColors.beginner.color
-      : difficulty === 'Medium'
-        ? tagColors.intermediate.color
-        : difficulty === 'Hard'
-          ? tagColors.advanced.color
-          : tagColors.beginner.color};
-`;
-
-const TimeEstimate = styled.div<{ theme: Theme }>`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  color: ${props => props.theme.colors.text.secondary};
-  margin-top: 0.5rem;
-`;
-
-const LastUpdated = styled.div<{ theme: Theme }>`
-  font-size: 0.8rem;
-  color: ${props => props.theme.colors.text.secondary};
-  margin-top: 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-`;
-
-const Prerequisites = styled.div<{ theme: Theme }>`
-  margin-top: 1rem;
-  padding-top: 1rem;
+const Prerequisites = styled.div`
+  margin-top: ${props => props.theme.spacing.sm};
+  padding-top: ${props => props.theme.spacing.sm};
   border-top: 1px solid ${props => props.theme.colors.border};
 `;
 
-const PrerequisitesTitle = styled.h4<{ theme: Theme }>`
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: ${props => props.theme.colors.text.primary};
-  margin: 0 0 0.5rem 0;
+const PrerequisitesTitle = styled.h4`
   display: flex;
   align-items: center;
-  gap: 0.375rem;
+  gap: ${props => props.theme.spacing.xs};
+  font-size: ${props => props.theme.typography.fontSize.xs};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  color: ${props => props.theme.colors.text};
+  margin: 0 0 ${props => props.theme.spacing.xs};
 `;
 
-const PrerequisitesList = styled.ul<{ theme: Theme }>`
+const PrerequisitesList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing.xs};
 `;
 
-const PrerequisiteItem = styled.li<{ theme: Theme }>`
-  font-size: 0.8rem;
-  color: ${props => props.theme.colors.text.secondary};
-  background: ${props => props.theme.colors.background.hover};
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
+const PrerequisiteItem = styled.li`
   display: flex;
   align-items: center;
-  gap: 0.375rem;
+  gap: ${props => props.theme.spacing.xs};
+  color: ${props => props.theme.colors.textSecondary};
+  font-size: ${props => props.theme.typography.fontSize.xs};
+
+  svg {
+    font-size: ${props => props.theme.typography.fontSize.xs};
+    color: ${props => props.theme.colors.primary};
+  }
 `;
 
-const NoResults = styled.div<{ theme: Theme }>`
-  grid-column: 1 / -1;
+const PremiumBadge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.xs};
+  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
+  border-radius: ${props => props.theme.borderRadius.sm};
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  color: #000;
+  font-size: ${props => props.theme.typography.fontSize.xs};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+`;
+
+const PopularityBadge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.xs};
+  padding: ${props => props.theme.spacing.xs} ${props => props.theme.spacing.sm};
+  border-radius: ${props => props.theme.borderRadius.sm};
+  background: linear-gradient(135deg, #4CAF50, #2196F3);
+  color: white;
+  font-size: ${props => props.theme.typography.fontSize.xs};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+`;
+
+const NoResults = styled.div`
   text-align: center;
-  padding: 3rem;
-  background: ${props => props.theme.colors.background.secondary};
-  border-radius: 12px;
-  color: ${props => props.theme.colors.text.secondary};
+  padding: ${props => props.theme.spacing.xl};
+  background: ${props => props.theme.colors.backgroundAlt};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  color: ${props => props.theme.colors.textSecondary};
   border: 1px dashed ${props => props.theme.colors.border};
+
+  h3 {
+    font-size: ${props => props.theme.typography.fontSize.lg};
+    color: ${props => props.theme.colors.text};
+    margin: 0 0 ${props => props.theme.spacing.sm};
+  }
+
+  p {
+    margin: 0;
+    font-size: ${props => props.theme.typography.fontSize.md};
+  }
 `;
 
 const FilterButton = styled.button<{ active?: boolean }>`
@@ -607,264 +559,328 @@ const FilterSectionTitleText = styled.h4`
   gap: ${props => props.theme.spacing.sm};
 `;
 
+const CompanyFilterSection = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${props => props.theme.spacing.sm};
+  padding: ${props => props.theme.spacing.md};
+  background: ${props => props.theme.colors.backgroundAlt};
+  border-radius: ${props => props.theme.borderRadius.lg};
+  margin-bottom: ${props => props.theme.spacing.lg};
+  border: 1px solid ${props => props.theme.colors.border};
+`;
+
+const CompanyFilterBadge = styled.button<{ active: boolean; company: string }>`
+  display: inline-flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.xs};
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+  border-radius: ${props => props.theme.borderRadius.md};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid ${props => props.active ? 'transparent' : props.theme.colors.border};
+  background: ${props => {
+    if (props.active) {
+      switch (props.company.toLowerCase()) {
+        case 'google':
+          return '#4285F4';
+        case 'amazon':
+          return '#FF9900';
+        case 'microsoft':
+          return '#0078D4';
+        case 'meta':
+          return '#1877F2';
+        case 'apple':
+          return '#000000';
+        default:
+          return props.theme.colors.primary;
+      }
+    }
+    return props.theme.colors.background;
+  }};
+  color: ${props => props.active ? '#FFFFFF' : props.theme.colors.text};
+  box-shadow: ${props => props.active ? props.theme.shadows.sm : 'none'};
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${props => props.theme.shadows.md};
+  }
+
+  svg {
+    font-size: ${props => props.theme.typography.fontSize.sm};
+  }
+`;
+
+const PageHeader = styled.div`
+  width: 100%;
+  background: ${props => props.theme.colors.background};
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  padding: ${props => props.theme.spacing.sm} 0;
+  margin-bottom: ${props => props.theme.spacing.md};
+`;
+
+const HeaderContent = styled.div`
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 ${props => props.theme.spacing.xl};
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.md};
+`;
+
+const PageTitle = styled.h1`
+  font-size: ${props => props.theme.typography.fontSize.lg};
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  color: ${props => props.theme.colors.text};
+  margin: 0;
+  line-height: 1.2;
+`;
+
 // Data
 const systemDesignProblems: Problem[] = [
   {
-    id: 'design-url-shortener',
-    title: 'Design a URL Shortener Service',
-    description: 'Design a service that takes long URLs and converts them into shorter, more manageable URLs. Consider scalability, availability, and performance.',
-    difficulty: 'Medium',
-    tags: ['Distributed Systems', 'Caching', 'Database Design', 'API Design'],
-    category: 'Backend',
-    estimatedTime: '45-60 mins',
-    link: '/system-design/problems/url-shortener',
-    companies: ['Google', 'Amazon', 'Microsoft'],
+    id: 'design-chat-app',
+    title: 'Design a Chat Application',
+    description: 'Build a real-time chat app with message delivery, read receipts, and typing indicators.',
+    difficulty: 'Hard',
+    tags: ['WebSockets', 'State Management', 'Real-time', 'Scalability'],
+    category: 'Frontend',
+    estimatedTime: '60-90 mins',
+    link: '/system-design/problems/chat-app',
+    companies: ['Meta', 'Microsoft', 'Uber'],
     popularity: 95,
-    lastUpdated: '2024-03-15',
-    prerequisites: ['Basic understanding of distributed systems', 'Knowledge of caching strategies'],
-    keyConcepts: ['Hash Functions', 'Database Sharding', 'Cache Invalidation', 'Rate Limiting'],
+    lastUpdated: '2024-05-01',
+    prerequisites: ['WebSocket protocol', 'Real-time data handling'],
+    keyConcepts: ['WebSockets', 'Message Queues', 'Presence', 'Optimistic UI'],
     isPremium: true,
   },
   {
-    id: 'design-chat-system',
-    title: 'Design a Real-time Chat System',
-    description: 'Design a scalable real-time chat system that supports millions of concurrent users with features like message delivery, read receipts, and typing indicators.',
+    id: 'design-news-feed',
+    title: 'Design a News Feed System',
+    description: 'Create a scrollable news feed with ranking, caching, and real-time updates.',
     difficulty: 'Hard',
-    tags: ['WebSockets', 'Real-time', 'Scalability', 'Message Queues'],
-    category: 'Full Stack',
+    tags: ['Pagination', 'Caching', 'Feed Ranking', 'Virtual Scroll'],
+    category: 'Frontend',
     estimatedTime: '60-90 mins',
-    link: '/system-design/problems/chat-system',
-    companies: ['Meta', 'Google', 'Microsoft'],
+    link: '/system-design/problems/news-feed',
+    companies: ['Meta', 'Google'],
+    popularity: 94,
+    lastUpdated: '2024-05-02',
+    prerequisites: ['DOM rendering', 'Browser performance'],
+    keyConcepts: ['Infinite Scroll', 'Content Ranking', 'Memoization', 'Batch Fetching'],
+    isPremium: true,
+  },
+  {
+    id: 'design-file-explorer',
+    title: 'Design a File Explorer UI',
+    description: 'Design a file explorer that supports folders, preview, and actions like delete or move.',
+    difficulty: 'Medium',
+    tags: ['Tree Structure', 'Lazy Loading', 'Context Menu', 'Drag and Drop'],
+    category: 'Frontend',
+    estimatedTime: '45-60 mins',
+    link: '/system-design/problems/file-explorer',
+    companies: ['Google', 'Dropbox'],
     popularity: 90,
-    lastUpdated: '2024-03-10',
-    prerequisites: ['WebSocket protocol', 'Message queue systems', 'Real-time data handling'],
-    keyConcepts: ['WebSocket', 'Pub/Sub', 'Message Persistence', 'Load Balancing'],
+    lastUpdated: '2024-05-03',
+    prerequisites: ['Tree traversal', 'Event handling'],
+    keyConcepts: ['Recursive Components', 'Tree Flattening', 'Optimistic UI', 'Keyboard Navigation'],
     isPremium: true,
   },
   {
-    id: 'design-payment-system',
-    title: 'Design a Payment Processing System',
-    description: 'Design a secure and reliable payment processing system that can handle multiple payment methods, currencies, and ensure transaction consistency.',
+    id: 'design-spreadsheet',
+    title: 'Design a Spreadsheet App',
+    description: 'Build a spreadsheet application that supports formulas, cells dependency, and bulk updates.',
     difficulty: 'Hard',
-    tags: ['Security', 'Transactions', 'Microservices', 'Compliance'],
-    category: 'Backend',
+    tags: ['Data Grid', 'Formula Engine', 'DOM Virtualization', 'Performance'],
+    category: 'Frontend',
     estimatedTime: '90-120 mins',
-    link: '/system-design/problems/payment-system',
-    companies: ['Stripe', 'PayPal', 'Square'],
-    popularity: 88,
-    lastUpdated: '2024-03-12',
-    prerequisites: ['Understanding of payment protocols', 'Knowledge of security best practices'],
-    keyConcepts: ['ACID Transactions', 'Idempotency', 'Fraud Detection', 'Payment Gateway Integration'],
-    isPremium: true,
-  },
-  {
-    id: 'design-search-engine',
-    title: 'Design a Search Engine',
-    description: 'Design a search engine that can efficiently index and search through billions of web pages while providing relevant results quickly.',
-    difficulty: 'Hard',
-    tags: ['Search', 'Indexing', 'Distributed Systems', 'Caching'],
-    category: 'Backend',
-    estimatedTime: '90-120 mins',
-    link: '/system-design/problems/search-engine',
-    companies: ['Google', 'Microsoft', 'Amazon'],
+    link: '/system-design/problems/spreadsheet',
+    companies: ['Google', 'Microsoft'],
     popularity: 92,
-    lastUpdated: '2024-03-14',
-    prerequisites: ['Understanding of search algorithms', 'Knowledge of distributed systems'],
-    keyConcepts: ['Inverted Index', 'PageRank', 'Distributed Crawling', 'Result Ranking'],
+    lastUpdated: '2024-05-04',
+    prerequisites: ['Formula parsing', 'Data grids'],
+    keyConcepts: ['Recalculation Engine', 'Dependency Graph', 'Virtual Scrolling', 'Undo/Redo'],
     isPremium: true,
   },
   {
-    id: 'design-ride-sharing',
-    title: 'Design a Ride-Sharing System',
-    description: 'Design a system that matches riders with drivers in real-time, handles payments, and provides location tracking and ETA calculations.',
+    id: 'design-collaborative-editor',
+    title: 'Design a Collaborative Editor',
+    description: 'Create a real-time collaborative document editing tool like Google Docs.',
     difficulty: 'Hard',
-    tags: ['Real-time', 'Location Services', 'Matching Algorithm', 'Payment Processing'],
-    category: 'Full Stack',
-    estimatedTime: '75-90 mins',
-    link: '/system-design/problems/ride-sharing',
-    companies: ['Uber', 'Lyft', 'Grab'],
-    popularity: 85,
-    lastUpdated: '2024-03-13',
-    prerequisites: ['Understanding of geospatial queries', 'Real-time systems'],
-    keyConcepts: ['Geospatial Indexing', 'Real-time Matching', 'Payment Processing', 'Location Tracking'],
-    isPremium: true,
-  },
-  {
-    id: 'design-social-network',
-    title: 'Design a Social Network',
-    description: 'Design a social networking platform that can handle user connections, news feeds, and real-time updates for millions of users.',
-    difficulty: 'Hard',
-    tags: ['Social Graph', 'News Feed', 'Real-time', 'Content Delivery'],
-    category: 'Full Stack',
+    tags: ['CRDT', 'WebSockets', 'Real-time', 'Text Sync'],
+    category: 'Frontend',
     estimatedTime: '90-120 mins',
-    link: '/system-design/problems/social-network',
-    companies: ['Meta', 'LinkedIn', 'Twitter'],
-    popularity: 87,
-    lastUpdated: '2024-03-11',
-    prerequisites: ['Graph databases', 'Real-time systems', 'Content delivery networks'],
-    keyConcepts: ['Graph Database', 'News Feed Algorithm', 'Content Distribution', 'Real-time Updates'],
+    link: '/system-design/problems/collaborative-editor',
+    companies: ['Google', 'Figma'],
+    popularity: 91,
+    lastUpdated: '2024-05-05',
+    prerequisites: ['CRDT or OT knowledge', 'Conflict resolution'],
+    keyConcepts: ['CRDT', 'Presence', 'Sync Engine', 'Cursor Sharing'],
     isPremium: true,
   },
   {
-    id: 'design-file-storage',
-    title: 'Design a File Storage System',
-    description: 'Design a distributed file storage system that can handle large files, provide high availability, and ensure data durability.',
-    difficulty: 'Hard',
-    tags: ['Storage', 'Distributed Systems', 'Data Replication', 'Consistency'],
-    category: 'Backend',
+    id: 'design-video-platform-ui',
+    title: 'Design a Video Streaming Platform UI',
+    description: 'Build the frontend for a video platform like YouTube or Netflix.',
+    difficulty: 'Medium',
+    tags: ['Video Player', 'Lazy Loading', 'Responsive UI'],
+    category: 'Frontend',
     estimatedTime: '60-90 mins',
-    link: '/system-design/problems/file-storage',
-    companies: ['Dropbox', 'Google', 'Amazon'],
-    popularity: 84,
-    lastUpdated: '2024-03-09',
-    prerequisites: ['Understanding of distributed storage', 'Data replication strategies'],
-    keyConcepts: ['Data Sharding', 'Replication', 'Consistency Models', 'Storage Optimization'],
+    link: '/system-design/problems/video-ui',
+    companies: ['Netflix', 'Hotstar', 'Amazon'],
+    popularity: 88,
+    lastUpdated: '2024-05-06',
+    prerequisites: ['Video playback', 'Responsive design'],
+    keyConcepts: ['Custom Player Controls', 'Adaptive Streaming', 'Virtual DOM', 'Skeleton Screens'],
+    isPremium: true,
+  },
+  {
+    id: 'design-dashboard',
+    title: 'Design a Dashboard with Filters and Widgets',
+    description: 'Build an analytics dashboard that supports multiple widgets and data filters.',
+    difficulty: 'Medium',
+    tags: ['Filters', 'Charts', 'Component Composition'],
+    category: 'Frontend',
+    estimatedTime: '45-60 mins',
+    link: '/system-design/problems/dashboard',
+    companies: ['Salesforce', 'Amazon'],
+    popularity: 87,
+    lastUpdated: '2024-05-07',
+    prerequisites: ['Chart libraries', 'State sync'],
+    keyConcepts: ['Drill-down Views', 'Filter Context', 'Component Lazy Load'],
+    isPremium: true,
+  },
+  {
+    id: 'design-calendar-app',
+    title: 'Design a Calendar Scheduling UI',
+    description: 'Create a calendar UI to manage events with drag and drop capabilities.',
+    difficulty: 'Medium',
+    tags: ['Time Slot Management', 'Drag and Drop', 'Event Handling'],
+    category: 'Frontend',
+    estimatedTime: '45-60 mins',
+    link: '/system-design/problems/calendar-ui',
+    companies: ['Google', 'Zoom'],
+    popularity: 85,
+    lastUpdated: '2024-05-08',
+    prerequisites: ['Time math', 'DOM events'],
+    keyConcepts: ['Calendar Grid', 'Overlap Resolution', 'Auto Reschedule'],
+    isPremium: true,
+  },
+  {
+    id: 'design-checkout-flow',
+    title: 'Design a Multi-step Checkout Flow',
+    description: 'Create a secure and intuitive multi-step checkout form.',
+    difficulty: 'Medium',
+    tags: ['Form Management', 'Validation', 'UX'],
+    category: 'Frontend',
+    estimatedTime: '45-60 mins',
+    link: '/system-design/problems/checkout-flow',
+    companies: ['Amazon', 'Shopify'],
+    popularity: 86,
+    lastUpdated: '2024-05-09',
+    prerequisites: ['Form libraries', 'State transitions'],
+    keyConcepts: ['Stepper UI', 'Validation Schema', 'Auto Save'],
+    isPremium: true,
+  },
+  {
+    id: 'design-code-editor',
+    title: 'Design a Web Code Editor',
+    description: 'Build an in-browser code editor with syntax highlighting and tab management.',
+    difficulty: 'Hard',
+    tags: ['Syntax Highlighting', 'Editor', 'Performance'],
+    category: 'Frontend',
+    estimatedTime: '60-90 mins',
+    link: '/system-design/problems/code-editor',
+    companies: ['GitHub', 'Replit'],
+    popularity: 89,
+    lastUpdated: '2024-05-10',
+    prerequisites: ['Codemirror/Monaco knowledge'],
+    keyConcepts: ['Debouncing', 'Tab Layout', 'Hot Reload'],
+    isPremium: true,
+  },
+  {
+    id: 'design-image-editor',
+    title: 'Design an Image Editor UI',
+    description: 'Build a tool for image cropping, filtering, and drawing.',
+    difficulty: 'Medium',
+    tags: ['Canvas', 'Image Manipulation', 'UI Controls'],
+    category: 'Frontend',
+    estimatedTime: '60-90 mins',
+    link: '/system-design/problems/image-editor',
+    companies: ['Canva', 'Adobe'],
+    popularity: 88,
+    lastUpdated: '2024-05-11',
+    prerequisites: ['Canvas API', 'Event listeners'],
+    keyConcepts: ['Zoom/Pan', 'Undo Stack', 'Toolbar Management'],
+    isPremium: true,
+  },
+  {
+    id: 'design-issue-tracker',
+    title: 'Design an Issue Tracker UI',
+    description: 'Design a ticket management UI with labels, filters, and drag/drop status.',
+    difficulty: 'Medium',
+    tags: ['Drag and Drop', 'Status Filters', 'Task View'],
+    category: 'Frontend',
+    estimatedTime: '60 mins',
+    link: '/system-design/problems/issue-tracker',
+    companies: ['GitHub', 'Atlassian'],
+    popularity: 87,
+    lastUpdated: '2024-05-12',
+    prerequisites: ['Board layouts', 'State sync'],
+    keyConcepts: ['Kanban UI', 'Bulk Actions', 'Collapsible Panels'],
     isPremium: true,
   },
   {
     id: 'design-notification-system',
-    title: 'Design a Notification System',
-    description: 'Design a system that can deliver notifications to users across multiple channels (email, push, SMS) with high reliability and low latency.',
+    title: 'Design a Notification System UI',
+    description: 'Create a frontend for real-time user notifications.',
     difficulty: 'Medium',
-    tags: ['Message Queues', 'Push Notifications', 'Email Service', 'SMS Gateway'],
-    category: 'Backend',
-    estimatedTime: '45-60 mins',
-    link: '/system-design/problems/notification-system',
-    companies: ['Amazon', 'Microsoft', 'Google'],
-    popularity: 82,
-    lastUpdated: '2024-03-08',
-    prerequisites: ['Understanding of message queues', 'Push notification protocols'],
-    keyConcepts: ['Message Queues', 'Push Notifications', 'Email Delivery', 'SMS Integration'],
-    isPremium: true,
-  },
-  {
-    id: 'design-infinite-scroll',
-    title: 'Design an Infinite Scroll System',
-    description: 'Design a system that efficiently loads and renders large lists of content with infinite scrolling, handling memory management, performance optimization, and smooth user experience.',
-    difficulty: 'Medium',
-    tags: ['Virtualization', 'Performance', 'Memory Management', 'DOM Optimization'],
+    tags: ['WebSockets', 'Toast UI', 'Unread Count'],
     category: 'Frontend',
     estimatedTime: '45-60 mins',
-    link: '/system-design/problems/infinite-scroll',
-    companies: ['Meta', 'Google', 'Twitter'],
-    popularity: 89,
-    lastUpdated: '2024-03-16',
-    prerequisites: ['Understanding of DOM manipulation', 'Knowledge of browser rendering'],
-    keyConcepts: ['Virtual DOM', 'Window Technique', 'Intersection Observer', 'Memory Management'],
+    link: '/system-design/problems/notifications',
+    companies: ['Meta', 'Twitter'],
+    popularity: 84,
+    lastUpdated: '2024-05-13',
+    prerequisites: ['Polling vs WebSocket'],
+    keyConcepts: ['Toast Queue', 'Read State', 'Reconnection Handling'],
     isPremium: true,
   },
   {
-    id: 'design-state-management',
-    title: 'Design a Global State Management System',
-    description: 'Design a scalable state management system that can handle complex application state, support time-travel debugging, and maintain performance with large state trees.',
+    id: 'design-whiteboard',
+    title: 'Design a Real-time Whiteboard',
+    description: 'Build a whiteboard app that supports drawing and real-time sync.',
     difficulty: 'Hard',
-    tags: ['State Management', 'Performance', 'Architecture', 'Debugging'],
-    category: 'Frontend',
-    estimatedTime: '60-90 mins',
-    link: '/system-design/problems/state-management',
-    companies: ['Meta', 'Google', 'Microsoft'],
-    popularity: 91,
-    lastUpdated: '2024-03-17',
-    prerequisites: ['Understanding of state management patterns', 'Knowledge of React/Vue/Angular'],
-    keyConcepts: ['Immutability', 'Middleware', 'Time-travel Debugging', 'State Normalization'],
-    isPremium: true,
-  },
-  {
-    id: 'design-micro-frontends',
-    title: 'Design a Micro Frontend Architecture',
-    description: 'Design a micro frontend architecture that enables multiple teams to work independently on different parts of a large application while maintaining consistency and performance.',
-    difficulty: 'Hard',
-    tags: ['Micro Frontends', 'Module Federation', 'Team Collaboration', 'Build System'],
+    tags: ['Canvas', 'WebRTC', 'Real-time', 'Drawing Tools'],
     category: 'Frontend',
     estimatedTime: '90-120 mins',
-    link: '/system-design/problems/micro-frontends',
-    companies: ['Amazon', 'Microsoft', 'Spotify'],
-    popularity: 86,
-    lastUpdated: '2024-03-18',
-    prerequisites: ['Understanding of microservices', 'Knowledge of build tools'],
-    keyConcepts: ['Module Federation', 'Build-time Integration', 'Runtime Integration', 'Shared Dependencies'],
+    link: '/system-design/problems/whiteboard',
+    companies: ['Zoom', 'Figma', 'Miro'],
+    popularity: 90,
+    lastUpdated: '2024-05-14',
+    prerequisites: ['Canvas basics', 'WebRTC'],
+    keyConcepts: ['Stroke Sync', 'Tool Palettes', 'Lag Compensation'],
     isPremium: true,
   },
   {
-    id: 'design-real-time-dashboard',
-    title: 'Design a Real-time Dashboard',
-    description: 'Design a real-time dashboard system that can handle multiple data sources, provide live updates, and maintain performance with complex visualizations.',
-    difficulty: 'Hard',
-    tags: ['Real-time', 'Data Visualization', 'WebSocket', 'Performance'],
-    category: 'Frontend',
-    estimatedTime: '75-90 mins',
-    link: '/system-design/problems/real-time-dashboard',
-    companies: ['Google', 'Meta', 'Netflix'],
-    popularity: 88,
-    lastUpdated: '2024-03-19',
-    prerequisites: ['Understanding of WebSocket', 'Knowledge of data visualization'],
-    keyConcepts: ['WebSocket', 'Data Streaming', 'Canvas Rendering', 'Performance Optimization'],
-    isPremium: true,
-  },
-  {
-    id: 'design-offline-first-app',
-    title: 'Design an Offline-First Application',
-    description: 'Design a web application that works seamlessly offline, handles data synchronization, and provides a consistent user experience across different network conditions.',
-    difficulty: 'Hard',
-    tags: ['PWA', 'Offline Support', 'Data Sync', 'Service Workers'],
-    category: 'Frontend',
-    estimatedTime: '60-90 mins',
-    link: '/system-design/problems/offline-first-app',
-    companies: ['Google', 'Microsoft', 'Twitter'],
-    popularity: 85,
-    lastUpdated: '2024-03-20',
-    prerequisites: ['Understanding of Service Workers', 'Knowledge of IndexedDB'],
-    keyConcepts: ['Service Workers', 'IndexedDB', 'Background Sync', 'Conflict Resolution'],
-    isPremium: true,
-  },
-  {
-    id: 'design-component-library',
-    title: 'Design a Component Library System',
-    description: 'Design a scalable component library system that supports theming, accessibility, performance optimization, and easy integration across different projects.',
+    id: 'design-pbac-dashboard',
+    title: 'Design a PBAC Admin Dashboard',
+    description: 'Build a permission-based access control system for UI elements.',
     difficulty: 'Medium',
-    tags: ['Component Design', 'Accessibility', 'Theming', 'Documentation'],
+    tags: ['RBAC', 'PBAC', 'Conditional Rendering'],
     category: 'Frontend',
-    estimatedTime: '45-60 mins',
-    link: '/system-design/problems/component-library',
-    companies: ['Google', 'Microsoft', 'Meta'],
-    popularity: 87,
-    lastUpdated: '2024-03-21',
-    prerequisites: ['Understanding of component design', 'Knowledge of accessibility standards'],
-    keyConcepts: ['Design Tokens', 'Component Architecture', 'Accessibility', 'Performance Testing'],
+    estimatedTime: '60 mins',
+    link: '/system-design/problems/pbac-dashboard',
+    companies: ['Stripe', 'Salesforce'],
+    popularity: 83,
+    lastUpdated: '2024-05-15',
+    prerequisites: ['Permission APIs'],
+    keyConcepts: ['Permission Mapping', 'Role Hierarchy', 'UI Toggles'],
     isPremium: true,
-  },
-  {
-    id: 'design-form-system',
-    title: 'Design a Form Management System',
-    description: 'Design a form management system that handles complex form validation, dynamic fields, multi-step forms, and maintains performance with large datasets.',
-    difficulty: 'Medium',
-    tags: ['Form Management', 'Validation', 'Performance', 'UX'],
-    category: 'Frontend',
-    estimatedTime: '45-60 mins',
-    link: '/system-design/problems/form-system',
-    companies: ['Google', 'Microsoft', 'Salesforce'],
-    popularity: 84,
-    lastUpdated: '2024-03-22',
-    prerequisites: ['Understanding of form validation', 'Knowledge of form UX patterns'],
-    keyConcepts: ['Form Validation', 'Field Dependencies', 'Performance Optimization', 'Error Handling'],
-    isPremium: true,
-  },
-  {
-    id: 'design-image-optimization',
-    title: 'Design an Image Optimization System',
-    description: 'Design a system that efficiently handles image loading, optimization, and delivery across different devices and network conditions while maintaining visual quality.',
-    difficulty: 'Medium',
-    tags: ['Image Optimization', 'Performance', 'CDN', 'Responsive Images'],
-    category: 'Frontend',
-    estimatedTime: '45-60 mins',
-    link: '/system-design/problems/image-optimization',
-    companies: ['Google', 'Meta', 'Netflix'],
-    popularity: 86,
-    lastUpdated: '2024-03-23',
-    prerequisites: ['Understanding of image formats', 'Knowledge of CDN'],
-    keyConcepts: ['Lazy Loading', 'Responsive Images', 'Image Compression', 'CDN Integration'],
-    isPremium: true,
-  },
+  }
 ];
 
 const getCompanyIcon = (company: string) => {
@@ -975,11 +991,19 @@ export default function SystemDesignProblemsPage() {
     }).length;
   };
 
+  const companies = ['Google', 'Amazon', 'Microsoft', 'Meta', 'Apple'];
+
+  const breadcrumbItems = [
+    { label: 'Home', href: '/' },
+    { label: 'System Design', href: '/system-design' },
+    { label: 'Problems', href: '/system-design/problems' },
+  ];
+
   return (
     <MainLayout>
       <SEO
-        title="System Design Problems"
-        description="Practice system design problems with real-world scenarios. Filter by difficulty, category, and tags. Learn from industry examples and improve your system design skills."
+        title="System Design Problems | Practice Real-World System Design Challenges"
+        description="Master system design with our curated collection of real-world problems. Practice designing scalable, efficient systems with problems from top tech companies like Google, Amazon, and Microsoft."
         keywords={[
           'system design',
           'practice problems',
@@ -988,9 +1012,21 @@ export default function SystemDesignProblemsPage() {
           'scalability',
           'performance',
           'interview preparation',
+          'tech interview',
+          'software architecture',
+          'distributed systems',
         ]}
+        ogImage="/images/system-design-problems-og.jpg"
+        ogType="website"
+        twitterCard="summary_large_image"
       />
       <PageContainer>
+        <PageHeader>
+          <HeaderContent>
+            <Breadcrumbs items={breadcrumbItems} />
+            <PageTitle>System Design Problems</PageTitle>
+          </HeaderContent>
+        </PageHeader>
         <MainContent>
           <FilterSidebar>
             <FilterHeader>
@@ -1075,7 +1111,7 @@ export default function SystemDesignProblemsPage() {
                 <FilterButtonChevron isOpen={openSections.companies} />
               </FilterSectionTitle>
               <FilterGroup isOpen={openSections.companies}>
-                {['Google', 'Amazon', 'Microsoft', 'Meta', 'Apple'].map(company => (
+                {companies.map(company => (
                   <FilterButton
                     key={company}
                     active={selectedCompanies.includes(company)}
@@ -1118,6 +1154,20 @@ export default function SystemDesignProblemsPage() {
           </FilterSidebar>
 
         <ProblemsGrid>
+          <CompanyFilterSection>
+            {companies.map(company => (
+              <CompanyFilterBadge
+                key={company}
+                active={selectedCompanies.includes(company)}
+                company={company}
+                onClick={() => toggleFilter(company, selectedCompanies, setSelectedCompanies)}
+              >
+                {getCompanyIcon(company)}
+                {company}
+              </CompanyFilterBadge>
+            ))}
+          </CompanyFilterSection>
+
           {filteredProblems.length > 0 ? (
             filteredProblems.map(problem => (
               <Card
