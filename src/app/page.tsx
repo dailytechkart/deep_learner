@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
-import Header from './components/Header';
 import {
   LandingContainer,
   FeaturesSection,
@@ -33,7 +32,6 @@ import {
   TestimonialRole,
   TestimonialAvatar,
 } from './components/StyledComponents';
-import { PageLayout } from './components/PageLayout';
 import { MainLayout } from '@/components/MainLayout';
 import Image from 'next/image';
 import { FaBook, FaCode, FaReact, FaJs, FaCss3Alt, FaHtml5, FaNodeJs } from 'react-icons/fa';

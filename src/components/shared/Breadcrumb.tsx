@@ -18,7 +18,6 @@ const BreadcrumbContainer = styled.nav`
   display: flex;
   align-items: center;
   padding: ${props => props.theme.spacing.md} 0;
-  /* margin-bottom: ${props => props.theme.spacing.lg}; */
 `;
 
 const BreadcrumbList = styled.ol`

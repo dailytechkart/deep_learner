@@ -3,7 +3,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { Sandpack } from '@codesandbox/sandpack-react';
-import Header from '../components/Header';
 import {
   PageContainer,
   Section,
@@ -316,7 +315,6 @@ export default function PracticePage() {
         ]} 
       />
       <PageContainer style={{ padding: 0, height: '100vh', overflow: 'hidden' }}>
-        <Header />
         <PracticeContainer>
           <ProblemSection>
             <ProblemHeader>
