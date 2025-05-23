@@ -1,29 +1,40 @@
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import { adminAuth } from '@/app/lib/firebase-admin';
 
 export interface Session {
   user: {
-    uid: string;
+    id: string;
     email: string;
+    role?: string;
   };
 }
 
-export async function getServerSession(): Promise<Session | null> {
+export async function getSession(): Promise<Session | null> {
+  const supabase = createRouteHandlerClient({ cookies });
+  
   try {
-    const sessionCookie = cookies().get('session')?.value;
-    if (!sessionCookie) {
+    const { data: { session }, error } = await supabase.auth.getSession();
+    
+    if (error || !session) {
       return null;
     }
 
-    const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie);
+    // Get user role from profiles table
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', session.user.id)
+      .single();
+
     return {
       user: {
-        uid: decodedClaims.uid,
-        email: decodedClaims.email || '',
+        id: session.user.id,
+        email: session.user.email!,
+        role: profile?.role,
       },
     };
   } catch (error) {
-    console.error('Error verifying session:', error);
+    console.error('Error getting session:', error);
     return null;
   }
 }

@@ -1,44 +1,112 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
-import {
-  UserMenuContainer,
-  UserButton,
-  UserAvatar,
-  UserName,
-  DropdownMenu,
-  MenuItem,
-  MenuDivider,
-} from './StyledComponents';
+import styled from 'styled-components';
+import Image from 'next/image';
 
-export default function UserMenu() {
+const UserMenuContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+`;
+
+const UserButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${props => props.theme.spacing.sm};
+  padding: ${props => props.theme.spacing.sm};
+  background: transparent;
+  border: none;
+  border-radius: ${props => props.theme.borderRadius.md};
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: ${props => props.theme.colors.backgroundAlt};
+  }
+`;
+
+const UserAvatar = styled.div<{ $src?: string }>`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-image: ${props => props.$src ? `url(${props.$src})` : 'none'};
+  background-color: ${props => props.theme.colors.backgroundAlt};
+  background-size: cover;
+  background-position: center;
+`;
+
+const UserName = styled.span`
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  color: ${props => props.theme.colors.text};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+`;
+
+const DropdownMenu = styled.div`
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: ${props => props.theme.spacing.sm};
+  background: ${props => props.theme.colors.background};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.md};
+  box-shadow: ${props => props.theme.shadows.md};
+  min-width: 200px;
+  z-index: 1000;
+`;
+
+const MenuItem = styled.button`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+  background: transparent;
+  border: none;
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: ${props => props.theme.colors.backgroundAlt};
+  }
+`;
+
+const MenuDivider = styled.div`
+  height: 1px;
+  background: ${props => props.theme.colors.border};
+  margin: ${props => props.theme.spacing.xs} 0;
+`;
+
+export function UserMenu() {
+  const { user, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
-  const { user, signOut } = useAuth();
+  const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  const handleLogout = async () => {
-    try {
-      await signOut();
-      router.push('/login');
-    } catch (error) {
-      console.error('Error signing out:', error);
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
     }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleLogout = async () => {
+    await logout();
+    router.push('/');
   };
 
-  if (!user) return null;
-
   return (
-    <UserMenuContainer>
+    <UserMenuContainer ref={menuRef}>
       <UserButton onClick={() => setIsOpen(!isOpen)}>
-        <UserAvatar
-          src={user.photoURL || '/default-avatar.png'}
-          alt={user.displayName || 'User'}
-          width={32}
-          height={32}
-        />
-        <UserName>{user.displayName || user.email}</UserName>
+        <UserAvatar $src={user?.user_metadata?.avatar_url} />
+        <UserName>{user?.user_metadata?.full_name || user?.email?.split('@')[0]}</UserName>
       </UserButton>
 
       {isOpen && (
@@ -46,7 +114,7 @@ export default function UserMenu() {
           <MenuItem onClick={() => router.push('/profile')}>Profile</MenuItem>
           <MenuItem onClick={() => router.push('/settings')}>Settings</MenuItem>
           <MenuDivider />
-          <MenuItem onClick={handleLogout}>Sign Out</MenuItem>
+          <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </DropdownMenu>
       )}
     </UserMenuContainer>

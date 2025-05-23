@@ -1,28 +1,19 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import {
-  getAuth,
-  onAuthStateChanged,
-  signInWithPopup,
-  signInWithRedirect,
-  GoogleAuthProvider,
-  GithubAuthProvider,
-  User,
-  setPersistence,
-  browserLocalPersistence,
-  signOut as firebaseSignOut,
-} from 'firebase/auth';
-import app from '@/lib/firebaseConfig';
+import { User } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   error: string | null;
-  signInWithGoogle: () => Promise<void>;
   signInWithGithub: () => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,83 +22,125 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const auth = getAuth(app);
   const router = useRouter();
+  const supabase = createClientComponentClient();
 
   useEffect(() => {
-    // Set persistence to LOCAL
-    setPersistence(auth, browserLocalPersistence).catch(error => {
-      console.error('Error setting persistence:', error);
-    });
-
-    const unsubscribe = onAuthStateChanged(
-      auth,
-      async user => {
-        console.log('Auth state changed:', user ? 'User logged in' : 'No user');
-
-        if (user) {
-          try {
-            // Get the ID token
-            const token = await user.getIdToken();
-
-            // Set the token in a cookie
-            await fetch('/api/auth/session', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ token }),
-            });
-          } catch (error) {
-            console.error('Error setting session:', error);
-          }
-        } else {
-          // Clear the session cookie
-          await fetch('/api/auth/session', {
-            method: 'DELETE',
-          });
+    // Get initial session
+    const getInitialSession = async () => {
+      try {
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) {
+          throw sessionError;
         }
 
-        setUser(user);
-        setLoading(false);
-      },
-      error => {
-        console.error('Auth state change error:', error);
-        setError(error.message);
+        if (session?.user) {
+          // Get user role from profiles table
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', session.user.id)
+            .single();
+
+          setUser({
+            ...session.user,
+            role: profile?.role,
+          });
+        }
+      } catch (err) {
+        console.error('Error getting initial session:', err);
+        setError(err instanceof Error ? err.message : 'Authentication error');
+      } finally {
         setLoading(false);
       }
-    );
+    };
 
-    return () => unsubscribe();
-  }, [auth]);
+    getInitialSession();
 
-  const signInWithGoogle = async () => {
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        try {
+          // Get user role from profiles table
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', session.user.id)
+            .single();
+
+          setUser({
+            ...session.user,
+            role: profile?.role,
+          });
+        } catch (err) {
+          console.error('Error getting user profile:', err);
+          setError(err instanceof Error ? err.message : 'Failed to get user profile');
+        }
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  const signInWithGithub = async () => {
     try {
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'github',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+
+      if (error) throw error;
     } catch (error) {
-      console.error('Google sign in error:', error);
+      console.error('GitHub sign in error:', error);
+      setError(error instanceof Error ? error.message : 'Failed to sign in with GitHub');
       throw error;
     }
   };
 
-  const signInWithGithub = async () => {
+  const signInWithGoogle = async () => {
     try {
-      const provider = new GithubAuthProvider();
-      await signInWithPopup(auth, provider);
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+
+      if (error) throw error;
     } catch (error) {
-      console.error('Github sign in error:', error);
+      console.error('Google sign in error:', error);
+      setError(error instanceof Error ? error.message : 'Failed to sign in with Google');
       throw error;
     }
   };
 
   const signOut = async () => {
     try {
-      await firebaseSignOut(auth);
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      setUser(null);
       router.push('/login');
     } catch (error) {
       console.error('Sign out error:', error);
+      setError(error instanceof Error ? error.message : 'Failed to sign out');
       throw error;
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await supabase.auth.signOut();
+      router.push('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
     }
   };
 
@@ -117,9 +150,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         user,
         loading,
         error,
-        signInWithGoogle,
         signInWithGithub,
+        signInWithGoogle,
         signOut,
+        logout,
       }}
     >
       {children}

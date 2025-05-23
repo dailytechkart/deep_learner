@@ -1,82 +1,74 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from '../auth';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 import { practiceService } from '@/app/services/practiceService';
 import { QuestionCategory, QuestionDifficulty } from '@/app/types/practice';
 
 export async function POST(request: Request) {
   try {
-    // Check authentication
-    const session = await getServerSession();
-    if (!session) {
+    const supabase = createRouteHandlerClient({ cookies });
+    
+    // Get session
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    
+    if (sessionError || !session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Parse request body
     const body = await request.json();
-    const { question, options, correctAnswer, explanation, category, difficulty, points } = body;
 
-    // Validate required fields
-    if (!question || !options || !correctAnswer || !category || !difficulty) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    // Insert question into database
+    const { data: question, error } = await supabase
+      .from('questions')
+      .insert([
+        {
+          ...body,
+          user_id: session.user.id,
+        },
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      throw error;
     }
 
-    // Validate category
-    if (!Object.values(QuestionCategory).includes(category)) {
-      return NextResponse.json({ error: 'Invalid category' }, { status: 400 });
-    }
-
-    // Validate difficulty
-    if (!Object.values(QuestionDifficulty).includes(difficulty)) {
-      return NextResponse.json({ error: 'Invalid difficulty' }, { status: 400 });
-    }
-
-    // Create question
-    const questionId = await practiceService.createQuestion({
-      question,
-      options,
-      correctAnswer,
-      explanation,
-      category,
-      difficulty,
-      points: points || 10, // Default points if not provided
-      createdBy: session.user.uid,
-    });
-
-    return NextResponse.json({
-      success: true,
-      questionId,
-    });
-  } catch (error: any) {
+    return NextResponse.json({ question });
+  } catch (error) {
     console.error('Error creating question:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to create question' },
+      { error: 'Failed to create question' },
       { status: 500 }
     );
   }
 }
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
-    // Check authentication
-    const session = await getServerSession();
-    if (!session) {
+    const supabase = createRouteHandlerClient({ cookies });
+    
+    // Get session
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    
+    if (sessionError || !session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Get category from query params
-    const { searchParams } = new URL(request.url);
-    const category = searchParams.get('category') as QuestionCategory;
+    // Get questions from database
+    const { data: questions, error } = await supabase
+      .from('questions')
+      .select('*')
+      .order('created_at', { ascending: false });
 
-    // Fetch questions
-    const questions = category
-      ? await practiceService.getQuestionsByCategory(category)
-      : await practiceService.getAllQuestions();
+    if (error) {
+      throw error;
+    }
 
     return NextResponse.json({ questions });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error fetching questions:', error);
     return NextResponse.json(
-      { error: error.message || 'Failed to fetch questions' },
+      { error: 'Failed to fetch questions' },
       { status: 500 }
     );
   }

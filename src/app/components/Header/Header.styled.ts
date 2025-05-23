@@ -260,5 +260,4 @@ export const MobileNavLink = styled(Link)`
   }
 `;
 
-export const StyledLogo = styled(Logo)``;
-export const StyledUserMenu = styled(UserMenu)<UserMenuProps>``; 
+export const StyledLogo = styled(Logo)``; 

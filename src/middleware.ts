@@ -1,8 +1,17 @@
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 // List of public routes that don't require authentication
-const publicRoutes = ['/', '/login', '/signup', '/forgot-password', '/reset-password'];
+const publicRoutes = [
+  '/',
+  '/login',
+  '/signup',
+  '/forgot-password',
+  '/reset-password',
+  '/auth/callback',
+  '/api',
+];
 
 // List of protected routes that require authentication
 const protectedRoutes = [
@@ -14,42 +23,60 @@ const protectedRoutes = [
   '/interview',
   '/courses',
   '/system-design',
-  '/blog',
-  '/about',
-  '/contact',
-  '/help',
-  '/faq',
-  '/terms',
-  '/privacy',
 ];
 
-export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+export async function middleware(req: NextRequest) {
+  try {
+    const res = NextResponse.next();
+    const supabase = createMiddlewareClient({ req, res });
 
-  // Check if the route is public or protected
-  const isPublicRoute = publicRoutes.some(
-    route => pathname === route || pathname.startsWith(route + '/')
-  );
-  const isProtectedRoute = protectedRoutes.some(
-    route => pathname === route || pathname.startsWith(route + '/')
-  );
+    // Refresh session if expired - required for Server Components
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.getSession();
 
-  // Get the token from cookies
-  const token = request.cookies.get('auth_token')?.value;
+    const { pathname } = req.nextUrl;
 
-  // If trying to access a public route while logged in, redirect to dashboard
-  if (isPublicRoute && token && pathname !== '/') {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
-  }
+    // Debug logging
+    console.log('Middleware - Path:', pathname);
+    console.log('Middleware - Session:', !!session);
+    console.log('Middleware - Error:', error);
 
-  // If trying to access a protected route while not logged in, redirect to login
-  if (isProtectedRoute && !token) {
-    const loginUrl = new URL('/login', request.url);
-    loginUrl.searchParams.set('from', pathname);
+    if (error) {
+      console.error('Middleware auth error:', error);
+      // If there's an auth error, redirect to login
+      const loginUrl = new URL('/login', req.url);
+      loginUrl.searchParams.set('from', req.nextUrl.pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    // Check if the route is public or protected
+    const isPublicRoute = publicRoutes.some(
+      route => pathname === route || pathname.startsWith(route + '/')
+    );
+    const isProtectedRoute = protectedRoutes.some(
+      route => pathname === route || pathname.startsWith(route + '/')
+    );
+
+    // Debug logging
+    console.log('Middleware - Is Public Route:', isPublicRoute);
+    console.log('Middleware - Is Protected Route:', isProtectedRoute);
+
+    // If trying to access a public route while logged in, redirect to dashboard
+    if (isPublicRoute && session && pathname !== '/') {
+      return NextResponse.redirect(new URL('/dashboard', req.url));
+    }
+
+    // Let the ProtectedRoute component handle client-side protection
+    return res;
+  } catch (error) {
+    console.error('Middleware error:', error);
+    // If there's any error, redirect to login
+    const loginUrl = new URL('/login', req.url);
+    loginUrl.searchParams.set('from', req.nextUrl.pathname);
     return NextResponse.redirect(loginUrl);
   }
-
-  return NextResponse.next();
 }
 
 // Configure which routes to run middleware on
@@ -57,11 +84,11 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
-     * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
+     * - public folder
      */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    '/((?!_next/static|_next/image|favicon.ico|public/).*)',
   ],
 };

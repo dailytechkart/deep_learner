@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { courseService } from '../services/courseService';
 import { Course, UserCourse, UserProgress } from '../types/course';
-import { useAuth } from './useAuth'; // Assuming you have an auth hook
+import { useAuth } from '../context/AuthContext';
 
 export const useCourses = () => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -33,7 +33,7 @@ export const useCourses = () => {
 
     try {
       setLoading(true);
-      const data = await courseService.getUserCourses(user.uid);
+      const data = await courseService.getUserCourses(user.id);
       setUserCourses(data);
       setError(null);
     } catch (err) {
@@ -53,7 +53,7 @@ export const useCourses = () => {
 
     try {
       setLoading(true);
-      await courseService.enrollUserInCourse(user.uid, courseId);
+      await courseService.enrollUserInCourse(user.id, courseId);
       await fetchUserCourses(); // Refresh user courses
       setError(null);
     } catch (err) {
@@ -73,7 +73,7 @@ export const useCourses = () => {
 
     try {
       setLoading(true);
-      await courseService.updateUserProgress(user.uid, courseId, lessonId, isCompleted);
+      await courseService.updateUserProgress(user.id, courseId, lessonId, isCompleted);
       await fetchUserCourses(); // Refresh user courses
       setError(null);
     } catch (err) {
@@ -89,7 +89,7 @@ export const useCourses = () => {
     if (!user) return null;
 
     try {
-      return await courseService.getUserCourseProgress(user.uid, courseId);
+      return await courseService.getUserCourseProgress(user.id, courseId);
     } catch (err) {
       console.error('Error getting course progress:', err);
       return null;

@@ -1,24 +1,35 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { supabase } from './supabase';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { User } from '@supabase/supabase-js';
 
 export type AuthUser = User;
 
 export async function getServerSession() {
-  const cookieStore = cookies();
-  const token = cookieStore.get('auth_token')?.value;
-
-  if (!token) {
-    return null;
-  }
-
+  const supabase = createServerComponentClient({ cookies });
+  
   try {
-    const { data: { user }, error } = await supabase.auth.getUser(token);
-    if (error) throw error;
-    return user;
+    const { data: { session }, error } = await supabase.auth.getSession();
+    
+    if (error || !session) {
+      return null;
+    }
+
+    // Get user role from profiles table
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', session.user.id)
+      .single();
+
+    return {
+      user: {
+        ...session.user,
+        role: profile?.role,
+      },
+    };
   } catch (error) {
-    console.error('Error verifying token:', error);
+    console.error('Error getting session:', error);
     return null;
   }
 }
@@ -31,16 +42,6 @@ export async function requireAuth() {
   }
 
   return session;
-}
-
-export async function requireGuest() {
-  const session = await getServerSession();
-
-  if (session) {
-    redirect('/dashboard');
-  }
-
-  return null;
 }
 
 export async function getAuthRedirect(pathname: string) {
@@ -98,27 +99,4 @@ export const signUp = async (email: string, password: string) => {
   
   if (error) throw error;
   return data;
-};
-
-export const signOut = async () => {
-  const { error } = await supabase.auth.signOut();
-  if (error) throw error;
-};
-
-export const getCurrentUser = async () => {
-  const { data: { user }, error } = await supabase.auth.getUser();
-  if (error) throw error;
-  return user;
-};
-
-export const resetPassword = async (email: string) => {
-  const { error } = await supabase.auth.resetPasswordForEmail(email);
-  if (error) throw error;
-};
-
-export const updatePassword = async (newPassword: string) => {
-  const { error } = await supabase.auth.updateUser({
-    password: newPassword,
-  });
-  if (error) throw error;
-};
+}; 

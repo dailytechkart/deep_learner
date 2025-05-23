@@ -68,6 +68,7 @@ export default function SignUpClient() {
       setIsLoading(false);
     }
   };
+  console.log(user, "user")
 
   // If user is already logged in, show loading state
   if (user) {
@@ -79,7 +80,7 @@ export default function SignUpClient() {
       </AuthContainer>
     );
   }
-
+console.log(user, "user")
   return (
     <AuthContainer>
       <AuthCard>

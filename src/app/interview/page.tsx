@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Problem, ProblemData, Topic, Difficulty, Company, Tag } from '@/types/problem';
-import { useAuth } from '@/hooks/useAuth';
-import { useRouter } from 'next/navigation';
+import { useAuth } from '@/app/hooks/useAuth';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useTheme } from '@/hooks/useTheme';
 import { MainLayout } from '@/components/MainLayout';
 import { useSearch } from '@/hooks/useSearch';
@@ -16,6 +16,7 @@ import { Breadcrumb } from '@/components/shared/Breadcrumb';
 import { FaBook, FaClipboardList, FaUsers, FaCode } from 'react-icons/fa';
 import { FaFilter } from 'react-icons/fa';
 import styled from 'styled-components';
+import ProtectedRoute from '@/app/components/ProtectedRoute';
 
 const FilterButton = styled.button`
   display: none;
@@ -71,7 +72,7 @@ const systemDesignStats = [
   { icon: <FaUsers />, value: '10k+', label: 'Active Learners' },
 ];
 
-export default function InterviewPage() {
+const InterviewPage: React.FC = () => {
   const { user, loading } = useAuth();
   const router = useRouter();
   const { isDarkMode } = useTheme();
@@ -93,6 +94,7 @@ export default function InterviewPage() {
   const { searchQuery, setSearchQuery } = useSearch();
   const [sortBy, setSortBy] = useState<SortOption>('most-asked');
   const [isAuthChecked, setIsAuthChecked] = useState(false);
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (!loading) {
@@ -236,12 +238,11 @@ export default function InterviewPage() {
   };
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
     const type = searchParams.get('type');
     if (type === 'machine-coding') {
       setProblemType('machine-coding');
     }
-  }, []);
+  }, [searchParams]);
 
   const stats = getStats();
 
@@ -341,42 +342,46 @@ export default function InterviewPage() {
   }
 
   return (
-    <MainLayout>
-      <Breadcrumb 
-        items={[
-          { label: 'Home', href: '/' },
-          { label: 'Interview Preparation', href: '/interview' }
-        ]} 
-      />
-      <SystemDesignHero
-        title={systemDesignTitle}
-        description={systemDesignDescription}
-        stats={systemDesignStats}
-      />
-
-      <div style={{ width: '100%' }}>
-        <InterviewTabs
-          problemType={problemType}
-          onProblemTypeChange={handleProblemTypeChange}
-          dsaCount={dsaProblemData?.problems.length || 0}
-          machineCodingCount={machineCodingProblemData?.problems.length || 0}
+    <ProtectedRoute>
+      <MainLayout>
+        <Breadcrumb 
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Interview Preparation', href: '/interview' }
+          ]} 
+        />
+        <SystemDesignHero
+          title={systemDesignTitle}
+          description={systemDesignDescription}
+          stats={systemDesignStats}
         />
 
-        <InterviewLayout filterSections={filterSections} onClearAllFilters={clearAllFilters}>
-          <InterviewSearch
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            sortBy={sortBy}
-            onSortChange={setSortBy}
+        <div style={{ width: '100%' }}>
+          <InterviewTabs
+            problemType={problemType}
+            onProblemTypeChange={handleProblemTypeChange}
+            dsaCount={dsaProblemData?.problems.length || 0}
+            machineCodingCount={machineCodingProblemData?.problems.length || 0}
           />
-          <InterviewProblemsList problems={filteredProblemsWithSearch} />
-        </InterviewLayout>
 
-        <FilterButton onClick={() => setShowFilters(!showFilters)}>
-          <FaFilter />
-          {showFilters ? 'Hide Filters' : 'Show Filters'}
-        </FilterButton>
-      </div>
-    </MainLayout>
+          <InterviewLayout filterSections={filterSections} onClearAllFilters={clearAllFilters}>
+            <InterviewSearch
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              sortBy={sortBy}
+              onSortChange={setSortBy}
+            />
+            <InterviewProblemsList problems={filteredProblemsWithSearch} />
+          </InterviewLayout>
+
+          <FilterButton onClick={() => setShowFilters(!showFilters)}>
+            <FaFilter />
+            {showFilters ? 'Hide Filters' : 'Show Filters'}
+          </FilterButton>
+        </div>
+      </MainLayout>
+    </ProtectedRoute>
   );
-}
+};
+
+export default InterviewPage;

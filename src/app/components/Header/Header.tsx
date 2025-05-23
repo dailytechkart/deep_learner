@@ -5,6 +5,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { FaUser } from 'react-icons/fa';
 import { useTheme } from '@/app/context/ThemeContext';
 import { useAuth } from '@/app/hooks/useAuth';
+import { UserMenu } from '@/app/components/UserMenu';
 import MobileHeader from '../MobileHeader';
 import { HeaderProps } from './Header.types';
 import { NAV_ITEMS } from './Header.constants';
@@ -13,7 +14,6 @@ import {
   HeaderContent,
   LeftSection,
   RightSection,
-  UserMenuContainer,
   NavLink,
   LogoLink,
   Nav,
@@ -24,14 +24,13 @@ import {
   MobileMenu,
   MobileNavLink,
   StyledLogo,
-  StyledUserMenu,
 } from './Header.styled';
 
 const Header: React.FC<HeaderProps> = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { isDarkMode, toggleTheme } = useTheme();
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
@@ -50,11 +49,6 @@ const Header: React.FC<HeaderProps> = () => {
     router.push('/');
     setIsMobileMenuOpen(false);
   }, [router]);
-
-  const handleSignOut = useCallback(async () => {
-    await logout();
-    router.push('/login');
-  }, [logout, router]);
 
   const toggleMobileMenu = useCallback(() => {
     setIsMobileMenuOpen(prev => !prev);
@@ -96,9 +90,7 @@ const Header: React.FC<HeaderProps> = () => {
               {isDarkMode ? '🌞' : '🌙'}
             </ThemeToggle>
             {user ? (
-              <UserMenuContainer>
-                <StyledUserMenu user={user} onSignOut={handleSignOut} />
-              </UserMenuContainer>
+              <UserMenu />
             ) : (
               <SignInButton href="/login">
                 <FaUser />

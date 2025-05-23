@@ -8,7 +8,7 @@ import {
   UserPracticeProgress,
   QuestionCategory,
 } from '../types/practice';
-import { useAuth } from './useAuth';
+import { useAuth } from '../context/AuthContext';
 
 export const usePractice = () => {
   const [questions, setQuestions] = useState<PracticeQuestion[]>([]);
@@ -78,7 +78,7 @@ export const usePractice = () => {
       try {
         setLoading(true);
         const result = await practiceService.submitAnswer(
-          user.uid,
+          user.id,
           questionId,
           selectedOption,
           timeSpent
@@ -103,7 +103,7 @@ export const usePractice = () => {
 
     try {
       setLoading(true);
-      const data = await practiceService.getUserStats(user.uid);
+      const data = await practiceService.getUserStats(user.id);
       setUserStats(data);
       setError(null);
     } catch (err) {
@@ -120,7 +120,7 @@ export const usePractice = () => {
       if (!user) return null;
 
       try {
-        return await practiceService.getUserQuestionProgress(user.uid, questionId);
+        return await practiceService.getUserQuestionProgress(user.id, questionId);
       } catch (err) {
         console.error('Error getting question progress:', err);
         return null;

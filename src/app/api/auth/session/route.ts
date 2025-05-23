@@ -1,36 +1,36 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { adminAuth } from '@/lib/firebaseAdmin';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 
 export async function GET() {
   try {
-    const cookieStore = cookies();
-    const sessionCookie = cookieStore.get('session')?.value;
-
-    if (!sessionCookie) {
+    const supabase = createRouteHandlerClient({ cookies });
+    
+    const { data: { session }, error } = await supabase.auth.getSession();
+    
+    if (error || !session) {
       return NextResponse.json({ error: 'No active session' }, { status: 401 });
     }
 
-    try {
-      const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie, true);
-      return NextResponse.json({
-        user: {
-          uid: decodedClaims.uid,
-          email: decodedClaims.email,
-          emailVerified: decodedClaims.email_verified,
-          role: decodedClaims.role,
-        },
-        message: 'Session is valid',
-      });
-    } catch (error: any) {
-      if (error.code === 'auth/session-cookie-expired') {
-        return NextResponse.json({ error: 'Session expired' }, { status: 401 });
-      }
-      throw error;
-    }
-  } catch (error: any) {
+    // Get user role from profiles table
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', session.user.id)
+      .single();
+
+    return NextResponse.json({
+      user: {
+        id: session.user.id,
+        email: session.user.email,
+        emailVerified: session.user.email_confirmed_at !== null,
+        role: profile?.role,
+      },
+      message: 'Session is valid',
+    });
+  } catch (error) {
     console.error('Error getting session:', error);
-    return NextResponse.json({ error: error.message || 'Failed to get session' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to get session' }, { status: 500 });
   }
 }
 
@@ -42,20 +42,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'No token provided' }, { status: 400 });
     }
 
-    // Create session cookie
-    const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
-    const sessionCookie = await adminAuth.createSessionCookie(idToken, { expiresIn });
-
-    // Set the session cookie
-    cookies().set('session', sessionCookie, {
-      maxAge: expiresIn / 1000,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
+    const supabase = createRouteHandlerClient({ cookies });
+    
+    // Exchange the ID token for a session
+    const { data: { session }, error } = await supabase.auth.setSession({
+      access_token: idToken,
+      refresh_token: '',
     });
 
-    return NextResponse.json({ success: true });
+    if (error) {
+      throw error;
+    }
+
+    return NextResponse.json({ success: true, session });
   } catch (error) {
     console.error('Error setting session:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -64,19 +63,18 @@ export async function POST(request: Request) {
 
 export async function DELETE() {
   try {
-    const cookieStore = cookies();
-    const sessionCookie = cookieStore.get('session')?.value;
-
-    if (sessionCookie) {
-      await adminAuth.verifySessionCookie(sessionCookie);
-      await adminAuth.revokeRefreshTokens(sessionCookie);
+    const supabase = createRouteHandlerClient({ cookies });
+    
+    // Sign out the user
+    const { error } = await supabase.auth.signOut();
+    
+    if (error) {
+      throw error;
     }
 
-    // Clear the session cookie
-    cookieStore.delete('session');
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error clearing session:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error('Error signing out:', error);
+    return NextResponse.json({ error: 'Failed to sign out' }, { status: 500 });
   }
 }
