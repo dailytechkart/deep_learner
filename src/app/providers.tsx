@@ -48,11 +48,11 @@ function ThemeWrapper({ children }: { children: React.ReactNode }) {
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <StyledComponentsRegistry>
-      <SessionProvider>
-        <ThemeProvider>
-          <ThemeWrapper>{children}</ThemeWrapper>
-        </ThemeProvider>
-      </SessionProvider>
+      <ThemeProvider>
+        <ThemeWrapper>
+          <SessionProvider>{children}</SessionProvider>
+        </ThemeWrapper>
+      </ThemeProvider>
     </StyledComponentsRegistry>
   );
 }

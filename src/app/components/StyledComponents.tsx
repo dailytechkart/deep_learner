@@ -71,25 +71,6 @@ export const DashboardContainer = styled.div`
   }
 `;
 
-export const Header = styled.header`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background-color: ${props => props.theme.colors.background}dd;
-  border-bottom: 1px solid ${props => props.theme.colors.border};
-  height: 64px;
-  display: flex;
-  align-items: center;
-  backdrop-filter: blur(8px);
-
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
-    flex-direction: column;
-    gap: ${props => props.theme.spacing.sm};
-  }
-`;
-
 export const HeaderContent = styled.div`
   width: 100%;
   max-width: 1440px;
@@ -842,10 +823,6 @@ export const InterviewContent = styled(TopicCardContent)`
 
 export const InterviewFooter = styled(TopicCardFooter)`
   border-top: 1px solid ${props => props.theme.colors.borderLight};
-`;
-
-export const InterviewStats = styled(TopicCardStats)`
-  color: ${props => props.theme.colors.textSecondary};
 `;
 
 export const MobileMenuButton = styled.button`

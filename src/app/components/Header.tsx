@@ -1,26 +1,15 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import styled, { DefaultTheme } from 'styled-components';
+import styled from 'styled-components';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import {
-  FaBook,
-  FaRocket,
-  FaShieldAlt,
-  FaChartLine,
-  FaUser,
-  FaSignOutAlt,
-  FaBars,
-  FaTimes,
-  FaCode,
-} from 'react-icons/fa';
+import { FaBook, FaShieldAlt, FaChartLine, FaUser, FaCode, FaServer } from 'react-icons/fa';
 import { useTheme } from '@/app/context/ThemeContext';
 import { useAuth } from '@/app/hooks/useAuth';
 import Logo from './Logo';
 import MobileHeader from './MobileHeader';
 import UserMenu from './UserMenu';
-import { Theme } from '@/app/styles/theme';
 
 interface HeaderProps {}
 
@@ -38,12 +27,12 @@ const HeaderContainer = styled.header`
   top: 0;
   left: 0;
   right: 0;
-  height: 64px;
+  height: 72px;
   background: ${({ theme }) => theme.colors.background};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
   align-items: center;
-  padding: 0 ${({ theme }) => theme.spacing.lg};
+  padding: 0 2rem;
   z-index: 1000;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -55,7 +44,7 @@ const HeaderContainer = styled.header`
 `;
 
 const HeaderContent = styled.div`
-  max-width: 1200px;
+  max-width: 1600px;
   width: 100%;
   margin: 0 auto;
   display: flex;
@@ -67,14 +56,14 @@ const HeaderContent = styled.div`
 const LeftSection = styled.div`
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing.lg};
+  gap: 3rem;
   flex: 1;
 `;
 
 const RightSection = styled.div`
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing.md};
+  gap: 1.5rem;
   margin-left: auto;
 `;
 
@@ -86,19 +75,19 @@ const UserMenuContainer = styled.div`
 `;
 
 const NavLink = styled(Link)`
-  color: ${({ theme }) => theme.colors.text};
+  color: ${({ theme }) => theme.colors.textSecondary};
   text-decoration: none;
-  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
+  padding: 0.5rem 1rem;
   border-radius: ${({ theme }) => theme.borderRadius.md};
-  transition: all ${({ theme }) => theme.transitions.default};
-  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
+  transition: all 0.2s ease;
+  font-weight: 500;
+  font-size: 0.95rem;
   position: relative;
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: 0.5rem;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.backgroundAlt};
     color: ${({ theme }) => theme.colors.primary};
   }
 
@@ -109,7 +98,24 @@ const NavLink = styled(Link)`
 
   &[aria-current='page'] {
     color: ${({ theme }) => theme.colors.primary};
-    background: ${({ theme }) => theme.colors.backgroundAlt};
+    font-weight: 600;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: ${({ theme }) => theme.colors.primary};
+    transition: width 0.2s ease;
+  }
+
+  &:hover::after,
+  &[aria-current='page']::after {
+    width: 100%;
   }
 `;
 
@@ -129,25 +135,19 @@ const Nav = styled.nav`
   }
 `;
 
-const NavIcon = styled.div`
-  color: ${props => props.theme.colors.primary};
-  font-size: 1rem;
-`;
-
 const ThemeToggle = styled.button`
   background: none;
   border: none;
   color: ${({ theme }) => theme.colors.textSecondary};
   cursor: pointer;
-  padding: ${({ theme }) => theme.spacing.sm};
+  padding: 0.5rem;
   border-radius: ${({ theme }) => theme.borderRadius.md};
-  transition: all ${({ theme }) => theme.transitions.default};
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  position: relative;
+  width: 36px;
+  height: 36px;
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
@@ -158,17 +158,24 @@ const ThemeToggle = styled.button`
     outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
   }
+`;
 
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: ${({ theme }) => theme.borderRadius.md};
-    transition: all ${({ theme }) => theme.transitions.default};
+const SignInButton = styled(NavLink)`
+  background: ${({ theme }) => theme.colors.primary};
+  color: white;
+  padding: 0.5rem 1.25rem;
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  font-weight: 500;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primaryDark};
+    color: white;
+    transform: translateY(-1px);
   }
 
-  &:active::after {
-    background: ${({ theme }) => theme.colors.backgroundHover};
+  &::after {
+    display: none;
   }
 `;
 
@@ -181,7 +188,7 @@ const MobileMenu = styled.div<{ isOpen: boolean }>`
   background: ${({ theme }) => theme.colors.background};
   padding: ${({ theme }) => theme.spacing.md};
   box-shadow: ${({ theme }) => theme.shadows.md};
-  z-index: 9998;
+  z-index: 1;
   transform: translateY(${props => (props.isOpen ? '0' : '-100%')});
   transition: transform ${({ theme }) => theme.transitions.default};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
@@ -226,20 +233,6 @@ const MobileNavLink = styled(Link)`
   &[aria-current='page'] {
     color: ${({ theme }) => theme.colors.primary};
     background: ${({ theme }) => theme.colors.backgroundAlt};
-  }
-`;
-
-const MobileActions = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-  border-top: 1px solid ${props => props.theme.colors.border};
-  margin-top: 1rem;
-
-  @media (max-width: 480px) {
-    gap: 0.75rem;
-    padding: 0.875rem;
   }
 `;
 
@@ -294,25 +287,18 @@ const Header: React.FC<HeaderProps> = () => {
                 Learn
               </NavLink>
               <NavLink
-                href="/projects"
-                aria-current={pathname === '/projects' ? 'page' : undefined}
+                href="/interview"
+                aria-current={pathname === '/interview' ? 'page' : undefined}
               >
                 <FaCode />
-                Projects
+                Interviews
               </NavLink>
               <NavLink
-                href="/security"
-                aria-current={pathname === '/security' ? 'page' : undefined}
+                href="/system-design"
+                aria-current={pathname === '/system-design' ? 'page' : undefined}
               >
-                <FaShieldAlt />
-                Security
-              </NavLink>
-              <NavLink
-                href="/analytics"
-                aria-current={pathname === '/analytics' ? 'page' : undefined}
-              >
-                <FaChartLine />
-                Analytics
+                <FaServer />
+                System Design
               </NavLink>
             </Nav>
           </LeftSection>
@@ -328,10 +314,10 @@ const Header: React.FC<HeaderProps> = () => {
                 <StyledUserMenu user={user} onSignOut={handleSignOut} />
               </UserMenuContainer>
             ) : (
-              <NavLink href="/login">
+              <SignInButton href="/login">
                 <FaUser />
                 Sign In
-              </NavLink>
+              </SignInButton>
             )}
           </RightSection>
         </HeaderContent>
@@ -342,25 +328,18 @@ const Header: React.FC<HeaderProps> = () => {
           Learn
         </MobileNavLink>
         <MobileNavLink
-          href="/projects"
-          aria-current={pathname === '/projects' ? 'page' : undefined}
+          href="/interview"
+          aria-current={pathname === '/interview' ? 'page' : undefined}
         >
           <FaCode />
-          Projects
+          Interviews
         </MobileNavLink>
         <MobileNavLink
-          href="/security"
-          aria-current={pathname === '/security' ? 'page' : undefined}
+          href="/system-design"
+          aria-current={pathname === '/system-design' ? 'page' : undefined}
         >
-          <FaShieldAlt />
-          Security
-        </MobileNavLink>
-        <MobileNavLink
-          href="/analytics"
-          aria-current={pathname === '/analytics' ? 'page' : undefined}
-        >
-          <FaChartLine />
-          Analytics
+          <FaServer />
+          System Design
         </MobileNavLink>
         {!user && (
           <MobileNavLink href="/login">

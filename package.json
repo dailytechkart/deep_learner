@@ -2,7 +2,6 @@
   "name": "frontendly",
   "version": "1.0.0",
   "description": "Interactive Frontend Development Learning Platform",
-  "type": "module",
   "engines": {
     "node": ">=18.17.0"
   },
@@ -46,8 +45,8 @@
     "next-mdx-remote": "^5.0.0",
     "next-themes": "^0.4.6",
     "nodemailer": "^6.9.9",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-icons": "^5.5.0",
     "react-tooltip": "^5.28.1",
     "reactflow": "^11.11.4",
@@ -63,13 +62,16 @@
     "@types/nodemailer": "^6.4.14",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.17",
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
+    "postcss": "^8.4.35",
     "prettier": "^3.2.5",
+    "tailwindcss": "^3.4.1",
     "typescript": "^5.0.4"
   },
   "lint-staged": {

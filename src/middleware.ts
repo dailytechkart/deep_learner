@@ -5,7 +5,23 @@ import type { NextRequest } from 'next/server';
 const publicRoutes = ['/', '/login', '/signup', '/forgot-password', '/reset-password'];
 
 // List of protected routes that require authentication
-const protectedRoutes = ['/dashboard', '/profile', '/settings', '/practice', '/learn'];
+const protectedRoutes = [
+  '/dashboard',
+  '/profile',
+  '/settings',
+  '/practice',
+  '/learn',
+  '/interview',
+  '/courses',
+  '/system-design',
+  '/blog',
+  '/about',
+  '/contact',
+  '/help',
+  '/faq',
+  '/terms',
+  '/privacy',
+];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

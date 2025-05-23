@@ -10,6 +10,8 @@ import {
   SectionHeader,
   SectionContent,
 } from '../components/StyledComponents';
+import { Breadcrumb } from '@/components/shared/Breadcrumb';
+import MainLayout from '@/components/MainLayout';
 
 export const dynamic = 'force-dynamic';
 
@@ -306,84 +308,92 @@ export default function PracticePage() {
   }, [isResizing, handleMouseMove, handleMouseUp]);
 
   return (
-    <PageContainer style={{ padding: 0, height: '100vh', overflow: 'hidden' }}>
-      <Header searchQuery={searchQuery} onSearchChange={setSearchQuery} />
-      <PracticeContainer>
-        <ProblemSection>
-          <ProblemHeader>
-            <ProblemTitle>Todo List Application</ProblemTitle>
-            <ProblemMeta>
-              <MetaBadge type="difficulty">Medium</MetaBadge>
-              <MetaBadge type="time">45 minutes</MetaBadge>
-              <MetaBadge type="category">React</MetaBadge>
-            </ProblemMeta>
-          </ProblemHeader>
+    <MainLayout>
+      <Breadcrumb 
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Practice', href: '/practice' }
+        ]} 
+      />
+      <PageContainer style={{ padding: 0, height: '100vh', overflow: 'hidden' }}>
+        <Header />
+        <PracticeContainer>
+          <ProblemSection>
+            <ProblemHeader>
+              <ProblemTitle>Todo List Application</ProblemTitle>
+              <ProblemMeta>
+                <MetaBadge type="difficulty">Medium</MetaBadge>
+                <MetaBadge type="time">45 minutes</MetaBadge>
+                <MetaBadge type="category">React</MetaBadge>
+              </ProblemMeta>
+            </ProblemHeader>
 
-          <ProblemDescription>
-            Create a simple Todo List application that allows users to manage their tasks
-            efficiently. The application should be responsive, user-friendly, and implement all the
-            core features of a modern todo list.
-          </ProblemDescription>
-
-          <SectionTitle>Let&apos;s practice system design problems</SectionTitle>
-          <RequirementsList>
-            <RequirementItem>
-              Implement a form to add new todos with a text input and submit button
-            </RequirementItem>
-            <RequirementItem>Display a list of todos with their completion status</RequirementItem>
-            <RequirementItem>
-              Allow users to toggle todo completion status by clicking on the todo
-            </RequirementItem>
-            <RequirementItem>Add a delete button to remove todos</RequirementItem>
-            <RequirementItem>
-              Implement filtering functionality (All, Active, Completed)
-            </RequirementItem>
-          </RequirementsList>
-
-          <SectionTitle>Let&apos;s solve real-world system design challenges</SectionTitle>
-          <RequirementsList>
-            <RequirementItem>
-              Add local storage persistence to save todos between sessions
-            </RequirementItem>
-            <RequirementItem>Implement due dates for todos with date picker</RequirementItem>
-            <RequirementItem>Add categories or tags for better organization</RequirementItem>
-          </RequirementsList>
-
-          <HintSection>
-            <HintTitle>💡 Hint</HintTitle>
             <ProblemDescription>
-              Consider using React's useState and useEffect hooks for state management. For styling,
-              you can use CSS modules or styled-components. Don't forget to handle edge cases like
-              empty todos and duplicate entries.
+              Create a simple Todo List application that allows users to manage their tasks
+              efficiently. The application should be responsive, user-friendly, and implement all the
+              core features of a modern todo list.
             </ProblemDescription>
-          </HintSection>
-        </ProblemSection>
-        <EditorSection editorHeight={editorHeight}>
-          <Sandpack
-            template="react"
-            files={initialCode}
-            options={{
-              showNavigator: true,
-              showTabs: true,
-              showLineNumbers: true,
-              showInlineErrors: true,
-              closableTabs: true,
-              wrapContent: true,
-              showConsole: true,
-              showConsoleButton: true,
-              showRefreshButton: true,
-              autorun: true,
-              recompileMode: 'immediate',
-              recompileDelay: 300,
-            }}
-            theme="dark"
-            customSetup={{
-              entry: '/index.js',
-            }}
-          />
-          <ResizeHandle onMouseDown={handleMouseDown} />
-        </EditorSection>
-      </PracticeContainer>
-    </PageContainer>
+
+            <SectionTitle>Let&apos;s practice system design problems</SectionTitle>
+            <RequirementsList>
+              <RequirementItem>
+                Implement a form to add new todos with a text input and submit button
+              </RequirementItem>
+              <RequirementItem>Display a list of todos with their completion status</RequirementItem>
+              <RequirementItem>
+                Allow users to toggle todo completion status by clicking on the todo
+              </RequirementItem>
+              <RequirementItem>Add a delete button to remove todos</RequirementItem>
+              <RequirementItem>
+                Implement filtering functionality (All, Active, Completed)
+              </RequirementItem>
+            </RequirementsList>
+
+            <SectionTitle>Let&apos;s solve real-world system design challenges</SectionTitle>
+            <RequirementsList>
+              <RequirementItem>
+                Add local storage persistence to save todos between sessions
+              </RequirementItem>
+              <RequirementItem>Implement due dates for todos with date picker</RequirementItem>
+              <RequirementItem>Add categories or tags for better organization</RequirementItem>
+            </RequirementsList>
+
+            <HintSection>
+              <HintTitle>💡 Hint</HintTitle>
+              <ProblemDescription>
+                Consider using React's useState and useEffect hooks for state management. For styling,
+                you can use CSS modules or styled-components. Don't forget to handle edge cases like
+                empty todos and duplicate entries.
+              </ProblemDescription>
+            </HintSection>
+          </ProblemSection>
+          <EditorSection editorHeight={editorHeight}>
+            <Sandpack
+              template="react"
+              files={initialCode}
+              options={{
+                showNavigator: true,
+                showTabs: true,
+                showLineNumbers: true,
+                showInlineErrors: true,
+                closableTabs: true,
+                wrapContent: true,
+                showConsole: true,
+                showConsoleButton: true,
+                showRefreshButton: true,
+                autorun: true,
+                recompileMode: 'immediate',
+                recompileDelay: 300,
+              }}
+              theme="dark"
+              customSetup={{
+                entry: '/index.js',
+              }}
+            />
+            <ResizeHandle onMouseDown={handleMouseDown} />
+          </EditorSection>
+        </PracticeContainer>
+      </PageContainer>
+    </MainLayout>
   );
 }

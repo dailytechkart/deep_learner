@@ -23,6 +23,8 @@ import {
   Button,
   ProgressBar,
 } from '../components/StyledComponents';
+import { Breadcrumb } from '@/components/shared/Breadcrumb';
+import { MainLayout } from '@/components/layout/MainLayout';
 
 // Styled Components
 const ProfileGrid = styled.div`
@@ -336,130 +338,138 @@ export default function Profile() {
   ];
 
   return (
-    <ProfileContainer>
-      <ProfileCard>
-        <EditButton onClick={() => setIsEditing(!isEditing)}>
-          {isEditing ? 'Save Changes' : 'Edit Profile'}
-        </EditButton>
+    <MainLayout>
+      <Breadcrumb 
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Profile', href: '/profile' }
+        ]} 
+      />
+      <ProfileContainer>
+        <ProfileCard>
+          <EditButton onClick={() => setIsEditing(!isEditing)}>
+            {isEditing ? 'Save Changes' : 'Edit Profile'}
+          </EditButton>
 
-        <ProfileGrid>
-          <Sidebar>
-            <ProfileHeader>
-              <ProfileAvatar
-                src={user?.photoURL || '/default-avatar.png'}
-                alt={profileData.displayName}
-              />
-              <ProfileName>{profileData.displayName}</ProfileName>
-              <ProfileEmail>{profileData.email}</ProfileEmail>
-            </ProfileHeader>
+          <ProfileGrid>
+            <Sidebar>
+              <ProfileHeader>
+                <ProfileAvatar
+                  src={user?.photoURL || '/default-avatar.png'}
+                  alt={profileData.displayName}
+                />
+                <ProfileName>{profileData.displayName}</ProfileName>
+                <ProfileEmail>{profileData.email}</ProfileEmail>
+              </ProfileHeader>
 
-            <ProfileInfo>
-              <InfoItem>
-                <InfoLabel>Member Since</InfoLabel>
-                <InfoValue>{profileData.joinDate}</InfoValue>
-              </InfoItem>
-              <InfoItem>
-                <InfoLabel>Last Active</InfoLabel>
-                <InfoValue>{profileData.lastActive}</InfoValue>
-              </InfoItem>
-              <InfoItem>
-                <InfoLabel>Timezone</InfoLabel>
-                <InfoValue>{profileData.timezone}</InfoValue>
-              </InfoItem>
-              <InfoItem>
-                <InfoLabel>Language</InfoLabel>
-                <InfoValue>{profileData.language}</InfoValue>
-              </InfoItem>
-            </ProfileInfo>
+              <ProfileInfo>
+                <InfoItem>
+                  <InfoLabel>Member Since</InfoLabel>
+                  <InfoValue>{profileData.joinDate}</InfoValue>
+                </InfoItem>
+                <InfoItem>
+                  <InfoLabel>Last Active</InfoLabel>
+                  <InfoValue>{profileData.lastActive}</InfoValue>
+                </InfoItem>
+                <InfoItem>
+                  <InfoLabel>Timezone</InfoLabel>
+                  <InfoValue>{profileData.timezone}</InfoValue>
+                </InfoItem>
+                <InfoItem>
+                  <InfoLabel>Language</InfoLabel>
+                  <InfoValue>{profileData.language}</InfoValue>
+                </InfoItem>
+              </ProfileInfo>
 
-            <Section>
-              <SectionHeader>
-                <SectionTitle>Badges</SectionTitle>
-              </SectionHeader>
-              <BadgeGrid>
-                {badges.map(badge => (
-                  <Badge key={badge.id}>
-                    <BadgeIcon>{badge.icon}</BadgeIcon>
-                    <BadgeName>{badge.name}</BadgeName>
-                  </Badge>
-                ))}
-              </BadgeGrid>
-            </Section>
-          </Sidebar>
-
-          <MainContent>
-            <StatsGrid>
-              <StatCard>
-                <StatValue>{userStats.completedTopics}</StatValue>
-                <StatLabel>Topics Completed</StatLabel>
-              </StatCard>
-              <StatCard>
-                <StatValue>{userStats.totalPoints}</StatValue>
-                <StatLabel>Total Points</StatLabel>
-              </StatCard>
-              <StatCard>
-                <StatValue>{userStats.rank}</StatValue>
-                <StatLabel>Current Rank</StatLabel>
-              </StatCard>
-              <StatCard>
-                <StatValue>{userStats.streak}</StatValue>
-                <StatLabel>Day Streak</StatLabel>
-              </StatCard>
-              <StatCard>
-                <StatValue>{userStats.totalHours}</StatValue>
-                <StatLabel>Learning Hours</StatLabel>
-              </StatCard>
-              <StatCard>
-                <StatValue>{userStats.averageScore}%</StatValue>
-                <StatLabel>Average Score</StatLabel>
-              </StatCard>
-            </StatsGrid>
-
-            <Section>
-              <SectionHeader>
-                <SectionTitle>Skills Progress</SectionTitle>
-              </SectionHeader>
-              <SectionContent>
-                <SkillsGrid>
-                  {skills.map((skill, index) => (
-                    <SkillCard key={index}>
-                      <SkillHeader>
-                        <SkillName>{skill.name}</SkillName>
-                        <SkillLevel>Level {skill.level}</SkillLevel>
-                      </SkillHeader>
-                      <ProgressBar progress={skill.progress} />
-                    </SkillCard>
+              <Section>
+                <SectionHeader>
+                  <SectionTitle>Badges</SectionTitle>
+                </SectionHeader>
+                <BadgeGrid>
+                  {badges.map(badge => (
+                    <Badge key={badge.id}>
+                      <BadgeIcon>{badge.icon}</BadgeIcon>
+                      <BadgeName>{badge.name}</BadgeName>
+                    </Badge>
                   ))}
-                </SkillsGrid>
-              </SectionContent>
-            </Section>
+                </BadgeGrid>
+              </Section>
+            </Sidebar>
 
-            <Section>
-              <SectionHeader>
-                <SectionTitle>Recent Activity</SectionTitle>
-              </SectionHeader>
-              <SectionContent>
-                <ActivityTimeline>
-                  {recentActivity.map((activity, index) => (
-                    <ActivityItem
-                      key={activity.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <ActivityIcon>{activity.icon}</ActivityIcon>
-                      <ActivityContent>
-                        <ActivityTitle>{activity.title}</ActivityTitle>
-                        <ActivityTime>{activity.time}</ActivityTime>
-                      </ActivityContent>
-                    </ActivityItem>
-                  ))}
-                </ActivityTimeline>
-              </SectionContent>
-            </Section>
-          </MainContent>
-        </ProfileGrid>
-      </ProfileCard>
-    </ProfileContainer>
+            <MainContent>
+              <StatsGrid>
+                <StatCard>
+                  <StatValue>{userStats.completedTopics}</StatValue>
+                  <StatLabel>Topics Completed</StatLabel>
+                </StatCard>
+                <StatCard>
+                  <StatValue>{userStats.totalPoints}</StatValue>
+                  <StatLabel>Total Points</StatLabel>
+                </StatCard>
+                <StatCard>
+                  <StatValue>{userStats.rank}</StatValue>
+                  <StatLabel>Current Rank</StatLabel>
+                </StatCard>
+                <StatCard>
+                  <StatValue>{userStats.streak}</StatValue>
+                  <StatLabel>Day Streak</StatLabel>
+                </StatCard>
+                <StatCard>
+                  <StatValue>{userStats.totalHours}</StatValue>
+                  <StatLabel>Learning Hours</StatLabel>
+                </StatCard>
+                <StatCard>
+                  <StatValue>{userStats.averageScore}%</StatValue>
+                  <StatLabel>Average Score</StatLabel>
+                </StatCard>
+              </StatsGrid>
+
+              <Section>
+                <SectionHeader>
+                  <SectionTitle>Skills Progress</SectionTitle>
+                </SectionHeader>
+                <SectionContent>
+                  <SkillsGrid>
+                    {skills.map((skill, index) => (
+                      <SkillCard key={index}>
+                        <SkillHeader>
+                          <SkillName>{skill.name}</SkillName>
+                          <SkillLevel>Level {skill.level}</SkillLevel>
+                        </SkillHeader>
+                        <ProgressBar progress={skill.progress} />
+                      </SkillCard>
+                    ))}
+                  </SkillsGrid>
+                </SectionContent>
+              </Section>
+
+              <Section>
+                <SectionHeader>
+                  <SectionTitle>Recent Activity</SectionTitle>
+                </SectionHeader>
+                <SectionContent>
+                  <ActivityTimeline>
+                    {recentActivity.map((activity, index) => (
+                      <ActivityItem
+                        key={activity.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                      >
+                        <ActivityIcon>{activity.icon}</ActivityIcon>
+                        <ActivityContent>
+                          <ActivityTitle>{activity.title}</ActivityTitle>
+                          <ActivityTime>{activity.time}</ActivityTime>
+                        </ActivityContent>
+                      </ActivityItem>
+                    ))}
+                  </ActivityTimeline>
+                </SectionContent>
+              </Section>
+            </MainContent>
+          </ProfileGrid>
+        </ProfileCard>
+      </ProfileContainer>
+    </MainLayout>
   );
 }

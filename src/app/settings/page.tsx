@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import ClientLayout from '../components/ClientLayout';
+import styled from 'styled-components';
+import MainLayout from '@/components/MainLayout';
 import {
   MainContent,
   Section,
@@ -68,7 +69,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <ClientLayout>
+    <MainLayout>
       <MainContent>
         <Section>
           <SectionHeader>
@@ -193,6 +194,6 @@ export default function SettingsPage() {
           </AuthForm>
         </Section>
       </MainContent>
-    </ClientLayout>
+    </MainLayout>
   );
 }

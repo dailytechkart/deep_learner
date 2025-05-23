@@ -51,7 +51,23 @@ export async function getAuthRedirect(pathname: string) {
   // If user is not logged in and trying to access protected pages
   if (
     !session &&
-    ['/dashboard', '/profile', '/settings', '/practice', '/learn'].includes(pathname)
+    [
+      '/dashboard',
+      '/profile',
+      '/settings',
+      '/practice',
+      '/learn',
+      '/interview',
+      '/courses',
+      '/system-design',
+      '/blog',
+      '/about',
+      '/contact',
+      '/help',
+      '/faq',
+      '/terms',
+      '/privacy',
+    ].includes(pathname)
   ) {
     const loginUrl = new URL('/login', process.env.NEXT_PUBLIC_APP_URL);
     loginUrl.searchParams.set('from', pathname);

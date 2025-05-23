@@ -20,6 +20,9 @@ import {
   FaClock,
   FaBook,
   FaCode,
+  FaUsers,
+  FaStar,
+  FaGraduationCap,
 } from 'react-icons/fa';
 import Link from 'next/link';
 import ReactFlow, {
@@ -40,6 +43,7 @@ import mermaid from 'mermaid';
 import Header from '../components/Header';
 import { useTheme } from '../context/ThemeContext';
 import { useSearch } from '../context/SearchContext';
+import { StatsHero } from '@/components/shared/StatsHero';
 import {
   Container,
   Content,
@@ -1611,15 +1615,39 @@ const RoadmapPage = () => {
     </RoadmapCard>
   );
 
+  const stats = [
+    {
+      icon: <FaUsers />,
+      value: '10k+',
+      label: 'Active Learners',
+    },
+    {
+      icon: <FaStar />,
+      value: '4.8',
+      label: 'Average Rating',
+    },
+    {
+      icon: <FaGraduationCap />,
+      value: '500+',
+      label: 'Learning Hours',
+    },
+  ];
+
   return (
     <Container>
-      <Header searchQuery={searchQuery} onSearchChange={handleSearchChange} />
+      <Header />
       <Content>
         <Title>Frontend Development Roadmap</Title>
         <Description>
           A comprehensive guide to becoming a frontend developer, from basics to advanced concepts.
           Click on items to mark them as completed and track your progress.
         </Description>
+
+        <StatsHero
+          title="Master Frontend Development"
+          description="Join thousands of developers who have successfully transformed their careers through our comprehensive learning path."
+          stats={stats}
+        />
 
         <RoadmapSection>
           <SectionTitle>1. Web Fundamentals</SectionTitle>

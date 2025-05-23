@@ -1,42 +1,28 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, Suspense } from 'react';
 import styled from 'styled-components';
-import { TopicList } from '../components/TopicList';
 import { learningTopics } from '../../data/learningTopics';
 import { MainLayout } from '@/components/MainLayout';
 import { useTheme } from '../context/ThemeContext';
-import {
-  FaSearch,
-  FaFilter,
-  FaChevronDown,
-  FaStar,
-  FaClock,
-  FaUsers,
-  FaBook,
-  FaReact,
-  FaCss3Alt,
-  FaGitAlt,
-  FaShieldAlt,
-  FaSearch as FaSearchIcon,
-  FaRocket,
-  FaChartLine,
-  FaCode,
-  FaSpinner,
-  FaLock,
-  FaTimes,
-} from 'react-icons/fa';
-import { SiJavascript, SiJest } from 'react-icons/si';
+import { FilterSidebar } from '@/components/FilterSidebar';
+import type { FilterSection as FilterSectionType, FilterValue } from '@/components/FilterSidebar';
+import { FaFilter } from 'react-icons/fa';
+import { HeaderSection } from './components/HeaderSection';
+import { StatsBar } from './components/StatsBar';
+import { CourseList } from './components/CourseList';
+import { SEO } from './components/SEO';
+import { Breadcrumb } from '@/components/shared/Breadcrumb';
 
-const PageContainer = styled.div`
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: ${props => props.theme.colors.background};
-  color: ${props => props.theme.colors.text};
-`;
+type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced';
+type Role =
+  | 'SDE1'
+  | 'SDE2'
+  | 'SDE3'
+  | 'Frontend Specialist'
+  | 'Frontend Architect'
+  | 'UI/UX Developer'
+  | 'Frontend Performance Engineer';
 
 const MainContent = styled.main`
   max-width: 1400px;
@@ -57,102 +43,9 @@ const MainContent = styled.main`
   }
 `;
 
-const FilterSidebar = styled.aside`
-  width: 320px;
-  flex-shrink: 0;
-  background: ${props => props.theme.colors.background};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  padding: 1.5rem;
-  height: fit-content;
-  position: sticky;
-  top: 2rem;
-  box-shadow: ${props => props.theme.shadows.lg};
-  border: 1px solid ${props => props.theme.colors.border};
-  transition: all 0.3s ease;
-
-  @media (max-width: 1024px) {
-    width: 280px;
-    padding: 1.25rem;
-  }
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-
-  &:hover {
-    box-shadow: ${props => props.theme.shadows.lg};
-    transform: translateY(-2px);
-  }
-`;
-
-const FilterHeader = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing.sm};
-  margin-bottom: ${props => props.theme.spacing.xl};
-  padding-bottom: ${props => props.theme.spacing.md};
-  border-bottom: 2px solid ${props => props.theme.colors.primary}20;
-`;
-
-const FilterIcon = styled(FaFilter)`
-  color: ${props => props.theme.colors.primary};
-  font-size: 1.25rem;
-  background: ${props => props.theme.colors.primary}10;
-  padding: 0.5rem;
-  border-radius: ${props => props.theme.borderRadius.full};
-`;
-
-const FilterTitle = styled.h3`
-  font-size: ${props => props.theme.typography.fontSize.xl};
-  font-weight: ${props => props.theme.typography.fontWeight.bold};
-  color: ${props => props.theme.colors.text};
-  margin: 0;
-`;
-
-const FilterActions = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: ${props => props.theme.spacing.lg};
-  padding: 0.75rem;
-  background: ${props => props.theme.colors.backgroundAlt};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  border: 1px solid ${props => props.theme.colors.border};
-`;
-
-const ClearAllButton = styled.button`
-  padding: 0.5rem 1rem;
-  border-radius: ${props => props.theme.borderRadius.md};
-  border: 1px solid ${props => props.theme.colors.border};
-  background: ${props => props.theme.colors.background};
-  color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing.xs};
-
-  &:hover {
-    color: ${props => props.theme.colors.primary};
-    border-color: ${props => props.theme.colors.primary};
-    background: ${props => props.theme.colors.primary}10;
-  }
-`;
-
-const FilterSection = styled.div`
-  margin-bottom: ${props => props.theme.spacing.xl};
-  background: ${props => props.theme.colors.backgroundAlt};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  padding: 1rem;
-  transition: all 0.3s ease;
-  border: 1px solid ${props => props.theme.colors.border};
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${props => props.theme.shadows.md};
-  }
+const CoursesSection = styled.div`
+  flex: 1;
+  min-width: 0;
 `;
 
 const FilterButton = styled.button`
@@ -183,879 +76,20 @@ const FilterButton = styled.button`
   }
 `;
 
-interface FilterOptionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  active?: boolean;
-}
-
-const FilterOptionButton = styled.button<{ active: boolean }>`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
-  border-radius: ${props => props.theme.borderRadius.md};
-  border: 1px solid
-    ${props => (props.active ? props.theme.colors.primary : props.theme.colors.border)};
-  background: ${props =>
-    props.active ? `${props.theme.colors.primary}10` : props.theme.colors.background};
-  color: ${props => (props.active ? props.theme.colors.primary : props.theme.colors.text)};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    background: ${props => props.theme.colors.primary}10;
-    border-color: ${props => props.theme.colors.primary};
-    color: ${props => props.theme.colors.primary};
-  }
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-`;
-
-const FilterButtonContent = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-`;
-
-const FilterCount = styled.span`
-  background: ${props => props.theme.colors.backgroundAlt};
-  color: ${props => props.theme.colors.textSecondary};
-  padding: 0.25rem 0.5rem;
-  border-radius: ${props => props.theme.borderRadius.full};
-  font-size: ${props => props.theme.typography.fontSize.xs};
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
-`;
-
-const FilterSearch = styled.div`
-  position: relative;
-  margin-bottom: ${props => props.theme.spacing.lg};
-`;
-
-const FilterSearchInput = styled.input`
-  width: 100%;
-  padding: 0.75rem 1rem 0.75rem 2.5rem;
-  border-radius: ${props => props.theme.borderRadius.lg};
-  border: 1px solid ${props => props.theme.colors.border};
-  background: ${props => props.theme.colors.backgroundAlt};
-  color: ${props => props.theme.colors.text};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  transition: all 0.2s ease;
-
-  &:focus {
-    outline: none;
-    border-color: ${props => props.theme.colors.primary};
-    box-shadow: 0 0 0 3px ${props => props.theme.colors.primary}20;
-  }
-
-  &::placeholder {
-    color: ${props => props.theme.colors.textSecondary};
-  }
-`;
-
-const FilterSearchIcon = styled(FaSearch)`
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: ${props => props.theme.colors.textSecondary};
-  font-size: 0.9rem;
-`;
-
-const CoursesSection = styled.div`
-  flex: 1;
-  min-width: 0;
-`;
-
-const HeaderSection = styled.div`
-  margin-bottom: ${props => props.theme.spacing.xl};
-`;
-
-const Title = styled.h1`
-  font-size: ${props => props.theme.typography.fontSize['3xl']};
-  font-weight: ${props => props.theme.typography.fontWeight.bold};
-  color: ${props => props.theme.colors.text};
-  margin-bottom: 1rem;
-  transition: all ${props => props.theme.transitions.default};
-
-  @media (max-width: 768px) {
-    font-size: ${props => props.theme.typography.fontSize['2xl']};
-  }
-`;
-
-const Description = styled.p`
-  font-size: ${props => props.theme.typography.fontSize.lg};
-  color: ${props => props.theme.colors.textSecondary};
-  margin-bottom: 2rem;
-  max-width: 800px;
-  transition: all ${props => props.theme.transitions.default};
-
-  @media (max-width: 768px) {
-    font-size: ${props => props.theme.typography.fontSize.md};
-    margin-bottom: 1.5rem;
-  }
-`;
-
-const SearchBar = styled.div`
-  display: flex;
-  align-items: center;
-  background: ${props => props.theme.colors.background};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
-  box-shadow: ${props => props.theme.shadows.sm};
-  margin-bottom: ${props => props.theme.spacing.lg};
-  border: 1px solid ${props => props.theme.colors.border};
-
-  @media (max-width: 768px) {
-    margin-bottom: ${props => props.theme.spacing.md};
-  }
-`;
-
-const SearchInput = styled.input`
-  border: none;
-  outline: none;
-  font-size: ${props => props.theme.typography.fontSize.md};
-  color: ${props => props.theme.colors.text};
-  width: 100%;
-  padding: ${props => props.theme.spacing.sm};
-  background: transparent;
-
-  &::placeholder {
-    color: ${props => props.theme.colors.textSecondary};
-  }
-`;
-
-const SearchIcon = styled(FaSearch)`
-  color: ${props => props.theme.colors.textSecondary};
-  margin-right: ${props => props.theme.spacing.sm};
-`;
-
-const StatsBar = styled.div`
-  display: flex;
-  gap: ${props => props.theme.spacing.lg};
-  margin-bottom: ${props => props.theme.spacing.xl};
-  flex-wrap: wrap;
-
-  @media (max-width: 768px) {
-    gap: ${props => props.theme.spacing.md};
-    margin-bottom: ${props => props.theme.spacing.lg};
-  }
-`;
-
-const StatItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing.sm};
-  color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-`;
-
-const StatIcon = styled.div`
-  color: ${props => props.theme.colors.primary};
-`;
-
-const CoursesGrid = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${props => props.theme.spacing.md};
-`;
-
-const PremiumTag = styled.span`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.375rem 0.75rem;
-  border-radius: ${props => props.theme.borderRadius.full};
-  background: linear-gradient(135deg, #ffd700, #ffa500);
-  color: #000;
-  font-size: ${props => props.theme.typography.fontSize.xs};
-  font-weight: ${props => props.theme.typography.fontWeight.semibold};
-  box-shadow: 0 2px 8px rgba(255, 165, 0, 0.3);
-  z-index: 2;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(4px);
-  transition: all 0.3s ease;
-  opacity: 1;
-  visibility: visible;
-
-  svg {
-    font-size: 0.875rem;
-  }
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 165, 0, 0.4);
-  }
-`;
-
-const CourseRow = styled.div<{ isLocked?: boolean }>`
-  background: ${props => props.theme.colors.background};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  padding: ${props => props.theme.spacing.lg};
-  display: flex;
-  gap: ${props => props.theme.spacing.lg};
-  box-shadow: ${props => props.theme.shadows.sm};
-  transition: all 0.3s ease;
-  cursor: ${props => (props.isLocked ? 'default' : 'pointer')};
-  border: 1px solid ${props => props.theme.colors.border};
-  position: relative;
-  overflow: visible;
-
-  @media (max-width: 1024px) {
-    padding: ${props => props.theme.spacing.md};
-    gap: ${props => props.theme.spacing.md};
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    padding: ${props => props.theme.spacing.sm};
-  }
-
-  &:hover {
-    transform: ${props => (props.isLocked ? 'none' : 'translateY(-2px)')};
-    box-shadow: ${props => (props.isLocked ? props.theme.shadows.sm : props.theme.shadows.md)};
-  }
-`;
-
-const CourseImage = styled.div<{ category: string; isLocked?: boolean }>`
-  width: 200px;
-  height: 120px;
-  border-radius: ${props => props.theme.borderRadius.md};
-  background: ${props => {
-    switch (props.category) {
-      case 'JavaScript':
-        return 'linear-gradient(135deg, #F7DF1E 0%, #F0DB4F 100%)';
-      case 'CSS':
-        return 'linear-gradient(135deg, #264DE4 0%, #2965f1 100%)';
-      case 'React':
-        return 'linear-gradient(135deg, #61DAFB 0%, #282c34 100%)';
-      case 'CI/CD':
-        return 'linear-gradient(135deg, #F05032 0%, #f14e32 100%)';
-      case 'Testing':
-        return 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)';
-      case 'System Design':
-        return 'linear-gradient(135deg, #2196F3 0%, #1976D2 100%)';
-      case 'Security':
-        return 'linear-gradient(135deg, #FFC107 0%, #FFA000 100%)';
-      case 'SEO':
-        return 'linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%)';
-      case 'Performance':
-        return 'linear-gradient(135deg, #00BCD4 0%, #0097A7 100%)';
-      default:
-        return 'linear-gradient(135deg, #607D8B 0%, #455A64 100%)';
-    }
-  }};
-  position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  filter: ${props => (props.isLocked ? 'grayscale(0.5)' : 'none')};
-  transition: all 0.3s ease;
-
-  @media (max-width: 1024px) {
-    width: 180px;
-    height: 108px;
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    height: 160px;
-  }
-`;
-
-const IconWrapper = styled.div`
-  width: 64px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: ${props => props.theme.colors.background};
-  border-radius: 16px;
-  box-shadow: ${props => props.theme.shadows.sm};
-  transition: all 0.2s ease;
-
-  svg {
-    width: 40px;
-    height: 40px;
-    color: ${props => props.theme.colors.primary};
-  }
-`;
-
-const CourseContent = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: ${props => props.theme.spacing.sm};
-  min-width: 0;
-`;
-
-const CourseHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: ${props => props.theme.spacing.md};
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: ${props => props.theme.spacing.sm};
-  }
-`;
-
-const CourseTitle = styled.h3`
-  font-size: ${props => props.theme.typography.fontSize.lg};
-  font-weight: ${props => props.theme.typography.fontWeight.semibold};
-  color: ${props => props.theme.colors.text};
-  margin: 0;
-  word-break: break-word;
-
-  @media (max-width: 768px) {
-    font-size: ${props => props.theme.typography.fontSize.md};
-  }
-`;
-
-const CourseDescription = styled.p`
-  color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  line-height: 1.5;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  word-break: break-word;
-`;
-
-const CourseMeta = styled.div`
-  display: flex;
-  gap: ${props => props.theme.spacing.md};
-  margin-top: auto;
-  flex-wrap: wrap;
-
-  @media (max-width: 768px) {
-    gap: ${props => props.theme.spacing.sm};
-  }
-`;
-
-const MetaItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing.xs};
-  color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-`;
-
-const MetaIcon = styled.div`
-  color: ${props => props.theme.colors.primary};
-`;
-
-const DifficultyBadge = styled.span<{ difficulty: string }>`
-  padding: 4px 8px;
-  border-radius: 9999px;
-  font-size: ${props => props.theme.typography.fontSize.xs};
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
-  background: ${props => {
-    switch (props.difficulty) {
-      case 'Beginner':
-        return '#4CAF50';
-      case 'Intermediate':
-        return '#FFC107';
-      case 'Advanced':
-        return '#F44336';
-      default:
-        return props.theme.colors.backgroundAlt;
-    }
-  }};
-  color: ${props => props.theme.colors.text};
-  white-space: nowrap;
-  height: fit-content;
-`;
-
-const CategoryBadge = styled.span`
-  padding: 4px 8px;
-  background: ${props => props.theme.colors.backgroundAlt};
-  color: ${props => props.theme.colors.text};
-  border-radius: 9999px;
-  font-size: ${props => props.theme.typography.fontSize.xs};
-  display: inline-flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing.xs};
-`;
-
-const ProgressBar = styled.div<{ progress: number }>`
-  width: 100%;
-  height: 4px;
-  background: ${props => props.theme.colors.backgroundAlt};
-  border-radius: 2px;
-  overflow: hidden;
-  margin-top: ${props => props.theme.spacing.sm};
-
-  &::after {
-    content: '';
-    display: block;
-    height: 100%;
-    width: ${props => props.progress}%;
-    background: ${props => props.theme.colors.primary};
-    transition: width 0.2s ease;
-  }
-`;
-
-const BadgeContainer = styled.div`
-  display: flex;
-  gap: ${props => props.theme.spacing.sm};
-  flex-wrap: wrap;
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`;
-
-const RoleBadge = styled.span<{ role: string }>`
-  padding: 4px 8px;
-  border-radius: 9999px;
-  font-size: ${props => props.theme.typography.fontSize.xs};
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
-  background: ${props => {
-    switch (props.role) {
-      case 'SDE1':
-        return '#4CAF50';
-      case 'SDE2':
-        return '#2196F3';
-      case 'SDE3':
-        return '#9C27B0';
-      case 'Frontend Specialist':
-        return '#FF9800';
-      case 'Frontend Architect':
-        return '#F44336';
-      case 'UI/UX Developer':
-        return '#00BCD4';
-      case 'Frontend Performance Engineer':
-        return '#795548';
-      default:
-        return props.theme.colors.backgroundAlt;
-    }
-  }};
-  color: white;
-  white-space: nowrap;
-  height: fit-content;
-`;
-
-interface SectionTitleProps {
-  isOpen: boolean;
-}
-
-interface FilterGroupProps {
-  isOpen: boolean;
-}
-
-const SectionTitle = styled.button<{ isOpen: boolean }>`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem;
-  background: ${props => props.theme.colors.background};
-  border: 1px solid ${props => props.theme.colors.border};
-  border-radius: ${props => props.theme.borderRadius.md};
-  color: ${props => props.theme.colors.text};
-  font-size: ${props => props.theme.typography.fontSize.md};
-  font-weight: ${props => props.theme.typography.fontWeight.semibold};
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  svg {
-    transition: transform 0.2s ease;
-    transform: rotate(${props => (props.isOpen ? '180deg' : '0')});
-  }
-
-  &:hover {
-    background: ${props => props.theme.colors.primary}10;
-    border-color: ${props => props.theme.colors.primary};
-  }
-`;
-
-const FilterGroup = styled.div<{ isOpen: boolean }>`
-  display: ${props => (props.isOpen ? 'block' : 'none')};
-  margin-top: 1rem;
-  padding: 0.5rem;
-  background: ${props => props.theme.colors.background};
-  border-radius: ${props => props.theme.borderRadius.md};
-  border: 1px solid ${props => props.theme.colors.border};
-`;
-
-const LoadingSpinner = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: ${props => props.theme.spacing.xl};
-  color: ${props => props.theme.colors.primary};
-
-  svg {
-    animation: spin 1s linear infinite;
-  }
-
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-`;
-
-const NoResultsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: ${props => props.theme.spacing.xl};
-  text-align: center;
-  background: ${props => props.theme.colors.backgroundAlt};
-  border-radius: ${props => props.theme.borderRadius.lg};
-  margin: ${props => props.theme.spacing.lg} 0;
-`;
-
-const NoResultsIllustration = styled.div`
-  width: 200px;
-  height: 200px;
-  margin-bottom: ${props => props.theme.spacing.lg};
-  color: ${props => props.theme.colors.textSecondary};
-  opacity: 0.5;
-
-  svg {
-    width: 100%;
-    height: 100%;
-  }
-`;
-
-const NoResultsTitle = styled.h3`
-  font-size: ${props => props.theme.typography.fontSize.xl};
-  font-weight: ${props => props.theme.typography.fontWeight.bold};
-  color: ${props => props.theme.colors.text};
-  margin-bottom: ${props => props.theme.spacing.sm};
-`;
-
-const NoResultsText = styled.p`
-  font-size: ${props => props.theme.typography.fontSize.md};
-  color: ${props => props.theme.colors.textSecondary};
-  margin-bottom: ${props => props.theme.spacing.lg};
-  max-width: 400px;
-`;
-
-const NoResultsAction = styled.button`
-  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.lg};
-  background: ${props => props.theme.colors.primary};
-  color: white;
-  border: none;
-  border-radius: ${props => props.theme.borderRadius.md};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: ${props => props.theme.shadows.md};
-  }
-`;
-
-const FilterNoResults = styled.div`
-  padding: ${props => props.theme.spacing.md};
-  text-align: center;
-  color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  font-style: italic;
-`;
-
-const LockOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: ${props => props.theme.borderRadius.lg};
-  z-index: 1;
-  transition: all 0.3s ease;
-`;
-
-const LockContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: ${props => props.theme.spacing.md};
-  text-align: center;
-  padding: ${props => props.theme.spacing.xl};
-  max-width: 300px;
-`;
-
-const LockIcon = styled.div`
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: ${props => props.theme.spacing.sm};
-  border: 2px solid ${props => props.theme.colors.primary};
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.05);
-
-    &::after {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  &::after {
-    content: 'This course is currently under development';
-    position: absolute;
-    bottom: -40px;
-    left: 50%;
-    transform: translateX(-50%) translateY(10px);
-    background: rgba(0, 0, 0, 0.9);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 12px;
-    white-space: nowrap;
-    opacity: 0;
-    transition: all 0.3s ease;
-    pointer-events: none;
-    z-index: 2;
-  }
-
-  svg {
-    font-size: 24px;
-    color: ${props => props.theme.colors.primary};
-  }
-`;
-
-const LockTitle = styled.h4`
-  font-size: ${props => props.theme.typography.fontSize.lg};
-  font-weight: ${props => props.theme.typography.fontWeight.semibold};
-  color: white;
-  margin: 0;
-`;
-
-const LockedBadge = styled.span`
-  padding: 6px 12px;
-  border-radius: 9999px;
-  font-size: ${props => props.theme.typography.fontSize.xs};
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
-  background: rgba(0, 0, 0, 0.6);
-  color: ${props => props.theme.colors.primary};
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  border: 1px solid ${props => props.theme.colors.primary};
-
-  svg {
-    font-size: 12px;
-  }
-`;
-
-const NotifyButton = styled.button`
-  padding: 8px 16px;
-  border-radius: ${props => props.theme.borderRadius.md};
-  background: ${props => props.theme.colors.primary};
-  color: white;
-  border: none;
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  font-weight: ${props => props.theme.typography.fontWeight.medium};
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: ${props => props.theme.shadows.md};
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-`;
-
-const Footer = styled.footer`
-  width: 100%;
-  background: ${props => props.theme.colors.background};
-  border-top: 1px solid ${props => props.theme.colors.border};
-  padding: 4rem 2rem;
-  margin-top: 4rem;
-`;
-
-const FooterContent = styled.div`
-  max-width: 1400px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 3rem;
-
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-`;
-
-const FooterSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
-const FooterTitle = styled.h3`
-  font-size: ${props => props.theme.typography.fontSize.lg};
-  font-weight: ${props => props.theme.typography.fontWeight.bold};
-  color: ${props => props.theme.colors.text};
-  margin: 0;
-`;
-
-const FooterLink = styled.a`
-  color: ${props => props.theme.colors.textSecondary};
-  text-decoration: none;
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  &:hover {
-    color: ${props => props.theme.colors.primary};
-    transform: translateX(4px);
-  }
-`;
-
-const FooterText = styled.p`
-  color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  line-height: 1.6;
-  margin: 0;
-`;
-
-const SocialLinks = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-`;
-
-const SocialLink = styled.a`
-  color: ${props => props.theme.colors.textSecondary};
-  font-size: 1.25rem;
-  transition: all 0.2s ease;
-
-  &:hover {
-    color: ${props => props.theme.colors.primary};
-    transform: translateY(-2px);
-  }
-`;
-
-const FooterBottom = styled.div`
-  max-width: 1400px;
-  margin: 3rem auto 0;
-  padding-top: 2rem;
-  border-top: 1px solid ${props => props.theme.colors.border};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    text-align: center;
-  }
-`;
-
-const Copyright = styled.p`
-  color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  margin: 0;
-`;
-
-const MadeWithLove = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.typography.fontSize.sm};
-
-  svg {
-    color: #e25555;
-  }
-`;
-
 const BottomSheet = styled.div<{ isOpen: boolean }>`
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   background: ${props => props.theme.colors.background};
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  padding: ${props => props.theme.spacing.lg};
-  z-index: 1001;
+  border-radius: ${props => props.theme.borderRadius.lg} ${props => props.theme.borderRadius.lg} 0 0;
+  padding: 1.5rem;
   transform: translateY(${props => (props.isOpen ? '0' : '100%')});
   transition: transform 0.3s ease;
-  max-height: 90vh;
+  z-index: 1000;
+  max-height: 80vh;
   overflow-y: auto;
   box-shadow: ${props => props.theme.shadows.lg};
-  border: 1px solid ${props => props.theme.colors.border};
-`;
-
-const BottomSheetHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: ${props => props.theme.spacing.lg};
-  padding-bottom: ${props => props.theme.spacing.md};
-  border-bottom: 1px solid ${props => props.theme.colors.border};
-`;
-
-const BottomSheetTitle = styled.h3`
-  font-size: ${props => props.theme.typography.fontSize.xl};
-  font-weight: ${props => props.theme.typography.fontWeight.bold};
-  color: ${props => props.theme.colors.text};
-  margin: 0;
-`;
-
-const CloseButton = styled.button`
-  background: none;
-  border: none;
-  color: ${props => props.theme.colors.textSecondary};
-  cursor: pointer;
-  padding: ${props => props.theme.spacing.sm};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-
-  &:hover {
-    color: ${props => props.theme.colors.text};
-  }
 `;
 
 const Overlay = styled.div<{ isOpen: boolean }>`
@@ -1071,164 +105,114 @@ const Overlay = styled.div<{ isOpen: boolean }>`
   transition: all 0.3s ease;
 `;
 
-const FilterCheckboxWrapper = styled.div`
-  position: relative;
-  display: inline-flex;
+const FilterSidebarFallback = styled.div`
+  width: 280px;
+  height: 100%;
+  background: ${props => props.theme.colors.background};
+  border-right: 1px solid ${props => props.theme.colors.border};
+  padding: 1.5rem;
+  display: flex;
   align-items: center;
-  margin-right: ${props => props.theme.spacing.sm};
-`;
-
-const FilterCheckbox = styled.input`
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-
-  &:checked + span {
-    background-color: ${props => props.theme.colors.primary};
-    border-color: ${props => props.theme.colors.primary};
-  }
-
-  &:checked + span:after {
-    opacity: 1;
-  }
-
-  &:focus + span {
-    box-shadow: 0 0 0 2px ${props => props.theme.colors.primary}20;
-  }
-`;
-
-const CustomCheckbox = styled.span`
-  position: relative;
-  height: 18px;
-  width: 18px;
-  background-color: ${props => props.theme.colors.background};
-  border: 2px solid ${props => props.theme.colors.border};
-  border-radius: 4px;
-  transition: all 0.2s ease;
-  display: inline-block;
-
-  &:after {
-    content: '';
-    position: absolute;
-    display: none;
-    left: 5px;
-    top: 2px;
-    width: 4px;
-    height: 8px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-
-  ${FilterCheckbox}:checked + & {
-    &:after {
-      display: block;
-      opacity: 1;
-    }
-  }
+  justify-content: center;
+  color: ${props => props.theme.colors.textSecondary};
 `;
 
 const LearnPage: React.FC = () => {
   const { isDarkMode } = useTheme();
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([]);
-  const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<FilterValue[]>([]);
+  const [selectedDifficulties, setSelectedDifficulties] = useState<FilterValue[]>([]);
+  const [selectedRoles, setSelectedRoles] = useState<FilterValue[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [filterSearchQuery, setFilterSearchQuery] = useState('');
-  const [isCategoryOpen, setIsCategoryOpen] = useState(true);
-  const [isDifficultyOpen, setIsDifficultyOpen] = useState(true);
-  const [isRoleOpen, setIsRoleOpen] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [notifyStates, setNotifyStates] = useState<{ [key: string]: boolean }>({});
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
-  // Get unique categories, difficulties, and roles
-  const categories = ['all', ...new Set(learningTopics.map(topic => topic.category))];
-  const difficulties = ['all', ...new Set(learningTopics.map(topic => topic.difficulty))];
-  const roles = ['all', ...new Set(learningTopics.map(topic => topic.role))];
+  // Memoize unique values
+  const { categories, difficulties, roles } = useMemo(() => ({
+    categories: Array.from(new Set(learningTopics.map(topic => topic.category))),
+    difficulties: Array.from(new Set(learningTopics.map(topic => topic.difficulty))),
+    roles: Array.from(new Set(learningTopics.map(topic => topic.role))),
+  }), []);
 
-  // Filter options based on filter search query
-  const filteredCategories = categories.filter(category =>
-    category.toLowerCase().includes(filterSearchQuery.toLowerCase())
-  );
-  const filteredDifficulties = difficulties.filter(difficulty =>
-    difficulty.toLowerCase().includes(filterSearchQuery.toLowerCase())
-  );
-  const filteredRoles = roles.filter(role =>
-    role.toLowerCase().includes(filterSearchQuery.toLowerCase())
-  );
-
-  const handleFilterChange = (
-    value: string,
-    currentSelection: string[],
-    setSelection: React.Dispatch<React.SetStateAction<string[]>>,
-    type: 'category' | 'difficulty' | 'role'
-  ) => {
-    if (value === 'all') {
-      setSelection([]);
-      return;
+  const handleFilterChange = useCallback((section: string, value: FilterValue) => {
+    switch (section) {
+      case 'categories':
+        setSelectedCategories(prev =>
+          prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]
+        );
+        break;
+      case 'difficulties':
+        setSelectedDifficulties(prev =>
+          prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]
+        );
+        break;
+      case 'roles':
+        setSelectedRoles(prev =>
+          prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]
+        );
+        break;
     }
+  }, []);
 
-    const newSelection = currentSelection.includes(value)
-      ? currentSelection.filter(item => item !== value)
-      : [...currentSelection, value];
-
-    setSelection(newSelection);
-  };
-
-  const clearAllFilters = () => {
+  const clearAllFilters = useCallback(() => {
     setSelectedCategories([]);
     setSelectedDifficulties([]);
     setSelectedRoles([]);
     setSearchQuery('');
-    setFilterSearchQuery('');
-  };
+  }, []);
 
-  // Filter topics based on selected filters and search query
-  const filteredTopics = learningTopics.filter(topic => {
-    const categoryMatch =
-      selectedCategories.length === 0 || selectedCategories.includes(topic.category);
-    const difficultyMatch =
-      selectedDifficulties.length === 0 || selectedDifficulties.includes(topic.difficulty);
-    const roleMatch = selectedRoles.length === 0 || selectedRoles.includes(topic.role);
-    const searchMatch =
-      topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      topic.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      topic.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      topic.difficulty.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      topic.role.toLowerCase().includes(searchQuery.toLowerCase());
-    topic.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return categoryMatch && difficultyMatch && roleMatch && searchMatch;
-  });
+  const filterSections = useMemo<FilterSectionType[]>(() => [
+    {
+      title: 'Categories',
+      options: categories.map(category => ({
+        id: category,
+        label: category,
+        count: learningTopics.filter(topic => topic.category === category).length,
+      })),
+      selected: selectedCategories,
+      onSelect: (value: FilterValue) => handleFilterChange('categories', value),
+    },
+    {
+      title: 'Difficulty',
+      options: difficulties.map(difficulty => ({
+        id: difficulty,
+        label: difficulty,
+        count: learningTopics.filter(topic => topic.difficulty === difficulty).length,
+      })),
+      selected: selectedDifficulties,
+      onSelect: (value: FilterValue) => handleFilterChange('difficulties', value),
+    },
+    {
+      title: 'Role',
+      options: roles.map(role => ({
+        id: role,
+        label: role,
+        count: learningTopics.filter(topic => topic.role === role).length,
+      })),
+      selected: selectedRoles,
+      onSelect: (value: FilterValue) => handleFilterChange('roles', value),
+    },
+  ], [categories, difficulties, roles, selectedCategories, selectedDifficulties, selectedRoles, handleFilterChange]);
 
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case 'JavaScript':
-        return <SiJavascript />;
-      case 'CSS':
-        return <FaCss3Alt />;
-      case 'React':
-        return <FaReact />;
-      case 'CI/CD':
-        return <FaGitAlt />;
-      case 'Testing':
-        return <SiJest />;
-      case 'System Design':
-        return <FaRocket />;
-      case 'Security':
-        return <FaShieldAlt />;
-      case 'SEO':
-        return <FaSearchIcon />;
-      case 'Performance':
-        return <FaChartLine />;
-      default:
-        return <FaCode />;
-    }
-  };
+  // Memoize filtered topics
+  const filteredTopics = useMemo(
+    () =>
+      learningTopics.filter(topic => {
+        const categoryMatch =
+          selectedCategories.length === 0 || selectedCategories.includes(topic.category);
+        const difficultyMatch =
+          selectedDifficulties.length === 0 || selectedDifficulties.includes(topic.difficulty);
+        const roleMatch = selectedRoles.length === 0 || selectedRoles.includes(topic.role);
+        const searchMatch =
+          topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          topic.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          topic.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          topic.difficulty.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          topic.role.toLowerCase().includes(searchQuery.toLowerCase());
+
+        return categoryMatch && difficultyMatch && roleMatch && searchMatch;
+      }),
+    [selectedCategories, selectedDifficulties, selectedRoles, searchQuery]
+  );
 
   // Simulate loading state when filters change
   useEffect(() => {
@@ -1237,527 +221,55 @@ const LearnPage: React.FC = () => {
       setIsLoading(false);
     }, 500);
     return () => clearTimeout(timer);
-  }, [selectedCategories, selectedDifficulties, selectedRoles, searchQuery, filterSearchQuery]);
+  }, [selectedCategories, selectedDifficulties, selectedRoles, searchQuery]);
 
-  const handleNotifyClick = (courseId: string) => {
-    setNotifyStates(prev => ({
-      ...prev,
-      [courseId]: true,
-    }));
-    // Here you would typically make an API call to subscribe the user
-    setTimeout(() => {
-      setNotifyStates(prev => ({
-        ...prev,
-        [courseId]: false,
-      }));
-    }, 2000);
-  };
+  const handleBottomSheetToggle = useCallback(() => {
+    setIsBottomSheetOpen(prev => !prev);
+  }, []);
 
-  const renderNoResults = () => (
-    <NoResultsContainer>
-      <NoResultsIllustration>
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M12 8V12"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M12 16H12.01"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </NoResultsIllustration>
-      <NoResultsTitle>No Courses Found</NoResultsTitle>
-      <NoResultsText>
-        We couldn't find any courses matching your current filters. Try adjusting your search
-        criteria or clear all filters to see all available courses.
-      </NoResultsText>
-      <NoResultsAction onClick={clearAllFilters}>Clear All Filters</NoResultsAction>
-    </NoResultsContainer>
-  );
-
-  const renderFilterNoResults = () => <FilterNoResults>No matching options found</FilterNoResults>;
-
-  const isCourseLocked = (index: number) => {
-    return index >= 2; // First 2 courses are unlocked, rest are locked
-  };
+  const handleOverlayClick = useCallback(() => {
+    setIsBottomSheetOpen(false);
+  }, []);
 
   return (
     <MainLayout>
-      <PageContainer>
-        <MainContent>
-          <FilterSidebar>
-            <FilterHeader>
-              <FilterIcon />
-              <FilterTitle>Filters</FilterTitle>
-            </FilterHeader>
+      <Breadcrumb 
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Learn', href: '/learn' }
+        ]} 
+      />
+      <SEO />
+      <MainContent>
+        <Suspense fallback={<FilterSidebarFallback>Loading filters...</FilterSidebarFallback>}>
+          <FilterSidebar sections={filterSections} onClearAll={clearAllFilters} />
+        </Suspense>
 
-            <FilterActions>
-              <span>
-                Selected:{' '}
-                {selectedCategories.length + selectedDifficulties.length + selectedRoles.length}
-              </span>
-              <ClearAllButton onClick={clearAllFilters}>Clear All</ClearAllButton>
-            </FilterActions>
+        <CoursesSection>
+          <HeaderSection searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+          <StatsBar />
+          <CourseList
+            topics={filteredTopics}
+            isLoading={isLoading}
+            onClearFilters={clearAllFilters}
+          />
+        </CoursesSection>
+      </MainContent>
 
-            <FilterSearch>
-              <FilterSearchIcon />
-              <FilterSearchInput
-                placeholder="Search filters..."
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-              />
-            </FilterSearch>
+      <FilterButton onClick={handleBottomSheetToggle}>
+        <FaFilter />
+        Filters
+        <span>
+          ({selectedCategories.length + selectedDifficulties.length + selectedRoles.length})
+        </span>
+      </FilterButton>
 
-            <FilterSection>
-              <SectionTitle
-                isOpen={isCategoryOpen}
-                onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-              >
-                Categories
-                <FaChevronDown />
-              </SectionTitle>
-              <FilterGroup isOpen={isCategoryOpen}>
-                {isLoading ? (
-                  <LoadingSpinner>
-                    <FaSpinner />
-                  </LoadingSpinner>
-                ) : filteredCategories.length > 0 ? (
-                  filteredCategories.map(category => (
-                    <FilterOptionButton
-                      key={category}
-                      active={selectedCategories.includes(category)}
-                      onClick={() =>
-                        handleFilterChange(
-                          category,
-                          selectedCategories,
-                          setSelectedCategories,
-                          'category'
-                        )
-                      }
-                    >
-                      <FilterButtonContent>
-                        <FilterCheckboxWrapper>
-                          <FilterCheckbox
-                            type="checkbox"
-                            checked={selectedCategories.includes(category)}
-                            onChange={() => {}}
-                          />
-                          <CustomCheckbox />
-                        </FilterCheckboxWrapper>
-                        {category === 'all' ? 'All Categories' : category}
-                      </FilterButtonContent>
-                      <FilterCount>
-                        {category === 'all'
-                          ? learningTopics.length
-                          : learningTopics.filter(t => t.category === category).length}
-                      </FilterCount>
-                    </FilterOptionButton>
-                  ))
-                ) : (
-                  renderFilterNoResults()
-                )}
-              </FilterGroup>
-            </FilterSection>
-
-            <FilterSection>
-              <SectionTitle
-                isOpen={isDifficultyOpen}
-                onClick={() => setIsDifficultyOpen(!isDifficultyOpen)}
-              >
-                Difficulty
-                <FaChevronDown />
-              </SectionTitle>
-              <FilterGroup isOpen={isDifficultyOpen}>
-                {isLoading ? (
-                  <LoadingSpinner>
-                    <FaSpinner />
-                  </LoadingSpinner>
-                ) : filteredDifficulties.length > 0 ? (
-                  filteredDifficulties.map(difficulty => (
-                    <FilterOptionButton
-                      key={difficulty}
-                      active={selectedDifficulties.includes(difficulty)}
-                      onClick={() =>
-                        handleFilterChange(
-                          difficulty,
-                          selectedDifficulties,
-                          setSelectedDifficulties,
-                          'difficulty'
-                        )
-                      }
-                    >
-                      <FilterButtonContent>
-                        <FilterCheckboxWrapper>
-                          <FilterCheckbox
-                            type="checkbox"
-                            checked={selectedDifficulties.includes(difficulty)}
-                            onChange={() => {}}
-                          />
-                          <CustomCheckbox />
-                        </FilterCheckboxWrapper>
-                        {difficulty === 'all' ? 'All Levels' : difficulty}
-                      </FilterButtonContent>
-                      <FilterCount>
-                        {difficulty === 'all'
-                          ? learningTopics.length
-                          : learningTopics.filter(t => t.difficulty === difficulty).length}
-                      </FilterCount>
-                    </FilterOptionButton>
-                  ))
-                ) : (
-                  renderFilterNoResults()
-                )}
-              </FilterGroup>
-            </FilterSection>
-
-            <FilterSection>
-              <SectionTitle isOpen={isRoleOpen} onClick={() => setIsRoleOpen(!isRoleOpen)}>
-                Role
-                <FaChevronDown />
-              </SectionTitle>
-              <FilterGroup isOpen={isRoleOpen}>
-                {isLoading ? (
-                  <LoadingSpinner>
-                    <FaSpinner />
-                  </LoadingSpinner>
-                ) : filteredRoles.length > 0 ? (
-                  filteredRoles.map(role => (
-                    <FilterOptionButton
-                      key={role}
-                      active={selectedRoles.includes(role)}
-                      onClick={() =>
-                        handleFilterChange(role, selectedRoles, setSelectedRoles, 'role')
-                      }
-                    >
-                      <FilterButtonContent>
-                        <FilterCheckboxWrapper>
-                          <FilterCheckbox
-                            type="checkbox"
-                            checked={selectedRoles.includes(role)}
-                            onChange={() => {}}
-                          />
-                          <CustomCheckbox />
-                        </FilterCheckboxWrapper>
-                        {role === 'all' ? 'All Roles' : role}
-                      </FilterButtonContent>
-                      <FilterCount>
-                        {role === 'all'
-                          ? learningTopics.length
-                          : learningTopics.filter(t => t.role === role).length}
-                      </FilterCount>
-                    </FilterOptionButton>
-                  ))
-                ) : (
-                  renderFilterNoResults()
-                )}
-              </FilterGroup>
-            </FilterSection>
-          </FilterSidebar>
-
-          <CoursesSection>
-            <HeaderSection>
-              <Title>Learn Frontend Development</Title>
-              <Description>
-                Master modern frontend technologies with our comprehensive learning paths. Start
-                with the basics and progress to advanced concepts at your own pace.
-              </Description>
-
-              <SearchBar>
-                <SearchIcon />
-                <SearchInput
-                  placeholder="Search courses..."
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                />
-              </SearchBar>
-
-              <StatsBar>
-                <StatItem>
-                  <StatIcon>
-                    <FaStar />
-                  </StatIcon>
-                  <span>4.8 Average Rating</span>
-                </StatItem>
-                <StatItem>
-                  <StatIcon>
-                    <FaClock />
-                  </StatIcon>
-                  <span>50+ Hours of Content</span>
-                </StatItem>
-                <StatItem>
-                  <StatIcon>
-                    <FaUsers />
-                  </StatIcon>
-                  <span>10k+ Active Learners</span>
-                </StatItem>
-              </StatsBar>
-            </HeaderSection>
-
-            {isLoading ? (
-              <LoadingSpinner>
-                <FaSpinner />
-              </LoadingSpinner>
-            ) : filteredTopics.length > 0 ? (
-              <CoursesGrid>
-                {filteredTopics.map((topic, index) => {
-                  const isLocked = isCourseLocked(index);
-                  return (
-                    <CourseRow key={topic.id} isLocked={isLocked}>
-                      <PremiumTag>
-                        <FaStar />
-                        Premium
-                      </PremiumTag>
-                      <CourseImage category={topic.category} isLocked={isLocked}>
-                        <IconWrapper>{getCategoryIcon(topic.category)}</IconWrapper>
-                      </CourseImage>
-                      <CourseContent>
-                        <CourseHeader>
-                          <CourseTitle>{topic.title}</CourseTitle>
-                          <BadgeContainer>
-                            <DifficultyBadge difficulty={topic.difficulty}>
-                              {topic.difficulty}
-                            </DifficultyBadge>
-                            <RoleBadge role={topic.role}>{topic.role}</RoleBadge>
-                            {isLocked && (
-                              <LockedBadge>
-                                <FaLock />
-                                Coming Soon
-                              </LockedBadge>
-                            )}
-                          </BadgeContainer>
-                        </CourseHeader>
-                        <CourseDescription>{topic.description}</CourseDescription>
-                        <CourseMeta>
-                          <MetaItem>
-                            <MetaIcon>
-                              <FaClock />
-                            </MetaIcon>
-                            <span>{topic.estimatedTime}</span>
-                          </MetaItem>
-                          <MetaItem>
-                            <MetaIcon>
-                              <FaBook />
-                            </MetaIcon>
-                            <span>{topic.totalLessons} Lessons</span>
-                          </MetaItem>
-                          <CategoryBadge>{topic.category}</CategoryBadge>
-                        </CourseMeta>
-                        <ProgressBar progress={topic.progress} />
-                      </CourseContent>
-                      {isLocked && (
-                        <LockOverlay>
-                          <LockContent>
-                            <LockIcon>
-                              <FaLock />
-                            </LockIcon>
-                            <LockTitle>Coming Soon</LockTitle>
-                          </LockContent>
-                        </LockOverlay>
-                      )}
-                    </CourseRow>
-                  );
-                })}
-              </CoursesGrid>
-            ) : (
-              renderNoResults()
-            )}
-          </CoursesSection>
-        </MainContent>
-
-        <FilterButton onClick={() => setIsBottomSheetOpen(true)}>
-          <FaFilter />
-          Filters
-          <span>
-            ({selectedCategories.length + selectedDifficulties.length + selectedRoles.length})
-          </span>
-        </FilterButton>
-
-        <Overlay isOpen={isBottomSheetOpen} onClick={() => setIsBottomSheetOpen(false)} />
-        <BottomSheet isOpen={isBottomSheetOpen}>
-          <BottomSheetHeader>
-            <BottomSheetTitle>Filters</BottomSheetTitle>
-            <CloseButton onClick={() => setIsBottomSheetOpen(false)}>
-              <FaTimes />
-            </CloseButton>
-          </BottomSheetHeader>
-
-          <FilterActions>
-            <span>
-              Selected:{' '}
-              {selectedCategories.length + selectedDifficulties.length + selectedRoles.length}
-            </span>
-            <ClearAllButton onClick={clearAllFilters}>Clear All</ClearAllButton>
-          </FilterActions>
-
-          <FilterSearch>
-            <FilterSearchIcon />
-            <FilterSearchInput
-              placeholder="Search filters..."
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-            />
-          </FilterSearch>
-
-          <FilterSection>
-            <SectionTitle
-              isOpen={isCategoryOpen}
-              onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-            >
-              Categories
-              <FaChevronDown />
-            </SectionTitle>
-            <FilterGroup isOpen={isCategoryOpen}>
-              {isLoading ? (
-                <LoadingSpinner>
-                  <FaSpinner />
-                </LoadingSpinner>
-              ) : filteredCategories.length > 0 ? (
-                filteredCategories.map(category => (
-                  <FilterOptionButton
-                    key={category}
-                    active={selectedCategories.includes(category)}
-                    onClick={() =>
-                      handleFilterChange(
-                        category,
-                        selectedCategories,
-                        setSelectedCategories,
-                        'category'
-                      )
-                    }
-                  >
-                    <FilterButtonContent>
-                      <FilterCheckboxWrapper>
-                        <FilterCheckbox
-                          type="checkbox"
-                          checked={selectedCategories.includes(category)}
-                          onChange={() => {}}
-                        />
-                        <CustomCheckbox />
-                      </FilterCheckboxWrapper>
-                      {category === 'all' ? 'All Categories' : category}
-                    </FilterButtonContent>
-                    <FilterCount>
-                      {category === 'all'
-                        ? learningTopics.length
-                        : learningTopics.filter(t => t.category === category).length}
-                    </FilterCount>
-                  </FilterOptionButton>
-                ))
-              ) : (
-                renderFilterNoResults()
-              )}
-            </FilterGroup>
-          </FilterSection>
-
-          <FilterSection>
-            <SectionTitle
-              isOpen={isDifficultyOpen}
-              onClick={() => setIsDifficultyOpen(!isDifficultyOpen)}
-            >
-              Difficulty
-              <FaChevronDown />
-            </SectionTitle>
-            <FilterGroup isOpen={isDifficultyOpen}>
-              {isLoading ? (
-                <LoadingSpinner>
-                  <FaSpinner />
-                </LoadingSpinner>
-              ) : filteredDifficulties.length > 0 ? (
-                filteredDifficulties.map(difficulty => (
-                  <FilterOptionButton
-                    key={difficulty}
-                    active={selectedDifficulties.includes(difficulty)}
-                    onClick={() =>
-                      handleFilterChange(
-                        difficulty,
-                        selectedDifficulties,
-                        setSelectedDifficulties,
-                        'difficulty'
-                      )
-                    }
-                  >
-                    <FilterButtonContent>
-                      <FilterCheckboxWrapper>
-                        <FilterCheckbox
-                          type="checkbox"
-                          checked={selectedDifficulties.includes(difficulty)}
-                          onChange={() => {}}
-                        />
-                        <CustomCheckbox />
-                      </FilterCheckboxWrapper>
-                      {difficulty === 'all' ? 'All Levels' : difficulty}
-                    </FilterButtonContent>
-                    <FilterCount>
-                      {difficulty === 'all'
-                        ? learningTopics.length
-                        : learningTopics.filter(t => t.difficulty === difficulty).length}
-                    </FilterCount>
-                  </FilterOptionButton>
-                ))
-              ) : (
-                renderFilterNoResults()
-              )}
-            </FilterGroup>
-          </FilterSection>
-
-          <FilterSection>
-            <SectionTitle isOpen={isRoleOpen} onClick={() => setIsRoleOpen(!isRoleOpen)}>
-              Role
-              <FaChevronDown />
-            </SectionTitle>
-            <FilterGroup isOpen={isRoleOpen}>
-              {isLoading ? (
-                <LoadingSpinner>
-                  <FaSpinner />
-                </LoadingSpinner>
-              ) : filteredRoles.length > 0 ? (
-                filteredRoles.map(role => (
-                  <FilterOptionButton
-                    key={role}
-                    active={selectedRoles.includes(role)}
-                    onClick={() =>
-                      handleFilterChange(role, selectedRoles, setSelectedRoles, 'role')
-                    }
-                  >
-                    <FilterButtonContent>
-                      <FilterCheckboxWrapper>
-                        <FilterCheckbox
-                          type="checkbox"
-                          checked={selectedRoles.includes(role)}
-                          onChange={() => {}}
-                        />
-                        <CustomCheckbox />
-                      </FilterCheckboxWrapper>
-                      {role === 'all' ? 'All Roles' : role}
-                    </FilterButtonContent>
-                    <FilterCount>
-                      {role === 'all'
-                        ? learningTopics.length
-                        : learningTopics.filter(t => t.role === role).length}
-                    </FilterCount>
-                  </FilterOptionButton>
-                ))
-              ) : (
-                renderFilterNoResults()
-              )}
-            </FilterGroup>
-          </FilterSection>
-        </BottomSheet>
-      </PageContainer>
+      <BottomSheet isOpen={isBottomSheetOpen}>
+        <Suspense fallback={<FilterSidebarFallback>Loading filters...</FilterSidebarFallback>}>
+          <FilterSidebar sections={filterSections} onClearAll={clearAllFilters} />
+        </Suspense>
+      </BottomSheet>
+      <Overlay isOpen={isBottomSheetOpen} onClick={handleOverlayClick} />
     </MainLayout>
   );
 };

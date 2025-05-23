@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
+import { Badge } from '@/components/Badge';
 
 const QuestionsContainer = styled.div`
   padding: 2rem;
@@ -19,24 +20,6 @@ const FiltersContainer = styled.div`
   border: 1px solid ${props => props.theme.colors.border};
   border-radius: ${props => props.theme.borderRadius.md};
   flex-wrap: wrap;
-`;
-
-const FilterButton = styled.button<{ active: boolean }>`
-  padding: 0.5rem 1rem;
-  border: 1px solid
-    ${props => (props.active ? props.theme.colors.primary : props.theme.colors.border)};
-  border-radius: ${props => props.theme.borderRadius.md};
-  background: ${props => (props.active ? props.theme.colors.primary : 'transparent')};
-  color: ${props => (props.active ? '#fff' : props.theme.colors.text)};
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 0.875rem;
-
-  &:hover {
-    background: ${props =>
-      props.active ? props.theme.colors.primaryDark : props.theme.colors.backgroundHover};
-    border-color: ${props => props.theme.colors.primary};
-  }
 `;
 
 const QuestionsList = styled.div`
@@ -93,39 +76,6 @@ const QuestionTag = styled.span`
 `;
 
 type Difficulty = 'Easy' | 'Medium' | 'Hard';
-
-const DifficultyBadge = styled.span<{ difficulty: Difficulty }>`
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: ${props => props.theme.borderRadius.full};
-  font-size: 0.75rem;
-  font-weight: 500;
-  margin-left: 0.5rem;
-  background: ${props => {
-    switch (props.difficulty) {
-      case 'Easy':
-        return props.theme.colors.status.success;
-      case 'Medium':
-        return props.theme.colors.status.warning;
-      case 'Hard':
-        return props.theme.colors.status.error;
-      default:
-        return props.theme.colors.status.info;
-    }
-  }};
-  color: white;
-`;
-
-const Blind75Badge = styled.span`
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  background: ${props => props.theme.colors.primary};
-  color: white;
-  border-radius: ${props => props.theme.borderRadius.full};
-  font-size: 0.75rem;
-  margin-left: 0.5rem;
-  font-weight: 500;
-`;
 
 const categories = [
   'All',
@@ -377,29 +327,37 @@ export const PracticeQuestions: React.FC = () => {
   return (
     <QuestionsContainer>
       <FiltersContainer>
-        <FilterButton active={showBlind75Only} onClick={() => setShowBlind75Only(!showBlind75Only)}>
+        <Badge
+          variant="primary"
+          isSelected={showBlind75Only}
+          onClick={() => setShowBlind75Only(!showBlind75Only)}
+        >
           Blind 75 Only
-        </FilterButton>
+        </Badge>
         {categories.map(category => (
-          <FilterButton
+          <Badge
             key={category}
-            active={selectedCategory === category}
+            variant="secondary"
+            isSelected={selectedCategory === category}
             onClick={() => setSelectedCategory(category)}
           >
             {category}
-          </FilterButton>
+          </Badge>
         ))}
       </FiltersContainer>
 
       <FiltersContainer>
         {difficulties.map(difficulty => (
-          <FilterButton
+          <Badge
             key={difficulty}
-            active={selectedDifficulty === difficulty}
+            variant={
+              difficulty === 'Easy' ? 'success' : difficulty === 'Medium' ? 'warning' : 'danger'
+            }
+            isSelected={selectedDifficulty === difficulty}
             onClick={() => setSelectedDifficulty(difficulty)}
           >
             {difficulty}
-          </FilterButton>
+          </Badge>
         ))}
       </FiltersContainer>
 
@@ -409,7 +367,11 @@ export const PracticeQuestions: React.FC = () => {
             <QuestionInfo>
               <QuestionTitle>
                 {question.title}
-                {question.isBlind75 && <Blind75Badge>Blind 75</Blind75Badge>}
+                {question.isBlind75 && (
+                  <Badge variant="primary" size="sm">
+                    Blind 75
+                  </Badge>
+                )}
               </QuestionTitle>
               <QuestionMeta>
                 <QuestionTag>
@@ -423,9 +385,17 @@ export const PracticeQuestions: React.FC = () => {
                 </QuestionTag>
               </QuestionMeta>
             </QuestionInfo>
-            <DifficultyBadge difficulty={question.difficulty}>
+            <Badge
+              variant={
+                question.difficulty === 'Easy'
+                  ? 'success'
+                  : question.difficulty === 'Medium'
+                    ? 'warning'
+                    : 'danger'
+              }
+            >
               {question.difficulty}
-            </DifficultyBadge>
+            </Badge>
           </QuestionCard>
         ))}
       </QuestionsList>

@@ -1,10 +1,10 @@
 'use client';
 
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Header from '@/app/components/Header';
 import { AppFooter } from './Footer';
-import { useSearch } from '../app/context/SearchContext';
+import { useTheme } from '@/app/context/ThemeContext';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -32,7 +32,7 @@ const ContentWrapper = styled.div`
   transition: all ${props => props.theme.transitions.default};
   background: ${props => props.theme.colors.background};
   padding: 0 2rem;
-  max-width: 1400px;
+  max-width: 1600px;
   margin-left: auto;
   margin-right: auto;
   width: 100%;
@@ -91,29 +91,19 @@ const PromoStrip = styled.div`
 `;
 
 export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
-  const { searchQuery, setSearchQuery } = useSearch();
-
-  const handleSearchChange: Dispatch<SetStateAction<string>> = value => {
-    if (typeof value === 'function') {
-      setSearchQuery(value(searchQuery));
-    } else {
-      setSearchQuery(value);
-    }
-  };
+  const { isDarkMode } = useTheme();
 
   return (
-    <>
-      <LayoutContainer>
-        {/* <PromoStrip>
-          <PromoStripText>Get Premium Content Access at 90% OFF – Only ₹499!</PromoStripText>
-        </PromoStrip> */}
-        <Header searchQuery={searchQuery} onSearchChange={handleSearchChange} />
-        <ContentWrapper>
-          <Main>{children}</Main>
-        </ContentWrapper>
-        <AppFooter />
-      </LayoutContainer>
-    </>
+    <LayoutContainer>
+      <PromoStrip>
+        <PromoStripText>Get Premium Content Access at 90% OFF – Only ₹499!</PromoStripText>
+      </PromoStrip>
+      <Header />
+      <ContentWrapper>
+        <Main>{children}</Main>
+      </ContentWrapper>
+      <AppFooter />
+    </LayoutContainer>
   );
 };
 

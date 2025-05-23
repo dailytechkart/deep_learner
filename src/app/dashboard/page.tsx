@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
-import { MainLayout } from '@/components/MainLayout';
+import MainLayout from '@/components/MainLayout';
 import {
   FaCode,
   FaBook,
@@ -18,35 +18,19 @@ import {
 } from 'react-icons/fa';
 
 // Styled Components
-const DashboardContainer = styled.div`
-  width: 100%;
-  min-height: 100vh;
-  background: ${props => props.theme.colors.background};
-  display: flex;
-  flex-direction: column;
-`;
-
 const DashboardContent = styled.div`
   width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 2rem;
-  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-
-  @media (max-width: 768px) {
-    padding: 1rem;
-  }
+  gap: 1.5rem;
 `;
 
 const StatsGrid = styled.div`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 1rem;
+  gap: 1.25rem;
+  margin-bottom: 0.5rem;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -102,7 +86,7 @@ const Section = styled.div`
   background: ${props => props.theme.colors.background};
   border-radius: 12px;
   border: 1px solid ${props => props.theme.colors.border};
-  padding: 1.5rem;
+  padding: 1.25rem;
   box-shadow: 0 2px 4px ${props => props.theme.colors.border}15;
 
   @media (max-width: 768px) {
@@ -114,8 +98,8 @@ const SectionHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
   border-bottom: 1px solid ${props => props.theme.colors.border};
 `;
 
@@ -399,127 +383,125 @@ export default function DashboardPage() {
 
   return (
     <MainLayout>
-      <DashboardContainer>
-        <DashboardContent>
-          <StatsGrid>
-            <StatCard>
-              <StatIcon>
-                <FaCode />
-              </StatIcon>
-              <StatContent>
-                <h3>{stats.problemsSolved}</h3>
-                <p>Problems Solved</p>
-              </StatContent>
-            </StatCard>
-            <StatCard>
-              <StatIcon>
-                <FaBook />
-              </StatIcon>
-              <StatContent>
-                <h3>{stats.coursesCompleted}</h3>
-                <p>Courses Completed</p>
-              </StatContent>
-            </StatCard>
-            <StatCard>
-              <StatIcon>
-                <FaFire />
-              </StatIcon>
-              <StatContent>
-                <h3>{stats.currentStreak}</h3>
-                <p>Day Streak</p>
-              </StatContent>
-            </StatCard>
-            <StatCard>
-              <StatIcon>
-                <FaTrophy />
-              </StatIcon>
-              <StatContent>
-                <h3>{stats.totalPoints}</h3>
-                <p>Total Points</p>
-              </StatContent>
-            </StatCard>
-          </StatsGrid>
+      <DashboardContent>
+        <StatsGrid>
+          <StatCard>
+            <StatIcon>
+              <FaCode />
+            </StatIcon>
+            <StatContent>
+              <h3>{stats.problemsSolved}</h3>
+              <p>Problems Solved</p>
+            </StatContent>
+          </StatCard>
+          <StatCard>
+            <StatIcon>
+              <FaBook />
+            </StatIcon>
+            <StatContent>
+              <h3>{stats.coursesCompleted}</h3>
+              <p>Courses Completed</p>
+            </StatContent>
+          </StatCard>
+          <StatCard>
+            <StatIcon>
+              <FaFire />
+            </StatIcon>
+            <StatContent>
+              <h3>{stats.currentStreak}</h3>
+              <p>Day Streak</p>
+            </StatContent>
+          </StatCard>
+          <StatCard>
+            <StatIcon>
+              <FaTrophy />
+            </StatIcon>
+            <StatContent>
+              <h3>{stats.totalPoints}</h3>
+              <p>Total Points</p>
+            </StatContent>
+          </StatCard>
+        </StatsGrid>
 
-          <Section>
-            <SectionHeader>
-              <SectionTitle>Recent Problems</SectionTitle>
-              <ViewAll href="/problems">
-                View All
-                <FaChartLine size={14} />
-              </ViewAll>
-            </SectionHeader>
-            <ProblemGrid>
-              {recentProblems.map(problem => (
-                <ProblemCard key={problem.id} href={`/problems/${problem.id}`}>
-                  <ProblemTitle>
-                    {problem.title}
-                    {problem.isPremium && (
-                      <PremiumBadge>
-                        <FaStar size={12} />
-                        Premium
-                      </PremiumBadge>
-                    )}
-                  </ProblemTitle>
-                  <ProblemMeta>
-                    <DifficultyBadge difficulty={problem.difficulty}>
-                      {problem.difficulty}
-                    </DifficultyBadge>
-                    <span>{problem.category}</span>
-                  </ProblemMeta>
-                </ProblemCard>
-              ))}
-            </ProblemGrid>
-          </Section>
+        <Section>
+          <SectionHeader>
+            <SectionTitle>Recent Problems</SectionTitle>
+            <ViewAll href="/problems">
+              View All
+              <FaChartLine size={14} />
+            </ViewAll>
+          </SectionHeader>
+          <ProblemGrid>
+            {recentProblems.map(problem => (
+              <ProblemCard key={problem.id} href={`/problems/${problem.id}`}>
+                <ProblemTitle>
+                  {problem.title}
+                  {problem.isPremium && (
+                    <PremiumBadge>
+                      <FaStar size={12} />
+                      Premium
+                    </PremiumBadge>
+                  )}
+                </ProblemTitle>
+                <ProblemMeta>
+                  <DifficultyBadge difficulty={problem.difficulty}>
+                    {problem.difficulty}
+                  </DifficultyBadge>
+                  <span>{problem.category}</span>
+                </ProblemMeta>
+              </ProblemCard>
+            ))}
+          </ProblemGrid>
+        </Section>
 
-          <Section>
-            <SectionHeader>
-              <SectionTitle>Your Courses</SectionTitle>
-              <ViewAll href="/courses">
-                View All
-                <FaBook size={14} />
-              </ViewAll>
-            </SectionHeader>
-            <ProblemGrid>
-              {courses.map(course => (
-                <CourseCard key={course.id} href={`/courses/${course.id}`}>
-                  <CourseTitle>{course.title}</CourseTitle>
-                  <CourseDescription>{course.description}</CourseDescription>
-                  <ProgressContainer>
-                    <ProgressLabel>
-                      <span>Progress</span>
-                      <span>
-                        {course.completedModules}/{course.totalModules} Modules
-                      </span>
-                    </ProgressLabel>
-                    <ProgressBar progress={course.progress} />
-                  </ProgressContainer>
-                </CourseCard>
-              ))}
-            </ProblemGrid>
-          </Section>
+        <Section>
+          <SectionHeader>
+            <SectionTitle>Your Courses</SectionTitle>
+            <ViewAll href="/courses">
+              View All
+              <FaBook size={14} />
+            </ViewAll>
+          </SectionHeader>
+          <ProblemGrid>
+            {courses.map(course => (
+              <CourseCard key={course.id} href={`/courses/${course.id}`}>
+                <CourseTitle>{course.title}</CourseTitle>
+                <CourseDescription>{course.description}</CourseDescription>
+                <ProgressContainer>
+                  <ProgressLabel>
+                    <span>Progress</span>
+                    <span>
+                      {course.completedModules}/{course.totalModules} Modules
+                    </span>
+                  </ProgressLabel>
+                  <ProgressBar progress={course.progress} />
+                </ProgressContainer>
+              </CourseCard>
+            ))}
+          </ProblemGrid>
+        </Section>
 
-          <Section>
-            <SectionHeader>
-              <SectionTitle>Recent Activity</SectionTitle>
-              <ViewAll href="/activity">
-                View All
-                <FaCalendar size={14} />
-              </ViewAll>
-            </SectionHeader>
-            <RecentActivity>
-              {recentActivity.map(activity => (
-                <ActivityItem key={activity.id}>
-                  <ActivityIcon>{activity.icon}</ActivityIcon>
-                  <ActivityContent>
-                    <h4>{activity.title}</h4>
-                    <p>{activity.time}</p>
-                  </ActivityContent>
-                </ActivityItem>
-              ))}
-            </RecentActivity>
-          </Section>
-        </DashboardContent>
-      </DashboardContainer>
+        <Section>
+          <SectionHeader>
+            <SectionTitle>Recent Activity</SectionTitle>
+            <ViewAll href="/activity">
+              View All
+              <FaCalendar size={14} />
+            </ViewAll>
+          </SectionHeader>
+          <RecentActivity>
+            {recentActivity.map(activity => (
+              <ActivityItem key={activity.id}>
+                <ActivityIcon>{activity.icon}</ActivityIcon>
+                <ActivityContent>
+                  <h4>{activity.title}</h4>
+                  <p>{activity.time}</p>
+                </ActivityContent>
+              </ActivityItem>
+            ))}
+          </RecentActivity>
+        </Section>
+      </DashboardContent>
     </MainLayout>
   );
 }
