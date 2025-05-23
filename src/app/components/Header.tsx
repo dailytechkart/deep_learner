@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect, Dispatch, SetStateAction } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled, { DefaultTheme } from 'styled-components';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
@@ -19,15 +19,10 @@ import { useTheme } from '@/app/context/ThemeContext';
 import { useAuth } from '@/app/hooks/useAuth';
 import Logo from './Logo';
 import MobileHeader from './MobileHeader';
-import BottomNav from './BottomNav';
-import SearchBar from './SearchBar';
 import UserMenu from './UserMenu';
 import { Theme } from '@/app/styles/theme';
 
-interface HeaderProps {
-  searchQuery: string;
-  onSearchChange: Dispatch<SetStateAction<string>>;
-}
+interface HeaderProps {}
 
 interface LogoProps {
   onClick?: () => void;
@@ -48,8 +43,15 @@ const HeaderContainer = styled.header`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
   align-items: center;
-  padding: 0 24px;
+  padding: 0 ${({ theme }) => theme.spacing.lg};
   z-index: 1000;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all ${({ theme }) => theme.transitions.default};
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: none;
+  }
 `;
 
 const HeaderContent = styled.div`
@@ -59,18 +61,21 @@ const HeaderContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: ${({ theme }) => theme.spacing.md};
 `;
 
 const LeftSection = styled.div`
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: ${({ theme }) => theme.spacing.lg};
+  flex: 1;
 `;
 
 const RightSection = styled.div`
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: ${({ theme }) => theme.spacing.md};
+  margin-left: auto;
 `;
 
 const UserMenuContainer = styled.div`
@@ -83,11 +88,27 @@ const UserMenuContainer = styled.div`
 const NavLink = styled(Link)`
   color: ${({ theme }) => theme.colors.text};
   text-decoration: none;
-  padding: 8px 16px;
-  border-radius: ${({ theme }) => theme.borderRadius.sm};
-  transition: all 0.2s ease;
+  padding: ${({ theme }) => `${theme.spacing.sm} ${theme.spacing.md}`};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  transition: all ${({ theme }) => theme.transitions.default};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.sm};
 
   &:hover {
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    color: ${({ theme }) => theme.colors.primary};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
+    outline-offset: 2px;
+  }
+
+  &[aria-current='page'] {
+    color: ${({ theme }) => theme.colors.primary};
     background: ${({ theme }) => theme.colors.backgroundAlt};
   }
 `;
@@ -116,56 +137,38 @@ const NavIcon = styled.div`
 const ThemeToggle = styled.button`
   background: none;
   border: none;
-  color: ${props => props.theme.colors.textSecondary};
+  color: ${({ theme }) => theme.colors.textSecondary};
   cursor: pointer;
-  padding: 0.5rem;
-  border-radius: ${props => props.theme.borderRadius.md};
-  transition: all 0.2s ease;
+  padding: ${({ theme }) => theme.spacing.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  transition: all ${({ theme }) => theme.transitions.default};
   display: flex;
   align-items: center;
   justify-content: center;
   width: 40px;
   height: 40px;
+  position: relative;
 
   &:hover {
-    color: ${props => props.theme.colors.primary};
-    background: ${props => props.theme.colors.backgroundAlt};
+    color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.backgroundAlt};
   }
 
   &:focus-visible {
-    outline: 2px solid ${props => props.theme.colors.primary};
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
   }
-`;
 
-const MobileMenuButton = styled.button`
-  display: none;
-  background: none;
-  border: none;
-  color: ${props => props.theme.colors.textSecondary};
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.5rem;
-  transition: all 0.2s ease;
-  width: 40px;
-  height: 40px;
-  align-items: center;
-  justify-content: center;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: transparent;
-
-  @media (max-width: 768px) {
-    display: flex;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: ${({ theme }) => theme.borderRadius.md};
+    transition: all ${({ theme }) => theme.transitions.default};
   }
 
-  &:hover {
-    color: ${props => props.theme.colors.primary};
-  }
-
-  &:focus-visible {
-    outline: 2px solid ${props => props.theme.colors.primary};
-    outline-offset: 2px;
-    border-radius: ${props => props.theme.borderRadius.md};
+  &:active::after {
+    background: ${({ theme }) => theme.colors.backgroundHover};
   }
 `;
 
@@ -175,53 +178,54 @@ const MobileMenu = styled.div<{ isOpen: boolean }>`
   top: 56px;
   left: 0;
   right: 0;
-  background: ${props => props.theme.colors.background};
-  padding: 1rem;
-  box-shadow: 0 4px 6px ${props => props.theme.colors.border};
+  background: ${({ theme }) => theme.colors.background};
+  padding: ${({ theme }) => theme.spacing.md};
+  box-shadow: ${({ theme }) => theme.shadows.md};
   z-index: 9998;
   transform: translateY(${props => (props.isOpen ? '0' : '-100%')});
-  transition: transform 0.3s ease;
-  border-bottom: 1px solid ${props => props.theme.colors.border};
+  transition: transform ${({ theme }) => theme.transitions.default};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   max-height: calc(100vh - 56px);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 
-  @media (max-width: 768px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: ${({ theme }) => theme.spacing.md};
   }
 `;
 
 const MobileNavLink = styled(Link)`
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: ${props => props.theme.colors.textSecondary};
+  justify-content: flex-start;
+  color: ${({ theme }) => theme.colors.text};
   text-decoration: none;
-  font-weight: 500;
-  font-size: 1.1rem;
-  padding: 1rem;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  text-align: center;
-  touch-action: manipulation;
+  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
+  font-size: ${({ theme }) => theme.typography.fontSize.lg};
+  padding: ${({ theme }) => theme.spacing.md};
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  transition: all ${({ theme }) => theme.transitions.default};
+  gap: ${({ theme }) => theme.spacing.sm};
   min-height: 44px;
 
   &:hover {
-    background: ${props => props.theme.colors.backgroundAlt};
-    color: ${props => props.theme.colors.primary};
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    color: ${({ theme }) => theme.colors.primary};
   }
 
   &:focus-visible {
-    outline: 2px solid ${props => props.theme.colors.primary};
+    outline: 2px solid ${({ theme }) => theme.colors.primary};
     outline-offset: 2px;
   }
 
-  @media (max-width: 480px) {
-    font-size: 1rem;
-    padding: 0.875rem;
+  &[aria-current='page'] {
+    color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.backgroundAlt};
   }
 `;
 
@@ -242,19 +246,18 @@ const MobileActions = styled.div`
 const StyledLogo = styled(Logo)<LogoProps>``;
 const StyledUserMenu = styled(UserMenu)<UserMenuProps>``;
 
-const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange }) => {
+const Header: React.FC<HeaderProps> = () => {
   const router = useRouter();
   const pathname = usePathname();
   const { isDarkMode, toggleTheme } = useTheme();
   const { user, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const userMenuRef = useRef<HTMLDivElement>(null);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
-        setIsUserMenuOpen(false);
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
       }
     };
 
@@ -262,21 +265,14 @@ const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    setIsMobileMenuOpen(false);
-  }, [pathname]);
-
   const handleLogoClick = () => {
     router.push('/');
-  };
-
-  const handleSearch = (query: string) => {
-    onSearchChange(query);
+    setIsMobileMenuOpen(false);
   };
 
   const handleSignOut = async () => {
     await logout();
-    router.push('/');
+    router.push('/login');
   };
 
   const toggleMobileMenu = () => {
@@ -284,25 +280,96 @@ const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange }) => {
   };
 
   return (
-    <HeaderContainer>
-      <HeaderContent>
-        <LeftSection>
-          <LogoLink href="/">
-            <StyledLogo onClick={handleLogoClick} />
-          </LogoLink>
-          <SearchBar value={searchQuery} onChange={handleSearch} placeholder="Search problems..." />
-        </LeftSection>
-        <RightSection>
-          {user ? (
-            <UserMenuContainer ref={userMenuRef}>
-              <StyledUserMenu user={user} onSignOut={handleSignOut} />
-            </UserMenuContainer>
-          ) : (
-            <NavLink href="/login">Sign In</NavLink>
-          )}
-        </RightSection>
-      </HeaderContent>
-    </HeaderContainer>
+    <>
+      <MobileHeader onMenuClick={toggleMobileMenu} />
+      <HeaderContainer>
+        <HeaderContent>
+          <LeftSection>
+            <LogoLink href="/" onClick={handleLogoClick}>
+              <StyledLogo />
+            </LogoLink>
+            <Nav>
+              <NavLink href="/learn" aria-current={pathname === '/learn' ? 'page' : undefined}>
+                <FaBook />
+                Learn
+              </NavLink>
+              <NavLink
+                href="/projects"
+                aria-current={pathname === '/projects' ? 'page' : undefined}
+              >
+                <FaCode />
+                Projects
+              </NavLink>
+              <NavLink
+                href="/security"
+                aria-current={pathname === '/security' ? 'page' : undefined}
+              >
+                <FaShieldAlt />
+                Security
+              </NavLink>
+              <NavLink
+                href="/analytics"
+                aria-current={pathname === '/analytics' ? 'page' : undefined}
+              >
+                <FaChartLine />
+                Analytics
+              </NavLink>
+            </Nav>
+          </LeftSection>
+          <RightSection>
+            <ThemeToggle
+              onClick={toggleTheme}
+              aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {isDarkMode ? '🌞' : '🌙'}
+            </ThemeToggle>
+            {user ? (
+              <UserMenuContainer>
+                <StyledUserMenu user={user} onSignOut={handleSignOut} />
+              </UserMenuContainer>
+            ) : (
+              <NavLink href="/login">
+                <FaUser />
+                Sign In
+              </NavLink>
+            )}
+          </RightSection>
+        </HeaderContent>
+      </HeaderContainer>
+      <MobileMenu ref={mobileMenuRef} isOpen={isMobileMenuOpen}>
+        <MobileNavLink href="/learn" aria-current={pathname === '/learn' ? 'page' : undefined}>
+          <FaBook />
+          Learn
+        </MobileNavLink>
+        <MobileNavLink
+          href="/projects"
+          aria-current={pathname === '/projects' ? 'page' : undefined}
+        >
+          <FaCode />
+          Projects
+        </MobileNavLink>
+        <MobileNavLink
+          href="/security"
+          aria-current={pathname === '/security' ? 'page' : undefined}
+        >
+          <FaShieldAlt />
+          Security
+        </MobileNavLink>
+        <MobileNavLink
+          href="/analytics"
+          aria-current={pathname === '/analytics' ? 'page' : undefined}
+        >
+          <FaChartLine />
+          Analytics
+        </MobileNavLink>
+        {!user && (
+          <MobileNavLink href="/login">
+            <FaUser />
+            Sign In
+          </MobileNavLink>
+        )}
+      </MobileMenu>
+    </>
   );
 };
 

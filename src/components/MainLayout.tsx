@@ -104,9 +104,9 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
     <>
       <LayoutContainer>
-        <PromoStrip>
+        {/* <PromoStrip>
           <PromoStripText>Get Premium Content Access at 90% OFF – Only ₹499!</PromoStripText>
-        </PromoStrip>
+        </PromoStrip> */}
         <Header searchQuery={searchQuery} onSearchChange={handleSearchChange} />
         <ContentWrapper>
           <Main>{children}</Main>
