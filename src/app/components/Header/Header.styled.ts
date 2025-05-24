@@ -14,7 +14,7 @@ export const HeaderContainer = styled.header`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
   align-items: center;
-  padding: 0 2rem;
+  padding: 0 1.25rem;
   z-index: 1000;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);

@@ -10,6 +10,7 @@ interface MainLayoutProps {
   children: React.ReactNode;
   className?: string;
   showBreadcrumb?: boolean;
+  fullWidth?: boolean;
 }
 
 const LayoutContainer = styled.div`
@@ -26,20 +27,20 @@ const LayoutContainer = styled.div`
   }
 `;
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled.div<{ $fullWidth?: boolean }>`
   flex: 1;
   margin-top: 64px; // Height of the header
   transition: all ${props => props.theme.transitions.default};
   background: ${props => props.theme.colors.background};
-  padding: 0 2rem;
-  max-width: 1400px;
+  padding: 0 ${props => props.$fullWidth ? '0' : '2rem'};
+  max-width: ${props => props.$fullWidth ? '100%' : '1400px'};
   margin-left: auto;
   margin-right: auto;
   width: 100%;
 
   @media (max-width: 768px) {
     margin-top: 56px;
-    padding: 0 1rem;
+    padding: 0 ${props => props.$fullWidth ? '0' : '1rem'};
   }
 `;
 
@@ -48,13 +49,13 @@ const Main = styled.main`
   width: 100%;
 `;
 
-export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+export const MainLayout: React.FC<MainLayoutProps> = ({ children, fullWidth }) => {
   const { isDarkMode } = useTheme();
 
   return (
     <LayoutContainer>
       <Header />
-      <ContentWrapper>
+      <ContentWrapper $fullWidth={fullWidth}>
         <Main>{children}</Main>
       </ContentWrapper>
       <AppFooter />

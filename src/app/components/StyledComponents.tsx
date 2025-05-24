@@ -1100,6 +1100,7 @@ export const HeroSection = styled.section`
   background: ${props => props.theme.colors.background};
   position: relative;
   overflow: hidden;
+  width: 100%;
 
   &::before {
     content: '';
@@ -1116,8 +1117,16 @@ export const HeroSection = styled.section`
     );
   }
 
-  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+  @media (max-width: ${props => props.theme.breakpoints.lg}) {
     padding: 6rem 0 4rem;
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
+    padding: 5rem 0 3rem;
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    padding: 4rem 0 2rem;
   }
 `;
 
@@ -1126,37 +1135,48 @@ export const HeroContent = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 4rem;
-  max-width: ${props => props.theme.breakpoints.xl};
+  width: 100%;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 4rem;
   position: relative;
 
   @media (max-width: ${props => props.theme.breakpoints.lg}) {
     gap: 3rem;
+    padding: 0 3rem;
   }
 
   @media (max-width: ${props => props.theme.breakpoints.md}) {
     flex-direction: column;
     text-align: center;
     gap: 2rem;
+    padding: 0 2rem;
   }
 
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
     padding: 0 1rem;
+    gap: 1.5rem;
   }
 `;
 
 export const HeroTextContent = styled.div`
   flex: 1;
   max-width: 600px;
+  padding: 0 2rem;
+
+  @media (max-width: ${props => props.theme.breakpoints.lg}) {
+    max-width: 500px;
+    padding: 0 1.5rem;
+  }
 
   @media (max-width: ${props => props.theme.breakpoints.md}) {
     max-width: 100%;
+    padding: 0;
   }
 `;
 
 export const HeroTitle = styled.h1`
-  font-size: 4rem;
+  font-size: 3.5rem;
   font-weight: 800;
   margin-bottom: 1.5rem;
   color: ${props => props.theme.colors.text};
@@ -1176,10 +1196,12 @@ export const HeroTitle = styled.h1`
 
   @media (max-width: ${props => props.theme.breakpoints.md}) {
     font-size: 3rem;
+    margin-bottom: 1.25rem;
   }
 
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
-    font-size: 2.5rem;
+    font-size: 2.25rem;
+    margin-bottom: 1rem;
   }
 `;
 
@@ -1190,15 +1212,22 @@ export const HeroSubtitle = styled.p`
   line-height: 1.6;
   max-width: 540px;
 
+  @media (max-width: ${props => props.theme.breakpoints.lg}) {
+    font-size: 1.125rem;
+    margin-bottom: 2rem;
+  }
+
   @media (max-width: ${props => props.theme.breakpoints.md}) {
     font-size: 1.125rem;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 1.75rem;
   }
 
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
     font-size: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
   }
 `;
 
@@ -1207,45 +1236,51 @@ export const HeroActions = styled.div`
   gap: 1rem;
   margin-bottom: 2rem;
 
+  @media (max-width: ${props => props.theme.breakpoints.lg}) {
+    gap: 0.875rem;
+  }
+
   @media (max-width: ${props => props.theme.breakpoints.md}) {
     justify-content: center;
+    margin-bottom: 1.5rem;
   }
 
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
     flex-direction: column;
     width: 100%;
-    max-width: 300px;
+    max-width: 280px;
     margin-left: auto;
     margin-right: auto;
+    gap: 0.75rem;
   }
 `;
 
-export const ActionButton = styled.a<{ primary?: boolean }>`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem 2rem;
-  border-radius: ${props => props.theme.borderRadius.lg};
+export const ActionButton = styled.button<{ primary?: boolean }>`
+  padding: 0.875rem 1.75rem;
+  font-size: 1rem;
   font-weight: 600;
-  font-size: 1.125rem;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  background: ${props => (props.primary ? props.theme.colors.primary : 'transparent')};
-  color: ${props => (props.primary ? 'white' : props.theme.colors.primary)};
-  border: 2px solid ${props => (props.primary ? 'transparent' : props.theme.colors.primary)};
-  min-width: 160px;
+  border-radius: ${props => props.theme.borderRadius.md};
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: ${props => props.primary ? props.theme.colors.primary : 'transparent'};
+  color: ${props => props.primary ? 'white' : props.theme.colors.text};
+  border: 1px solid ${props => props.primary ? props.theme.colors.primary : props.theme.colors.border};
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: ${props => props.theme.shadows.lg};
-    background: ${props =>
-      props.primary ? props.theme.colors.secondary : props.theme.colors.backgroundAlt};
+    box-shadow: 0 4px 12px ${props => props.primary ? props.theme.colors.primary + '40' : 'rgba(0, 0, 0, 0.1)'};
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9375rem;
   }
 
   @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.875rem;
     width: 100%;
-    padding: 0.875rem 1.5rem;
-    font-size: 1rem;
   }
 `;
 
@@ -1336,6 +1371,8 @@ export const PricingCard = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
 
   &::before {
     content: '';
@@ -1349,8 +1386,7 @@ export const PricingCard = styled.div`
       ${props => props.theme.colors.primary} 0%,
       ${props => props.theme.colors.secondary} 100%
     );
-    border-radius: ${props => props.theme.borderRadius.lg} ${props => props.theme.borderRadius.lg} 0
-      0;
+    border-radius: ${props => props.theme.borderRadius.lg} ${props => props.theme.borderRadius.lg} 0 0;
   }
 
   &:hover {
@@ -1415,6 +1451,9 @@ export const PricingFeatures = styled.ul`
   margin: 2rem 0;
   width: 100%;
   text-align: left;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
 `;
 
 export const PricingFeature = styled.li`
@@ -1423,21 +1462,27 @@ export const PricingFeature = styled.li`
   gap: 0.75rem;
   color: ${props => props.theme.colors.text};
   font-size: 1rem;
-  margin-bottom: 1rem;
-  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 0.75rem;
   border-radius: ${props => props.theme.borderRadius.md};
   background: ${props => props.theme.colors.background};
   transition: all 0.2s ease;
+  border: 1px solid ${props => props.theme.colors.border};
 
   &::before {
     content: '✓';
     color: ${props => props.theme.colors.primary};
     font-weight: bold;
+    font-size: 1.1rem;
+    min-width: 20px;
+    text-align: center;
   }
 
   &:hover {
     transform: translateX(5px);
     background: ${props => props.theme.colors.backgroundAlt};
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: ${props => props.theme.shadows.sm};
   }
 `;
 

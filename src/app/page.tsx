@@ -91,6 +91,7 @@ import {
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { AnalyticsEvent } from '@/utils/analytics';
 import { HOME_ANALYTICS } from '@/analytics/constants';
+import HeroCarousel from './components/HeroCarousel';
 
 const GradientSection = styled.section`
   background: linear-gradient(
@@ -178,7 +179,7 @@ export default function Home() {
   };
 
   return (
-    <MainLayout>
+    <MainLayout fullWidth>
       <HeroSection>
         <HeroContent>
           <HeroTextContent>
@@ -199,9 +200,7 @@ export default function Home() {
               </Link>
             </HeroActions>
           </HeroTextContent>
-          <ImageWrapper>
-            <StyledImage src="/hero-image.svg" alt="Frontend Development Platform" fill priority />
-          </ImageWrapper>
+          <HeroCarousel />
         </HeroContent>
       </HeroSection>
 
@@ -639,6 +638,16 @@ export default function Home() {
               <PricingFeature>Project-based learning</PricingFeature>
               <PricingFeature>Interview preparation</PricingFeature>
               <PricingFeature>Career guidance</PricingFeature>
+              <PricingFeature>100+ Machine Coding Problems</PricingFeature>
+              <PricingFeature>150+ JavaScript Problems</PricingFeature>
+              <PricingFeature>50+ System Design Problems</PricingFeature>
+              <PricingFeature>500+ Practice Quizzes</PricingFeature>
+              <PricingFeature>Real-world Project Scenarios</PricingFeature>
+              <PricingFeature>Weekly Coding Challenges</PricingFeature>
+              <PricingFeature>Mock Interview Sessions</PricingFeature>
+              <PricingFeature>Code Review Sessions</PricingFeature>
+              <PricingFeature>Resume Building Workshops</PricingFeature>
+              <PricingFeature>Salary Negotiation Guide</PricingFeature>
             </PricingFeatures>
             <Link href="/signup" passHref>
               <PricingCTA onClick={handleGetStartedClick}>Get Lifetime Access</PricingCTA>
