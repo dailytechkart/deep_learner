@@ -1,6 +1,8 @@
 import { Problem } from '@/types/problem';
 import Link from 'next/link';
 import styled from 'styled-components';
+import { useAnalytics } from '@/hooks/useAnalytics';
+import { AnalyticsEvent } from '@/utils/analytics';
 
 interface ProblemCardProps {
   problem: Problem;
@@ -85,8 +87,22 @@ const Tag = styled.span<{ variant?: 'topic' | 'company' | 'default' }>`
 `;
 
 export default function ProblemCard({ problem }: ProblemCardProps) {
+  const { trackEvent } = useAnalytics();
+
+  const handleProblemClick = () => {
+    trackEvent(AnalyticsEvent.COURSE_VIEW, {
+      problemId: problem.id,
+      problemTitle: problem.title,
+      difficulty: problem.difficulty,
+      topic: problem.topic,
+      tags: problem.tags,
+      companies: problem.companies,
+      timestamp: new Date().toISOString(),
+    });
+  };
+
   const cardContent = (
-    <Card>
+    <Card onClick={handleProblemClick}>
       <CardHeader>
         <Title>{problem.title}</Title>
         <DifficultyBadge difficulty={problem.difficulty}>{problem.difficulty}</DifficultyBadge>

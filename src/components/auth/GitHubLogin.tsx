@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { Github } from 'lucide-react';
 import { useAuth } from '@/app/context/AuthContext';
+import { useAnalytics } from '@/hooks/useAnalytics';
+import { AnalyticsEvent } from '@/utils/analytics';
 
 const GitHubButton = styled.button`
   width: 100%;
@@ -23,11 +25,22 @@ const GitHubButton = styled.button`
 
 export const GitHubLogin = () => {
   const { signInWithGithub } = useAuth();
+  const { trackEvent } = useAnalytics();
 
   const handleGitHubLogin = async () => {
     try {
+      trackEvent(AnalyticsEvent.USER_LOGIN, {
+        provider: 'github',
+        timestamp: new Date().toISOString(),
+      });
+
       await signInWithGithub();
     } catch (error) {
+      trackEvent(AnalyticsEvent.ERROR, {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        context: 'github_login',
+        timestamp: new Date().toISOString(),
+      });
       console.error('Error signing in with GitHub:', error);
     }
   };

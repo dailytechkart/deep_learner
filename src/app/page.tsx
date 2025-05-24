@@ -35,6 +35,9 @@ import {
 import { MainLayout } from '@/components/MainLayout';
 import Image from 'next/image';
 import { FaBook, FaCode, FaReact, FaJs, FaCss3Alt, FaHtml5, FaNodeJs } from 'react-icons/fa';
+import { useAnalytics } from '@/hooks/useAnalytics';
+import { AnalyticsEvent } from '@/utils/analytics';
+import { HOME_ANALYTICS } from '@/analytics/constants';
 
 const HeroSection = styled.section`
   padding: 4rem 0;
@@ -196,6 +199,33 @@ const CompaniesSection = styled.div`
 `;
 
 export default function Home() {
+  const { trackEvent } = useAnalytics();
+
+  const handleGetStartedClick = () => {
+    trackEvent(AnalyticsEvent.NAVIGATION, {
+      action: HOME_ANALYTICS.EVENTS.GET_STARTED_CLICK,
+      location: HOME_ANALYTICS.LOCATIONS.HERO_SECTION,
+      timestamp: new Date().toISOString(),
+    });
+  };
+
+  const handleLearnMoreClick = () => {
+    trackEvent(AnalyticsEvent.NAVIGATION, {
+      action: HOME_ANALYTICS.EVENTS.LEARN_MORE_CLICK,
+      location: HOME_ANALYTICS.LOCATIONS.HERO_SECTION,
+      timestamp: new Date().toISOString(),
+    });
+  };
+
+  const handleFeatureClick = (featureName: string) => {
+    trackEvent(AnalyticsEvent.NAVIGATION, {
+      action: HOME_ANALYTICS.EVENTS.FEATURE_CLICK,
+      feature: featureName,
+      location: HOME_ANALYTICS.LOCATIONS.FEATURES_SECTION,
+      timestamp: new Date().toISOString(),
+    });
+  };
+
   return (
     <MainLayout>
       <HeroSection>
@@ -209,10 +239,12 @@ export default function Home() {
             </HeroSubtitle>
             <HeroActions>
               <Link href="/signup" passHref>
-                <ActionButton primary>Get Started Free</ActionButton>
+                <ActionButton primary onClick={handleGetStartedClick}>
+                  Get Started Free
+                </ActionButton>
               </Link>
               <Link href="#features" passHref>
-                <ActionButton>Learn More</ActionButton>
+                <ActionButton onClick={handleLearnMoreClick}>Learn More</ActionButton>
               </Link>
             </HeroActions>
           </div>
@@ -253,43 +285,41 @@ export default function Home() {
           <SectionTitle id="features-title">Why Choose Us</SectionTitle>
         </SectionHeader>
         <FeatureGrid>
-          <FeatureCard>
+          <FeatureCard onClick={() => handleFeatureClick('html_css')}>
             <FeatureIcon>
               <FaHtml5 />
             </FeatureIcon>
-            <FeatureTitle>Modern Web Technologies</FeatureTitle>
+            <FeatureTitle>HTML & CSS</FeatureTitle>
             <FeatureDescription>
-              Master HTML5, CSS3, JavaScript (ES6+), and modern frameworks like React, Vue, and
-              Angular.
+              Master the fundamentals of web development with modern HTML5 and CSS3 techniques.
             </FeatureDescription>
           </FeatureCard>
-          <FeatureCard>
-            <FeatureIcon>
-              <FaReact />
-            </FeatureIcon>
-            <FeatureTitle>Frontend Frameworks</FeatureTitle>
-            <FeatureDescription>
-              Learn popular frameworks and libraries including React, Redux, Next.js, and
-              TypeScript.
-            </FeatureDescription>
-          </FeatureCard>
-          <FeatureCard>
-            <FeatureIcon>
-              <FaCss3Alt />
-            </FeatureIcon>
-            <FeatureTitle>Responsive Design</FeatureTitle>
-            <FeatureDescription>
-              Create beautiful, responsive layouts using modern CSS techniques and best practices.
-            </FeatureDescription>
-          </FeatureCard>
-          <FeatureCard>
+          <FeatureCard onClick={() => handleFeatureClick('javascript')}>
             <FeatureIcon>
               <FaJs />
             </FeatureIcon>
-            <FeatureTitle>JavaScript Mastery</FeatureTitle>
+            <FeatureTitle>JavaScript</FeatureTitle>
             <FeatureDescription>
-              Deep dive into JavaScript fundamentals, advanced concepts, and modern development
-              patterns.
+              Learn modern JavaScript (ES6+) and advanced concepts like closures, promises, and
+              async/await.
+            </FeatureDescription>
+          </FeatureCard>
+          <FeatureCard onClick={() => handleFeatureClick('react')}>
+            <FeatureIcon>
+              <FaReact />
+            </FeatureIcon>
+            <FeatureTitle>React</FeatureTitle>
+            <FeatureDescription>
+              Build interactive user interfaces with React, hooks, and modern state management.
+            </FeatureDescription>
+          </FeatureCard>
+          <FeatureCard onClick={() => handleFeatureClick('node')}>
+            <FeatureIcon>
+              <FaNodeJs />
+            </FeatureIcon>
+            <FeatureTitle>Node.js</FeatureTitle>
+            <FeatureDescription>
+              Develop full-stack applications with Node.js, Express, and modern backend practices.
             </FeatureDescription>
           </FeatureCard>
         </FeatureGrid>

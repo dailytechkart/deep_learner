@@ -1,5 +1,7 @@
 import { ProblemFilters as FilterType, Topic, Difficulty, Company, Tag } from '@/types/problem';
 import styled from 'styled-components';
+import { useAnalytics } from '@/hooks/useAnalytics';
+import { AnalyticsEvent } from '@/utils/analytics';
 
 interface ProblemFiltersProps {
   filters: FilterType;
@@ -70,6 +72,24 @@ export default function ProblemFilters({
   selectedFilters,
   onFilterChange,
 }: ProblemFiltersProps) {
+  const { trackEvent } = useAnalytics();
+
+  const handleFilterChange = (filterType: keyof FilterType, value: string) => {
+    trackEvent(AnalyticsEvent.SEARCH, {
+      filterType,
+      value,
+      currentFilters: {
+        topics: selectedFilters.topics,
+        difficulty: selectedFilters.difficulty,
+        companies: selectedFilters.companies,
+        tags: selectedFilters.tags,
+      },
+      timestamp: new Date().toISOString(),
+    });
+
+    onFilterChange(filterType, value);
+  };
+
   const renderFilterSection = (
     title: string,
     filterType: keyof FilterType,
@@ -82,7 +102,7 @@ export default function ProblemFilters({
         {options.map(option => (
           <FilterButton
             key={option}
-            onClick={() => onFilterChange(filterType, option)}
+            onClick={() => handleFilterChange(filterType, option)}
             isSelected={selectedOptions.includes(option)}
           >
             {option}

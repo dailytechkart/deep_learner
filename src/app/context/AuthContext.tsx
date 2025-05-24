@@ -13,6 +13,8 @@ import {
 import { doc, getDoc, setDoc, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
 import { CustomUser, UserProfile } from '@/types/auth';
+import { useAnalytics } from '@/hooks/useAnalytics';
+import { AnalyticsEvent } from '@/utils/analytics';
 
 interface AuthContextType {
   user: CustomUser | null;
@@ -32,6 +34,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
+  const { identifyUser, trackEvent } = useAnalytics();
 
   // Handle auth state changes and redirections
   useEffect(() => {
@@ -61,6 +64,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           if (!userData) {
             console.log('No user data found in Firestore, creating new profile');
             await createUserProfile(firebaseUser);
+            trackEvent(AnalyticsEvent.USER_SIGNUP, {
+              provider: firebaseUser.providerData[0]?.providerId || 'unknown',
+              timestamp: new Date().toISOString(),
+            });
           } else {
             // Update last login timestamp
             await setDoc(
@@ -73,10 +80,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             console.log('Updated last login timestamp');
           }
 
-          setUser({
+          const customUser = {
             ...firebaseUser,
             role: userData?.role || 'user',
-          } as CustomUser);
+          } as CustomUser;
+
+          setUser(customUser);
+
+          // Identify user in Mixpanel
+          identifyUser(firebaseUser.uid, {
+            email: firebaseUser.email,
+            name: firebaseUser.displayName,
+            role: customUser.role,
+            provider: firebaseUser.providerData[0]?.providerId,
+            createdAt: firebaseUser.metadata.creationTime,
+            lastLogin: new Date().toISOString(),
+          });
 
           // Get the ID token and set it in a cookie
           const idToken = await firebaseUser.getIdToken();
@@ -93,7 +112,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           // Clear the auth token cookie
           document.cookie = 'auth-token=; path=/; max-age=0; secure; samesite=strict';
           // Redirect to login if on protected route
-          if (pathname.startsWith('/dashboard')) {
+          if (pathname?.startsWith('/dashboard')) {
             console.log('Redirecting to login');
             router.push('/login');
           }
@@ -101,6 +120,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } catch (err) {
         console.error('Error in auth state change:', err);
         setError(err instanceof Error ? err.message : 'Authentication error occurred');
+        trackEvent(AnalyticsEvent.ERROR, {
+          error: err instanceof Error ? err.message : 'Unknown error',
+          context: 'auth_state_change',
+          timestamp: new Date().toISOString(),
+        });
       } finally {
         setLoading(false);
       }
@@ -110,7 +134,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.log('Cleaning up auth state listener');
       unsubscribe();
     };
-  }, [pathname, router]);
+  }, [pathname, router, identifyUser, trackEvent]);
 
   const createUserProfile = async (user: FirebaseUser): Promise<void> => {
     console.log('Creating/updating user profile for:', user.uid);
@@ -254,10 +278,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
       console.log('Sign out successful, redirecting to login');
       router.push('/login');
+      trackEvent(AnalyticsEvent.USER_LOGOUT, {
+        timestamp: new Date().toISOString(),
+      });
     } catch (error) {
       console.error('Sign out error:', error);
       setError(error instanceof Error ? error.message : 'Failed to sign out');
-      throw error;
+      trackEvent(AnalyticsEvent.ERROR, {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        context: 'sign_out',
+        timestamp: new Date().toISOString(),
+      });
     } finally {
       setLoading(false);
     }

@@ -4,6 +4,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import MainLayout from '@/components/MainLayout';
+import { useAnalytics } from '@/hooks/useAnalytics';
+import { AnalyticsEvent } from '@/utils/analytics';
+import { DASHBOARD_ANALYTICS } from '@/analytics/constants';
 import {
   FaCode,
   FaBook,
@@ -305,6 +308,46 @@ const PremiumBadge = styled.span`
 `;
 
 export default function DashboardPage() {
+  const { trackEvent } = useAnalytics();
+  const [activeTab, setActiveTab] = useState('problems');
+
+  const handleTabChange = (tab: string) => {
+    trackEvent(AnalyticsEvent.NAVIGATION, {
+      action: DASHBOARD_ANALYTICS.EVENTS.TAB_CHANGE,
+      tab,
+      timestamp: new Date().toISOString(),
+    });
+    setActiveTab(tab);
+  };
+
+  const handleProblemClick = (problemId: string, problemTitle: string) => {
+    trackEvent(AnalyticsEvent.COURSE_VIEW, {
+      action: DASHBOARD_ANALYTICS.EVENTS.PROBLEM_CLICK,
+      problemId,
+      problemTitle,
+      location: DASHBOARD_ANALYTICS.SECTIONS.RECENT_PROBLEMS,
+      timestamp: new Date().toISOString(),
+    });
+  };
+
+  const handleCourseClick = (courseId: string, courseTitle: string) => {
+    trackEvent(AnalyticsEvent.COURSE_VIEW, {
+      action: DASHBOARD_ANALYTICS.EVENTS.COURSE_CLICK,
+      courseId,
+      courseTitle,
+      location: DASHBOARD_ANALYTICS.SECTIONS.YOUR_COURSES,
+      timestamp: new Date().toISOString(),
+    });
+  };
+
+  const handleViewAllClick = (section: string) => {
+    trackEvent(AnalyticsEvent.NAVIGATION, {
+      action: DASHBOARD_ANALYTICS.EVENTS.VIEW_ALL_CLICK,
+      section,
+      timestamp: new Date().toISOString(),
+    });
+  };
+
   const [stats] = useState({
     problemsSolved: 42,
     coursesCompleted: 3,
@@ -426,14 +469,17 @@ export default function DashboardPage() {
         <Section>
           <SectionHeader>
             <SectionTitle>Recent Problems</SectionTitle>
-            <ViewAll href="/problems">
+            <ViewAll href="/problems" onClick={() => handleViewAllClick('problems')}>
               View All
-              <FaChartLine size={14} />
             </ViewAll>
           </SectionHeader>
           <ProblemGrid>
             {recentProblems.map(problem => (
-              <ProblemCard key={problem.id} href={`/problems/${problem.id}`}>
+              <ProblemCard
+                key={problem.id}
+                href={`/problems/${problem.id}`}
+                onClick={() => handleProblemClick(problem.id.toString(), problem.title)}
+              >
                 <ProblemTitle>
                   {problem.title}
                   {problem.isPremium && (
@@ -457,14 +503,17 @@ export default function DashboardPage() {
         <Section>
           <SectionHeader>
             <SectionTitle>Your Courses</SectionTitle>
-            <ViewAll href="/courses">
+            <ViewAll href="/courses" onClick={() => handleViewAllClick('courses')}>
               View All
-              <FaBook size={14} />
             </ViewAll>
           </SectionHeader>
           <ProblemGrid>
             {courses.map(course => (
-              <CourseCard key={course.id} href={`/courses/${course.id}`}>
+              <CourseCard
+                key={course.id}
+                href={`/courses/${course.id}`}
+                onClick={() => handleCourseClick(course.id.toString(), course.title)}
+              >
                 <CourseTitle>{course.title}</CourseTitle>
                 <CourseDescription>{course.description}</CourseDescription>
                 <ProgressContainer>
@@ -484,9 +533,8 @@ export default function DashboardPage() {
         <Section>
           <SectionHeader>
             <SectionTitle>Recent Activity</SectionTitle>
-            <ViewAll href="/activity">
+            <ViewAll href="/activity" onClick={() => handleViewAllClick('activity')}>
               View All
-              <FaCalendar size={14} />
             </ViewAll>
           </SectionHeader>
           <RecentActivity>
