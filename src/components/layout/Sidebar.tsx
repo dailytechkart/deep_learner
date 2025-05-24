@@ -59,7 +59,7 @@ const NavLink = styled(Link)<{ isActive: boolean }>`
   color: ${props => (props.isActive ? props.theme.colors.primary : props.theme.colors.text)};
   background: ${props => (props.isActive ? props.theme.colors.primary + '10' : 'transparent')};
   border-radius: ${props => props.theme.borderRadius.md};
-  font-size: ${props => props.theme.typography.fontSize.md};
+  font-size: ${props => props.theme.typography.fontSize.base};
   font-weight: ${props => props.theme.typography.fontWeight.medium};
   transition: all 0.2s ease;
   text-decoration: none;
@@ -90,7 +90,7 @@ const LogoutButton = styled.button`
   background: transparent;
   border: none;
   border-radius: ${props => props.theme.borderRadius.md};
-  font-size: ${props => props.theme.typography.fontSize.md};
+  font-size: ${props => props.theme.typography.fontSize.base};
   font-weight: ${props => props.theme.typography.fontWeight.medium};
   cursor: pointer;
   transition: all 0.2s ease;

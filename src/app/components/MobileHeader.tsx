@@ -78,7 +78,7 @@ interface MobileHeaderProps {
 
 const MobileHeader: React.FC<MobileHeaderProps> = ({ onMenuClick }) => {
   const { isDarkMode, toggleTheme } = useTheme();
-  const { user } = useAuth();
+  const { user: _user } = useAuth();
 
   return (
     <MobileHeaderContainer>

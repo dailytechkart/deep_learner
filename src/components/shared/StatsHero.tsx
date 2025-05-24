@@ -94,4 +94,4 @@ export const StatsHero: React.FC<StatsHeroProps> = ({ title, description, stats 
       ))}
     </StatsRow>
   </Container>
-); 
+);

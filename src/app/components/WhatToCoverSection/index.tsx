@@ -98,7 +98,7 @@ const PointContent = styled.div`
 `;
 
 const PointTitle = styled.h4`
-  font-size: ${props => props.theme.typography.fontSize.md};
+  font-size: ${props => props.theme.typography.fontSize.base};
   font-weight: ${props => props.theme.typography.fontWeight.semibold};
   color: ${props => props.theme.colors.text};
   margin: 0 0 ${props => props.theme.spacing.xs};
@@ -143,7 +143,7 @@ export const WhatToCoverSection: React.FC<WhatToCoverSectionProps> = ({ timeLimi
   return (
     <Card>
       <CardHeader>
-        <CardTitle>What We'll Cover</CardTitle>
+        <CardTitle>What We&apos;ll Cover</CardTitle>
         <TimeLimit>
           <span>⏱️</span>
           {timeLimit} minutes

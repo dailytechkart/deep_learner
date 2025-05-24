@@ -10,6 +10,7 @@ declare module 'styled-components' {
       background: string;
       backgroundAlt: string;
       backgroundHover: string;
+      cardBackground: string;
       sidebar: string;
       text: string;
       textSecondary: string;
@@ -22,6 +23,11 @@ declare module 'styled-components' {
       solutionBackground: string;
 
       // Status colors
+      success: string;
+      error: string;
+      errorBackground: string;
+      warning: string;
+      info: string;
       status: {
         success: string;
         error: string;
@@ -60,6 +66,11 @@ declare module 'styled-components' {
 
       // System Design specific colors
       systemDesign: {
+        primary: string;
+        secondary: string;
+        accent: string;
+        background: string;
+        text: string;
         architecture: string;
         patterns: string;
         scalability: string;
@@ -67,7 +78,6 @@ declare module 'styled-components' {
         performance: string;
         reliability: string;
         microservices: string;
-        cloud: string;
       };
     };
     fonts: {
@@ -99,11 +109,13 @@ declare module 'styled-components' {
       sm: string;
       md: string;
       lg: string;
+      xl: string;
     };
     typography: {
       fontSize: {
         xs: string;
         sm: string;
+        base: string;
         md: string;
         lg: string;
         xl: string;
@@ -172,6 +184,10 @@ declare module 'styled-components' {
       mobile: string;
       tablet: string;
       desktop: string;
+      sm: string;
+      md: string;
+      lg: string;
+      xl: string;
     };
   }
 }
@@ -184,6 +200,7 @@ export const lightTheme: DefaultTheme = {
     background: '#ffffff',
     backgroundAlt: '#f5f5f5',
     backgroundHover: '#f0f0f0',
+    cardBackground: '#ffffff',
     sidebar: '#f5f5f5',
     text: '#1e1e1e',
     textSecondary: '#666666',
@@ -192,6 +209,11 @@ export const lightTheme: DefaultTheme = {
     practiceBackground: '#ffffff',
     problemBackground: '#ffffff',
     solutionBackground: '#ffffff',
+    success: '#2ECC71',
+    error: '#E74C3C',
+    errorBackground: '#fee2e2',
+    warning: '#F1C40F',
+    info: '#3498DB',
     status: {
       success: '#2ECC71',
       error: '#E74C3C',
@@ -222,6 +244,11 @@ export const lightTheme: DefaultTheme = {
     gradient3: 'linear-gradient(135deg, #FF6B6B 0%, #E17055 100%)',
     gradient4: 'linear-gradient(135deg, #FFD93D 0%, #FDCB6E 100%)',
     systemDesign: {
+      primary: '#6C5CE7',
+      secondary: '#00B894',
+      accent: '#FFD93D',
+      background: '#ffffff',
+      text: '#1e1e1e',
       architecture: '#6C5CE7',
       patterns: '#00B894',
       scalability: '#FF6B6B',
@@ -229,7 +256,6 @@ export const lightTheme: DefaultTheme = {
       performance: '#FFD93D',
       reliability: '#95E1D3',
       microservices: '#E17055',
-      cloud: '#3498DB',
     },
   },
   fonts: {
@@ -262,11 +288,13 @@ export const lightTheme: DefaultTheme = {
     sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
     md: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
     lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+    xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
   },
   typography: {
     fontSize: {
       xs: '0.75rem',
       sm: '0.875rem',
+      base: '1rem',
       md: '1rem',
       lg: '1.125rem',
       xl: '1.25rem',
@@ -335,6 +363,10 @@ export const lightTheme: DefaultTheme = {
     mobile: '640px',
     tablet: '768px',
     desktop: '1024px',
+    sm: '640px',
+    md: '768px',
+    lg: '1024px',
+    xl: '1280px',
   },
 };
 
@@ -346,6 +378,7 @@ export const darkTheme: DefaultTheme = {
     background: '#1a1a1a',
     backgroundAlt: '#2d2d2d',
     backgroundHover: '#3d3d3d',
+    cardBackground: '#2d2d2d',
     sidebar: '#2d2d2d',
     text: '#ffffff',
     textSecondary: '#a0a0a0',
@@ -354,6 +387,11 @@ export const darkTheme: DefaultTheme = {
     practiceBackground: '#2d2d2d',
     problemBackground: '#2d2d2d',
     solutionBackground: '#2d2d2d',
+    success: '#2ECC71',
+    error: '#E74C3C',
+    errorBackground: '#fee2e2',
+    warning: '#F1C40F',
+    info: '#3498DB',
     status: {
       success: '#2ECC71',
       error: '#E74C3C',
@@ -384,6 +422,11 @@ export const darkTheme: DefaultTheme = {
     gradient3: 'linear-gradient(135deg, #FF6B6B 0%, #E17055 100%)',
     gradient4: 'linear-gradient(135deg, #FFD93D 0%, #FDCB6E 100%)',
     systemDesign: {
+      primary: '#6C5CE7',
+      secondary: '#00B894',
+      accent: '#FFD93D',
+      background: '#2d2d2d',
+      text: '#ffffff',
       architecture: '#6C5CE7',
       patterns: '#00B894',
       scalability: '#FF6B6B',
@@ -391,7 +434,6 @@ export const darkTheme: DefaultTheme = {
       performance: '#FFD93D',
       reliability: '#95E1D3',
       microservices: '#E17055',
-      cloud: '#3498DB',
     },
   },
   fonts: {
@@ -424,11 +466,13 @@ export const darkTheme: DefaultTheme = {
     sm: '0 1px 2px 0 rgba(0, 0, 0, 0.2)',
     md: '0 4px 6px -1px rgba(0, 0, 0, 0.3)',
     lg: '0 10px 15px -3px rgba(0, 0, 0, 0.3)',
+    xl: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
   },
   typography: {
     fontSize: {
       xs: '0.75rem',
       sm: '0.875rem',
+      base: '1rem',
       md: '1rem',
       lg: '1.125rem',
       xl: '1.25rem',
@@ -497,5 +541,9 @@ export const darkTheme: DefaultTheme = {
     mobile: '640px',
     tablet: '768px',
     desktop: '1024px',
+    sm: '640px',
+    md: '768px',
+    lg: '1024px',
+    xl: '1280px',
   },
 };

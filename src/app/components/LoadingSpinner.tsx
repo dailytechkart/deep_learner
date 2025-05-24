@@ -25,7 +25,7 @@ const Spinner = styled.div`
 
 const LoadingText = styled.p`
   color: ${props => props.theme.colors.text};
-  font-size: ${props => props.theme.typography.fontSize.md};
+  font-size: ${props => props.theme.typography.fontSize.base};
   margin: 0;
 `;
 

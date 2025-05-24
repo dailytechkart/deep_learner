@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
   Layout,
@@ -9,7 +9,7 @@ import {
   SectionTitle,
   SectionContent,
   Grid,
-} from '../../components/Layout';
+} from '@/app/components/layout';
 import Link from 'next/link';
 import {
   PageContainer,
@@ -20,6 +20,9 @@ import {
 } from '../../components/StyledComponents';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import SEO from '@/components/SEO';
+import MainLayout from '@/components/MainLayout';
+import { db } from '@/app/lib/firebase/config';
+import { collection, getDocs } from 'firebase/firestore';
 
 const Card = styled.div`
   background: ${props => props.theme.colors.background};
@@ -78,181 +81,74 @@ const Badge = styled.span`
   display: inline-block;
 `;
 
-export default function SystemDesignPatternsPage() {
-  const patterns = [
-    {
-      title: 'Component Architecture',
-      description:
-        'Design reusable, maintainable, and scalable component hierarchies for modern web applications.',
-      category: 'Frontend',
-      link: '/system-design/patterns/component-architecture',
-    },
-    {
-      title: 'State Management',
-      description:
-        'Implement efficient state management patterns for complex frontend applications.',
-      category: 'Frontend',
-      link: '/system-design/patterns/state-management',
-    },
-    {
-      title: 'Micro Frontends',
-      description:
-        'Break down frontend monoliths into smaller, independently deployable applications.',
-      category: 'Frontend',
-      link: '/system-design/patterns/micro-frontends',
-    },
-    {
-      title: 'Load Balancer Pattern',
-      description:
-        'Distribute incoming network traffic across multiple servers to ensure high availability and reliability.',
-      category: 'Backend',
-      link: '/system-design/patterns/load-balancer',
-    },
-    {
-      title: 'Caching Pattern',
-      description:
-        'Store frequently accessed data in memory to improve response time and reduce database load.',
-      category: 'Backend',
-      link: '/system-design/patterns/caching',
-    },
-    {
-      title: 'Circuit Breaker Pattern',
-      description:
-        'Prevent cascading failures by detecting and handling faults in distributed systems.',
-      category: 'Backend',
-      link: '/system-design/patterns/circuit-breaker',
-    },
-    {
-      title: 'Event-Driven Architecture',
-      description:
-        'Design systems that communicate through events, enabling loose coupling and scalability.',
-      category: 'Architecture',
-      link: '/system-design/patterns/event-driven',
-    },
-    {
-      title: 'Microservices Pattern',
-      description:
-        'Break down applications into small, independent services that can be developed and deployed separately.',
-      category: 'Architecture',
-      link: '/system-design/patterns/microservices',
-    },
-    {
-      title: 'Database Sharding',
-      description:
-        'Split a database into smaller, more manageable pieces to improve performance and scalability.',
-      category: 'Backend',
-      link: '/system-design/patterns/sharding',
-    },
-  ];
+interface SystemDesignPattern {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  complexity: string;
+  use_cases: string[];
+  examples: string[];
+  created_at: string;
+  updated_at: string;
+}
+
+async function getPatterns(): Promise<SystemDesignPattern[]> {
+  try {
+    const patternsSnapshot = await getDocs(collection(db, 'system_design_patterns'));
+    return patternsSnapshot.docs.map(
+      doc =>
+        ({
+          id: doc.id,
+          ...doc.data(),
+        }) as SystemDesignPattern
+    );
+  } catch (error) {
+    console.error('Error fetching patterns:', error);
+    return [];
+  }
+}
+
+export default async function SystemDesignPatternsPage() {
+  const patterns = await getPatterns();
 
   return (
-    <>
-      <SEO
-        title="System Design Patterns"
-        description="Learn about common system design patterns and architectural solutions. Understand how to apply these patterns to build scalable and maintainable systems."
-        keywords={[
-          'system design',
-          'design patterns',
-          'architecture patterns',
-          'scalability patterns',
-          'distributed systems',
-          'microservices',
-          'event-driven architecture',
-        ]}
-      />
-      <PageContainer>
-        <MainContent>
-          <Breadcrumbs
-            items={[{ label: 'System Design', href: '/system-design' }, { label: 'Patterns' }]}
-          />
-          <Title>System Design Patterns</Title>
-          <Description>
-            Learn about common system design patterns and architectural solutions. Understand how to
-            apply these patterns to build scalable and maintainable systems.
-          </Description>
-
-          <Section>
-            <SectionTitle>Microservices Architecture</SectionTitle>
-            <Content>
-              <p>
-                Breaking down applications into small, independent services that communicate through
-                APIs. Benefits include:
-              </p>
-              <ul>
-                <li>Independent deployment and scaling</li>
-                <li>Technology diversity</li>
-                <li>Fault isolation</li>
-                <li>Team autonomy</li>
-              </ul>
-            </Content>
-          </Section>
-
-          <Section>
-            <SectionTitle>Event-Driven Architecture</SectionTitle>
-            <Content>
-              <p>
-                Using events to trigger and communicate between decoupled services. Key components:
-              </p>
-              <ul>
-                <li>Event producers and consumers</li>
-                <li>Message brokers</li>
-                <li>Event stores</li>
-                <li>Event processing patterns</li>
-              </ul>
-            </Content>
-          </Section>
-
-          <Section>
-            <SectionTitle>Circuit Breaker Pattern</SectionTitle>
-            <Content>
-              <p>
-                Preventing cascading failures in distributed systems by monitoring for failures and
-                stopping the flow of requests when necessary.
-              </p>
-              <h3>States</h3>
-              <ul>
-                <li>Closed (normal operation)</li>
-                <li>Open (failing fast)</li>
-                <li>Half-open (testing recovery)</li>
-              </ul>
-            </Content>
-          </Section>
-
-          <Section>
-            <SectionTitle>CQRS Pattern</SectionTitle>
-            <Content>
-              <p>
-                Command Query Responsibility Segregation separates read and write operations for
-                better scalability and performance.
-              </p>
-              <h3>Components</h3>
-              <ul>
-                <li>Command model (write operations)</li>
-                <li>Query model (read operations)</li>
-                <li>Event sourcing</li>
-                <li>Materialized views</li>
-              </ul>
-            </Content>
-          </Section>
-
-          <Section>
-            <SectionTitle>Load Balancing Patterns</SectionTitle>
-            <Content>
-              <p>
-                Distributing incoming network traffic across multiple servers to ensure reliability
-                and performance.
-              </p>
-              <h3>Strategies</h3>
-              <ul>
-                <li>Round-robin</li>
-                <li>Least connections</li>
-                <li>IP hash</li>
-                <li>Weighted distribution</li>
-              </ul>
-            </Content>
-          </Section>
-        </MainContent>
-      </PageContainer>
-    </>
+    <MainLayout>
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-8">System Design Patterns</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {patterns.map(pattern => (
+            <div key={pattern.id} className="bg-white rounded-lg shadow-md p-6">
+              <h2 className="text-xl font-semibold mb-2">{pattern.name}</h2>
+              <p className="text-gray-600 mb-4">{pattern.description}</p>
+              <div className="space-y-2">
+                <div>
+                  <span className="font-medium">Category:</span> {pattern.category}
+                </div>
+                <div>
+                  <span className="font-medium">Complexity:</span> {pattern.complexity}
+                </div>
+                <div>
+                  <span className="font-medium">Use Cases:</span>
+                  <ul className="list-disc list-inside ml-2">
+                    {pattern.use_cases.map((useCase, index) => (
+                      <li key={index}>{useCase}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <span className="font-medium">Examples:</span>
+                  <ul className="list-disc list-inside ml-2">
+                    {pattern.examples.map((example, index) => (
+                      <li key={index}>{example}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </MainLayout>
   );
 }

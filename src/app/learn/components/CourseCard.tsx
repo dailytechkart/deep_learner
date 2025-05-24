@@ -168,7 +168,7 @@ const CourseTitle = styled.h3`
   word-break: break-word;
 
   @media (max-width: 768px) {
-    font-size: ${props => props.theme.typography.fontSize.md};
+    font-size: ${props => props.theme.typography.fontSize.base};
   }
 `;
 

@@ -1,83 +1,69 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from '../auth';
-import { practiceService } from '@/app/services/practiceService';
-import { QuestionCategory, QuestionDifficulty } from '@/app/types/practice';
+import { cookies } from 'next/headers';
+import { adminAuth } from '@/lib/firebase-admin';
+import { db } from '@/lib/firebase';
+import { collection, addDoc, getDocs, query, orderBy, Timestamp } from 'firebase/firestore';
+import type { NextRequest } from 'next/server';
 
-export async function POST(request: Request) {
+async function requireAuth(request: NextRequest) {
+  const cookieStore = cookies();
+  const token = cookieStore.get('auth_token')?.value;
+
+  if (!token) {
+    throw new Error('No token provided');
+  }
+
   try {
-    // Check authentication
-    const session = await getServerSession();
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    // Parse request body
-    const body = await request.json();
-    const { question, options, correctAnswer, explanation, category, difficulty, points } = body;
-
-    // Validate required fields
-    if (!question || !options || !correctAnswer || !category || !difficulty) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-    }
-
-    // Validate category
-    if (!Object.values(QuestionCategory).includes(category)) {
-      return NextResponse.json({ error: 'Invalid category' }, { status: 400 });
-    }
-
-    // Validate difficulty
-    if (!Object.values(QuestionDifficulty).includes(difficulty)) {
-      return NextResponse.json({ error: 'Invalid difficulty' }, { status: 400 });
-    }
-
-    // Create question
-    const questionId = await practiceService.createQuestion({
-      question,
-      options,
-      correctAnswer,
-      explanation,
-      category,
-      difficulty,
-      points: points || 10, // Default points if not provided
-      createdBy: session.user.uid,
-    });
-
-    return NextResponse.json({
-      success: true,
-      questionId,
-    });
-  } catch (error: any) {
-    console.error('Error creating question:', error);
-    return NextResponse.json(
-      { error: error.message || 'Failed to create question' },
-      { status: 500 }
-    );
+    const decodedToken = await adminAuth.verifyIdToken(token);
+    return decodedToken;
+  } catch (error) {
+    console.error('Error verifying token:', error);
+    throw new Error('Invalid token');
   }
 }
 
-export async function GET(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    // Check authentication
-    const session = await getServerSession();
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const decodedToken = await requireAuth(request);
+    const body = await request.json();
 
-    // Get category from query params
-    const { searchParams } = new URL(request.url);
-    const category = searchParams.get('category') as QuestionCategory;
+    // Insert question into Firestore
+    const questionData = {
+      ...body,
+      user_id: decodedToken.uid,
+      created_at: Timestamp.now(),
+      updated_at: Timestamp.now(),
+    };
 
-    // Fetch questions
-    const questions = category
-      ? await practiceService.getQuestionsByCategory(category)
-      : await practiceService.getAllQuestions();
+    const docRef = await addDoc(collection(db, 'questions'), questionData);
+    const question = {
+      id: docRef.id,
+      ...questionData,
+    };
+
+    return NextResponse.json({ question });
+  } catch (error) {
+    console.error('Error creating question:', error);
+    return NextResponse.json({ error: 'Failed to create question' }, { status: 500 });
+  }
+}
+
+export async function GET(request: NextRequest) {
+  try {
+    await requireAuth(request);
+
+    // Get questions from Firestore
+    const questionsQuery = query(collection(db, 'questions'), orderBy('created_at', 'desc'));
+
+    const questionsSnapshot = await getDocs(questionsQuery);
+    const questions = questionsSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
 
     return NextResponse.json({ questions });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error fetching questions:', error);
-    return NextResponse.json(
-      { error: error.message || 'Failed to fetch questions' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch questions' }, { status: 500 });
   }
 }

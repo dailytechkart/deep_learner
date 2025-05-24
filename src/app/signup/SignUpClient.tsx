@@ -28,9 +28,8 @@ export default function SignUpClient() {
       console.log('User state:', {
         uid: user.uid,
         email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL,
-        emailVerified: user.emailVerified,
+        user_metadata: user.user_metadata,
+        role: user.role,
       });
     }
   }, [user]);

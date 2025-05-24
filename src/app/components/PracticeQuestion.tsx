@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { PracticeQuestion as QuestionType, UserPracticeProgress } from '../types/practice';
+import { PracticeQuestion as QuestionType } from '../types/practice';
 import { usePractice } from '../hooks/usePractice';
 import styled from 'styled-components';
+import { Question, QuestionDifficulty } from '@/app/types';
 
 interface PracticeQuestionProps {
   question: QuestionType;

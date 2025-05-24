@@ -16,8 +16,8 @@ export async function POST(request: NextRequest, { params }: { params: { provide
     const mockToken = `mock_${provider}_token_${Date.now()}`;
 
     return NextResponse.json({ token: mockToken });
-  } catch (error) {
-    console.error('Sign-up error:', error);
+  } catch (_error) {
+    console.error('Sign-up error:', _error);
     return NextResponse.json({ error: 'Failed to sign up' }, { status: 500 });
   }
 }

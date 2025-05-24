@@ -1,65 +1,89 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAuth } from '@/app/lib/server-auth';
-import { getFirestore } from 'firebase-admin/firestore';
+import { cookies } from 'next/headers';
+import { adminAuth } from '@/lib/firebase-admin';
+import { db } from '@/lib/firebase';
+import { doc, getDoc, updateDoc, Timestamp } from 'firebase/firestore';
 
-const db = getFirestore();
+async function requireAuth(request: NextRequest) {
+  const cookieStore = cookies();
+  const token = cookieStore.get('auth_token')?.value;
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+  if (!token) {
+    throw new Error('No token provided');
+  }
+
   try {
-    const session = await requireAuth(request);
-    const problemId = params.id;
-
-    const problemDoc = await db.collection('systemDesignProblems').doc(problemId).get();
-
-    if (!problemDoc.exists) {
-      return NextResponse.json({ message: 'Problem not found' }, { status: 404 });
-    }
-
-    const problemData = problemDoc.data();
-
-    // Get user's progress for this problem
-    const progressDoc = await db
-      .collection('users')
-      .doc(session.uid)
-      .collection('problemProgress')
-      .doc(problemId)
-      .get();
-
-    const progressData = progressDoc.exists ? progressDoc.data() : null;
-
-    return NextResponse.json({
-      ...problemData,
-      progress: progressData,
-    });
+    const decodedToken = await adminAuth.verifyIdToken(token);
+    return decodedToken;
   } catch (error) {
-    console.error('Error fetching system design problem:', error);
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+    console.error('Error verifying token:', error);
+    throw new Error('Invalid token');
   }
 }
 
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+async function handler(request: NextRequest) {
+  const patternId = request.url.split('/').pop();
+
+  if (!patternId) {
+    return NextResponse.json({ error: 'Pattern ID is required' }, { status: 400 });
+  }
+
+  const patternDoc = await getDoc(doc(db, 'system_design_patterns', patternId));
+
+  if (!patternDoc.exists()) {
+    return NextResponse.json({ error: 'Pattern not found' }, { status: 404 });
+  }
+
+  const pattern = {
+    id: patternDoc.id,
+    ...patternDoc.data(),
+  };
+
+  return NextResponse.json(pattern);
+}
+
+export async function GET(request: NextRequest) {
   try {
-    const session = await requireAuth(request);
-    const problemId = params.id;
+    await requireAuth(request);
+    return handler(request);
+  } catch (error) {
+    console.error('Error in system design GET:', error);
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const decodedToken = await requireAuth(request);
+    const patternId = request.url.split('/').pop();
     const body = await request.json();
 
-    // Update user's progress for this problem
-    await db
-      .collection('users')
-      .doc(session.uid)
-      .collection('problemProgress')
-      .doc(problemId)
-      .set(
-        {
-          ...body,
-          updatedAt: new Date(),
-        },
-        { merge: true }
-      );
+    if (!patternId) {
+      return NextResponse.json({ error: 'Pattern ID is required' }, { status: 400 });
+    }
 
-    return NextResponse.json({ message: 'Progress updated successfully' });
+    const patternRef = doc(db, 'system_design_patterns', patternId);
+    const updateData = {
+      ...body,
+      updated_at: Timestamp.now(),
+      updated_by: decodedToken.uid,
+    };
+
+    await updateDoc(patternRef, updateData);
+    const updatedDoc = await getDoc(patternRef);
+
+    if (!updatedDoc.exists()) {
+      return NextResponse.json({ error: 'Pattern not found' }, { status: 404 });
+    }
+
+    const updatedPattern = {
+      id: updatedDoc.id,
+      ...updatedDoc.data(),
+    };
+
+    return NextResponse.json(updatedPattern);
   } catch (error) {
-    console.error('Error updating problem progress:', error);
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+    console.error('Error updating pattern:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

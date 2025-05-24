@@ -28,10 +28,18 @@ export interface Problem {
   difficulty: Difficulty;
   companies: Company[];
   tags: Tag[];
+  url: string;
 }
 
 export interface ProblemData {
   problems: Problem[];
+}
+
+export interface ProblemFilters {
+  topics: Topic[];
+  difficulty: Difficulty[];
+  companies: Company[];
+  tags: Tag[];
 }
 
 export interface FilterSection {

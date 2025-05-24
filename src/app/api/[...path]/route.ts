@@ -35,6 +35,11 @@ interface Topic {
   };
 }
 
+interface QueryResult {
+  insertId: number;
+  affectedRows: number;
+}
+
 // Topic model
 const TopicModel = {
   async getAll(): Promise<Topic[]> {
@@ -64,7 +69,7 @@ const TopicModel = {
         JSON.stringify(topic.quiz || null),
       ]
     );
-    return { id: (result as any).insertId, ...topic };
+    return { id: (result as QueryResult).insertId.toString(), ...topic };
   },
 
   async update(id: string, topic: Partial<Topic>): Promise<boolean> {
@@ -80,12 +85,12 @@ const TopicModel = {
         id,
       ]
     );
-    return (result as any).affectedRows > 0;
+    return (result as QueryResult).affectedRows > 0;
   },
 
   async delete(id: string): Promise<boolean> {
     const [result] = await pool.query('DELETE FROM topics WHERE id = ?', [id]);
-    return (result as any).affectedRows > 0;
+    return (result as QueryResult).affectedRows > 0;
   },
 };
 
@@ -120,7 +125,7 @@ export async function GET(request: NextRequest) {
     }
 
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
@@ -133,7 +138,7 @@ export async function POST(request: NextRequest) {
       const body = await request.json();
       const topic = await TopicModel.create(body);
       return NextResponse.json(topic, { status: 201 });
-    } catch (error) {
+    } catch (_error) {
       return NextResponse.json({ error: 'Failed to create topic' }, { status: 500 });
     }
   }
@@ -153,7 +158,7 @@ export async function PUT(request: NextRequest) {
         return NextResponse.json({ error: 'Topic not found' }, { status: 404 });
       }
       return NextResponse.json({ message: 'Topic updated successfully' });
-    } catch (error) {
+    } catch (_error) {
       return NextResponse.json({ error: 'Failed to update topic' }, { status: 500 });
     }
   }
@@ -172,7 +177,7 @@ export async function DELETE(request: NextRequest) {
         return NextResponse.json({ error: 'Topic not found' }, { status: 404 });
       }
       return NextResponse.json({ message: 'Topic deleted successfully' });
-    } catch (error) {
+    } catch (_error) {
       return NextResponse.json({ error: 'Failed to delete topic' }, { status: 500 });
     }
   }

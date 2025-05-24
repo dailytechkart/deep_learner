@@ -8,7 +8,7 @@ import {
   UserPracticeProgress,
   QuestionCategory,
 } from '../types/practice';
-import { useAuth } from './useAuth';
+import { useAuth } from '../context/AuthContext';
 
 export const usePractice = () => {
   const [questions, setQuestions] = useState<PracticeQuestion[]>([]);

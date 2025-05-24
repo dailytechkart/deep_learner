@@ -63,18 +63,14 @@ export const TopicsGrid: React.FC<TopicsGridProps> = ({ topics }) => {
     <>
       <SectionHeading>System Design Topics</SectionHeading>
       <SectionDescription>
-        Explore comprehensive system design topics and patterns. Click a topic to start learning
-        and practicing system design concepts.
+        Explore comprehensive system design topics and patterns. Click a topic to start learning and
+        practicing system design concepts.
       </SectionDescription>
       <Grid>
         {topics.map(topic => (
-          <TopicCard
-            key={topic.id}
-            {...topic}
-            isPremium={topic.tags.includes('premium')}
-          />
+          <TopicCard key={topic.id} {...topic} isPremium={topic.tags.includes('premium')} />
         ))}
       </Grid>
     </>
   );
-}; 
+};

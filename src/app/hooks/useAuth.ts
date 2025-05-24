@@ -1,78 +1,133 @@
 import { useState, useEffect } from 'react';
-import { getAuth, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { getApp } from 'firebase/app';
-import { setupTokenRefresh } from '../lib/client-auth';
+import { auth, db } from '@/lib/firebase';
+import { User } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  GithubAuthProvider,
+  onAuthStateChanged,
+} from 'firebase/auth';
 
-export interface User {
-  uid: string;
-  email: string | null;
-  emailVerified: boolean;
+export interface UserProfile {
+  id: string;
+  email: string;
+  name?: string;
+  avatar_url?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const auth = getAuth(getApp());
-    const unsubscribe = setupTokenRefresh();
+    const unsubscribe = onAuthStateChanged(auth, async user => {
+      setUser(user);
 
-    const authListener = auth.onAuthStateChanged(
-      user => {
-        if (user) {
-          setUser({
-            uid: user.uid,
-            email: user.email,
-            emailVerified: user.emailVerified,
-          });
-        } else {
-          setUser(null);
+      if (user) {
+        try {
+          const userDoc = await getDoc(doc(db, 'users', user.uid));
+          if (userDoc.exists()) {
+            setProfile(userDoc.data() as UserProfile);
+          } else {
+            // Create user profile if it doesn't exist
+            const newProfile: UserProfile = {
+              id: user.uid,
+              email: user.email!,
+              name: user.displayName || undefined,
+              avatar_url: user.photoURL || undefined,
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString(),
+            };
+            await setDoc(doc(db, 'users', user.uid), newProfile);
+            setProfile(newProfile);
+          }
+          setError(null);
+        } catch (error) {
+          console.error('Error fetching user profile:', error);
+          setError('Failed to fetch user profile');
         }
-        setLoading(false);
-      },
-      error => {
-        console.error('Auth state change error:', error);
-        setError(error as Error);
-        setLoading(false);
+      } else {
+        setProfile(null);
       }
-    );
 
-    return () => {
-      authListener();
-      unsubscribe();
-    };
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   const signIn = async (email: string, password: string) => {
     try {
       setError(null);
-      const auth = getAuth(getApp());
-      await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      return userCredential;
     } catch (error) {
-      console.error('Sign in error:', error);
-      setError(error as Error);
+      setError('Failed to sign in');
       throw error;
     }
   };
 
-  const logout = async () => {
+  const signUp = async (email: string, password: string) => {
     try {
       setError(null);
-      const auth = getAuth(getApp());
-      await signOut(auth);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      return userCredential;
     } catch (error) {
-      console.error('Logout error:', error);
-      setError(error as Error);
+      setError('Failed to sign up');
+      throw error;
+    }
+  };
+
+  const signInWithGoogle = async () => {
+    try {
+      setError(null);
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      return result;
+    } catch (error) {
+      setError('Failed to sign in with Google');
+      throw error;
+    }
+  };
+
+  const signInWithGithub = async () => {
+    try {
+      setError(null);
+      const provider = new GithubAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      return result;
+    } catch (error) {
+      setError('Failed to sign in with GitHub');
+      throw error;
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      setError(null);
+      await auth.signOut();
+    } catch (error) {
+      setError('Failed to sign out');
       throw error;
     }
   };
 
   return {
     user,
+    profile,
     loading,
     error,
     signIn,
-    logout,
+    signUp,
+    signInWithGoogle,
+    signInWithGithub,
+    signOut,
   };
 }

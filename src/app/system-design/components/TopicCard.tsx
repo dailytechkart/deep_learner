@@ -9,7 +9,9 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
   border: 1px solid ${props => props.theme.colors.border};
   position: relative;
 
@@ -224,4 +226,4 @@ export const TopicCard: React.FC<TopicCardProps> = ({
       </ActionBar>
     </Card>
   );
-}; 
+};

@@ -1,6 +1,17 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { adminAuth } from './firebaseAdmin';
+import { auth, db } from './firebase';
+import { User } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  updatePassword as firebaseUpdatePassword,
+} from 'firebase/auth';
+import { adminAuth } from './firebase-admin';
+
+export type AuthUser = User;
 
 export async function getServerSession() {
   const cookieStore = cookies();
@@ -11,7 +22,6 @@ export async function getServerSession() {
   }
 
   try {
-    // Verify the token with Firebase Admin
     const decodedToken = await adminAuth.verifyIdToken(token);
     return decodedToken;
   } catch (error) {
@@ -76,3 +86,102 @@ export async function getAuthRedirect(pathname: string) {
 
   return session;
 }
+
+export const signIn = async (email: string, password: string) => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    return userCredential;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const signUp = async (email: string, password: string) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    return userCredential;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export async function createSession() {
+  try {
+    // Get the current user's ID token
+    const user = auth.currentUser;
+    if (!user) {
+      throw new Error('No user logged in');
+    }
+
+    const idToken = await user.getIdToken();
+
+    // Call the session API to create a session cookie
+    const response = await fetch('/api/auth/session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ idToken }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to create session');
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error creating session:', error);
+    return false;
+  }
+}
+
+export async function signOut() {
+  try {
+    // Sign out from Firebase
+    await auth.signOut();
+
+    // Call the signout API to clear the session cookie
+    await fetch('/api/auth/signout', {
+      method: 'POST',
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Error signing out:', error);
+    return false;
+  }
+}
+
+export const getCurrentUser = async () => {
+  try {
+    const user = auth.currentUser;
+    if (!user) return null;
+
+    // Get additional user data from Firestore if needed
+    const userDoc = await getDoc(doc(db, 'users', user.uid));
+    return {
+      ...user,
+      ...userDoc.data(),
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const resetPassword = async (email: string) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updatePassword = async (newPassword: string) => {
+  try {
+    const user = auth.currentUser;
+    if (!user) throw new Error('No user logged in');
+    await firebaseUpdatePassword(user, newPassword);
+  } catch (error) {
+    throw error;
+  }
+};
