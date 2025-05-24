@@ -1,36 +1,42 @@
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
+import { adminAuth } from '@/lib/firebase-admin';
+import { db } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import { SignJWT } from 'jose';
+import { auth } from '@/lib/firebase';
 
 export async function GET() {
   try {
-    const supabase = createRouteHandlerClient({ cookies });
-    
-    const { data: { session }, error } = await supabase.auth.getSession();
-    
-    if (error || !session) {
-      return NextResponse.json({ error: 'No active session' }, { status: 401 });
+    const cookieStore = cookies();
+    const token = cookieStore.get('auth_token')?.value;
+
+    if (!token) {
+      return NextResponse.json({ error: 'No token provided' }, { status: 401 });
     }
 
-    // Get user role from profiles table
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', session.user.id)
-      .single();
+    try {
+      const decodedToken = await adminAuth.verifyIdToken(token);
+      const userDoc = await getDoc(doc(db, 'users', decodedToken.uid));
 
-    return NextResponse.json({
-      user: {
-        id: session.user.id,
-        email: session.user.email,
-        emailVerified: session.user.email_confirmed_at !== null,
-        role: profile?.role,
-      },
-      message: 'Session is valid',
-    });
+      if (!userDoc.exists()) {
+        return NextResponse.json({ error: 'User profile not found' }, { status: 404 });
+      }
+
+      return NextResponse.json({
+        user: {
+          id: decodedToken.uid,
+          email: decodedToken.email,
+          ...userDoc.data(),
+        },
+      });
+    } catch (error) {
+      console.error('Error verifying token:', error);
+      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+    }
   } catch (error) {
-    console.error('Error getting session:', error);
-    return NextResponse.json({ error: 'Failed to get session' }, { status: 500 });
+    console.error('Error in session route:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -39,42 +45,51 @@ export async function POST(request: Request) {
     const { idToken } = await request.json();
 
     if (!idToken) {
-      return NextResponse.json({ error: 'No token provided' }, { status: 400 });
+      return NextResponse.json({ error: 'No ID token provided' }, { status: 400 });
     }
 
-    const supabase = createRouteHandlerClient({ cookies });
-    
-    // Exchange the ID token for a session
-    const { data: { session }, error } = await supabase.auth.setSession({
-      access_token: idToken,
-      refresh_token: '',
+    // Verify the Firebase ID token using Firebase Admin
+    const decodedToken = await adminAuth.verifyIdToken(idToken);
+
+    // Create a JWT session token
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+    const sessionToken = await new SignJWT({
+      sub: decodedToken.uid,
+      email: decodedToken.email,
+      name: decodedToken.name,
+      picture: decodedToken.picture,
+    })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setIssuedAt()
+      .setExpirationTime('7d') // Session expires in 7 days
+      .sign(secret);
+
+    // Create the response with the session cookie
+    const response = NextResponse.json({ success: true });
+
+    // Set the session cookie
+    response.cookies.set('auth_token', sessionToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
     });
 
-    if (error) {
-      throw error;
-    }
-
-    return NextResponse.json({ success: true, session });
+    return response;
   } catch (error) {
-    console.error('Error setting session:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error('Error creating session:', error);
+    return NextResponse.json({ error: 'Failed to create session' }, { status: 401 });
   }
 }
 
 export async function DELETE() {
   try {
-    const supabase = createRouteHandlerClient({ cookies });
-    
-    // Sign out the user
-    const { error } = await supabase.auth.signOut();
-    
-    if (error) {
-      throw error;
-    }
-
-    return NextResponse.json({ success: true });
+    const response = NextResponse.json({ success: true });
+    response.cookies.delete('auth_token');
+    return response;
   } catch (error) {
-    console.error('Error signing out:', error);
-    return NextResponse.json({ error: 'Failed to sign out' }, { status: 500 });
+    console.error('Error in session route:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

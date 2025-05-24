@@ -47,7 +47,7 @@ const SearchWrapper = styled.div`
 const SearchInput = styled.input`
   width: 100%;
   padding: 0.75rem 1rem 0.75rem 2.5rem;
-  font-size: ${props => props.theme.typography.fontSize.md};
+  font-size: ${props => props.theme.typography.fontSize.base};
   border: 1px solid ${props => props.theme.colors.border};
   border-radius: ${props => props.theme.borderRadius.md};
   background: ${props => props.theme.colors.background};
@@ -76,7 +76,7 @@ const SearchIcon = styled(FaSearch)`
 
 const SortSelect = styled.select`
   padding: 0.75rem 2.5rem 0.75rem 1rem;
-  font-size: ${props => props.theme.typography.fontSize.md};
+  font-size: ${props => props.theme.typography.fontSize.base};
   border: 1px solid ${props => props.theme.colors.border};
   border-radius: ${props => props.theme.borderRadius.md};
   background: ${props => props.theme.colors.background};

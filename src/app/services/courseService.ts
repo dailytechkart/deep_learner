@@ -1,161 +1,214 @@
+import { db } from '@/app/lib/firebase/config';
 import {
   collection,
   doc,
-  getDocs,
   getDoc,
-  setDoc,
+  getDocs,
+  addDoc,
   updateDoc,
+  deleteDoc,
   query,
   where,
-  orderBy,
   Timestamp,
 } from 'firebase/firestore';
-import { db } from '../lib/firebase/config';
 import { Course, UserCourse, UserProgress } from '../types/course';
 
-const COURSES_COLLECTION = 'courses';
-const USER_COURSES_COLLECTION = 'userCourses';
-const USER_PROGRESS_COLLECTION = 'userProgress';
-
-const ensureDb = () => {
-  if (!db) {
-    throw new Error('Firestore is not initialized');
+async function getAllCourses(): Promise<Course[]> {
+  try {
+    const coursesSnapshot = await getDocs(collection(db, 'courses'));
+    return coursesSnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        title: data.title,
+        description: data.description,
+        category: data.category,
+        level: data.level,
+        duration: data.duration,
+        lessons: data.lessons,
+        createdAt: new Date(data.created_at),
+        updatedAt: new Date(data.updated_at),
+      } as Course;
+    });
+  } catch (error) {
+    console.error('Error fetching courses:', error);
+    return [];
   }
-  return db;
-};
+}
 
-export const courseService = {
-  // Get all courses
-  async getAllCourses(): Promise<Course[]> {
-    const db = ensureDb();
-    const coursesRef = collection(db, COURSES_COLLECTION);
-    const snapshot = await getDocs(coursesRef);
-    return snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt: doc.data().createdAt.toDate(),
-      updatedAt: doc.data().updatedAt.toDate(),
-    })) as Course[];
-  },
-
-  // Get a single course
-  async getCourse(courseId: string): Promise<Course | null> {
-    const db = ensureDb();
-    const courseRef = doc(db, COURSES_COLLECTION, courseId);
-    const courseDoc = await getDoc(courseRef);
-
-    if (!courseDoc.exists()) return null;
-
+async function getCourseById(id: string): Promise<Course | null> {
+  try {
+    const courseDoc = await getDoc(doc(db, 'courses', id));
+    if (!courseDoc.exists()) {
+      return null;
+    }
     return {
       id: courseDoc.id,
       ...courseDoc.data(),
-      createdAt: courseDoc.data().createdAt.toDate(),
-      updatedAt: courseDoc.data().updatedAt.toDate(),
     } as Course;
-  },
+  } catch (error) {
+    console.error('Error fetching course:', error);
+    return null;
+  }
+}
 
-  // Get user's enrolled courses
-  async getUserCourses(userId: string): Promise<UserCourse[]> {
-    const db = ensureDb();
-    const userCoursesRef = collection(db, USER_COURSES_COLLECTION);
-    const q = query(userCoursesRef, where('userId', '==', userId), orderBy('enrolledAt', 'desc'));
-
-    const snapshot = await getDocs(q);
-    return snapshot.docs.map(doc => ({
-      ...doc.data(),
-      enrolledAt: doc.data().enrolledAt.toDate(),
-    })) as UserCourse[];
-  },
-
-  // Enroll user in a course
-  async enrollUserInCourse(userId: string, courseId: string): Promise<void> {
-    const db = ensureDb();
-    const userCourseRef = doc(db, USER_COURSES_COLLECTION, `${userId}_${courseId}`);
-    const userProgressRef = doc(db, USER_PROGRESS_COLLECTION, `${userId}_${courseId}`);
-
+async function createCourse(
+  course: Omit<Course, 'id' | 'created_at' | 'updated_at'>
+): Promise<Course | null> {
+  try {
     const now = Timestamp.now();
-
-    // Create user course document
-    await setDoc(userCourseRef, {
-      userId,
-      courseId,
-      enrolledAt: now,
-      status: 'not_started',
-    });
-
-    // Create initial progress document
-    await setDoc(userProgressRef, {
-      userId,
-      courseId,
-      completedLessons: [],
-      currentLesson: '',
-      progress: 0,
-      lastAccessed: now,
-      startedAt: now,
-    });
-  },
-
-  // Update user's course progress
-  async updateUserProgress(
-    userId: string,
-    courseId: string,
-    lessonId: string,
-    isCompleted: boolean
-  ): Promise<void> {
-    const db = ensureDb();
-    const progressRef = doc(db, USER_PROGRESS_COLLECTION, `${userId}_${courseId}`);
-    const userCourseRef = doc(db, USER_COURSES_COLLECTION, `${userId}_${courseId}`);
-
-    const progressDoc = await getDoc(progressRef);
-    if (!progressDoc.exists()) return;
-
-    const progress = progressDoc.data() as UserProgress;
-    const course = await this.getCourse(courseId);
-    if (!course) return;
-
-    const updatedCompletedLessons = isCompleted
-      ? [...new Set([...progress.completedLessons, lessonId])]
-      : progress.completedLessons.filter(id => id !== lessonId);
-
-    const totalLessons = course.lessons.length;
-    const newProgress = Math.round((updatedCompletedLessons.length / totalLessons) * 100);
-
-    // Update progress document
-    await updateDoc(progressRef, {
-      completedLessons: updatedCompletedLessons,
-      currentLesson: lessonId,
-      progress: newProgress,
-      lastAccessed: Timestamp.now(),
-    });
-
-    // Update user course status
-    let status = 'in_progress';
-    if (newProgress === 100) {
-      status = 'completed';
-      await updateDoc(progressRef, {
-        completedAt: Timestamp.now(),
-      });
-    }
-
-    await updateDoc(userCourseRef, {
-      status,
-      progress: newProgress,
-    });
-  },
-
-  // Get user's progress for a specific course
-  async getUserCourseProgress(userId: string, courseId: string): Promise<UserProgress | null> {
-    const db = ensureDb();
-    const progressRef = doc(db, USER_PROGRESS_COLLECTION, `${userId}_${courseId}`);
-    const progressDoc = await getDoc(progressRef);
-
-    if (!progressDoc.exists()) return null;
-
+    const courseData = {
+      ...course,
+      created_at: now.toDate().toISOString(),
+      updated_at: now.toDate().toISOString(),
+    };
+    const docRef = await addDoc(collection(db, 'courses'), courseData);
+    const newCourseDoc = await getDoc(docRef);
     return {
-      ...progressDoc.data(),
-      lastAccessed: progressDoc.data().lastAccessed.toDate(),
-      startedAt: progressDoc.data().startedAt.toDate(),
-      completedAt: progressDoc.data().completedAt?.toDate(),
+      id: newCourseDoc.id,
+      ...newCourseDoc.data(),
+    } as Course;
+  } catch (error) {
+    console.error('Error creating course:', error);
+    return null;
+  }
+}
+
+async function updateCourse(id: string, updates: Partial<Course>): Promise<Course | null> {
+  try {
+    const courseRef = doc(db, 'courses', id);
+    const now = Timestamp.now();
+    const updateData = {
+      ...updates,
+      updated_at: now.toDate().toISOString(),
+    };
+    await updateDoc(courseRef, updateData);
+    const updatedCourseDoc = await getDoc(courseRef);
+    return {
+      id: updatedCourseDoc.id,
+      ...updatedCourseDoc.data(),
+    } as Course;
+  } catch (error) {
+    console.error('Error updating course:', error);
+    return null;
+  }
+}
+
+async function deleteCourse(id: string): Promise<boolean> {
+  try {
+    await deleteDoc(doc(db, 'courses', id));
+    return true;
+  } catch (error) {
+    console.error('Error deleting course:', error);
+    return false;
+  }
+}
+
+async function getUserCourses(userId: string): Promise<UserCourse[]> {
+  try {
+    const userCoursesQuery = query(collection(db, 'user_courses'), where('user_id', '==', userId));
+    const userCoursesSnapshot = await getDocs(userCoursesQuery);
+    return userCoursesSnapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        userId: data.user_id,
+        courseId: data.course_id,
+        enrolledAt: new Date(data.created_at),
+        status: data.completed ? 'completed' : data.progress > 0 ? 'in_progress' : 'not_started',
+        progress: data.progress,
+      } as UserCourse;
+    });
+  } catch (error) {
+    console.error('Error fetching user courses:', error);
+    return [];
+  }
+}
+
+async function enrollInCourse(userId: string, courseId: string): Promise<void> {
+  try {
+    const now = Timestamp.now();
+    await addDoc(collection(db, 'user_courses'), {
+      user_id: userId,
+      course_id: courseId,
+      progress: 0,
+      completed: false,
+      created_at: now.toDate().toISOString(),
+      updated_at: now.toDate().toISOString(),
+    });
+  } catch (error) {
+    console.error('Error enrolling in course:', error);
+    throw error;
+  }
+}
+
+async function updateCourseProgress(
+  userId: string,
+  courseId: string,
+  progress: number,
+  completed: boolean
+): Promise<void> {
+  try {
+    const userCoursesQuery = query(
+      collection(db, 'user_courses'),
+      where('user_id', '==', userId),
+      where('course_id', '==', courseId)
+    );
+    const userCoursesSnapshot = await getDocs(userCoursesQuery);
+    if (userCoursesSnapshot.empty) {
+      throw new Error('User course not found');
+    }
+    const userCourseDoc = userCoursesSnapshot.docs[0];
+    const currentData = userCourseDoc.data();
+
+    await updateDoc(doc(db, 'user_courses', userCourseDoc.id), {
+      progress,
+      completed,
+      completed_lessons: currentData.completed_lessons || [],
+      current_lesson: currentData.current_lesson || '',
+      updated_at: Timestamp.now().toDate().toISOString(),
+    });
+  } catch (error) {
+    console.error('Error updating course progress:', error);
+    throw error;
+  }
+}
+
+async function getCourseProgress(userId: string, courseId: string): Promise<UserProgress | null> {
+  try {
+    const userCoursesQuery = query(
+      collection(db, 'user_courses'),
+      where('user_id', '==', userId),
+      where('course_id', '==', courseId)
+    );
+    const userCoursesSnapshot = await getDocs(userCoursesQuery);
+    if (userCoursesSnapshot.empty) {
+      return null;
+    }
+    const data = userCoursesSnapshot.docs[0].data();
+    return {
+      userId: data.user_id,
+      courseId: data.course_id,
+      completedLessons: data.completed_lessons || [],
+      currentLesson: data.current_lesson || '',
+      progress: data.progress,
+      lastAccessed: new Date(data.updated_at),
+      startedAt: new Date(data.created_at),
+      completedAt: data.completed ? new Date(data.updated_at) : undefined,
     } as UserProgress;
-  },
+  } catch (error) {
+    console.error('Error getting course progress:', error);
+    return null;
+  }
+}
+
+export const courseService = {
+  getAllCourses,
+  getCourseById,
+  createCourse,
+  updateCourse,
+  deleteCourse,
+  getUserCourses,
+  enrollInCourse,
+  updateCourseProgress,
+  getCourseProgress,
 };

@@ -42,8 +42,12 @@ const HeroSection = styled.section`
   position: relative;
   overflow: hidden;
 
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
     padding: 2rem 0;
+  }
+
+  @media (min-width: ${props => props.theme.breakpoints.lg}) {
+    padding: 0 2rem;
   }
 `;
 
@@ -52,13 +56,17 @@ const HeroContent = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
-  max-width: ${props => props.theme.breakpoints.desktop};
+  max-width: ${props => props.theme.breakpoints.xl};
   margin: 0 auto;
   padding: 0 1rem;
 
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
     flex-direction: column;
     text-align: center;
+  }
+
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
+    margin-bottom: 1rem;
   }
 `;
 
@@ -69,7 +77,7 @@ const HeroTitle = styled.h1`
   color: ${props => props.theme.colors.text};
   line-height: 1.2;
 
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
     font-size: 2rem;
   }
 `;
@@ -81,7 +89,7 @@ const HeroSubtitle = styled.p`
   line-height: 1.6;
   max-width: 600px;
 
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
     font-size: 1rem;
   }
 `;
@@ -90,7 +98,7 @@ const HeroActions = styled.div`
   display: flex;
   gap: 1rem;
 
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
     justify-content: center;
   }
 `;
@@ -120,7 +128,7 @@ const ImageWrapper = styled.div`
   max-width: 500px;
   height: 400px;
 
-  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
     max-width: 100%;
     height: 300px;
   }
@@ -182,7 +190,7 @@ const CompaniesSection = styled.div`
   overflow: hidden;
   position: relative;
 
-  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+  @media (max-width: ${props => props.theme.breakpoints.sm}) {
     padding: 2rem 0;
   }
 `;

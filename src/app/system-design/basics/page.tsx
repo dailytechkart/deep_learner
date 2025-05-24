@@ -46,7 +46,7 @@ export default function SystemDesignBasicsPage() {
               <p>
                 System design is the process of defining the architecture, components, modules,
                 interfaces, and data for a system to satisfy specified requirements. It involves
-                making high-level decisions about the system's structure and behavior.
+                making high-level decisions about the system&apos;s structure and behavior.
               </p>
             </Content>
           </Section>
@@ -127,7 +127,20 @@ export default function SystemDesignBasicsPage() {
               <p>
                 System design is the process of defining the architecture, components, modules,
                 interfaces, and data for a system to satisfy specified requirements. It involves
-                making high-level decisions about the system's structure and behavior.
+                making high-level decisions about the system&apos;s structure and behavior.
+              </p>
+            </Content>
+          </Section>
+
+          <Section>
+            <SectionTitle>
+              Understanding these basics will help you build better systems
+            </SectionTitle>
+            <Content>
+              <p>
+                System design is the process of defining the architecture, components, modules,
+                interfaces, and data for a system to satisfy specified requirements. It involves
+                making high-level decisions about the system&apos;s structure and behavior.
               </p>
             </Content>
           </Section>

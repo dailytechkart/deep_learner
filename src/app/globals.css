@@ -3,7 +3,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-  
+
   /* Primary colors */
   --primary-color: #4a90e2;
   --primary-dark: #357abd;
@@ -135,7 +135,12 @@ body {
 }
 
 /* Typography */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   line-height: 1.2;
   margin-bottom: 1rem;
 }
@@ -162,7 +167,8 @@ img {
 }
 
 /* Lists */
-ul, ol {
+ul,
+ol {
   margin: 0;
   padding: 0;
   list-style-position: inside;

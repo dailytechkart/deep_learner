@@ -71,7 +71,10 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabCh
         <StyledTab active={activeTab === 'performance'} onClick={() => onTabChange('performance')}>
           <FaCode /> Performance
         </StyledTab>
-        <StyledTab active={activeTab === 'architecture'} onClick={() => onTabChange('architecture')}>
+        <StyledTab
+          active={activeTab === 'architecture'}
+          onClick={() => onTabChange('architecture')}
+        >
           <FaLaptopCode /> Architecture
         </StyledTab>
         <StyledTab active={activeTab === 'security'} onClick={() => onTabChange('security')}>
@@ -80,4 +83,4 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, onTabCh
       </TabBar>
     </TabContainer>
   );
-}; 
+};

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Link from 'next/link';
 import Logo from '../Logo';
-import UserMenu from '../UserMenu';
+import { UserMenu } from '../UserMenu';
 import { UserMenuProps } from './Header.types';
 
 export const HeaderContainer = styled.header`
@@ -20,7 +20,7 @@ export const HeaderContainer = styled.header`
   -webkit-backdrop-filter: blur(8px);
   transition: all ${({ theme }) => theme.transitions.default};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     display: none;
   }
 `;
@@ -68,6 +68,13 @@ export const NavLink = styled(Link)`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
@@ -223,7 +230,7 @@ export const MobileMenu = styled.div<{ isOpen: boolean }>`
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.spacing.md};
@@ -260,4 +267,40 @@ export const MobileNavLink = styled(Link)`
   }
 `;
 
-export const StyledLogo = styled(Logo)``; 
+export const StyledLogo = styled(Logo)``;
+
+export const SearchInput = styled.input`
+  padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.md};
+  border: 1px solid ${props => props.theme.colors.border};
+  border-radius: ${props => props.theme.borderRadius.md};
+  background: ${props => props.theme.colors.background};
+  color: ${props => props.theme.colors.text};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  width: 200px;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: ${props => props.theme.colors.primary};
+    box-shadow: 0 0 0 2px ${props => props.theme.colors.primary}20;
+  }
+
+  &::placeholder {
+    color: ${props => props.theme.colors.textSecondary};
+  }
+`;
+
+export const SkipToContent = styled.a`
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: ${({ theme }) => theme.colors.primary};
+  color: white;
+  padding: 8px;
+  z-index: 100;
+  transition: top 0.2s ease;
+
+  &:focus {
+    top: 0;
+  }
+`;

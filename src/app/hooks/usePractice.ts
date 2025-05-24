@@ -78,7 +78,7 @@ export const usePractice = () => {
       try {
         setLoading(true);
         const result = await practiceService.submitAnswer(
-          user.id,
+          user.uid,
           questionId,
           selectedOption,
           timeSpent
@@ -103,7 +103,7 @@ export const usePractice = () => {
 
     try {
       setLoading(true);
-      const data = await practiceService.getUserStats(user.id);
+      const data = await practiceService.getUserStats(user.uid);
       setUserStats(data);
       setError(null);
     } catch (err) {
@@ -120,7 +120,7 @@ export const usePractice = () => {
       if (!user) return null;
 
       try {
-        return await practiceService.getUserQuestionProgress(user.id, questionId);
+        return await practiceService.getUserQuestionProgress(user.uid, questionId);
       } catch (err) {
         console.error('Error getting question progress:', err);
         return null;

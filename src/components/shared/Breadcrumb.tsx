@@ -48,7 +48,7 @@ const BreadcrumbLink = styled(Link)`
     color: ${props => props.theme.colors.primary};
   }
 
-  &[aria-current="page"] {
+  &[aria-current='page'] {
     color: ${props => props.theme.colors.text};
     font-weight: ${props => props.theme.typography.fontWeight.medium};
     pointer-events: none;
@@ -63,7 +63,7 @@ const Separator = styled(FaChevronRight)`
 
 export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items = [], showHome = true }) => {
   const pathname = usePathname();
-  
+
   // Generate breadcrumb items from pathname if no items provided
   const breadcrumbItems = items.length > 0 ? items : generateBreadcrumbs(pathname, showHome);
 
@@ -136,4 +136,4 @@ function formatBreadcrumbLabel(path: string): string {
     .split('-')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
-} 
+}

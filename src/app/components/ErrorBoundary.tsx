@@ -30,7 +30,7 @@ const RetryButton = styled.button`
   padding: ${props => props.theme.spacing.sm} ${props => props.theme.spacing.lg};
   border-radius: ${props => props.theme.borderRadius.md};
   cursor: pointer;
-  font-size: ${props => props.theme.typography.fontSize.md};
+  font-size: ${props => props.theme.typography.fontSize.base};
   transition: background-color 0.2s ease;
 
   &:hover {

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { FaUser } from 'react-icons/fa';
+import { FaUser, FaBook, FaCode, FaServer } from 'react-icons/fa';
 import { useTheme } from '@/app/context/ThemeContext';
 import { useAuth } from '@/app/hooks/useAuth';
 import { UserMenu } from '@/app/components/UserMenu';
@@ -24,9 +24,24 @@ import {
   MobileMenu,
   MobileNavLink,
   StyledLogo,
+  SearchInput,
+  SkipToContent,
 } from './Header.styled';
 
-const Header: React.FC<HeaderProps> = () => {
+const getIcon = (iconName: string) => {
+  switch (iconName) {
+    case 'book':
+      return FaBook;
+    case 'code':
+      return FaCode;
+    case 'server':
+      return FaServer;
+    default:
+      return FaBook;
+  }
+};
+
+const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange }) => {
   const router = useRouter();
   const pathname = usePathname();
   const { isDarkMode, toggleTheme } = useTheme();
@@ -54,22 +69,29 @@ const Header: React.FC<HeaderProps> = () => {
     setIsMobileMenuOpen(prev => !prev);
   }, []);
 
-  const renderNavLinks = useCallback((isMobile = false) => {
-    const NavComponent = isMobile ? MobileNavLink : NavLink;
-    return NAV_ITEMS.map(item => (
-      <NavComponent
-        key={item.href}
-        href={item.href}
-        aria-current={pathname === item.href ? 'page' : undefined}
-      >
-        {item.icon}
-        {item.label}
-      </NavComponent>
-    ));
-  }, [pathname]);
+  const renderNavLinks = useCallback(
+    (isMobile = false) => {
+      const NavComponent = isMobile ? MobileNavLink : NavLink;
+      return NAV_ITEMS.map(item => {
+        const Icon = item.icon;
+        return (
+          <NavComponent
+            key={item.href}
+            href={item.href}
+            aria-current={pathname === item.href ? 'page' : undefined}
+          >
+            <Icon size={20} />
+            {item.label}
+          </NavComponent>
+        );
+      });
+    },
+    [pathname]
+  );
 
   return (
     <>
+      <SkipToContent href="#main-content">Skip to main content</SkipToContent>
       <MobileHeader onMenuClick={toggleMobileMenu} />
       <PromoStrip>
         <PromoStripText>Get Premium Content Access at 90% OFF – Only ₹499!</PromoStripText>
@@ -83,6 +105,16 @@ const Header: React.FC<HeaderProps> = () => {
             <Nav>{renderNavLinks()}</Nav>
           </LeftSection>
           <RightSection>
+            {searchQuery !== undefined && onSearchChange && (
+              <SearchInput
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  onSearchChange(e.target.value)
+                }
+              />
+            )}
             <ThemeToggle
               onClick={toggleTheme}
               aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
@@ -113,4 +145,4 @@ const Header: React.FC<HeaderProps> = () => {
   );
 };
 
-export default memo(Header); 
+export default memo(Header) as React.FC<HeaderProps>;

@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import styled from 'styled-components';
+import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import {
   FaCode,
   FaCss3,
@@ -23,25 +24,11 @@ import {
   FaCloud,
   FaRobot,
   FaBrain,
-  FaLayerGroup,
-  FaProjectDiagram,
-  FaCogs,
-  FaBug,
-  FaCheckCircle,
-  FaRocket,
-  FaLightbulb,
   FaBook,
+  FaRocket,
   FaGraduationCap,
-  FaUserGraduate,
-  FaChalkboardTeacher,
-  FaUsers,
-  FaComments,
-  FaQuestionCircle,
-  FaExclamationTriangle,
-  FaInfoCircle,
-  FaClipboardList,
-  FaClipboardCheck,
-  FaClipboard,
+  FaProjectDiagram,
+  FaBug,
 } from 'react-icons/fa';
 
 interface TopicCardProps {
@@ -276,7 +263,7 @@ const StatItem = styled.div`
 `;
 
 const StatValue = styled.p`
-  font-size: ${props => props.theme.typography.fontSize.md};
+  font-size: ${props => props.theme.typography.fontSize.base};
   font-weight: ${props => props.theme.typography.fontWeight.bold};
   color: ${props => props.theme.colors.primary};
   margin: 0 0 2px 0;

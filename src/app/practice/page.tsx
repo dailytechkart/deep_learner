@@ -3,12 +3,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { Sandpack } from '@codesandbox/sandpack-react';
-import {
-  PageContainer,
-  Section,
-  SectionHeader,
-  SectionContent,
-} from '../components/StyledComponents';
+import { PageContainer } from '../components/StyledComponents';
 import { Breadcrumb } from '@/components/shared/Breadcrumb';
 import MainLayout from '@/components/MainLayout';
 
@@ -262,11 +257,6 @@ export default App;`,
 export default function PracticePage() {
   const [editorHeight, setEditorHeight] = useState(50);
   const [isResizing, setIsResizing] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedDifficulty, setSelectedDifficulty] = useState<string>('all');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedStatus, setSelectedStatus] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<string>('newest');
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     setIsResizing(true);
@@ -308,11 +298,11 @@ export default function PracticePage() {
 
   return (
     <MainLayout>
-      <Breadcrumb 
+      <Breadcrumb
         items={[
           { label: 'Home', href: '/' },
-          { label: 'Practice', href: '/practice' }
-        ]} 
+          { label: 'Practice', href: '/practice' },
+        ]}
       />
       <PageContainer style={{ padding: 0, height: '100vh', overflow: 'hidden' }}>
         <PracticeContainer>
@@ -328,8 +318,8 @@ export default function PracticePage() {
 
             <ProblemDescription>
               Create a simple Todo List application that allows users to manage their tasks
-              efficiently. The application should be responsive, user-friendly, and implement all the
-              core features of a modern todo list.
+              efficiently. The application should be responsive, user-friendly, and implement all
+              the core features of a modern todo list.
             </ProblemDescription>
 
             <SectionTitle>Let&apos;s practice system design problems</SectionTitle>
@@ -337,7 +327,9 @@ export default function PracticePage() {
               <RequirementItem>
                 Implement a form to add new todos with a text input and submit button
               </RequirementItem>
-              <RequirementItem>Display a list of todos with their completion status</RequirementItem>
+              <RequirementItem>
+                Display a list of todos with their completion status
+              </RequirementItem>
               <RequirementItem>
                 Allow users to toggle todo completion status by clicking on the todo
               </RequirementItem>
@@ -359,9 +351,9 @@ export default function PracticePage() {
             <HintSection>
               <HintTitle>💡 Hint</HintTitle>
               <ProblemDescription>
-                Consider using React's useState and useEffect hooks for state management. For styling,
-                you can use CSS modules or styled-components. Don't forget to handle edge cases like
-                empty todos and duplicate entries.
+                Consider using React&apos;s useState and useEffect hooks for state management. For
+                styling, you can use CSS modules or styled-components. Don&apos;t forget to handle
+                edge cases like empty todos and duplicate entries.
               </ProblemDescription>
             </HintSection>
           </ProblemSection>

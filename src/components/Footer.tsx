@@ -51,7 +51,7 @@ const FooterTitle = styled.h3`
   margin: 0;
 
   @media (max-width: 768px) {
-    font-size: ${props => props.theme.typography.fontSize.md};
+    font-size: ${props => props.theme.typography.fontSize.base};
   }
 `;
 

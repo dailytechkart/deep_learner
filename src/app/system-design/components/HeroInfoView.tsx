@@ -245,12 +245,12 @@ export const HeroInfoView: React.FC<HeroInfoViewProps> = ({ title, description }
           <ProblemsCTAContent>
             <ProblemsCTAHeading>Practice System Design Problems</ProblemsCTAHeading>
             <ProblemsCTADesc>
-              Ready to apply your knowledge? Jump into real-world system design problems and
-              sharpen your skills with hands-on practice.
+              Ready to apply your knowledge? Jump into real-world system design problems and sharpen
+              your skills with hands-on practice.
             </ProblemsCTADesc>
           </ProblemsCTAContent>
         </ProblemsCTAText>
       </ProblemsCTA>
     </Header>
   );
-}; 
+};

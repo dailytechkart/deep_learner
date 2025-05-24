@@ -1,75 +1,69 @@
 import { NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import { practiceService } from '@/app/services/practiceService';
-import { QuestionCategory, QuestionDifficulty } from '@/app/types/practice';
+import { adminAuth } from '@/lib/firebase-admin';
+import { db } from '@/lib/firebase';
+import { collection, addDoc, getDocs, query, orderBy, Timestamp } from 'firebase/firestore';
+import type { NextRequest } from 'next/server';
 
-export async function POST(request: Request) {
+async function requireAuth(request: NextRequest) {
+  const cookieStore = cookies();
+  const token = cookieStore.get('auth_token')?.value;
+
+  if (!token) {
+    throw new Error('No token provided');
+  }
+
   try {
-    const supabase = createRouteHandlerClient({ cookies });
-    
-    // Get session
-    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-    
-    if (sessionError || !session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const decodedToken = await adminAuth.verifyIdToken(token);
+    return decodedToken;
+  } catch (error) {
+    console.error('Error verifying token:', error);
+    throw new Error('Invalid token');
+  }
+}
 
+export async function POST(request: NextRequest) {
+  try {
+    const decodedToken = await requireAuth(request);
     const body = await request.json();
 
-    // Insert question into database
-    const { data: question, error } = await supabase
-      .from('questions')
-      .insert([
-        {
-          ...body,
-          user_id: session.user.id,
-        },
-      ])
-      .select()
-      .single();
+    // Insert question into Firestore
+    const questionData = {
+      ...body,
+      user_id: decodedToken.uid,
+      created_at: Timestamp.now(),
+      updated_at: Timestamp.now(),
+    };
 
-    if (error) {
-      throw error;
-    }
+    const docRef = await addDoc(collection(db, 'questions'), questionData);
+    const question = {
+      id: docRef.id,
+      ...questionData,
+    };
 
     return NextResponse.json({ question });
   } catch (error) {
     console.error('Error creating question:', error);
-    return NextResponse.json(
-      { error: 'Failed to create question' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to create question' }, { status: 500 });
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const supabase = createRouteHandlerClient({ cookies });
-    
-    // Get session
-    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-    
-    if (sessionError || !session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    await requireAuth(request);
 
-    // Get questions from database
-    const { data: questions, error } = await supabase
-      .from('questions')
-      .select('*')
-      .order('created_at', { ascending: false });
+    // Get questions from Firestore
+    const questionsQuery = query(collection(db, 'questions'), orderBy('created_at', 'desc'));
 
-    if (error) {
-      throw error;
-    }
+    const questionsSnapshot = await getDocs(questionsQuery);
+    const questions = questionsSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
 
     return NextResponse.json({ questions });
   } catch (error) {
     console.error('Error fetching questions:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch questions' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch questions' }, { status: 500 });
   }
 }

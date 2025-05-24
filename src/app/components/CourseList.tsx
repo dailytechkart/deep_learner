@@ -16,8 +16,7 @@ const CourseCard = styled.div<{ isEnrolled: boolean }>`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.2s ease-in-out;
-  border: 2px solid
-    ${props => (props.isEnrolled ? props.theme.colors.status.success : 'transparent')};
+  border: 2px solid ${props => (props.isEnrolled ? props.theme.colors.success : 'transparent')};
 
   &:hover {
     transform: translateY(-4px);
@@ -72,7 +71,7 @@ const ProgressBar = styled.div<{ progress: number }>`
     display: block;
     height: 100%;
     width: ${props => props.progress}%;
-    background: #4caf50;
+    background: ${props => props.theme.colors.success};
     transition: width 0.3s ease-in-out;
   }
 `;
@@ -83,7 +82,7 @@ const EnrollButton = styled.button<{ isEnrolled: boolean }>`
   border: none;
   border-radius: 6px;
   background: ${props =>
-    props.isEnrolled ? props.theme.colors.status.success : props.theme.colors.primary};
+    props.isEnrolled ? props.theme.colors.success : props.theme.colors.primary};
   color: white;
   font-weight: 600;
   cursor: pointer;
@@ -91,7 +90,7 @@ const EnrollButton = styled.button<{ isEnrolled: boolean }>`
 
   &:hover {
     background: ${props =>
-      props.isEnrolled ? props.theme.colors.status.success : props.theme.colors.primaryDark};
+      props.isEnrolled ? props.theme.colors.success : props.theme.colors.primaryDark};
   }
 
   &:disabled {

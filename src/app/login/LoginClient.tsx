@@ -16,23 +16,25 @@ import {
 // Testimonial data
 const testimonials = [
   {
-    quote: "FrontendPro Academy transformed my career. The hands-on projects and mentorship were invaluable.",
-    author: "Sarah Johnson",
-    role: "Senior Frontend Developer",
-    company: "TechCorp"
+    quote:
+      'FrontendPro Academy transformed my career. The hands-on projects and mentorship were invaluable.',
+    author: 'Sarah Johnson',
+    role: 'Senior Frontend Developer',
+    company: 'TechCorp',
   },
   {
-    quote: "The structured learning path and real-world projects helped me land my dream job in just 6 months.",
-    author: "Michael Chen",
-    role: "Frontend Engineer",
-    company: "InnovateX"
+    quote:
+      'The structured learning path and real-world projects helped me land my dream job in just 6 months.',
+    author: 'Michael Chen',
+    role: 'Frontend Engineer',
+    company: 'InnovateX',
   },
   {
-    quote: "Best investment in my career. The community and support are unmatched.",
-    author: "Emma Rodriguez",
-    role: "UI/UX Developer",
-    company: "DesignHub"
-  }
+    quote: 'Best investment in my career. The community and support are unmatched.',
+    author: 'Emma Rodriguez',
+    role: 'UI/UX Developer',
+    company: 'DesignHub',
+  },
 ];
 
 export default function LoginClient() {
@@ -58,7 +60,7 @@ export default function LoginClient() {
   // Rotate testimonials
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+      setCurrentTestimonial(prev => (prev + 1) % testimonials.length);
     }, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -117,40 +119,50 @@ export default function LoginClient() {
   }
 
   return (
-    <div style={{
-      display: 'flex',
-      minHeight: '100vh',
-      backgroundColor: '#f5f5f5'
-    }}>
-      {/* Left side - Testimonials */}
-      <div style={{
-        flex: 1,
-        background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
-        color: 'white',
-        padding: '2rem',
+    <div
+      style={{
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        <div style={{
-          maxWidth: '600px',
-          margin: '0 auto',
+        minHeight: '100vh',
+        backgroundColor: '#f5f5f5',
+      }}
+    >
+      {/* Left side - Testimonials */}
+      <div
+        style={{
+          flex: 1,
+          background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
+          color: 'white',
+          padding: '2rem',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
           position: 'relative',
-          zIndex: 1
-        }}>
-          <h1 style={{
-            fontSize: '2.5rem',
-            marginBottom: '2rem',
-            fontWeight: 'bold'
-          }}>
+          overflow: 'hidden',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '600px',
+            margin: '0 auto',
+            position: 'relative',
+            zIndex: 1,
+          }}
+        >
+          <h1
+            style={{
+              fontSize: '2.5rem',
+              marginBottom: '2rem',
+              fontWeight: 'bold',
+            }}
+          >
             Join thousands of successful developers
           </h1>
-          <div style={{
-            position: 'relative',
-            minHeight: '200px'
-          }}>
+          <div
+            style={{
+              position: 'relative',
+              minHeight: '200px',
+            }}
+          >
             {testimonials.map((testimonial, index) => (
               <div
                 key={index}
@@ -164,13 +176,15 @@ export default function LoginClient() {
                   transition: 'all 0.5s ease-in-out',
                 }}
               >
-                <p style={{
-                  fontSize: '1.5rem',
-                  lineHeight: 1.6,
-                  marginBottom: '1.5rem',
-                  fontStyle: 'italic'
-                }}>
-                  "{testimonial.quote}"
+                <p
+                  style={{
+                    fontSize: '1.5rem',
+                    lineHeight: 1.6,
+                    marginBottom: '1.5rem',
+                    fontStyle: 'italic',
+                  }}
+                >
+                  &quot;{testimonial.quote}&quot;
                 </p>
                 <div>
                   <p style={{ fontWeight: 'bold', marginBottom: '0.25rem' }}>
@@ -187,20 +201,18 @@ export default function LoginClient() {
       </div>
 
       {/* Right side - Login */}
-      <div style={{
-        flex: 1,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '2rem'
-      }}>
+      <div
+        style={{
+          flex: 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '2rem',
+        }}
+      >
         <AuthCard>
           <AuthTitle>Welcome Back</AuthTitle>
-          {(error || authError) && (
-            <ErrorMessage>
-              {error || authError}
-            </ErrorMessage>
-          )}
+          {(error || authError) && <ErrorMessage>{error || authError}</ErrorMessage>}
           <SocialButtonGroup>
             <SocialButton
               onClick={() => handleSocialLogin('google')}

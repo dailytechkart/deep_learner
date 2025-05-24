@@ -3,9 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from './useAuth';
 import { usePathname } from 'next/navigation';
 
-export function withAuth<P extends object>(
-  WrappedComponent: React.ComponentType<P>
-) {
+export function withAuth<P extends object>(WrappedComponent: React.ComponentType<P>) {
   return function WithAuthComponent(props: P) {
     const { user, loading, error } = useAuth();
     const router = useRouter();
@@ -51,4 +49,4 @@ export function withAuth<P extends object>(
 
     return <WrappedComponent {...props} />;
   };
-} 
+}

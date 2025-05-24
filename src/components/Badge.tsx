@@ -1,13 +1,33 @@
 import React from 'react';
 import styled from 'styled-components';
 
+type BadgeVariant = 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
+
 interface BadgeProps {
-  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info';
+  variant?: BadgeVariant;
   size?: 'sm' | 'md' | 'lg';
   isSelected?: boolean;
   onClick?: () => void;
   children: React.ReactNode;
 }
+
+const getColorFromVariant = (variant: BadgeVariant, theme: any) => {
+  switch (variant) {
+    case 'success':
+      return theme.colors.status.success;
+    case 'warning':
+      return theme.colors.status.warning;
+    case 'danger':
+      return theme.colors.status.error;
+    case 'info':
+      return theme.colors.status.info;
+    case 'secondary':
+      return theme.colors.secondary;
+    case 'primary':
+    default:
+      return theme.colors.primary;
+  }
+};
 
 const StyledBadge = styled.span<BadgeProps>`
   display: inline-flex;
@@ -42,7 +62,7 @@ const StyledBadge = styled.span<BadgeProps>`
 
   ${props => {
     const isSelected = props.isSelected;
-    const baseColor = props.theme.colors[props.variant || 'primary'];
+    const baseColor = getColorFromVariant(props.variant || 'primary', props.theme);
 
     return `
       background: ${isSelected ? baseColor : `${baseColor}10`};

@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 import styled from 'styled-components';
-import Image from 'next/image';
+import { FaUser, FaSignOutAlt } from 'react-icons/fa';
 
 const UserMenuContainer = styled.div`
   position: relative;
@@ -32,7 +32,7 @@ const UserAvatar = styled.div<{ $src?: string }>`
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background-image: ${props => props.$src ? `url(${props.$src})` : 'none'};
+  background-image: ${props => (props.$src ? `url(${props.$src})` : 'none')};
   background-color: ${props => props.theme.colors.backgroundAlt};
   background-size: cover;
   background-position: center;

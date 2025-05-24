@@ -35,9 +35,15 @@ declare module 'styled-components' {
       };
     };
     breakpoints: {
+      // Semantic breakpoints
       mobile: string;
       tablet: string;
       desktop: string;
+      // Size-based breakpoints
+      sm: string;
+      md: string;
+      lg: string;
+      xl: string;
     };
     spacing: {
       xs: string;
@@ -128,4 +134,4 @@ declare module 'styled-components' {
       };
     };
   }
-} 
+}

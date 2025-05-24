@@ -41,13 +41,16 @@ export const FormGroup = styled.div`
   gap: 0.5rem;
 `;
 
-export const Label = styled.label`
+export const FormLabel = styled.label`
   font-size: 0.875rem;
   font-weight: 500;
   color: var(--text);
+  margin-bottom: 0.5rem;
+  display: block;
 `;
 
-export const Input = styled.input`
+export const FormInput = styled.input`
+  width: 100%;
   padding: 0.75rem;
   border: 1px solid var(--border);
   border-radius: 4px;
@@ -66,7 +69,8 @@ export const Input = styled.input`
   }
 `;
 
-export const Button = styled.button`
+export const SubmitButton = styled.button`
+  width: 100%;
   padding: 0.75rem;
   background-color: var(--primary-color);
   color: white;
@@ -76,6 +80,7 @@ export const Button = styled.button`
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  margin-top: 1rem;
 
   &:hover {
     background-color: var(--primary-dark);
@@ -368,11 +373,11 @@ export const TestimonialRole = styled.div`
   font-size: 0.875rem;
 `;
 
-export const TestimonialAvatar = styled.div`
+export const TestimonialAvatar = styled(Image)`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  overflow: hidden;
+  object-fit: cover;
 `;
 
 export const UserMenuContainer = styled.div`
@@ -429,7 +434,7 @@ export const MenuItem = styled.button`
   background: transparent;
   border: none;
   color: ${props => props.theme.colors.text};
-  font-size: ${props => props.theme.typography.fontSize.sm};
+  font-size: ${props => props.theme.typography.fontSize.base};
   cursor: pointer;
   transition: all 0.2s ease;
 
@@ -494,7 +499,7 @@ export const ProfileAvatar = styled.div<{ $src?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: ${props => props.$src ? `url(${props.$src})` : 'none'};
+  background-image: ${props => (props.$src ? `url(${props.$src})` : 'none')};
   background-size: cover;
   background-position: center;
 `;
@@ -508,7 +513,7 @@ export const ProfileName = styled.h1`
 
 export const ProfileEmail = styled.div`
   color: ${props => props.theme.colors.textSecondary};
-  font-size: ${props => props.theme.typography.fontSize.md};
+  font-size: ${props => props.theme.typography.fontSize.base};
   margin-top: ${props => props.theme.spacing.xs};
 `;
 
@@ -551,4 +556,81 @@ export const Select = styled.select`
     opacity: 0.7;
     cursor: not-allowed;
   }
-`; 
+`;
+
+export const PageContainer = styled.div`
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--background);
+  padding: 2rem;
+`;
+
+export const MainContent = styled.main`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: var(--background-alt);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+`;
+
+export const Title = styled.h1`
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+`;
+
+export const Description = styled.p`
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+`;
+
+export const Content = styled.div`
+  color: var(--text);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 2rem 0 1rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 1.5rem 0 1rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  ul,
+  ol {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+  }
+
+  li {
+    margin-bottom: 0.5rem;
+  }
+
+  code {
+    background-color: var(--background);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: monospace;
+  }
+
+  pre {
+    background-color: var(--background);
+    padding: 1rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1rem 0;
+  }
+`;

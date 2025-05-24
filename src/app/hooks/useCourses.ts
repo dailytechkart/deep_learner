@@ -33,7 +33,7 @@ export const useCourses = () => {
 
     try {
       setLoading(true);
-      const data = await courseService.getUserCourses(user.id);
+      const data = await courseService.getUserCourses(user.uid);
       setUserCourses(data);
       setError(null);
     } catch (err) {
@@ -53,7 +53,7 @@ export const useCourses = () => {
 
     try {
       setLoading(true);
-      await courseService.enrollUserInCourse(user.id, courseId);
+      await courseService.enrollInCourse(user.uid, courseId);
       await fetchUserCourses(); // Refresh user courses
       setError(null);
     } catch (err) {
@@ -73,7 +73,28 @@ export const useCourses = () => {
 
     try {
       setLoading(true);
-      await courseService.updateUserProgress(user.id, courseId, lessonId, isCompleted);
+      // Get current progress
+      const currentProgress = await courseService.getCourseProgress(user.uid, courseId);
+      if (!currentProgress) {
+        throw new Error('Course progress not found');
+      }
+
+      // Update completed lessons
+      const completedLessons = isCompleted
+        ? [...currentProgress.completedLessons, lessonId]
+        : currentProgress.completedLessons.filter(id => id !== lessonId);
+
+      // Get course to calculate total lessons
+      const course = courses.find(c => c.id === courseId);
+      if (!course) {
+        throw new Error('Course not found');
+      }
+
+      // Calculate progress percentage
+      const progress = Math.round((completedLessons.length / course.lessons.length) * 100);
+      const completed = progress === 100;
+
+      await courseService.updateCourseProgress(user.uid, courseId, progress, completed);
       await fetchUserCourses(); // Refresh user courses
       setError(null);
     } catch (err) {
@@ -89,7 +110,7 @@ export const useCourses = () => {
     if (!user) return null;
 
     try {
-      return await courseService.getUserCourseProgress(user.id, courseId);
+      return await courseService.getCourseProgress(user.uid, courseId);
     } catch (err) {
       console.error('Error getting course progress:', err);
       return null;

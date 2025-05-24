@@ -48,13 +48,11 @@ const Main = styled.main`
   width: 100%;
 `;
 
-
 export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const { isDarkMode } = useTheme();
 
   return (
     <LayoutContainer>
-     
       <Header />
       <ContentWrapper>
         <Main>{children}</Main>

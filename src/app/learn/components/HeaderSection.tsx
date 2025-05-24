@@ -19,14 +19,14 @@ const Title = styled.h1`
 `;
 
 const Description = styled.p`
-  font-size: ${props => props.theme.typography.fontSize.lg};
+  font-size: ${props => props.theme.typography.fontSize.base};
   color: ${props => props.theme.colors.textSecondary};
   margin-bottom: 2rem;
   max-width: 800px;
   transition: all ${props => props.theme.transitions.default};
 
   @media (max-width: 768px) {
-    font-size: ${props => props.theme.typography.fontSize.md};
+    font-size: ${props => props.theme.typography.fontSize.base};
     margin-bottom: 1.5rem;
   }
 `;
@@ -49,7 +49,7 @@ const SearchBar = styled.form`
 const SearchInput = styled.input`
   border: none;
   outline: none;
-  font-size: ${props => props.theme.typography.fontSize.md};
+  font-size: ${props => props.theme.typography.fontSize.base};
   color: ${props => props.theme.colors.text};
   width: 100%;
   padding: ${props => props.theme.spacing.sm};

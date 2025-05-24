@@ -128,11 +128,14 @@ const LearnPage: React.FC = () => {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
   // Memoize unique values
-  const { categories, difficulties, roles } = useMemo(() => ({
-    categories: Array.from(new Set(learningTopics.map(topic => topic.category))),
-    difficulties: Array.from(new Set(learningTopics.map(topic => topic.difficulty))),
-    roles: Array.from(new Set(learningTopics.map(topic => topic.role))),
-  }), []);
+  const { categories, difficulties, roles } = useMemo(
+    () => ({
+      categories: Array.from(new Set(learningTopics.map(topic => topic.category))),
+      difficulties: Array.from(new Set(learningTopics.map(topic => topic.difficulty))),
+      roles: Array.from(new Set(learningTopics.map(topic => topic.role))),
+    }),
+    []
+  );
 
   const handleFilterChange = useCallback((section: string, value: FilterValue) => {
     switch (section) {
@@ -161,38 +164,49 @@ const LearnPage: React.FC = () => {
     setSearchQuery('');
   }, []);
 
-  const filterSections = useMemo<FilterSectionType[]>(() => [
-    {
-      title: 'Categories',
-      options: categories.map(category => ({
-        id: category,
-        label: category,
-        count: learningTopics.filter(topic => topic.category === category).length,
-      })),
-      selected: selectedCategories,
-      onSelect: (value: FilterValue) => handleFilterChange('categories', value),
-    },
-    {
-      title: 'Difficulty',
-      options: difficulties.map(difficulty => ({
-        id: difficulty,
-        label: difficulty,
-        count: learningTopics.filter(topic => topic.difficulty === difficulty).length,
-      })),
-      selected: selectedDifficulties,
-      onSelect: (value: FilterValue) => handleFilterChange('difficulties', value),
-    },
-    {
-      title: 'Role',
-      options: roles.map(role => ({
-        id: role,
-        label: role,
-        count: learningTopics.filter(topic => topic.role === role).length,
-      })),
-      selected: selectedRoles,
-      onSelect: (value: FilterValue) => handleFilterChange('roles', value),
-    },
-  ], [categories, difficulties, roles, selectedCategories, selectedDifficulties, selectedRoles, handleFilterChange]);
+  const filterSections = useMemo<FilterSectionType[]>(
+    () => [
+      {
+        title: 'Categories',
+        options: categories.map(category => ({
+          id: category,
+          label: category,
+          count: learningTopics.filter(topic => topic.category === category).length,
+        })),
+        selected: selectedCategories,
+        onSelect: (value: FilterValue) => handleFilterChange('categories', value),
+      },
+      {
+        title: 'Difficulty',
+        options: difficulties.map(difficulty => ({
+          id: difficulty,
+          label: difficulty,
+          count: learningTopics.filter(topic => topic.difficulty === difficulty).length,
+        })),
+        selected: selectedDifficulties,
+        onSelect: (value: FilterValue) => handleFilterChange('difficulties', value),
+      },
+      {
+        title: 'Role',
+        options: roles.map(role => ({
+          id: role,
+          label: role,
+          count: learningTopics.filter(topic => topic.role === role).length,
+        })),
+        selected: selectedRoles,
+        onSelect: (value: FilterValue) => handleFilterChange('roles', value),
+      },
+    ],
+    [
+      categories,
+      difficulties,
+      roles,
+      selectedCategories,
+      selectedDifficulties,
+      selectedRoles,
+      handleFilterChange,
+    ]
+  );
 
   // Memoize filtered topics
   const filteredTopics = useMemo(
@@ -244,7 +258,7 @@ const LearnPage: React.FC = () => {
         <Breadcrumb
           items={[
             { label: 'Home', href: '/' },
-            { label: 'Learn', href: '/learn' }
+            { label: 'Learn', href: '/learn' },
           ]}
         />
         <HeaderSection searchQuery={searchQuery} onSearchChange={setSearchQuery} />

@@ -1,46 +1,54 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createSessionCookie, revokeSessionCookie } from '@/app/lib/server-auth';
+import { auth } from '@/lib/firebase';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
-    const { idToken } = await request.json();
+    const { email, password, action } = await request.json();
 
-    if (!idToken) {
-      return NextResponse.json({ error: 'ID token is required' }, { status: 400 });
+    if (!email || !password) {
+      return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
     }
 
-    const sessionCookie = await createSessionCookie(idToken);
+    let userCredential;
 
-    return NextResponse.json(
-      { success: true },
-      {
-        status: 200,
-        headers: {
-          'Set-Cookie': `session=${sessionCookie}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${60 * 60 * 24 * 5}`,
-        },
-      }
+    if (action === 'signup') {
+      userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    } else {
+      userCredential = await signInWithEmailAndPassword(auth, email, password);
+    }
+
+    const idToken = await userCredential.user.getIdToken();
+
+    // Set the auth token in a secure HTTP-only cookie
+    const response = NextResponse.json(
+      { success: true, user: userCredential.user },
+      { status: 200 }
     );
-  } catch (error) {
-    console.error('Error in auth POST:', error);
-    return NextResponse.json({ error: 'Authentication failed' }, { status: 401 });
+
+    response.cookies.set('auth-token', idToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 3600, // 1 hour
+      path: '/',
+    });
+
+    return response;
+  } catch (error: any) {
+    console.error('Auth error:', error);
+    return NextResponse.json({ error: error.message || 'Authentication failed' }, { status: 401 });
   }
 }
 
 export async function DELETE() {
   try {
-    await revokeSessionCookie();
-
-    return NextResponse.json(
-      { success: true },
-      {
-        status: 200,
-        headers: {
-          'Set-Cookie': 'session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0',
-        },
-      }
-    );
-  } catch (error) {
-    console.error('Error in auth DELETE:', error);
-    return NextResponse.json({ error: 'Logout failed' }, { status: 500 });
+    // Clear the auth token cookie
+    const response = NextResponse.json({ success: true }, { status: 200 });
+    response.cookies.delete('auth-token');
+    return response;
+  } catch (error: any) {
+    console.error('Logout error:', error);
+    return NextResponse.json({ error: error.message || 'Logout failed' }, { status: 500 });
   }
 }

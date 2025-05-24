@@ -87,22 +87,22 @@ const Stat = styled.div`
   &:hover {
     background: ${props => props.theme.colors.primary};
     border-color: ${props => props.theme.colors.primary};
-    
+
     ${StatValue}, ${StatLabel} {
       color: white;
     }
-    
+
     ${StatIcon} {
       color: white;
     }
   }
 `;
 
-export const SystemDesignHero: React.FC<SystemDesignHeroProps> = ({ 
-  title, 
-  description, 
+export const SystemDesignHero: React.FC<SystemDesignHeroProps> = ({
+  title,
+  description,
   stats,
-  pageUrl 
+  pageUrl,
 }) => {
   // Generate structured data for the page
   const structuredData = {
@@ -115,7 +115,7 @@ export const SystemDesignHero: React.FC<SystemDesignHeroProps> = ({
       '@type': 'Article',
       name: title,
       description: description,
-    }
+    },
   };
 
   return (
@@ -145,4 +145,4 @@ export const SystemDesignHero: React.FC<SystemDesignHeroProps> = ({
       </Container>
     </>
   );
-}; 
+};

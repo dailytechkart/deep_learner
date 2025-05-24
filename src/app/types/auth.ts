@@ -1,11 +1,15 @@
-import { User as SupabaseUser, UserMetadata } from '@supabase/supabase-js';
+import { User as FirebaseUser } from 'firebase/auth';
 
-export interface CustomUserMetadata extends UserMetadata {
-  full_name?: string;
-  avatar_url?: string;
+export interface User extends FirebaseUser {
+  role?: string;
 }
 
-export interface User extends Omit<SupabaseUser, 'user_metadata'> {
+export interface UserProfile {
+  id: string;
+  email: string;
+  full_name?: string;
+  avatar_url?: string;
   role?: string;
-  user_metadata?: CustomUserMetadata;
-} 
+  created_at: string;
+  updated_at: string;
+}

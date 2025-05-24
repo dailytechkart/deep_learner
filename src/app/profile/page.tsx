@@ -13,10 +13,10 @@ import {
   CardContent,
   ProfileSection,
   FormGroup,
-  Label,
-  Input,
+  FormLabel as Label,
+  FormInput as Input,
   Select,
-  Button,
+  SubmitButton as Button,
 } from '../components/StyledComponents';
 import { Breadcrumb } from '@/components/shared/Breadcrumb';
 import { withAuth } from '../hooks/withAuth';

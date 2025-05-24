@@ -344,11 +344,11 @@ const InterviewPage: React.FC = () => {
   return (
     <ProtectedRoute>
       <MainLayout>
-        <Breadcrumb 
+        <Breadcrumb
           items={[
             { label: 'Home', href: '/' },
-            { label: 'Interview Preparation', href: '/interview' }
-          ]} 
+            { label: 'Interview Preparation', href: '/interview' },
+          ]}
         />
         <SystemDesignHero
           title={systemDesignTitle}

@@ -1,15 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Sidebar,
   SidebarHeader,
   SidebarActions,
   FilterButton,
-  SidebarTitle,
-  CategoryList,
-  CategoryButton,
-  CategoryIcon,
   SidebarSection,
   SidebarSectionTitle,
   SidebarStats,
@@ -33,7 +29,9 @@ import {
   SidebarCategoryCount,
   SidebarQuickActions,
   SidebarQuickActionButton,
-} from './StyledComponents';
+  CategoryButton,
+  CategoryIcon,
+} from './Sidebar.styled';
 import Loader from './Loader';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -81,7 +79,8 @@ const SidebarComponent: React.FC<SidebarProps> = ({
     category.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const isActive = (path: string) => pathname === path;
+  const _isActive = (path: string) => pathname === path;
+  const isActive = _isActive;
 
   return (
     <Sidebar>

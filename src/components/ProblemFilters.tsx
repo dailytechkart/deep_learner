@@ -12,51 +12,57 @@ interface ProblemFiltersProps {
   onFilterChange: (filterType: keyof FilterType, value: string) => void;
 }
 
-const FilterSection = styled.div`
-  margin-bottom: ${props => props.theme.spacing.md};
-  padding: 0.5rem;
+const FiltersContainer = styled.div`
+  padding: 1rem;
   background: ${props => props.theme.colors.background};
   border-radius: ${props => props.theme.borderRadius.lg};
-  border: 1px solid ${props => props.theme.colors.border};
+  box-shadow: ${props => props.theme.shadows.sm};
 `;
 
-const FilterSectionTitle = styled.h4`
-  font-size: ${props => props.theme.typography.fontSize.sm};
-  font-weight: ${props => props.theme.typography.fontWeight.bold};
+const FilterSection = styled.div`
+  margin-bottom: 1.5rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
+
+const SectionTitle = styled.h3`
+  font-size: ${props => props.theme.typography.fontSize.lg};
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  margin-bottom: 0.75rem;
   color: ${props => props.theme.colors.text};
-  margin: 0 0 ${props => props.theme.spacing.xs} 0;
-  display: flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing.xs};
 `;
 
 const FilterOptions = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: ${props => props.theme.spacing.xs};
+  flex-wrap: wrap;
+  gap: 0.5rem;
 `;
 
-const FilterOption = styled.label`
-  display: flex;
-  align-items: center;
-  gap: ${props => props.theme.spacing.xs};
-  font-size: ${props => props.theme.typography.fontSize.xs};
-  color: ${props => props.theme.colors.textSecondary};
-  cursor: pointer;
-  padding: 0.25rem 0;
+const FilterButton = styled.button<{ isSelected: boolean }>`
+  padding: 0.25rem 0.75rem;
+  border-radius: ${props => props.theme.borderRadius.full};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
   transition: all 0.2s ease;
-
-  &:hover {
-    color: ${props => props.theme.colors.primary};
-  }
-`;
-
-const Checkbox = styled.input`
-  width: 14px;
-  height: 14px;
-  margin: 0;
+  border: none;
   cursor: pointer;
-  accent-color: ${props => props.theme.colors.primary};
+
+  ${props =>
+    props.isSelected
+      ? `
+    background: ${props.theme.colors.primary};
+    color: ${props.theme.colors.background};
+  `
+      : `
+    background: ${props.theme.colors.border};
+    color: ${props.theme.colors.textSecondary};
+    
+    &:hover {
+      background: ${props.theme.colors.backgroundHover};
+    }
+  `}
 `;
 
 export default function ProblemFilters({
@@ -70,28 +76,24 @@ export default function ProblemFilters({
     options: string[],
     selectedOptions: string[]
   ) => (
-    <div className="mb-6">
-      <h3 className="text-lg font-semibold mb-3">{title}</h3>
-      <div className="flex flex-wrap gap-2">
+    <FilterSection>
+      <SectionTitle>{title}</SectionTitle>
+      <FilterOptions>
         {options.map(option => (
-          <button
+          <FilterButton
             key={option}
             onClick={() => onFilterChange(filterType, option)}
-            className={`px-3 py-1 rounded-full text-sm font-medium transition-colors ${
-              selectedOptions.includes(option)
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-            }`}
+            isSelected={selectedOptions.includes(option)}
           >
             {option}
-          </button>
+          </FilterButton>
         ))}
-      </div>
-    </div>
+      </FilterOptions>
+    </FilterSection>
   );
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-sm">
+    <FiltersContainer>
       {renderFilterSection('Topics', 'topics', filters.topics, selectedFilters.topics)}
       {renderFilterSection(
         'Difficulty',
@@ -101,6 +103,6 @@ export default function ProblemFilters({
       )}
       {renderFilterSection('Companies', 'companies', filters.companies, selectedFilters.companies)}
       {renderFilterSection('Tags', 'tags', filters.tags, selectedFilters.tags)}
-    </div>
+    </FiltersContainer>
   );
 }

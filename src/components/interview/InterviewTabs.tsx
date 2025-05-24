@@ -12,7 +12,7 @@ const TabContainer = styled.div`
 
 const Tab = styled.button<{ isActive: boolean }>`
   padding: 0.75rem 1.5rem;
-  font-size: ${props => props.theme.typography.fontSize.md};
+  font-size: ${props => props.theme.typography.fontSize.base};
   font-weight: ${props =>
     props.isActive
       ? props.theme.typography.fontWeight.bold

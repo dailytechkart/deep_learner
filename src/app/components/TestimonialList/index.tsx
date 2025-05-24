@@ -25,11 +25,11 @@ const TestimonialsGrid = styled.div`
   grid-template-columns: repeat(1, 1fr);
   gap: ${props => props.theme.spacing.lg};
 
-  @media (min-width: ${props => props.theme.breakpoints.tablet}) {
+  @media (min-width: ${props => props.theme.breakpoints.md}) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (min-width: ${props => props.theme.breakpoints.desktop}) {
+  @media (min-width: ${props => props.theme.breakpoints.xl}) {
     grid-template-columns: repeat(3, 1fr);
   }
 `;
