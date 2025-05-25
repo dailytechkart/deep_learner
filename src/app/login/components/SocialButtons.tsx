@@ -8,6 +8,12 @@ const SocialButtonGroup = styled.div`
   gap: 1rem;
   width: 100%;
   margin-top: 1rem;
+
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
+    flex-direction: row;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
 `;
 
 const SocialButton = styled.button<{ provider: 'google' | 'github' }>`
@@ -41,6 +47,21 @@ const SocialButton = styled.button<{ provider: 'google' | 'github' }>`
     width: 20px;
     height: 20px;
   }
+
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    gap: 0.5rem;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    span {
+      display: none;
+    }
+  }
 `;
 
 interface SocialButtonsProps {
@@ -60,11 +81,11 @@ const SocialButtons: React.FC<SocialButtonsProps> = ({
     <SocialButtonGroup>
       <SocialButton provider="google" onClick={onGoogleClick} disabled={isLoading}>
         <FaGoogle />
-        {isSignUp ? 'Sign up with Google' : 'Continue with Google'}
+        <span>{isSignUp ? 'Sign up with Google' : 'Continue with Google'}</span>
       </SocialButton>
       <SocialButton provider="github" onClick={onGithubClick} disabled={isLoading}>
         <FaGithub />
-        {isSignUp ? 'Sign up with GitHub' : 'Continue with GitHub'}
+        <span>{isSignUp ? 'Sign up with GitHub' : 'Continue with GitHub'}</span>
       </SocialButton>
     </SocialButtonGroup>
   );

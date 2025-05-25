@@ -6,6 +6,7 @@ import { useAuth } from '../hooks/useAuth';
 import { LoginContainer, AuthContainer, AuthCard, AuthTitle } from './components/styles';
 import LeftSection from './components/LeftSection';
 import RightSection from './components/RightSection';
+import Loader from '../components/Loader';
 
 export default function LoginClient() {
   const router = useRouter();
@@ -87,7 +88,7 @@ export default function LoginClient() {
     return (
       <AuthContainer>
         <AuthCard>
-          <AuthTitle>Loading...</AuthTitle>
+          <Loader variant="spinner" size="lg" />
         </AuthCard>
       </AuthContainer>
     );
@@ -97,7 +98,7 @@ export default function LoginClient() {
     return (
       <AuthContainer>
         <AuthCard>
-          <AuthTitle>Redirecting...</AuthTitle>
+          <Loader variant="pulse" size="lg" />
         </AuthCard>
       </AuthContainer>
     );

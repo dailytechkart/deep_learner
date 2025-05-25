@@ -4,6 +4,12 @@ export const LoginContainer = styled.div`
   display: flex;
   min-height: 100vh;
   background: ${props => props.theme.colors.background};
+
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
 `;
 
 export const AuthContainer = styled.div`
@@ -12,6 +18,12 @@ export const AuthContainer = styled.div`
   justify-content: center;
   min-height: 100vh;
   background: ${props => props.theme.colors.background};
+
+  @media (max-width: ${props => props.theme.breakpoints.md}) {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
 `;
 
 export const LeftSection = styled.div`
