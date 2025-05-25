@@ -1,5 +1,5 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended", "prettier"],
+  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
@@ -14,6 +14,8 @@
     ],
     "no-unused-vars": "off",
     "@typescript-eslint/no-explicit-any": "warn",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-async-client-component": "warn"
   }
 }

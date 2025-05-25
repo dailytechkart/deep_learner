@@ -11,7 +11,7 @@ export function withAuth<P extends object>(WrappedComponent: React.ComponentType
 
     useEffect(() => {
       if (!loading && !user) {
-        const returnUrl = encodeURIComponent(pathname);
+        const returnUrl = pathname ? encodeURIComponent(pathname) : '';
         router.replace(`/login?from=${returnUrl}`);
       }
     }, [user, loading, router, pathname]);

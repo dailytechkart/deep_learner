@@ -10,6 +10,9 @@ import {
   sendPasswordResetEmail,
   updateProfile,
   User as FirebaseUser,
+  GoogleAuthProvider,
+  signInWithPopup,
+  GithubAuthProvider,
 } from 'firebase/auth';
 import { doc, getDoc, setDoc, updateDoc, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
@@ -35,6 +38,8 @@ interface AuthContextType {
   signUp: (email: string, password: string, fullName: string) => Promise<void>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
+  signInWithGithub: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -46,6 +51,8 @@ const AuthContext = createContext<AuthContextType>({
   signUp: async () => {},
   signOut: async () => {},
   resetPassword: async () => {},
+  signInWithGoogle: async () => {},
+  signInWithGithub: async () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -183,6 +190,76 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const signInWithGoogle = async () => {
+    try {
+      setError(null);
+      const auth = getAuth();
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+
+      // Create or update user profile
+      const userRef = doc(db, 'users', result.user.uid);
+      const userDoc = await getDoc(userRef);
+
+      if (!userDoc.exists()) {
+        const newProfile: UserProfile = {
+          id: result.user.uid,
+          email: result.user.email || '',
+          full_name: result.user.displayName || '',
+          created_at: Timestamp.now(),
+          last_login: Timestamp.now(),
+          premium: false,
+        };
+        await setDoc(userRef, newProfile);
+      } else {
+        await updateDoc(userRef, {
+          last_login: serverTimestamp(),
+        });
+      }
+
+      router.push('/dashboard');
+    } catch (error) {
+      console.error('Google sign in error:', error);
+      setError(error instanceof Error ? error.message : 'Failed to sign in with Google');
+      throw error;
+    }
+  };
+
+  const signInWithGithub = async () => {
+    try {
+      setError(null);
+      const auth = getAuth();
+      const provider = new GithubAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+
+      // Create or update user profile
+      const userRef = doc(db, 'users', result.user.uid);
+      const userDoc = await getDoc(userRef);
+
+      if (!userDoc.exists()) {
+        const newProfile: UserProfile = {
+          id: result.user.uid,
+          email: result.user.email || '',
+          full_name: result.user.displayName || '',
+          created_at: Timestamp.now(),
+          last_login: Timestamp.now(),
+          premium: false,
+        };
+        await setDoc(userRef, newProfile);
+      } else {
+        await updateDoc(userRef, {
+          last_login: serverTimestamp(),
+        });
+      }
+
+      router.push('/dashboard');
+    } catch (error) {
+      console.error('GitHub sign in error:', error);
+      setError(error instanceof Error ? error.message : 'Failed to sign in with GitHub');
+      throw error;
+    }
+  };
+
   const value = {
     user,
     profile,
@@ -192,6 +269,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     signUp,
     signOut,
     resetPassword,
+    signInWithGoogle,
+    signInWithGithub,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

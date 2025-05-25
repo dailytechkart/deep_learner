@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useAuth } from '@/app/context/AuthContext';
+import { useAuth } from '@/app/hooks/useAuth';
 
 const ButtonContainer = styled.div`
   display: flex;

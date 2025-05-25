@@ -1,8 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { adminAuth } from '@/lib/firebase-admin';
+import { getAdminAuth } from '@/lib/firebase-admin';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, updateDoc, Timestamp } from 'firebase/firestore';
+
+interface SystemDesignPattern {
+  id: string;
+  title: string;
+  description: string;
+  content: string;
+  created_at: Timestamp;
+  updated_at: Timestamp;
+  created_by: string;
+  updated_by: string;
+  [key: string]: any;
+}
 
 async function requireAuth(request: NextRequest) {
   const cookieStore = cookies();
@@ -13,42 +25,49 @@ async function requireAuth(request: NextRequest) {
   }
 
   try {
+    const adminAuth = getAdminAuth();
     const decodedToken = await adminAuth.verifyIdToken(token);
     return decodedToken;
   } catch (error) {
-    console.error('Error verifying token:', error);
-    throw new Error('Invalid token');
+    if (error instanceof Error) {
+      throw new Error(`Authentication failed: ${error.message}`);
+    }
+    throw new Error('Authentication failed: Unknown error');
   }
+}
+
+async function getPatternById(patternId: string): Promise<SystemDesignPattern> {
+  const patternDoc = await getDoc(doc(db, 'system_design_patterns', patternId));
+
+  if (!patternDoc.exists()) {
+    throw new Error('Pattern not found');
+  }
+
+  return {
+    id: patternDoc.id,
+    ...patternDoc.data(),
+  } as SystemDesignPattern;
 }
 
 async function handler(request: NextRequest) {
   const patternId = request.url.split('/').pop();
 
   if (!patternId) {
-    return NextResponse.json({ error: 'Pattern ID is required' }, { status: 400 });
+    throw new Error('Pattern ID is required');
   }
 
-  const patternDoc = await getDoc(doc(db, 'system_design_patterns', patternId));
-
-  if (!patternDoc.exists()) {
-    return NextResponse.json({ error: 'Pattern not found' }, { status: 404 });
-  }
-
-  const pattern = {
-    id: patternDoc.id,
-    ...patternDoc.data(),
-  };
-
-  return NextResponse.json(pattern);
+  return getPatternById(patternId);
 }
 
 export async function GET(request: NextRequest) {
   try {
     await requireAuth(request);
-    return handler(request);
+    const pattern = await handler(request);
+    return NextResponse.json(pattern);
   } catch (error) {
-    console.error('Error in system design GET:', error);
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const errorMessage = error instanceof Error ? error.message : 'Unauthorized';
+    const status = error instanceof Error && error.message === 'Pattern not found' ? 404 : 401;
+    return NextResponse.json({ error: errorMessage }, { status });
   }
 }
 
@@ -59,7 +78,7 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
 
     if (!patternId) {
-      return NextResponse.json({ error: 'Pattern ID is required' }, { status: 400 });
+      throw new Error('Pattern ID is required');
     }
 
     const patternRef = doc(db, 'system_design_patterns', patternId);
@@ -70,20 +89,12 @@ export async function PUT(request: NextRequest) {
     };
 
     await updateDoc(patternRef, updateData);
-    const updatedDoc = await getDoc(patternRef);
-
-    if (!updatedDoc.exists()) {
-      return NextResponse.json({ error: 'Pattern not found' }, { status: 404 });
-    }
-
-    const updatedPattern = {
-      id: updatedDoc.id,
-      ...updatedDoc.data(),
-    };
+    const updatedPattern = await getPatternById(patternId);
 
     return NextResponse.json(updatedPattern);
   } catch (error) {
-    console.error('Error updating pattern:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : 'Internal server error';
+    const status = error instanceof Error && error.message === 'Pattern not found' ? 404 : 500;
+    return NextResponse.json({ error: errorMessage }, { status });
   }
 }

@@ -30,15 +30,20 @@ export const GitHubLogin = () => {
   const handleGitHubLogin = async () => {
     try {
       trackEvent(AnalyticsEvent.USER_LOGIN, {
+        action: 'login',
         provider: 'github',
+        location: 'login_page',
         timestamp: new Date().toISOString(),
       });
 
       await signInWithGithub();
     } catch (error) {
       trackEvent(AnalyticsEvent.ERROR, {
-        error: error instanceof Error ? error.message : 'Unknown error',
-        context: 'github_login',
+        action: 'auth_error',
+        provider: 'github',
+        location: 'login_page',
+        errorType: 'provider_error',
+        errorMessage: error instanceof Error ? error.message : 'Unknown error',
         timestamp: new Date().toISOString(),
       });
       console.error('Error signing in with GitHub:', error);

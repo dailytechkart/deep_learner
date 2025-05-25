@@ -41,7 +41,7 @@ export const Breadcrumb = ({ className }: BreadcrumbProps) => {
   const pathname = usePathname();
 
   const generateBreadcrumbs = () => {
-    const paths = pathname.split('/').filter(Boolean);
+    const paths = (pathname ?? '').split('/').filter(Boolean);
     const breadcrumbs = paths.map((path, index) => {
       const href = `/${paths.slice(0, index + 1).join('/')}`;
       const label = path.charAt(0).toUpperCase() + path.slice(1).replace(/-/g, ' ');

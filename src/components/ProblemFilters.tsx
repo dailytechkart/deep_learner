@@ -75,14 +75,19 @@ export default function ProblemFilters({
   const { trackEvent } = useAnalytics();
 
   const handleFilterChange = (filterType: keyof FilterType, value: string) => {
+    const analyticsFilterType = {
+      topics: 'topic',
+      difficulty: 'difficulty',
+      companies: 'company',
+      tags: 'tag',
+    }[filterType] as 'difficulty' | 'topic' | 'company' | 'tag' | 'status';
+
     trackEvent(AnalyticsEvent.SEARCH, {
-      filterType,
-      value,
-      currentFilters: {
-        topics: selectedFilters.topics,
-        difficulty: selectedFilters.difficulty,
-        companies: selectedFilters.companies,
-        tags: selectedFilters.tags,
+      action: 'problem_filter',
+      location: 'problem_list',
+      filter: {
+        type: analyticsFilterType,
+        value,
       },
       timestamp: new Date().toISOString(),
     });

@@ -2,9 +2,10 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '../context/AuthContext';
+import { FaUser, FaUserCircle, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import styled from 'styled-components';
-import { FaUser, FaSignOutAlt, FaCog, FaUserCircle } from 'react-icons/fa';
+import { useAuth } from '@/app/hooks/useAuth';
+import { CustomUser } from '@/types/auth';
 
 const UserMenuContainer = styled.div`
   position: relative;
@@ -137,7 +138,7 @@ const MenuDivider = styled.div`
 `;
 
 export function UserMenu() {
-  const { user, logout } = useAuth();
+  const { user, signOut } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -154,13 +155,14 @@ export function UserMenu() {
   }, []);
 
   const handleLogout = async () => {
-    await logout();
+    await signOut();
     router.push('/');
   };
 
-  const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0];
-  const userEmail = user?.email;
-  const userAvatar = user?.user_metadata?.avatar_url;
+  const customUser = user as CustomUser;
+  const userName = customUser?.user_metadata?.full_name || customUser?.email?.split('@')[0];
+  const userEmail = customUser?.email;
+  const userAvatar = customUser?.user_metadata?.avatar_url;
 
   return (
     <UserMenuContainer ref={menuRef}>

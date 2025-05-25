@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { adminAuth } from '@/lib/firebase-admin';
+import { getAdminAuth } from '@/lib/firebase-admin';
 import { db } from '@/lib/firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import type { NextRequest } from 'next/server';
@@ -14,6 +14,7 @@ async function requireAuth(request: NextRequest) {
   }
 
   try {
+    const adminAuth = getAdminAuth();
     const decodedToken = await adminAuth.verifyIdToken(token);
     return decodedToken;
   } catch (error) {

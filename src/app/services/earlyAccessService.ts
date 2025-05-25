@@ -10,6 +10,7 @@ import {
 import { db } from '@/lib/firebase';
 
 export interface EarlyAccessUser {
+  id: string;
   email: string;
   phone: string;
   occupation: string;
@@ -40,7 +41,9 @@ class EarlyAccessService {
     return !querySnapshot.empty;
   }
 
-  async registerUser(userData: Omit<EarlyAccessUser, 'createdAt'>): Promise<EarlyAccessResponse> {
+  async registerUser(
+    userData: Omit<EarlyAccessUser, 'createdAt' | 'id'>
+  ): Promise<EarlyAccessResponse> {
     try {
       // Check for existing email
       const emailExists = await this.isEmailExists(userData.email);
@@ -88,10 +91,19 @@ class EarlyAccessService {
   async getAllUsers(): Promise<EarlyAccessUser[]> {
     try {
       const querySnapshot = await getDocs(this.collection);
-      return querySnapshot.docs.map((doc: QueryDocumentSnapshot) => ({
-        ...doc.data(),
-        id: doc.id,
-      })) as EarlyAccessUser[];
+      return querySnapshot.docs.map((doc: QueryDocumentSnapshot) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          email: data.email || '',
+          phone: data.phone || '',
+          occupation: data.occupation || '',
+          interests: data.interests || [],
+          experience: data.experience || '',
+          goals: data.goals || '',
+          createdAt: data.createdAt?.toDate() || new Date(),
+        };
+      });
     } catch (error) {
       console.error('Error fetching early access users:', error);
       throw error;

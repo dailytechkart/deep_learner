@@ -2,6 +2,7 @@
 
 import { useEffect, useState, ChangeEvent } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { CustomUser } from '@/types/auth';
 import {
   ProfileContainer,
   ProfileHeader,
@@ -23,7 +24,7 @@ import { withAuth } from '../hooks/withAuth';
 import MainLayout from '@/components/MainLayout';
 
 function ProfilePage() {
-  const { user } = useAuth();
+  const { user } = useAuth() as { user: CustomUser | null };
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
     displayName: user?.user_metadata?.full_name || '',

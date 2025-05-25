@@ -3,6 +3,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { AnalyticsEvent } from '@/utils/analytics';
+import type { ProblemsAnalyticsEvent } from '@/utils/analytics';
 
 interface ProblemCardProps {
   problem: Problem;
@@ -90,15 +91,18 @@ export default function ProblemCard({ problem }: ProblemCardProps) {
   const { trackEvent } = useAnalytics();
 
   const handleProblemClick = () => {
-    trackEvent(AnalyticsEvent.COURSE_VIEW, {
+    const eventProperties: ProblemsAnalyticsEvent = {
+      action: 'problem_view',
+      location: 'problem_list',
       problemId: problem.id,
       problemTitle: problem.title,
-      difficulty: problem.difficulty,
+      difficulty: problem.difficulty as 'Easy' | 'Medium' | 'Hard',
       topic: problem.topic,
       tags: problem.tags,
       companies: problem.companies,
       timestamp: new Date().toISOString(),
-    });
+    };
+    trackEvent(AnalyticsEvent.COURSE_VIEW, eventProperties);
   };
 
   const cardContent = (

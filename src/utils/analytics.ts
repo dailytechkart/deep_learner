@@ -48,6 +48,38 @@ interface EventProperties {
   [key: string]: any;
 }
 
+export interface CourseViewEventProperties {
+  problemId: string;
+  problemTitle: string;
+  difficulty: string;
+  topic: string;
+  tags: string[];
+  companies: string[];
+  timestamp: string;
+}
+
+export interface ProblemsAnalyticsEvent {
+  action:
+    | 'problem_view'
+    | 'problem_solve'
+    | 'problem_submit'
+    | 'problem_filter'
+    | 'problem_search'
+    | 'problem_bookmark';
+  location: 'problem_list' | 'problem_detail' | 'problem_editor';
+  problemId: string;
+  problemTitle: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  topic: string;
+  tags: string[];
+  companies: string[];
+  timestamp: string;
+  filter?: {
+    type: 'difficulty' | 'topic' | 'company' | 'tag' | 'status';
+    value: string;
+  };
+}
+
 // Analytics service class
 class Analytics {
   // Track a custom event

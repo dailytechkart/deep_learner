@@ -67,6 +67,17 @@ export const usePractice = () => {
     [fetchQuestions]
   );
 
+  // Fetch user stats
+  const fetchUserStats = useCallback(async () => {
+    if (!user) return;
+    try {
+      const stats = await practiceService.getUserStats(user.uid);
+      setUserStats(stats);
+    } catch (error) {
+      console.error('Error fetching user stats:', error);
+    }
+  }, [user]);
+
   // Submit an answer
   const submitAnswer = useCallback(
     async (questionId: string, selectedOption: number, timeSpent: number) => {
@@ -94,25 +105,8 @@ export const usePractice = () => {
         setLoading(false);
       }
     },
-    [user]
+    [user, fetchUserStats]
   );
-
-  // Fetch user stats
-  const fetchUserStats = useCallback(async () => {
-    if (!user) return;
-
-    try {
-      setLoading(true);
-      const data = await practiceService.getUserStats(user.uid);
-      setUserStats(data);
-      setError(null);
-    } catch (err) {
-      setError('Failed to fetch user stats');
-      console.error('Error fetching user stats:', err);
-    } finally {
-      setLoading(false);
-    }
-  }, [user]);
 
   // Get user's progress for a specific question
   const getUserQuestionProgress = useCallback(

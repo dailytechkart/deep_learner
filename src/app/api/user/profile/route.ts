@@ -1,22 +1,8 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { db } from '@/app/lib/firebase/config';
+import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { getAuth } from 'firebase-admin/auth';
-import { initializeApp, getApps, cert } from 'firebase-admin/app';
-
-// Initialize Firebase Admin if not already initialized
-if (!getApps().length) {
-  initializeApp({
-    credential: cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    }),
-  });
-}
-
-const adminAuth = getAuth();
+import { getAdminAuth } from '@/lib/firebase-admin';
 
 // Force dynamic route handling
 export const dynamic = 'force-dynamic';
@@ -25,13 +11,14 @@ export const revalidate = 0;
 export async function GET() {
   try {
     const cookieStore = cookies();
-    const token = cookieStore.get('token')?.value;
+    const token = cookieStore.get('auth_token')?.value;
 
     if (!token) {
       return NextResponse.json({ error: 'No token provided' }, { status: 401 });
     }
 
     try {
+      const adminAuth = getAdminAuth();
       const decodedToken = await adminAuth.verifyIdToken(token);
       const userId = decodedToken.uid;
 
@@ -54,13 +41,14 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const cookieStore = cookies();
-    const token = cookieStore.get('token')?.value;
+    const token = cookieStore.get('auth_token')?.value;
 
     if (!token) {
       return NextResponse.json({ error: 'No token provided' }, { status: 401 });
     }
 
     try {
+      const adminAuth = getAdminAuth();
       const decodedToken = await adminAuth.verifyIdToken(token);
       const userId = decodedToken.uid;
       const data = await request.json();

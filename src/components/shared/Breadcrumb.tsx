@@ -65,7 +65,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items = [], showHome = t
   const pathname = usePathname();
 
   // Generate breadcrumb items from pathname if no items provided
-  const breadcrumbItems = items.length > 0 ? items : generateBreadcrumbs(pathname, showHome);
+  const breadcrumbItems = items.length > 0 ? items : generateBreadcrumbs(pathname || '/', showHome);
 
   // Generate structured data for SEO
   const structuredData = {

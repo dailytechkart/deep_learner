@@ -71,10 +71,6 @@ const Keyword = styled.span`
   color: #569cd6;
 `;
 
-const String = styled.span`
-  color: #ce9178;
-`;
-
 const Function = styled.span`
   color: #dcdcaa;
 `;
@@ -99,17 +95,17 @@ const HeroIllustration: React.FC = () => {
       <EditorContent>
         <ProblemSection>
           <CodeBlock>
-            <Comment>// Problem: Rotate array by k steps</Comment>
+            {'// Problem: Rotate array by k steps'}
             <br />
-            <Comment>// Input: nums = [1,2,3,4,5], k = 2</Comment>
+            {'// Input: nums = [1,2,3,4,5], k = 2'}
             <br />
-            <Comment>// Output: [4,5,1,2,3]</Comment>
+            {'// Output: [4,5,1,2,3]'}
             <br />
             <br />
             <Keyword>function</Keyword> <Function>rotateArray</Function>(nums, k) {'{'}
             <br />
             {'  '}
-            <Comment>// TODO: Implement rotation</Comment>
+            {'// TODO: Implement rotation'}
             <br />
             {'}'}
           </CodeBlock>

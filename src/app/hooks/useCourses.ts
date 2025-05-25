@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { courseService } from '../services/courseService';
 import { Course, UserCourse, UserProgress } from '../types/course';
 import { useAuth } from '../context/AuthContext';
@@ -28,7 +28,7 @@ export const useCourses = () => {
   };
 
   // Fetch user's enrolled courses
-  const fetchUserCourses = async () => {
+  const fetchUserCourses = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -42,7 +42,7 @@ export const useCourses = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   // Enroll in a course
   const enrollInCourse = async (courseId: string) => {
@@ -123,7 +123,7 @@ export const useCourses = () => {
     if (user) {
       fetchUserCourses();
     }
-  }, [user]);
+  }, [user, fetchUserCourses]);
 
   return {
     courses,

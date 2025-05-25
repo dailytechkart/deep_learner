@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { adminAuth } from '@/lib/firebase-admin';
+import { getAdminAuth } from '@/lib/firebase-admin';
 import { db } from '@/lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
@@ -14,6 +14,7 @@ export async function GET() {
     }
 
     try {
+      const adminAuth = getAdminAuth();
       const decodedToken = await adminAuth.verifyIdToken(token);
       const userDoc = await getDoc(doc(db, 'users', decodedToken.uid));
 

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { signInWithGoogle, signInWithGithub, signOutUser } from '@/app/services/auth';
-import { AuthService } from '@/app/services/authService';
+import { AuthService } from '../../services/authService';
 
 // POST /api/auth/google - Sign in with Google
 export async function POST(request: Request) {
@@ -10,10 +9,10 @@ export async function POST(request: Request) {
     let result;
     switch (provider) {
       case 'google':
-        result = await signInWithGoogle();
+        result = await AuthService.signInWithGoogle();
         break;
       case 'github':
-        result = await signInWithGithub();
+        result = await AuthService.signInWithGithub();
         break;
       default:
         return NextResponse.json({ error: 'Invalid provider' }, { status: 400 });
@@ -28,7 +27,7 @@ export async function POST(request: Request) {
 // DELETE /api/auth - Sign out
 export async function DELETE() {
   try {
-    await signOutUser();
+    await AuthService.signOut();
     return NextResponse.json({ success: true });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

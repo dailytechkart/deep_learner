@@ -311,7 +311,9 @@ export default function DashboardPage() {
   const { trackEvent } = useAnalytics();
   const [activeTab, setActiveTab] = useState('problems');
 
-  const handleTabChange = (tab: string) => {
+  const handleTabChange = (
+    tab: (typeof DASHBOARD_ANALYTICS.TABS)[keyof typeof DASHBOARD_ANALYTICS.TABS]
+  ) => {
     trackEvent(AnalyticsEvent.NAVIGATION, {
       action: DASHBOARD_ANALYTICS.EVENTS.TAB_CHANGE,
       tab,
@@ -325,7 +327,7 @@ export default function DashboardPage() {
       action: DASHBOARD_ANALYTICS.EVENTS.PROBLEM_CLICK,
       problemId,
       problemTitle,
-      location: DASHBOARD_ANALYTICS.SECTIONS.RECENT_PROBLEMS,
+      section: DASHBOARD_ANALYTICS.SECTIONS.RECENT_PROBLEMS,
       timestamp: new Date().toISOString(),
     });
   };
@@ -335,15 +337,26 @@ export default function DashboardPage() {
       action: DASHBOARD_ANALYTICS.EVENTS.COURSE_CLICK,
       courseId,
       courseTitle,
-      location: DASHBOARD_ANALYTICS.SECTIONS.YOUR_COURSES,
+      section: DASHBOARD_ANALYTICS.SECTIONS.YOUR_COURSES,
       timestamp: new Date().toISOString(),
     });
   };
 
-  const handleViewAllClick = (section: string) => {
+  const handleViewAllClick = (
+    tab: (typeof DASHBOARD_ANALYTICS.TABS)[keyof typeof DASHBOARD_ANALYTICS.TABS]
+  ) => {
+    const sectionMap: Record<
+      (typeof DASHBOARD_ANALYTICS.TABS)[keyof typeof DASHBOARD_ANALYTICS.TABS],
+      (typeof DASHBOARD_ANALYTICS.SECTIONS)[keyof typeof DASHBOARD_ANALYTICS.SECTIONS]
+    > = {
+      problems: DASHBOARD_ANALYTICS.SECTIONS.RECENT_PROBLEMS,
+      courses: DASHBOARD_ANALYTICS.SECTIONS.YOUR_COURSES,
+      activity: DASHBOARD_ANALYTICS.SECTIONS.RECENT_ACTIVITY,
+    };
+
     trackEvent(AnalyticsEvent.NAVIGATION, {
       action: DASHBOARD_ANALYTICS.EVENTS.VIEW_ALL_CLICK,
-      section,
+      section: sectionMap[tab],
       timestamp: new Date().toISOString(),
     });
   };

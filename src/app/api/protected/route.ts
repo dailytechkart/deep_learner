@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { adminAuth } from '@/lib/firebase-admin';
+import { getAdminAuth } from '@/lib/firebase-admin';
 import { db } from '@/lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
@@ -19,6 +19,7 @@ async function requireAuth(request: NextRequest): Promise<AuthenticatedUser> {
   }
 
   try {
+    const adminAuth = getAdminAuth();
     const decodedToken = await adminAuth.verifyIdToken(token);
     const userDoc = await getDoc(doc(db, 'users', decodedToken.uid));
 
@@ -33,32 +34,42 @@ async function requireAuth(request: NextRequest): Promise<AuthenticatedUser> {
       role: userData.role,
     };
   } catch (error) {
-    console.error('Error verifying token:', error);
-    throw new Error('Invalid token');
+    if (error instanceof Error) {
+      throw new Error(`Authentication failed: ${error.message}`);
+    }
+    throw new Error('Authentication failed: Unknown error');
   }
 }
 
 async function handler(request: NextRequest, user: AuthenticatedUser) {
-  // Your protected API logic here
-  const data = {
+  return NextResponse.json({
     message: 'This is a protected API route',
     user: {
       uid: user.uid,
       email: user.email,
       role: user.role,
     },
-  };
-
-  return NextResponse.json(data);
+  });
 }
 
 export async function GET(request: NextRequest) {
   try {
-    const user = await requireAuth(request);
-    return handler(request, user);
+    const cookieStore = cookies();
+    const token = cookieStore.get('auth_token')?.value;
+
+    if (!token) {
+      return NextResponse.json({ error: 'No token provided' }, { status: 401 });
+    }
+
+    const adminAuth = getAdminAuth();
+    const decodedToken = await adminAuth.verifyIdToken(token);
+
+    return NextResponse.json({
+      message: 'Protected route accessed successfully',
+      user: decodedToken,
+    });
   } catch (error) {
-    console.error('Error in protected GET:', error);
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
   }
 }
 
@@ -67,16 +78,13 @@ export async function POST(request: NextRequest) {
     const user = await requireAuth(request);
     const body = await request.json();
 
-    // Your protected API logic here
-    const data = {
+    return NextResponse.json({
       message: 'Data processed successfully',
       userId: user.uid,
       receivedData: body,
-    };
-
-    return NextResponse.json(data);
+    });
   } catch (error) {
-    console.error('Error in protected POST:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : 'Internal server error';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

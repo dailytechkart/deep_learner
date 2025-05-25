@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { adminAuth } from '@/lib/firebase-admin';
+import { getAdminAuth } from '@/lib/firebase-admin';
 import { db } from '@/lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 import { SignJWT } from 'jose';
-import { auth } from '@/lib/firebase';
 
 export async function GET() {
   try {
@@ -15,28 +14,15 @@ export async function GET() {
       return NextResponse.json({ error: 'No token provided' }, { status: 401 });
     }
 
-    try {
-      const decodedToken = await adminAuth.verifyIdToken(token);
-      const userDoc = await getDoc(doc(db, 'users', decodedToken.uid));
+    const adminAuth = getAdminAuth();
+    const decodedToken = await adminAuth.verifyIdToken(token);
 
-      if (!userDoc.exists()) {
-        return NextResponse.json({ error: 'User profile not found' }, { status: 404 });
-      }
-
-      return NextResponse.json({
-        user: {
-          id: decodedToken.uid,
-          email: decodedToken.email,
-          ...userDoc.data(),
-        },
-      });
-    } catch (error) {
-      console.error('Error verifying token:', error);
-      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
-    }
+    return NextResponse.json({
+      message: 'Session validated successfully',
+      user: decodedToken,
+    });
   } catch (error) {
-    console.error('Error in session route:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
   }
 }
 
@@ -49,7 +35,7 @@ export async function POST(request: Request) {
     }
 
     // Verify the Firebase ID token using Firebase Admin
-    const decodedToken = await adminAuth.verifyIdToken(idToken);
+    const decodedToken = await getAdminAuth().verifyIdToken(idToken);
 
     // Create a JWT session token
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);

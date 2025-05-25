@@ -136,7 +136,7 @@ export const Sidebar: React.FC = () => {
             <NavLink
               key={item.href}
               href={item.href}
-              isActive={pathname === item.href || pathname.startsWith(item.href + '/')}
+              isActive={pathname === item.href || (pathname ?? '').startsWith(item.href + '/')}
             >
               <NavIcon>{item.icon}</NavIcon>
               {item.label}
