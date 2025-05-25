@@ -17,4 +17,5 @@ export interface UserProfile {
   createdAt: Timestamp;
   lastLogin: Timestamp;
   provider: string;
+  isPremium: boolean;
 }

@@ -1,133 +1,144 @@
 import { useState, useEffect } from 'react';
-import { auth, db } from '@/lib/firebase';
 import { User } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../lib/firebase/config';
+import { doc, getDoc } from 'firebase/firestore';
 import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
-  GithubAuthProvider,
-  onAuthStateChanged,
-} from 'firebase/auth';
+  signIn,
+  signUp,
+  signInWithGoogle,
+  signInWithGithub,
+  signOutUser,
+  resetPassword,
+  updateUserProfile,
+  SignUpData,
+  AuthError,
+} from '../services/auth';
 
-export interface UserProfile {
-  id: string;
-  email: string;
-  name?: string;
-  avatar_url?: string;
-  created_at?: string;
-  updated_at?: string;
+interface UserWithPremium extends User {
+  isPremium?: boolean;
 }
 
-export function useAuth() {
-  const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+export const useAuth = () => {
+  const [user, setUser] = useState<UserWithPremium | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async user => {
-      setUser(user);
-
-      if (user) {
-        try {
-          const userDoc = await getDoc(doc(db, 'users', user.uid));
-          if (userDoc.exists()) {
-            setProfile(userDoc.data() as UserProfile);
-          } else {
-            // Create user profile if it doesn't exist
-            const newProfile: UserProfile = {
-              id: user.uid,
-              email: user.email!,
-              name: user.displayName || undefined,
-              avatar_url: user.photoURL || undefined,
-              created_at: new Date().toISOString(),
-              updated_at: new Date().toISOString(),
-            };
-            await setDoc(doc(db, 'users', user.uid), newProfile);
-            setProfile(newProfile);
-          }
-          setError(null);
-        } catch (error) {
-          console.error('Error fetching user profile:', error);
-          setError('Failed to fetch user profile');
-        }
-      } else {
-        setProfile(null);
+  const fetchUserPremiumStatus = async (uid: string) => {
+    try {
+      const userDoc = await getDoc(doc(db, 'users', uid));
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        return userData.isPremium || false;
       }
+      return false;
+    } catch (error) {
+      console.error('Error fetching premium status:', error);
+      return false;
+    }
+  };
 
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async user => {
+      if (user) {
+        const isPremium = await fetchUserPremiumStatus(user.uid);
+        setUser({ ...user, isPremium });
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
 
     return () => unsubscribe();
   }, []);
 
-  const signIn = async (email: string, password: string) => {
+  const handleAuthError = (error: AuthError) => {
+    setError(error.message);
+    setLoading(false);
+    throw error;
+  };
+
+  const handleSignIn = async (email: string, password: string) => {
     try {
+      setLoading(true);
       setError(null);
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      return userCredential;
-    } catch (error) {
-      setError('Failed to sign in');
-      throw error;
+      await signIn(email, password);
+    } catch (error: any) {
+      handleAuthError(error);
     }
   };
 
-  const signUp = async (email: string, password: string) => {
+  const handleSignUp = async (data: SignUpData) => {
     try {
+      setLoading(true);
       setError(null);
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      return userCredential;
-    } catch (error) {
-      setError('Failed to sign up');
-      throw error;
+      await signUp(data);
+    } catch (error: any) {
+      handleAuthError(error);
     }
   };
 
-  const signInWithGoogle = async () => {
+  const handleGoogleSignIn = async () => {
     try {
+      setLoading(true);
       setError(null);
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      return result;
-    } catch (error) {
-      setError('Failed to sign in with Google');
-      throw error;
+      await signInWithGoogle();
+    } catch (error: any) {
+      handleAuthError(error);
     }
   };
 
-  const signInWithGithub = async () => {
+  const handleGithubSignIn = async () => {
     try {
+      setLoading(true);
       setError(null);
-      const provider = new GithubAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      return result;
-    } catch (error) {
-      setError('Failed to sign in with GitHub');
-      throw error;
+      await signInWithGithub();
+    } catch (error: any) {
+      handleAuthError(error);
     }
   };
 
-  const signOut = async () => {
+  const handleSignOut = async () => {
     try {
+      setLoading(true);
       setError(null);
-      await auth.signOut();
-    } catch (error) {
-      setError('Failed to sign out');
-      throw error;
+      await signOutUser();
+    } catch (error: any) {
+      handleAuthError(error);
+    }
+  };
+
+  const handlePasswordReset = async (email: string) => {
+    try {
+      setLoading(true);
+      setError(null);
+      await resetPassword(email);
+    } catch (error: any) {
+      handleAuthError(error);
+    }
+  };
+
+  const handleUpdateProfile = async (data: { displayName?: string; photoURL?: string }) => {
+    if (!user) return;
+    try {
+      setLoading(true);
+      setError(null);
+      await updateUserProfile(user, data);
+    } catch (error: any) {
+      handleAuthError(error);
     }
   };
 
   return {
     user,
-    profile,
     loading,
     error,
-    signIn,
-    signUp,
-    signInWithGoogle,
-    signInWithGithub,
-    signOut,
+    isPremium: user?.isPremium || false,
+    signIn: handleSignIn,
+    signUp: handleSignUp,
+    signInWithGoogle: handleGoogleSignIn,
+    signInWithGithub: handleGithubSignIn,
+    signOut: handleSignOut,
+    resetPassword: handlePasswordReset,
+    updateProfile: handleUpdateProfile,
   };
-}
+};

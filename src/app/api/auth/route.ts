@@ -1,54 +1,52 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/lib/firebase';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import { signInWithGoogle, signInWithGithub, signOutUser } from '@/app/services/auth';
+import { AuthService } from '@/app/services/authService';
 
+// POST /api/auth/google - Sign in with Google
 export async function POST(request: Request) {
   try {
-    const { email, password, action } = await request.json();
+    const { provider } = await request.json();
 
-    if (!email || !password) {
-      return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
+    let result;
+    switch (provider) {
+      case 'google':
+        result = await signInWithGoogle();
+        break;
+      case 'github':
+        result = await signInWithGithub();
+        break;
+      default:
+        return NextResponse.json({ error: 'Invalid provider' }, { status: 400 });
     }
 
-    let userCredential;
-
-    if (action === 'signup') {
-      userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    } else {
-      userCredential = await signInWithEmailAndPassword(auth, email, password);
-    }
-
-    const idToken = await userCredential.user.getIdToken();
-
-    // Set the auth token in a secure HTTP-only cookie
-    const response = NextResponse.json(
-      { success: true, user: userCredential.user },
-      { status: 200 }
-    );
-
-    response.cookies.set('auth-token', idToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 3600, // 1 hour
-      path: '/',
-    });
-
-    return response;
+    return NextResponse.json(result);
   } catch (error: any) {
-    console.error('Auth error:', error);
-    return NextResponse.json({ error: error.message || 'Authentication failed' }, { status: 401 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
+// DELETE /api/auth - Sign out
 export async function DELETE() {
   try {
-    // Clear the auth token cookie
-    const response = NextResponse.json({ success: true }, { status: 200 });
-    response.cookies.delete('auth-token');
-    return response;
+    await signOutUser();
+    return NextResponse.json({ success: true });
   } catch (error: any) {
-    console.error('Logout error:', error);
-    return NextResponse.json({ error: error.message || 'Logout failed' }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+// GET /api/auth/me - Get current user
+export async function GET() {
+  try {
+    const user = AuthService.getCurrentUser();
+
+    if (!user) {
+      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
+    }
+
+    return NextResponse.json({ user }, { status: 200 });
+  } catch (error) {
+    console.error('Get user error:', error);
+    return NextResponse.json({ error: 'Failed to get user' }, { status: 500 });
   }
 }
