@@ -22,22 +22,22 @@ const SectionWrapper = styled.div`
 // Dynamically import components that are below the fold
 const RoadmapSection = dynamic(() => import('./components/landing/RoadmapSection'), {
   loading: () => <LoadingSpinner />,
-  ssr: true
+  ssr: true,
 });
 
 const TestimonialsSection = dynamic(() => import('./components/landing/TestimonialsSection'), {
   loading: () => <LoadingSpinner />,
-  ssr: true
+  ssr: true,
 });
 
 const PricingSection = dynamic(() => import('./components/landing/PricingSection'), {
   loading: () => <LoadingSpinner />,
-  ssr: true
+  ssr: true,
 });
 
 const CTASection = dynamic(() => import('./components/landing/CTASection'), {
   loading: () => <LoadingSpinner />,
-  ssr: true
+  ssr: true,
 });
 
 export default function Home() {

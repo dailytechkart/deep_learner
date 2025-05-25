@@ -1,6 +1,5 @@
 'use client';
 
-import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { ThemeProvider } from './context/ThemeContext';
 import { useTheme } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
@@ -48,13 +47,11 @@ function ThemeWrapper({ children }: { children: React.ReactNode }) {
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <StyledComponentsRegistry>
-      <NextThemesProvider attribute="class" defaultTheme="system" enableSystem>
-        <ThemeProvider>
-          <ThemeWrapper>
-            <AuthProvider>{children}</AuthProvider>
-          </ThemeWrapper>
-        </ThemeProvider>
-      </NextThemesProvider>
+      <ThemeProvider initialPromoStripVisible={true} initialTheme="light">
+        <ThemeWrapper>
+          <AuthProvider>{children}</AuthProvider>
+        </ThemeWrapper>
+      </ThemeProvider>
     </StyledComponentsRegistry>
   );
 }

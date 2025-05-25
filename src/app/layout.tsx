@@ -7,6 +7,8 @@ import { SearchProvider } from './context/SearchContext';
 import Script from 'next/script';
 import StyledComponentsRegistry from '@/lib/registry';
 import { GoogleAnalyticsComponent } from '@/lib/analytics';
+import { getCookie } from './utils/cookies';
+import { ThemeProvider } from './context/ThemeContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -37,7 +39,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const promoStripVisible = getCookie('promoStripVisible') !== 'false';
+  const savedTheme = getCookie('theme') || 'light';
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -49,13 +58,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {`
             (function() {
               try {
-                const savedTheme = localStorage.getItem('theme');
-                if (savedTheme) {
-                  document.documentElement.setAttribute('data-theme', savedTheme);
-                } else {
-                  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                  document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-                }
+                const savedTheme = localStorage.getItem('theme') || 
+                  document.cookie.split('; ').find(row => row.startsWith('theme='))?.split('=')[1];
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const theme = savedTheme || (prefersDark ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+                document.cookie = 'theme=' + theme + '; path=/; max-age=' + (60 * 60 * 24 * 365);
               } catch (e) {
                 console.error('Error setting initial theme:', e);
               }
@@ -69,11 +78,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to main content
         </a>
         <StyledComponentsRegistry>
-          <Providers>
-            <AuthProvider>
-              <SearchProvider>{children}</SearchProvider>
-            </AuthProvider>
-          </Providers>
+          <ThemeProvider initialPromoStripVisible={promoStripVisible} initialTheme={savedTheme}>
+            <Providers>
+              <AuthProvider>
+                <SearchProvider>{children}</SearchProvider>
+              </AuthProvider>
+            </Providers>
+          </ThemeProvider>
         </StyledComponentsRegistry>
       </body>
     </html>

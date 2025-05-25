@@ -4,9 +4,9 @@ import Logo from '../Logo';
 import { UserMenu } from '../UserMenu';
 import { UserMenuProps } from './Header.types';
 
-export const HeaderContainer = styled.header`
+export const HeaderContainer = styled.header<{ promoStripVisible: boolean }>`
   position: fixed;
-  top: 20px;
+  top: ${({ promoStripVisible }) => (promoStripVisible ? '44px' : '0px')};
   left: 0;
   right: 0;
   height: 72px;
@@ -124,6 +124,34 @@ export const Nav = styled.nav`
   }
 `;
 
+export const PromoStrip = styled.div<{ isVisible: boolean }>`
+  width: 100vw;
+  height: ${props => (props.isVisible ? '24px' : '0')};
+  background: linear-gradient(90deg, #ffe082 0%, #ffd54f 100%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: height 0.3s ease;
+  overflow: hidden;
+
+  @media (max-width: 480px) {
+    height: ${props => (props.isVisible ? '20px' : '0')};
+  }
+`;
+
+export const PromoStripContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  padding: 0 2rem;
+`;
+
 export const PromoStripText = styled.span`
   width: 100%;
   text-align: center;
@@ -149,20 +177,29 @@ export const PromoStripText = styled.span`
   }
 `;
 
-export const PromoStrip = styled.div`
-  width: 100vw;
-  height: 24px;
-  background: linear-gradient(90deg, #ffe082 0%, #ffd54f 100%);
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1200;
+export const CloseButton = styled.button`
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #7c4a00;
+  cursor: pointer;
+  padding: 0.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  transition: all 0.2s ease;
 
-  @media (max-width: 480px) {
-    height: 20px;
+  &:hover {
+    background: rgba(124, 74, 0, 0.1);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #7c4a00;
+    outline-offset: 2px;
   }
 `;
 
@@ -290,17 +327,142 @@ export const SearchInput = styled.input`
   }
 `;
 
-export const SkipToContent = styled.a`
+
+export const PricingDropdown = styled.div`
   position: absolute;
-  top: -40px;
+  top: 100%;
   left: 0;
+  width: 400px;
+  background: ${({ theme }) => theme.colors.background};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.lg};
+  box-shadow: ${({ theme }) => theme.shadows.lg};
+  padding: 1.5rem;
+  margin-top: 0.5rem;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transform-origin: top left;
+  animation: slideIn 0.2s ease-out;
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 480px) {
+    width: calc(100vw - 2rem);
+    left: -1rem;
+  }
+`;
+
+export const PricingDropdownHeader = styled.div`
+  text-align: center;
+  margin-bottom: 1.5rem;
+`;
+
+export const PricingDropdownTitle = styled.h3`
+  font-size: ${({ theme }) => theme.typography.fontSize.xl};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
+  color: ${({ theme }) => theme.colors.text};
+  margin-bottom: 0.5rem;
+`;
+
+export const PricingDropdownPrice = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+`;
+
+export const CurrentPrice = styled.span`
+  font-size: ${({ theme }) => theme.typography.fontSize['2xl']};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.bold};
+  color: ${({ theme }) => theme.colors.primary};
+`;
+
+export const OriginalPrice = styled.span`
+  font-size: ${({ theme }) => theme.typography.fontSize.lg};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  text-decoration: line-through;
+`;
+
+export const DiscountBadge = styled.span`
   background: ${({ theme }) => theme.colors.primary};
   color: white;
-  padding: 8px;
-  z-index: 100;
-  transition: top 0.2s ease;
+  padding: 0.25rem 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
+`;
 
-  &:focus {
-    top: 0;
+export const PricingFeatures = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+`;
+
+export const PricingFeature = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: ${({ theme }) => theme.colors.text};
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
+
+  &::before {
+    content: '✓';
+    color: ${({ theme }) => theme.colors.primary};
+    font-weight: bold;
+  }
+`;
+
+export const PricingCTA = styled.a`
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  background: ${({ theme }) => theme.colors.primary};
+  color: white;
+  text-align: center;
+  border-radius: ${({ theme }) => theme.borderRadius.md};
+  font-weight: ${({ theme }) => theme.typography.fontWeight.medium};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primaryDark};
+    transform: translateY(-1px);
+  }
+`;
+
+export const PricingNote = styled.p`
+  text-align: center;
+  font-size: ${({ theme }) => theme.typography.fontSize.sm};
+  color: ${({ theme }) => theme.colors.textSecondary};
+  margin-top: 1rem;
+`;
+
+export const MemberButton = styled.button`
+  background: ${({ theme }) => theme.colors.accent3};
+  color: #7c4a00;
+  padding: 0.5rem 1.25rem;
+  border-radius: ${({ theme }) => theme.borderRadius.full};
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.accent7};
+    transform: translateY(-1px);
   }
 `;

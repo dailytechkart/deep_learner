@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import HeroIllustration from './HeroIllustration';
+import { MonacoEditor } from './carousel/MonacoEditor';
 
 const LaptopContainer = styled.div`
   position: relative;
@@ -25,7 +26,7 @@ const LaptopFrame = styled.div`
   padding-top: 56.25%; /* 16:9 Aspect Ratio */
   background: ${props => props.theme.colors.backgroundAlt};
   border-radius: 20px 20px 0 0;
-  box-shadow: 
+  box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.2),
     0 0 0 2px ${props => props.theme.colors.border},
     0 0 0 6px ${props => props.theme.colors.backgroundAlt};
@@ -102,11 +103,7 @@ const ScreenGlow = styled(motion.div)`
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    45deg,
-    rgba(255, 255, 255, 0.1) 0%,
-    rgba(255, 255, 255, 0) 100%
-  );
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
   pointer-events: none;
 `;
 
@@ -508,24 +505,45 @@ const slides = [
           <ProblemDescription>
             <ProblemHeader>
               <ProblemTitle>Array Rotation Problem</ProblemTitle>
-              
+
               <ProblemTags>
                 <ProblemTag $type="difficulty">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/>
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z" />
                   </svg>
                   Medium
                 </ProblemTag>
                 <ProblemTag $type="category">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M20 6L12 14L4 6"/>
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M20 6L12 14L4 6" />
                   </svg>
                   Arrays
                 </ProblemTag>
                 <ProblemTag $type="time">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M12 6v6l4 2"/>
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 6v6l4 2" />
                   </svg>
                   15 mins
                 </ProblemTag>
@@ -533,14 +551,28 @@ const slides = [
 
               <ProblemStats>
                 <ProblemStat>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z" />
                   </svg>
                   Success Rate: 65%
                 </ProblemStat>
                 <ProblemStat>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   Avg. Time: 12 mins
                 </ProblemStat>
@@ -549,21 +581,36 @@ const slides = [
 
             <ProblemOverview>
               <ProblemOverviewTitle>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z" />
                 </svg>
                 Problem Overview
               </ProblemOverviewTitle>
               <ProblemOverviewText>
-                Implement a function to rotate an array by k positions. The rotation should be done in-place
-                and should handle both left and right rotations efficiently. This is a common interview question
-                that tests your understanding of array manipulation and optimization.
+                Implement a function to rotate an array by k positions. The rotation should be done
+                in-place and should handle both left and right rotations efficiently. This is a
+                common interview question that tests your understanding of array manipulation and
+                optimization.
               </ProblemOverviewText>
             </ProblemOverview>
 
             <ProblemSectionTitle>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
               Requirements
             </ProblemSectionTitle>
@@ -576,13 +623,20 @@ const slides = [
             </ProblemRequirements>
 
             <ProblemSectionTitle>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
               Example Input/Output
             </ProblemSectionTitle>
             <ExampleCode>
-{`// Example 1: Right Rotation
+              {`// Example 1: Right Rotation
 Input: arr = [1, 2, 3, 4, 5], k = 2
 Output: [4, 5, 1, 2, 3]
 
@@ -596,8 +650,15 @@ Output: [3, 1, 2] (k is normalized to k % arr.length)`}
             </ExampleCode>
 
             <ProblemSectionTitle>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               Expected Behavior
             </ProblemSectionTitle>
@@ -610,16 +671,21 @@ Output: [3, 1, 2] (k is normalized to k % arr.length)`}
             </ProblemRequirements>
 
             <ProblemSectionTitle>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
               Solution Approach
             </ProblemSectionTitle>
             <ProblemText>
-              Consider using the reverse technique for an efficient solution:
-              1. Reverse the entire array
-              2. Reverse the first k elements
-              3. Reverse the remaining elements
+              Consider using the reverse technique for an efficient solution: 1. Reverse the entire
+              array 2. Reverse the first k elements 3. Reverse the remaining elements
             </ProblemText>
 
             <ProblemTags>
@@ -632,16 +698,45 @@ Output: [3, 1, 2] (k is normalized to k % arr.length)`}
           </ProblemDescription>
         </ProblemSection>
         <EditorSection>
-          <iframe
-            src="https://codesandbox.io/embed/array-rotation-problem-starter-8f4j8?fontsize=14&hidenavigation=1&theme=dark"
-            style={{
-              width: '100%',
-              height: '100%',
-              border: 'none',
-            }}
-            title="Array Rotation Problem"
-            allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-            sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+          <MonacoEditor
+            defaultValue={`/**
+ * Rotate an array by k positions
+ * @param arr - The array to rotate
+ * @param k - Number of positions to rotate (positive for right rotation, negative for left rotation)
+ * @returns The rotated array
+ */
+function rotateArray(arr: number[], k: number): number[] {
+  // Your code here
+}
+
+// Test cases
+const testCases = [
+  {
+    input: { arr: [1, 2, 3, 4, 5], k: 2 },
+    expected: [4, 5, 1, 2, 3]
+  },
+  {
+    input: { arr: [1, 2, 3, 4, 5], k: -2 },
+    expected: [3, 4, 5, 1, 2]
+  },
+  {
+    input: { arr: [1, 2, 3], k: 4 },
+    expected: [3, 1, 2]
+  }
+];
+
+// Run tests
+testCases.forEach((testCase, index) => {
+  const result = rotateArray(testCase.input.arr, testCase.input.k);
+  console.log(\`Test \${index + 1}:\`, {
+    input: testCase.input,
+    expected: testCase.expected,
+    result,
+    passed: JSON.stringify(result) === JSON.stringify(testCase.expected)
+  });
+});`}
+            language="typescript"
+            theme="vs-dark"
           />
         </EditorSection>
       </SplitLayout>
@@ -656,21 +751,23 @@ Output: [3, 1, 2] (k is normalized to k % arr.length)`}
           <ProblemDescription>
             <ProblemTitle>Custom Dropdown Component</ProblemTitle>
             <ProblemText>
-              Build a reusable dropdown component that supports single and multi-select functionality,
-              search, keyboard navigation, and custom styling. The component should be highly
-              customizable and accessible.
+              Build a reusable dropdown component that supports single and multi-select
+              functionality, search, keyboard navigation, and custom styling. The component should
+              be highly customizable and accessible.
             </ProblemText>
             <ProblemRequirements>
               <Requirement>Implement keyboard navigation (Arrow keys, Enter, Escape)</Requirement>
               <Requirement>Support both single and multi-select modes</Requirement>
               <Requirement>Add search functionality to filter options</Requirement>
-              <Requirement>Make it fully accessible (ARIA attributes, keyboard support)</Requirement>
+              <Requirement>
+                Make it fully accessible (ARIA attributes, keyboard support)
+              </Requirement>
               <Requirement>Add custom styling with hover and focus states</Requirement>
             </ProblemRequirements>
 
             <ProblemSectionTitle>Component API</ProblemSectionTitle>
             <ExampleCode>
-{`interface DropdownOption {
+              {`interface DropdownOption {
   label: string;
   value: string | number;
   disabled?: boolean;
@@ -731,7 +828,7 @@ interface CustomDropdownProps {
 
             <ProblemSectionTitle>Theme Implementation</ProblemSectionTitle>
             <ExampleCode>
-{`// Default Theme
+              {`// Default Theme
 const defaultTheme: DropdownTheme = {
   colors: {
     background: '#ffffff',
@@ -783,7 +880,7 @@ const darkTheme: DropdownTheme = {
 
             <ProblemSectionTitle>Theme Usage Example</ProblemSectionTitle>
             <ExampleCode>
-{`// Using custom theme
+              {`// Using custom theme
 <CustomDropdown
   options={options}
   value={selectedValue}
@@ -837,7 +934,7 @@ const darkTheme: DropdownTheme = {
 
             <ProblemSectionTitle>Example Usage</ProblemSectionTitle>
             <ExampleCode>
-{`// Single Select
+              {`// Single Select
 <CustomDropdown
   options={[
     { label: 'Option 1', value: '1' },
@@ -870,13 +967,10 @@ const darkTheme: DropdownTheme = {
 
             <ProblemSectionTitle>Implementation Details</ProblemSectionTitle>
             <ProblemText>
-              Key features to implement:
-              1. Dropdown trigger with selected value display
-              2. Options list with scrollable container
-              3. Search input for filtering (when searchable)
-              4. Keyboard navigation and focus management
-              5. Custom styling with theme support
-              6. Accessibility features (ARIA roles, keyboard support)
+              Key features to implement: 1. Dropdown trigger with selected value display 2. Options
+              list with scrollable container 3. Search input for filtering (when searchable) 4.
+              Keyboard navigation and focus management 5. Custom styling with theme support 6.
+              Accessibility features (ARIA roles, keyboard support)
             </ProblemText>
 
             <ProblemSectionTitle>Accessibility Requirements</ProblemSectionTitle>
@@ -900,7 +994,7 @@ const darkTheme: DropdownTheme = {
         </ProblemSection>
         <EditorSection>
           <iframe
-            src="https://codesandbox.io/embed/custom-dropdown-component-starter-8f4j8?fontsize=14&hidenavigation=1&theme=dark"
+            src="https://codesandbox.io/embed/custom-dropdown-component-starter-8f4j8?fontsize=14&hidenavigation=0&theme=dark"
             style={{
               width: '100%',
               height: '100%',
@@ -931,8 +1025,8 @@ const darkTheme: DropdownTheme = {
             <ProblemSectionTitle>Problem Overview</ProblemSectionTitle>
             <ProblemText>
               Design and implement a real-time chat application that can handle millions of users
-              with features like one-on-one messaging, group chats, and real-time notifications.
-              The system should be highly available, scalable, and secure.
+              with features like one-on-one messaging, group chats, and real-time notifications. The
+              system should be highly available, scalable, and secure.
             </ProblemText>
 
             <ProblemSectionTitle>Core Features</ProblemSectionTitle>
@@ -946,29 +1040,17 @@ const darkTheme: DropdownTheme = {
 
             <ProblemSectionTitle>Technical Stack</ProblemSectionTitle>
             <ProblemText>
-              Frontend:
-              • React/Next.js - UI Framework
-              • WebSocket Client - Real-time Communication
-              • Redux - State Management
-              • Material-UI - Component Library
-
-              Backend:
-              • Node.js/Express - API Server
-              • Socket.io - WebSocket Server
-              • Redis - Caching & Pub/Sub
-              • MongoDB - User Data
-              • PostgreSQL - Messages
-
-              Infrastructure:
-              • AWS/GCP - Cloud Platform
-              • Kubernetes - Container Orchestration
-              • Nginx - Load Balancer
-              • CDN - Static Assets
+              Frontend: • React/Next.js - UI Framework • WebSocket Client - Real-time Communication
+              • Redux - State Management • Material-UI - Component Library Backend: •
+              Node.js/Express - API Server • Socket.io - WebSocket Server • Redis - Caching &
+              Pub/Sub • MongoDB - User Data • PostgreSQL - Messages Infrastructure: • AWS/GCP -
+              Cloud Platform • Kubernetes - Container Orchestration • Nginx - Load Balancer • CDN -
+              Static Assets
             </ProblemText>
 
             <ProblemSectionTitle>API Design</ProblemSectionTitle>
             <ExampleCode>
-{`// Core APIs
+              {`// Core APIs
 POST /api/v1/messages
 GET /api/v1/messages?conversationId={id}
 GET /api/v1/conversations
@@ -985,7 +1067,7 @@ presence:update - User status change`}
 
             <ProblemSectionTitle>Data Models</ProblemSectionTitle>
             <ExampleCode>
-{`// Core Entities
+              {`// Core Entities
 User {
   id: UUID
   email: string
@@ -1015,25 +1097,11 @@ Message {
 
             <ProblemSectionTitle>System Requirements</ProblemSectionTitle>
             <ProblemText>
-              Performance:
-              • Message delivery latency {'<'} 100ms
-              • API response time {'<'} 200ms
-              • 99.9% uptime
-              • Support 1M+ concurrent users
-
-              Security:
-              • End-to-end encryption
-              • JWT authentication
-              • Rate limiting
-              • Input validation
-              • Regular security audits
-
-              Scalability:
-              • Horizontal scaling
-              • Database sharding
-              • Caching strategy
-              • Load balancing
-              • CDN integration
+              Performance: • Message delivery latency {'<'} 100ms • API response time {'<'} 200ms •
+              99.9% uptime • Support 1M+ concurrent users Security: • End-to-end encryption • JWT
+              authentication • Rate limiting • Input validation • Regular security audits
+              Scalability: • Horizontal scaling • Database sharding • Caching strategy • Load
+              balancing • CDN integration
             </ProblemText>
 
             <ProblemSectionTitle>Implementation Guidelines</ProblemSectionTitle>
@@ -1046,21 +1114,32 @@ Message {
             </ProblemRequirements>
 
             <ProblemSectionTitle>Evaluation Criteria</ProblemSectionTitle>
-            <ProblemText>
-              Your solution will be evaluated on:
-              1. System Architecture
-                 • Scalability and performance
-                 • Security implementation
-                 • Code organization
-              2. Technical Implementation
-                 • API design
-                 • Database schema
-                 • Real-time features
-              3. Best Practices
-                 • Error handling
-                 • Testing coverage
-                 • Documentation
-            </ProblemText>
+            <ProblemRequirements>
+              <Requirement>
+                System Architecture
+                <ul>
+                  <li>Scalability and performance</li>
+                  <li>Security implementation</li>
+                  <li>Code organization</li>
+                </ul>
+              </Requirement>
+              <Requirement>
+                Technical Implementation
+                <ul>
+                  <li>API design</li>
+                  <li>Database schema</li>
+                  <li>Real-time features</li>
+                </ul>
+              </Requirement>
+              <Requirement>
+                Best Practices
+                <ul>
+                  <li>Error handling</li>
+                  <li>Testing coverage</li>
+                  <li>Documentation</li>
+                </ul>
+              </Requirement>
+            </ProblemRequirements>
           </ProblemDescription>
         </ProblemSection>
         <EditorSection>
@@ -1086,8 +1165,8 @@ const HeroCarousel: React.FC = () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 3000);
+      setCurrentSlide(prev => (prev + 1) % slides.length);
+    }, 5000);
 
     return () => clearInterval(timer);
   }, []);
@@ -1102,9 +1181,9 @@ const HeroCarousel: React.FC = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              transition={{ 
+              transition={{
                 duration: 0.3,
-                ease: "easeInOut"
+                ease: 'easeInOut',
               }}
             >
               <CarouselContainer>
@@ -1144,4 +1223,4 @@ const HeroCarousel: React.FC = () => {
   );
 };
 
-export default HeroCarousel; 
+export default HeroCarousel;
