@@ -15,8 +15,8 @@ const ThemeSwitcherContainer = styled.div`
 const ThemeButton = styled(motion.button)<{ $active: boolean }>`
   padding: 0.375rem 0.75rem;
   border: none;
-  background: ${props => props.$active ? props.theme.colors.primary : 'transparent'};
-  color: ${props => props.$active ? props.theme.colors.background : props.theme.colors.text};
+  background: ${props => (props.$active ? props.theme.colors.primary : 'transparent')};
+  color: ${props => (props.$active ? props.theme.colors.background : props.theme.colors.text)};
   border-radius: ${props => props.theme.borderRadius.full};
   font-size: 0.75rem;
   font-weight: 500;
@@ -24,7 +24,8 @@ const ThemeButton = styled(motion.button)<{ $active: boolean }>`
   transition: all 0.2s ease;
 
   &:hover {
-    background: ${props => props.$active ? props.theme.colors.primary : props.theme.colors.backgroundAlt};
+    background: ${props =>
+      props.$active ? props.theme.colors.primary : props.theme.colors.backgroundAlt};
   }
 `;
 
@@ -52,4 +53,4 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({ currentTheme, onTh
       </ThemeButton>
     </ThemeSwitcherContainer>
   );
-}; 
+};

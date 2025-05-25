@@ -128,7 +128,7 @@ export const Sidebar: React.FC = () => {
 
   return (
     <SidebarContainer>
-      <Logo>Deep Learner</Logo>
+      <Logo>Frontend School</Logo>
       {navItems.map(section => (
         <NavSection key={section.title}>
           <NavTitle>{section.title}</NavTitle>

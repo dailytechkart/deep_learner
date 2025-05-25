@@ -16,11 +16,7 @@ export const GoogleAnalyticsComponent = (): ReactNode => {
     return null;
   }
 
-  return (
-    <GoogleAnalytics
-      gaId={GA_MEASUREMENT_ID}
-    />
-  );
+  return <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />;
 };
 
 // Custom event tracking function
@@ -28,4 +24,4 @@ export const trackEvent = (eventName: string, eventParams?: Record<string, any>)
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', eventName, eventParams);
   }
-}; 
+};

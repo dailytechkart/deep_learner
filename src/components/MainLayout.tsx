@@ -1,16 +1,19 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Header from '@/app/components/Header/Header';
 import { AppFooter } from './Footer';
 import { useTheme } from '@/app/context/ThemeContext';
+import OverlayScreen from './OverlayScreen';
 
 interface MainLayoutProps {
   children: React.ReactNode;
   className?: string;
   showBreadcrumb?: boolean;
   fullWidth?: boolean;
+  showOverlay?: boolean;
+  onOverlayClick?: () => void;
 }
 
 const LayoutContainer = styled.div`
@@ -20,7 +23,7 @@ const LayoutContainer = styled.div`
   background: ${props => props.theme.colors.background};
   color: ${props => props.theme.colors.text};
   transition: all ${props => props.theme.transitions.default};
-  padding-top: 24px; // Push content below the fixed promo strip
+  /* padding-top: 24px; // Push content below the fixed promo strip */
 
   @media (max-width: 768px) {
     padding-top: 20px;
@@ -32,15 +35,15 @@ const ContentWrapper = styled.div<{ $fullWidth?: boolean }>`
   margin-top: 64px; // Height of the header
   transition: all ${props => props.theme.transitions.default};
   background: ${props => props.theme.colors.background};
-  padding: 0 ${props => props.$fullWidth ? '0' : '2rem'};
-  max-width: ${props => props.$fullWidth ? '100%' : '1400px'};
+  padding: 0 ${props => (props.$fullWidth ? '0' : '2rem')};
+  max-width: ${props => (props.$fullWidth ? '100%' : '1400px')};
   margin-left: auto;
   margin-right: auto;
   width: 100%;
 
   @media (max-width: 768px) {
     margin-top: 56px;
-    padding: 0 ${props => props.$fullWidth ? '0' : '1rem'};
+    padding: 0 ${props => (props.$fullWidth ? '0' : '1rem')};
   }
 `;
 
@@ -49,11 +52,17 @@ const Main = styled.main`
   width: 100%;
 `;
 
-export const MainLayout: React.FC<MainLayoutProps> = ({ children, fullWidth }) => {
+export const MainLayout: React.FC<MainLayoutProps> = ({
+  children,
+  fullWidth,
+  showOverlay = true,
+  onOverlayClick,
+}) => {
   const { isDarkMode } = useTheme();
 
   return (
     <LayoutContainer>
+      <OverlayScreen isVisible={showOverlay} onClick={onOverlayClick} zIndex={999} />
       <Header />
       <ContentWrapper $fullWidth={fullWidth}>
         <Main>{children}</Main>

@@ -21,17 +21,18 @@ import {
 import { useAnalytics } from '@/hooks/useAnalytics';
 import { AnalyticsEvent } from '@/utils/analytics';
 import { HOME_ANALYTICS } from '@/analytics/constants';
+import { useAuth } from '@/app/hooks/useAuth';
 
 const ThreeColumnFeatures = styled(PricingFeatures)`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   margin: 2rem 0;
-  
+
   @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   @media (max-width: 640px) {
     grid-template-columns: 1fr;
   }
@@ -66,6 +67,7 @@ PricingFeatureComponent.displayName = 'PricingFeatureComponent';
 
 const PricingSection: React.FC = () => {
   const { trackEvent } = useAnalytics();
+  const { isPremium } = useAuth();
 
   const handleGetStartedClick = useCallback(() => {
     trackEvent(AnalyticsEvent.NAVIGATION, {
@@ -74,6 +76,11 @@ const PricingSection: React.FC = () => {
       timestamp: new Date().toISOString(),
     });
   }, [trackEvent]);
+
+  // Don't render the pricing section if user is premium
+  if (isPremium) {
+    return null;
+  }
 
   return (
     <StyledPricingSection id="pricing" aria-labelledby="pricing-title">
@@ -94,7 +101,7 @@ const PricingSection: React.FC = () => {
               <PricingFeatureComponent key={index} feature={feature} />
             ))}
           </ThreeColumnFeatures>
-          <Link href="/signup" passHref>
+          <Link href="/premium/order" passHref>
             <PricingCTA onClick={handleGetStartedClick}>Get Lifetime Access</PricingCTA>
           </Link>
           <PricingNote>One-time payment. No hidden fees. 7-day money-back guarantee.</PricingNote>
@@ -104,4 +111,4 @@ const PricingSection: React.FC = () => {
   );
 };
 
-export default React.memo(PricingSection); 
+export default React.memo(PricingSection);

@@ -23,41 +23,44 @@ import {
 
 const testimonialsData = [
   {
-    content: "The curriculum is well-structured and up-to-date. I learned more in 3 months here than I did in a year of self-study. The hands-on projects and mentorship were invaluable.",
-    avatar: "/avatars/user1.svg",
-    name: "Sarah Johnson",
-    role: "Senior Frontend Developer",
-    company: "TechCorp Inc.",
+    content:
+      'The curriculum is well-structured and up-to-date. I learned more in 3 months here than I did in a year of self-study. The hands-on projects and mentorship were invaluable.',
+    avatar: '/avatars/user1.svg',
+    name: 'Sarah Johnson',
+    role: 'Senior Frontend Developer',
+    company: 'TechCorp Inc.',
     stats: [
-      { value: "6x", label: "Salary Increase" },
-      { value: "3", label: "Months to Job" }
+      { value: '6x', label: 'Salary Increase' },
+      { value: '3', label: 'Months to Job' },
     ],
-    tags: ["React", "TypeScript", "System Design"]
+    tags: ['React', 'TypeScript', 'System Design'],
   },
   {
-    content: "The interview preparation was exceptional. The mock interviews and personalized feedback helped me land my dream job at a top tech company. The community support is amazing!",
-    avatar: "/avatars/user2.svg",
-    name: "Mike Chen",
-    role: "Frontend Engineer",
-    company: "InnovateAI",
+    content:
+      'The interview preparation was exceptional. The mock interviews and personalized feedback helped me land my dream job at a top tech company. The community support is amazing!',
+    avatar: '/avatars/user2.svg',
+    name: 'Mike Chen',
+    role: 'Frontend Engineer',
+    company: 'InnovateAI',
     stats: [
-      { value: "4.5", label: "GPA" },
-      { value: "2", label: "Job Offers" }
+      { value: '4.5', label: 'GPA' },
+      { value: '2', label: 'Job Offers' },
     ],
-    tags: ["JavaScript", "Performance", "Architecture"]
+    tags: ['JavaScript', 'Performance', 'Architecture'],
   },
   {
-    content: "The advanced topics and real-world projects gave me the confidence to tackle complex challenges. The mentorship program helped me grow both technically and professionally.",
-    avatar: "/avatars/user3.svg",
-    name: "Emily Rodriguez",
-    role: "Lead Frontend Developer",
-    company: "FutureTech",
+    content:
+      'The advanced topics and real-world projects gave me the confidence to tackle complex challenges. The mentorship program helped me grow both technically and professionally.',
+    avatar: '/avatars/user3.svg',
+    name: 'Emily Rodriguez',
+    role: 'Lead Frontend Developer',
+    company: 'FutureTech',
     stats: [
-      { value: "5", label: "Projects" },
-      { value: "100%", label: "Success Rate" }
+      { value: '5', label: 'Projects' },
+      { value: '100%', label: 'Success Rate' },
     ],
-    tags: ["Next.js", "GraphQL", "Leadership"]
-  }
+    tags: ['Next.js', 'GraphQL', 'Leadership'],
+  },
 ];
 
 const TestimonialCardComponent: React.FC<{
@@ -72,12 +75,7 @@ const TestimonialCardComponent: React.FC<{
   <TestimonialCard role="listitem">
     <TestimonialContent>{content}</TestimonialContent>
     <TestimonialAuthor>
-      <TestimonialAvatar
-        src={avatar}
-        alt={name}
-        width={60}
-        height={60}
-      />
+      <TestimonialAvatar src={avatar} alt={name} width={60} height={60} />
       <TestimonialInfo>
         <TestimonialName>{name}</TestimonialName>
         <TestimonialRole>{role}</TestimonialRole>
@@ -126,4 +124,4 @@ const TestimonialsSection: React.FC = () => {
   );
 };
 
-export default React.memo(TestimonialsSection); 
+export default React.memo(TestimonialsSection);

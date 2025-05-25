@@ -14,7 +14,7 @@ import {
   AuthError,
 } from '../services/auth';
 
-interface UserWithPremium extends User {
+export interface UserWithPremium extends User {
   isPremium?: boolean;
 }
 
@@ -28,7 +28,7 @@ export const useAuth = () => {
       const userDoc = await getDoc(doc(db, 'users', uid));
       if (userDoc.exists()) {
         const userData = userDoc.data();
-        return userData.isPremium || false;
+        return userData.premium || false;
       }
       return false;
     } catch (error) {

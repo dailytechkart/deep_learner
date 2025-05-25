@@ -7,4 +7,4 @@ export async function setPromoStripVisibility(visible: boolean) {
     maxAge: 24 * 60 * 60, // 24 hours
   });
   return { success: true };
-} 
+}

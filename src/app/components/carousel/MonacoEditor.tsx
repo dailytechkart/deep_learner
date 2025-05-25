@@ -137,4 +137,4 @@ export const MonacoEditor: React.FC<MonacoEditorProps> = ({
       </EditorContent>
     </EditorContainer>
   );
-}; 
+};

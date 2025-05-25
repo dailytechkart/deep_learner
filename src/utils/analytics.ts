@@ -35,6 +35,12 @@ export enum AnalyticsEvent {
 
   // Error Events
   ERROR = 'Error',
+
+  OVERLAY_OPEN = 'Overlay Open',
+  OVERLAY_CLOSE = 'Overlay Close',
+  OVERLAY_EARLY_ACCESS_CLICK = 'Overlay Early Access Click',
+  OVERLAY_LEARN_MORE_CLICK = 'Overlay Learn More Click',
+  OVERLAY_FORM_SUBMIT = 'Overlay Form Submit',
 }
 
 // Type for event properties

@@ -100,8 +100,8 @@ const courseSchema = {
     'Prepare for top tech interviews with 150+ frontend DSA problems, machine coding challenges, and system design questions covering React, JavaScript, and TypeScript.',
   provider: {
     '@type': 'Organization',
-    name: 'Deep Learner',
-    sameAs: 'https://deeplearner.com',
+    name: 'Frontend School',
+    sameAs: 'https://www.frontendschool.in',
   },
   educationalLevel: 'Advanced',
   courseCode: 'FIM-2024',

@@ -6,7 +6,7 @@ import { UserMenuProps } from './Header.types';
 
 export const HeaderContainer = styled.header<{ promoStripVisible: boolean }>`
   position: fixed;
-  top: ${({ promoStripVisible }) => (promoStripVisible ? '44px' : '0px')};
+  /* top: ${({ promoStripVisible }) => (promoStripVisible ? '44px' : '0px')}; */
   left: 0;
   right: 0;
   height: 72px;
@@ -15,7 +15,7 @@ export const HeaderContainer = styled.header<{ promoStripVisible: boolean }>`
   display: flex;
   align-items: center;
   padding: 0 1.25rem;
-  z-index: 1000;
+  z-index: 15;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   transition: all ${({ theme }) => theme.transitions.default};
@@ -326,7 +326,6 @@ export const SearchInput = styled.input`
     color: ${props => props.theme.colors.textSecondary};
   }
 `;
-
 
 export const PricingDropdown = styled.div`
   position: absolute;

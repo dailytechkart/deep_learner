@@ -22,6 +22,6 @@ export function setCookie(
     path: options.path || '/',
     httpOnly: options.httpOnly ?? true,
     secure: options.secure ?? process.env.NODE_ENV === 'production',
-    sameSite: options.sameSite || 'lax'
+    sameSite: options.sameSite || 'lax',
   });
-} 
+}

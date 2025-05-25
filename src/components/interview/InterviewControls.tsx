@@ -65,26 +65,23 @@ interface InterviewControlsProps {
   onSortChange: (sort: SortOption) => void;
 }
 
-export const InterviewControls: React.FC<InterviewControlsProps> = memo(({
-  searchQuery,
-  onSearchChange,
-  sortBy,
-  onSortChange,
-}) => {
-  return (
-    <ControlsContainer>
-      <SearchContainer>
-        <SearchInput
-          type="text"
-          placeholder="Search problems..."
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
-        />
-        <SearchIcon />
-      </SearchContainer>
-      <InterviewSort sortBy={sortBy} onSortChange={onSortChange} />
-    </ControlsContainer>
-  );
-});
+export const InterviewControls: React.FC<InterviewControlsProps> = memo(
+  ({ searchQuery, onSearchChange, sortBy, onSortChange }) => {
+    return (
+      <ControlsContainer>
+        <SearchContainer>
+          <SearchInput
+            type="text"
+            placeholder="Search problems..."
+            value={searchQuery}
+            onChange={e => onSearchChange(e.target.value)}
+          />
+          <SearchIcon />
+        </SearchContainer>
+        <InterviewSort sortBy={sortBy} onSortChange={onSortChange} />
+      </ControlsContainer>
+    );
+  }
+);
 
-InterviewControls.displayName = 'InterviewControls'; 
+InterviewControls.displayName = 'InterviewControls';

@@ -136,52 +136,54 @@ interface InterviewLayoutProps {
   onSearchChange: (query: string) => void;
 }
 
-export const InterviewLayout: React.FC<InterviewLayoutProps> = memo(({
-  filterSections,
-  onClearAllFilters,
-  children,
-  isSidebarOpen = true,
-  onCloseSidebar,
-  sortBy,
-  onSortChange,
-  searchQuery,
-  onSearchChange,
-}) => {
-  return (
-    <LayoutContainer>
-      <Sidebar isOpen={isSidebarOpen}>
-        {onCloseSidebar && <CloseButton onClick={onCloseSidebar}>×</CloseButton>}
-        {filterSections.map((section, index) => (
-          <FilterSection key={index}>
-            <FilterTitle>{section.title}</FilterTitle>
-            <FilterOptions>
-              {section.options.map(option => (
-                <FilterOption key={option.id}>
-                  <FilterCheckbox
-                    type="checkbox"
-                    checked={section.selected.includes(option.id)}
-                    onChange={() => section.onSelect(option.id)}
-                  />
-                  {option.label}
-                  <FilterCount>({option.count})</FilterCount>
-                </FilterOption>
-              ))}
-            </FilterOptions>
-          </FilterSection>
-        ))}
-        <ClearButton onClick={onClearAllFilters}>Clear all filters</ClearButton>
-      </Sidebar>
-      <MainContent>
-        <InterviewControls
-          searchQuery={searchQuery}
-          onSearchChange={onSearchChange}
-          sortBy={sortBy}
-          onSortChange={onSortChange}
-        />
-        {children}
-      </MainContent>
-    </LayoutContainer>
-  );
-});
+export const InterviewLayout: React.FC<InterviewLayoutProps> = memo(
+  ({
+    filterSections,
+    onClearAllFilters,
+    children,
+    isSidebarOpen = true,
+    onCloseSidebar,
+    sortBy,
+    onSortChange,
+    searchQuery,
+    onSearchChange,
+  }) => {
+    return (
+      <LayoutContainer>
+        <Sidebar isOpen={isSidebarOpen}>
+          {onCloseSidebar && <CloseButton onClick={onCloseSidebar}>×</CloseButton>}
+          {filterSections.map((section, index) => (
+            <FilterSection key={index}>
+              <FilterTitle>{section.title}</FilterTitle>
+              <FilterOptions>
+                {section.options.map(option => (
+                  <FilterOption key={option.id}>
+                    <FilterCheckbox
+                      type="checkbox"
+                      checked={section.selected.includes(option.id)}
+                      onChange={() => section.onSelect(option.id)}
+                    />
+                    {option.label}
+                    <FilterCount>({option.count})</FilterCount>
+                  </FilterOption>
+                ))}
+              </FilterOptions>
+            </FilterSection>
+          ))}
+          <ClearButton onClick={onClearAllFilters}>Clear all filters</ClearButton>
+        </Sidebar>
+        <MainContent>
+          <InterviewControls
+            searchQuery={searchQuery}
+            onSearchChange={onSearchChange}
+            sortBy={sortBy}
+            onSortChange={onSortChange}
+          />
+          {children}
+        </MainContent>
+      </LayoutContainer>
+    );
+  }
+);
 
 InterviewLayout.displayName = 'InterviewLayout';

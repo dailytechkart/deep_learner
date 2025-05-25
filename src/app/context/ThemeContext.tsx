@@ -21,10 +21,10 @@ interface ThemeProviderProps {
   initialTheme: string;
 }
 
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({ 
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   children,
   initialPromoStripVisible,
-  initialTheme
+  initialTheme,
 }) => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {

@@ -11,7 +11,7 @@ interface SEOProps {
 }
 
 export const SEO: React.FC<SEOProps> = ({
-  title = 'Learn Frontend Development | Deep Learner',
+  title = 'Learn Frontend Development | Frontend School',
   description = 'Master modern frontend technologies with our comprehensive learning paths. Start with the basics and progress to advanced concepts at your own pace.',
   keywords = [
     'frontend development',
@@ -28,7 +28,7 @@ export const SEO: React.FC<SEOProps> = ({
   ogType = 'website',
   twitterCard = 'summary_large_image',
 }) => {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeplearner.com';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.frontendschool.in';
 
   return (
     <Head>
@@ -45,7 +45,7 @@ export const SEO: React.FC<SEOProps> = ({
       <meta property="og:type" content={ogType} />
       <meta property="og:url" content={`${siteUrl}/learn`} />
       <meta property="og:image" content={`${siteUrl}${ogImage}`} />
-      <meta property="og:site_name" content="Deep Learner" />
+      <meta property="og:site_name" content="Frontend School" />
 
       {/* Twitter Meta Tags */}
       <meta name="twitter:card" content={twitterCard} />
@@ -57,7 +57,7 @@ export const SEO: React.FC<SEOProps> = ({
       <meta name="robots" content="index, follow" />
       <meta name="language" content="English" />
       <meta name="revisit-after" content="7 days" />
-      <meta name="author" content="Deep Learner" />
+      <meta name="author" content="Frontend School" />
 
       {/* Canonical URL */}
       <link rel="canonical" href={`${siteUrl}/learn`} />

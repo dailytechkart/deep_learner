@@ -6,15 +6,16 @@ import styled from 'styled-components';
 import { MainLayout } from '@/components/MainLayout';
 import HeroSection from './components/landing/HeroSection';
 import LoadingSpinner from './components/LoadingSpinner';
+import { useAuth } from './hooks/useAuth';
 
 const SectionContainer = styled.div`
-  min-height: 100vh;
+  /* min-height: 100vh; */
   scroll-behavior: smooth;
   overflow-x: hidden;
 `;
 
 const SectionWrapper = styled.div`
-  min-height: 100vh;
+  /* min-height: 100vh; */
   display: flex;
   flex-direction: column;
 `;
@@ -41,6 +42,9 @@ const CTASection = dynamic(() => import('./components/landing/CTASection'), {
 });
 
 export default function Home() {
+  const { user, isPremium } = useAuth();
+  console.log(user, isPremium, 'user, isPremium');
+
   return (
     <MainLayout fullWidth>
       <SectionContainer>
@@ -57,11 +61,11 @@ export default function Home() {
             <TestimonialsSection />
           </Suspense>
         </SectionWrapper> */}
-        <SectionWrapper>
+        {/* <SectionWrapper>
           <Suspense fallback={<LoadingSpinner />}>
             <PricingSection />
           </Suspense>
-        </SectionWrapper>
+        </SectionWrapper> */}
         <SectionWrapper>
           <Suspense fallback={<LoadingSpinner />}>
             <CTASection />

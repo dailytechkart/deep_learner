@@ -994,7 +994,7 @@ const darkTheme: DropdownTheme = {
           </ProblemDescription>
         </ProblemSection>
         <EditorSection>
-        <iframe
+          <iframe
             src="https://codesandbox.io/embed/custom-dropdown-component-starter-8f4j8?fontsize=14&hidenavigation=1&theme=dark&view=editor&hidedevtools=1"
             style={{
               width: '100%',

@@ -19,13 +19,15 @@ const StyledButton = styled.button<{ primary?: boolean }>`
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
-  background: ${props => props.primary ? props.theme.colors.primary : 'transparent'};
-  color: ${props => props.primary ? 'white' : props.theme.colors.text};
-  border: 1px solid ${props => props.primary ? props.theme.colors.primary : props.theme.colors.border};
+  background: ${props => (props.primary ? props.theme.colors.primary : 'transparent')};
+  color: ${props => (props.primary ? 'white' : props.theme.colors.text)};
+  border: 1px solid
+    ${props => (props.primary ? props.theme.colors.primary : props.theme.colors.border)};
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px ${props => props.primary ? props.theme.colors.primary + '40' : 'rgba(0, 0, 0, 0.1)'};
+    box-shadow: 0 4px 12px
+      ${props => (props.primary ? props.theme.colors.primary + '40' : 'rgba(0, 0, 0, 0.1)')};
   }
 
   @media (max-width: ${props => props.theme.breakpoints.md}) {
@@ -40,20 +42,20 @@ const StyledButton = styled.button<{ primary?: boolean }>`
   }
 `;
 
-export const Button: React.FC<ButtonProps> = ({ 
-  primary, 
-  href, 
-  onClick, 
-  children, 
+export const Button: React.FC<ButtonProps> = ({
+  primary,
+  href,
+  onClick,
+  children,
   className,
-  style 
+  style,
 }) => {
   if (href) {
     return (
       <Link href={href} passHref>
-        <StyledButton 
-          as="a" 
-          primary={primary} 
+        <StyledButton
+          as="a"
+          primary={primary}
           onClick={onClick}
           className={className}
           style={style}
@@ -65,13 +67,8 @@ export const Button: React.FC<ButtonProps> = ({
   }
 
   return (
-    <StyledButton 
-      primary={primary} 
-      onClick={onClick}
-      className={className}
-      style={style}
-    >
+    <StyledButton primary={primary} onClick={onClick} className={className} style={style}>
       {children}
     </StyledButton>
   );
-}; 
+};

@@ -74,4 +74,4 @@ export const InterviewSort: React.FC<InterviewSortProps> = memo(({ sortBy, onSor
   );
 });
 
-InterviewSort.displayName = 'InterviewSort'; 
+InterviewSort.displayName = 'InterviewSort';

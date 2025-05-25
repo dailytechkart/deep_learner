@@ -53,11 +53,7 @@ export const Avatar: React.FC<AvatarProps> = ({ imageUrl, name, size = 'md' }) =
 
   return (
     <AvatarContainer size={sizeValue}>
-      {imageUrl ? (
-        <AvatarImage src={imageUrl} alt={name} />
-      ) : (
-        initials
-      )}
+      {imageUrl ? <AvatarImage src={imageUrl} alt={name} /> : initials}
     </AvatarContainer>
   );
-}; 
+};

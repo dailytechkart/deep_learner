@@ -1,6 +1,5 @@
-import { initializeApp, getApps } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -12,8 +11,58 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-export const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-
-// Initialize Firebase services
-export const auth = getAuth(app);
+const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+
+// Collection references
+export const earlyAccessUsersCollection = collection(db, 'earlyAccessUsers');
+
+// Check if email already exists
+export const isEmailExists = async (email: string): Promise<boolean> => {
+  const q = query(earlyAccessUsersCollection, where('email', '==', email.toLowerCase()));
+  const querySnapshot = await getDocs(q);
+  return !querySnapshot.empty;
+};
+
+// Check if phone already exists
+export const isPhoneExists = async (phone: string): Promise<boolean> => {
+  const q = query(earlyAccessUsersCollection, where('phone', '==', phone));
+  const querySnapshot = await getDocs(q);
+  return !querySnapshot.empty;
+};
+
+// Helper function to add early access user
+export const addEarlyAccessUser = async (userData: {
+  email: string;
+  phone: string;
+  occupation: string;
+  interests: string[];
+  experience: string;
+  goals: string;
+  createdAt: Date;
+}) => {
+  try {
+    // Check for existing email
+    const emailExists = await isEmailExists(userData.email);
+    if (emailExists) {
+      throw new Error('EMAIL_EXISTS');
+    }
+
+    // Check for existing phone
+    const phoneExists = await isPhoneExists(userData.phone);
+    if (phoneExists) {
+      throw new Error('PHONE_EXISTS');
+    }
+
+    // Add user with normalized email (lowercase)
+    const docRef = await addDoc(earlyAccessUsersCollection, {
+      ...userData,
+      email: userData.email.toLowerCase(),
+    });
+
+    return { id: docRef.id, ...userData };
+  } catch (error) {
+    console.error('Error adding early access user:', error);
+    throw error;
+  }
+};

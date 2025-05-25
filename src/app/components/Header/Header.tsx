@@ -58,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange }) => {
   const router = useRouter();
   const pathname = usePathname();
   const { isDarkMode, toggleTheme, promoStripVisible, setPromoStripVisible } = useTheme();
-  const { user } = useAuth();
+  const { user, isPremium } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isPricingOpen, setIsPricingOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
@@ -127,14 +127,15 @@ const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange }) => {
   return (
     <>
       <MobileHeader onMenuClick={toggleMobileMenu} />
-      <PromoStrip isVisible={promoStripVisible}>
+
+      {/* <PromoStrip isVisible={promoStripVisible && !isPremium}>
         <PromoStripContent>
           <PromoStripText>Get Premium Content Access at 90% OFF – Only ₹499!</PromoStripText>
           <CloseButton onClick={handleClosePromoStrip} aria-label="Close promo strip">
             <FaTimes size={14} />
           </CloseButton>
         </PromoStripContent>
-      </PromoStrip>
+      </PromoStrip> */}
       <HeaderContainer promoStripVisible={promoStripVisible}>
         <HeaderContent>
           <LeftSection>
@@ -154,27 +155,33 @@ const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange }) => {
                 }
               />
             )}
-            <MemberButton onClick={togglePricing}>
-              Become a Member
-            </MemberButton>
-            {isPricingOpen && (
-              <PricingDropdown ref={pricingRef}>
-                <PricingDropdownHeader>
-                  <PricingDropdownTitle>Get Full Access</PricingDropdownTitle>
-                  <PricingDropdownPrice>
-                    <CurrentPrice>₹499</CurrentPrice>
-                    <OriginalPrice>₹8,000</OriginalPrice>
-                    <DiscountBadge>94% OFF</DiscountBadge>
-                  </PricingDropdownPrice>
-                </PricingDropdownHeader>
-                <PricingFeatures>
-                  {pricingFeatures.map((feature, index) => (
-                    <PricingFeature key={index}>{feature}</PricingFeature>
-                  ))}
-                </PricingFeatures>
-                <PricingCTA href="/signup">Get Lifetime Access</PricingCTA>
-                <PricingNote>One-time payment. No hidden fees. 7-day money-back guarantee.</PricingNote>
-              </PricingDropdown>
+            {!isPremium && (
+              <>
+                <MemberButton onClick={() => router.push('/premium/order')}>
+                  Become a Member
+                </MemberButton>
+                {isPricingOpen && (
+                  <PricingDropdown ref={pricingRef}>
+                    <PricingDropdownHeader>
+                      <PricingDropdownTitle>Get Full Access</PricingDropdownTitle>
+                      <PricingDropdownPrice>
+                        <CurrentPrice>₹499</CurrentPrice>
+                        <OriginalPrice>₹8,000</OriginalPrice>
+                        <DiscountBadge>94% OFF</DiscountBadge>
+                      </PricingDropdownPrice>
+                    </PricingDropdownHeader>
+                    <PricingFeatures>
+                      {pricingFeatures.map((feature, index) => (
+                        <PricingFeature key={index}>{feature}</PricingFeature>
+                      ))}
+                    </PricingFeatures>
+                    <PricingCTA href="/premium/order">Get Lifetime Access</PricingCTA>
+                    <PricingNote>
+                      One-time payment. No hidden fees. 7-day money-back guarantee.
+                    </PricingNote>
+                  </PricingDropdown>
+                )}
+              </>
             )}
             <ThemeToggle
               onClick={toggleTheme}
@@ -195,9 +202,7 @@ const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange }) => {
       </HeaderContainer>
       <MobileMenu ref={mobileMenuRef} isOpen={isMobileMenuOpen}>
         {renderNavLinks(true)}
-        <MobileNavLink href="/signup">
-          Become a Member
-        </MobileNavLink>
+        {!isPremium && <MobileNavLink href="/premium/order">Become a Member</MobileNavLink>}
         {!user && (
           <MobileNavLink href="/login">
             <FaUser />

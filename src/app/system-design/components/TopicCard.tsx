@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaStar } from 'react-icons/fa';
+import { useRouter } from 'next/router';
 
 const Card = styled.div`
   background: ${props => props.theme.colors.backgroundAlt};
@@ -184,6 +185,7 @@ interface TopicCardProps {
 }
 
 export const TopicCard: React.FC<TopicCardProps> = ({
+  id,
   title,
   description,
   icon,
@@ -192,6 +194,8 @@ export const TopicCard: React.FC<TopicCardProps> = ({
   roles,
   isPremium = false,
 }) => {
+  const router = useRouter();
+
   return (
     <Card>
       {isPremium && (
@@ -222,7 +226,13 @@ export const TopicCard: React.FC<TopicCardProps> = ({
         ))}
       </TagGroup>
       <ActionBar>
-        <StartButton>{isPremium ? 'Upgrade to Access' : 'Start Learning'}</StartButton>
+        <StartButton
+          onClick={() =>
+            isPremium ? router.push('/premium/order') : router.push(`/system-design/${id}`)
+          }
+        >
+          {isPremium ? 'Upgrade to Access' : 'Start Learning'}
+        </StartButton>
       </ActionBar>
     </Card>
   );

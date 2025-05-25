@@ -235,8 +235,8 @@ export const AppFooter: React.FC = () => {
 
         <FooterSection>
           <FooterTitle>Contact</FooterTitle>
-          <FooterLink href="mailto:contact@deeplearner.com" rel="noopener">
-            <FaEnvelope /> contact@deeplearner.com
+          <FooterLink href="mailto:contact@frontendschool.in" rel="noopener">
+            <FaEnvelope /> contact@frontendschool.in
           </FooterLink>
           <FooterText>
             Have questions? We&apos;re here to help you succeed in your learning journey.

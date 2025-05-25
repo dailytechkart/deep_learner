@@ -41,8 +41,8 @@ const HeroSection: React.FC = () => {
           <HeroTitle>Master Frontend Development with Interactive Projects</HeroTitle>
           <HeroSubtitle>
             Learn modern frontend development through hands-on projects, real-world applications,
-            and expert guidance. Master HTML, CSS, JavaScript, React, and more to build
-            responsive, accessible, and performant web applications.
+            and expert guidance. Master HTML, CSS, JavaScript, React, and more to build responsive,
+            accessible, and performant web applications.
           </HeroSubtitle>
           <HeroActions>
             <Link href="/signup" passHref>
@@ -61,4 +61,4 @@ const HeroSection: React.FC = () => {
   );
 };
 
-export default React.memo(HeroSection); 
+export default React.memo(HeroSection);

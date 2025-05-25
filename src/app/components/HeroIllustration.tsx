@@ -64,23 +64,23 @@ const CodeBlock = styled.pre`
 `;
 
 const Comment = styled.span`
-  color: #6A9955;
+  color: #6a9955;
 `;
 
 const Keyword = styled.span`
-  color: #569CD6;
+  color: #569cd6;
 `;
 
 const String = styled.span`
-  color: #CE9178;
+  color: #ce9178;
 `;
 
 const Function = styled.span`
-  color: #DCDCAA;
+  color: #dcdcaa;
 `;
 
 const Variable = styled.span`
-  color: #9CDCFE;
+  color: #9cdcfe;
 `;
 
 const HeroIllustration: React.FC = () => {
@@ -108,7 +108,8 @@ const HeroIllustration: React.FC = () => {
             <br />
             <Keyword>function</Keyword> <Function>rotateArray</Function>(nums, k) {'{'}
             <br />
-            {'  '}<Comment>// TODO: Implement rotation</Comment>
+            {'  '}
+            <Comment>// TODO: Implement rotation</Comment>
             <br />
             {'}'}
           </CodeBlock>
@@ -119,9 +120,11 @@ const HeroIllustration: React.FC = () => {
             <br />
             {'  '}k = k % nums.length;
             <br />
-            {'  '}<Keyword>const</Keyword> <Variable>reverse</Variable> = (start, end) => {'{'}
+            {'  '}
+            <Keyword>const</Keyword> <Variable>reverse</Variable> = (start, end) ={'>'} {'{'}
             <br />
-            {'    '}<Keyword>while</Keyword> (start {'>'} end) {'{'}
+            {'    '}
+            <Keyword>while</Keyword> (start {'>'} end) {'{'}
             <br />
             {'      '}[nums[start], nums[end]] = [nums[end], nums[start]];
             <br />
@@ -129,9 +132,11 @@ const HeroIllustration: React.FC = () => {
             <br />
             {'      '}end--;
             <br />
-            {'    '}{'}'}
+            {'    '}
+            {'}'}
             <br />
-            {'  '}{'}'};
+            {'  '}
+            {'}'};
             <br />
             <br />
             {'  '}reverse(0, nums.length - 1);
@@ -140,7 +145,8 @@ const HeroIllustration: React.FC = () => {
             <br />
             {'  '}reverse(k, nums.length - 1);
             <br />
-            {'  '}<Keyword>return</Keyword> nums;
+            {'  '}
+            <Keyword>return</Keyword> nums;
             <br />
             {'}'}
           </CodeBlock>
@@ -150,4 +156,4 @@ const HeroIllustration: React.FC = () => {
   );
 };
 
-export default HeroIllustration; 
+export default HeroIllustration;

@@ -21,20 +21,15 @@ const StyledSection = styled.section`
   }
 `;
 
-export const Section: React.FC<SectionProps> = ({ 
-  children, 
-  className, 
+export const Section: React.FC<SectionProps> = ({
+  children,
+  className,
   style,
   id,
-  'aria-labelledby': ariaLabelledBy 
+  'aria-labelledby': ariaLabelledBy,
 }) => {
   return (
-    <StyledSection 
-      className={className} 
-      style={style}
-      id={id}
-      aria-labelledby={ariaLabelledBy}
-    >
+    <StyledSection className={className} style={style} id={id} aria-labelledby={ariaLabelledBy}>
       {children}
     </StyledSection>
   );
@@ -62,4 +57,4 @@ export const SectionDescription = styled.p`
 
 export const SectionContent = styled.div`
   margin-top: 2rem;
-`; 
+`;

@@ -10,7 +10,7 @@ export async function setTheme(theme: 'light' | 'dark') {
       path: '/',
       httpOnly: false, // Allow client-side access
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax'
+      sameSite: 'lax',
     });
 
     // Also set a client-side cookie for immediate access
@@ -22,4 +22,4 @@ export async function setTheme(theme: 'light' | 'dark') {
     console.error('Error setting theme:', error);
     return { success: false, error: 'Failed to set theme' };
   }
-} 
+}

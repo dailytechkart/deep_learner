@@ -165,9 +165,7 @@ export function UserMenu() {
   return (
     <UserMenuContainer ref={menuRef}>
       <UserButton onClick={() => setIsOpen(!isOpen)}>
-        <UserAvatar $src={userAvatar}>
-          {!userAvatar && <FaUser />}
-        </UserAvatar>
+        <UserAvatar $src={userAvatar}>{!userAvatar && <FaUser />}</UserAvatar>
         <UserName>{userName}</UserName>
       </UserButton>
 

@@ -7,15 +7,10 @@ import { ThemeSwitcher } from './ThemeSwitcher';
 import '@excalidraw/excalidraw/index.css';
 
 // Lazy load Excalidraw with SSR disabled
-const Excalidraw = dynamic(
-  () => import('@excalidraw/excalidraw').then((mod) => mod.Excalidraw),
-  {
-    ssr: false,
-    loading: () => (
-      <LoadingFallback>Loading Excalidraw...</LoadingFallback>
-    ),
-  }
-);
+const Excalidraw = dynamic(() => import('@excalidraw/excalidraw').then(mod => mod.Excalidraw), {
+  ssr: false,
+  loading: () => <LoadingFallback>Loading Excalidraw...</LoadingFallback>,
+});
 
 // Styled Components
 const ExcaliDrawContainer = styled.div`
@@ -23,7 +18,7 @@ const ExcaliDrawContainer = styled.div`
   flex-direction: column;
   height: 100vh;
   width: 100%;
-  background: ${(props) => props.theme.colors.background};
+  background: ${props => props.theme.colors.background};
 `;
 
 const ExcaliDrawHeader = styled.div`
@@ -31,8 +26,8 @@ const ExcaliDrawHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid ${(props) => props.theme.colors.border};
-  background: ${(props) => props.theme.colors.background};
+  border-bottom: 1px solid ${props => props.theme.colors.border};
+  background: ${props => props.theme.colors.background};
   position: sticky;
   top: 0;
   z-index: 10;
@@ -41,7 +36,7 @@ const ExcaliDrawHeader = styled.div`
 const ExcaliDrawTitle = styled.div`
   font-size: 1rem;
   font-weight: 500;
-  color: ${(props) => props.theme.colors.text};
+  color: ${props => props.theme.colors.text};
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -49,7 +44,7 @@ const ExcaliDrawTitle = styled.div`
   svg {
     width: 18px;
     height: 18px;
-    color: ${(props) => props.theme.colors.primary};
+    color: ${props => props.theme.colors.primary};
   }
 `;
 
@@ -59,7 +54,7 @@ const ExcaliDrawContent = styled.div`
   width: 100%;
   height: calc(100vh - 60px);
   overflow: hidden;
-  background: ${(props) => props.theme.colors.background};
+  background: ${props => props.theme.colors.background};
 `;
 
 const LoadingFallback = styled.div`
@@ -114,22 +109,24 @@ export const ExcaliDrawComponent: React.FC<ExcaliDrawProps> = ({
 
       <ExcaliDrawContent>
         <Suspense fallback={<LoadingFallback>Loading Excalidraw...</LoadingFallback>}>
-          {isMounted &&<Excalidraw
-            theme={theme}
-            initialData={initialData}
-            onChange={handleChange}
-            langCode="en"
-            UIOptions={{
-              canvasActions: {
-                loadScene: true,
-                saveToActiveFile: true,
-                saveAsImage: true,
-              },
-            }}
-            gridModeEnabled={false}
-            zenModeEnabled={false}
-            viewModeEnabled={false}
-          />} 
+          {isMounted && (
+            <Excalidraw
+              theme={theme}
+              initialData={initialData}
+              onChange={handleChange}
+              langCode="en"
+              UIOptions={{
+                canvasActions: {
+                  loadScene: true,
+                  saveToActiveFile: true,
+                  saveAsImage: true,
+                },
+              }}
+              gridModeEnabled={false}
+              zenModeEnabled={false}
+              viewModeEnabled={false}
+            />
+          )}
         </Suspense>
       </ExcaliDrawContent>
     </ExcaliDrawContainer>

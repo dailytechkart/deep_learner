@@ -7,7 +7,8 @@ import { useTheme } from '@/app/context/ThemeContext';
 
 const MainContainer = styled.main<{ promoStripVisible: boolean }>`
   min-height: 100vh;
-  padding-top: ${({ promoStripVisible }) => (promoStripVisible ? '92px' : '72px')}; // Height of header + promo strip (if visible)
+  padding-top: ${({ promoStripVisible }) =>
+    promoStripVisible ? '92px' : '72px'}; // Height of header + promo strip (if visible)
   background: ${({ theme }) => theme.colors.background};
   color: ${({ theme }) => theme.colors.text};
   transition: padding-top ${({ theme }) => theme.transitions.default};
@@ -28,4 +29,4 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   );
 };
 
-export default MainLayout; 
+export default MainLayout;

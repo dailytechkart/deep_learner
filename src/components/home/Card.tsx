@@ -22,18 +22,9 @@ const StyledCard = styled.div`
   }
 `;
 
-export const Card: React.FC<CardProps> = ({ 
-  children, 
-  className, 
-  style,
-  onClick 
-}) => {
+export const Card: React.FC<CardProps> = ({ children, className, style, onClick }) => {
   return (
-    <StyledCard 
-      className={className} 
-      style={style}
-      onClick={onClick}
-    >
+    <StyledCard className={className} style={style} onClick={onClick}>
       {children}
     </StyledCard>
   );
@@ -55,4 +46,4 @@ export const CardFooter = styled.div`
   margin-top: 1.5rem;
   padding-top: 1rem;
   border-top: 1px solid ${props => props.theme.colors.border};
-`; 
+`;

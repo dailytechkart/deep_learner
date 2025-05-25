@@ -74,7 +74,7 @@ export const Feature: React.FC<FeatureProps> = ({
   benefits,
   onClick,
   className,
-  style
+  style,
 }) => {
   return (
     <Card onClick={onClick} className={className} style={style}>
@@ -91,4 +91,4 @@ export const Feature: React.FC<FeatureProps> = ({
       <FeatureCTA onClick={onClick}>Learn More</FeatureCTA>
     </Card>
   );
-}; 
+};

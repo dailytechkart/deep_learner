@@ -116,4 +116,4 @@ export const darkTheme = {
     success: '#32D74B',
     warning: '#FF9F0A',
   },
-}; 
+};

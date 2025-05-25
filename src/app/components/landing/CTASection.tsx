@@ -63,13 +63,16 @@ const CTASection: React.FC = () => {
       <SectionHeader>
         <SectionTitle style={{ color: 'white' }}>Ready to Start Your Journey?</SectionTitle>
         <HeroDescription style={{ maxWidth: '600px', margin: '0 auto 2rem' }}>
-          Join thousands of developers who have transformed their careers with DeepLearner.
+          Join thousands of developers who have transformed their careers with Frontend School.
         </HeroDescription>
       </SectionHeader>
       <SectionContent>
         <ButtonContainer>
           <Link href="/signup" passHref>
             <StyledCTAButton>Get Started Free</StyledCTAButton>
+          </Link>
+          <Link href="/premium/order" passHref>
+            <StyledCTAButton>Get Premium Access</StyledCTAButton>
           </Link>
           <Link href="/learn" passHref>
             <CTAButton>Explore Courses</CTAButton>
@@ -80,4 +83,4 @@ const CTASection: React.FC = () => {
   );
 };
 
-export default React.memo(CTASection); 
+export default React.memo(CTASection);

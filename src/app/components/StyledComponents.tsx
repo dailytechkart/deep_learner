@@ -1263,13 +1263,15 @@ export const ActionButton = styled.button<{ primary?: boolean }>`
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
-  background: ${props => props.primary ? props.theme.colors.primary : 'transparent'};
-  color: ${props => props.primary ? 'white' : props.theme.colors.text};
-  border: 1px solid ${props => props.primary ? props.theme.colors.primary : props.theme.colors.border};
+  background: ${props => (props.primary ? props.theme.colors.primary : 'transparent')};
+  color: ${props => (props.primary ? 'white' : props.theme.colors.text)};
+  border: 1px solid
+    ${props => (props.primary ? props.theme.colors.primary : props.theme.colors.border)};
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px ${props => props.primary ? props.theme.colors.primary + '40' : 'rgba(0, 0, 0, 0.1)'};
+    box-shadow: 0 4px 12px
+      ${props => (props.primary ? props.theme.colors.primary + '40' : 'rgba(0, 0, 0, 0.1)')};
   }
 
   @media (max-width: ${props => props.theme.breakpoints.md}) {
@@ -1386,7 +1388,8 @@ export const PricingCard = styled.div`
       ${props => props.theme.colors.primary} 0%,
       ${props => props.theme.colors.secondary} 100%
     );
-    border-radius: ${props => props.theme.borderRadius.lg} ${props => props.theme.borderRadius.lg} 0 0;
+    border-radius: ${props => props.theme.borderRadius.lg} ${props => props.theme.borderRadius.lg} 0
+      0;
   }
 
   &:hover {
