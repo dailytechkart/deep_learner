@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import HeroIllustration from './HeroIllustration';
 import { MonacoEditor } from './carousel/MonacoEditor';
+import { ExcaliDrawComponent } from './carousel/ExcaliDraw';
 
 const LaptopContainer = styled.div`
   position: relative;
@@ -993,8 +994,8 @@ const darkTheme: DropdownTheme = {
           </ProblemDescription>
         </ProblemSection>
         <EditorSection>
-          <iframe
-            src="https://codesandbox.io/embed/custom-dropdown-component-starter-8f4j8?fontsize=14&hidenavigation=0&theme=dark"
+        <iframe
+            src="https://codesandbox.io/embed/custom-dropdown-component-starter-8f4j8?fontsize=14&hidenavigation=1&theme=dark&view=editor&hidedevtools=1"
             style={{
               width: '100%',
               height: '100%',
@@ -1143,15 +1144,16 @@ Message {
           </ProblemDescription>
         </ProblemSection>
         <EditorSection>
-          <iframe
-            src="https://excalidraw.com/"
-            style={{
-              width: '100%',
-              height: '100%',
-              border: 'none',
-            }}
+          <ExcaliDrawComponent
             title="System Design Diagram"
-            allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+            initialData={{
+              elements: [],
+              appState: {
+                viewBackgroundColor: '#1e1e1e',
+                currentItemFontFamily: 1,
+                theme: 'dark',
+              },
+            }}
           />
         </EditorSection>
       </SplitLayout>
