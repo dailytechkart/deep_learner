@@ -19,8 +19,8 @@ const Container = styled.section`
   border-radius: ${props => props.theme.borderRadius.lg};
   padding: 1.5rem 1.25rem;
   margin-bottom: 1rem;
-  border: 1px solid ${props => props.theme.colors.border};
-  box-shadow: ${props => props.theme.shadows.md};
+  /* border: 1px solid ${props => props.theme.colors.border}; */
+  /* box-shadow: ${props => props.theme.shadows.md}; */
 `;
 
 const Header = styled.div`
@@ -80,7 +80,7 @@ const Stat = styled.div`
   background: ${props => props.theme.colors.backgroundAlt};
   padding: 0.5rem 0.75rem;
   border-radius: ${props => props.theme.borderRadius.md};
-  border: 1px solid ${props => props.theme.colors.border};
+  /* border: 1px solid ${props => props.theme.colors.border}; */
   transition: all 0.2s ease;
   cursor: pointer;
 

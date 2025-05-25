@@ -73,21 +73,21 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
     if (!loading && !user) {
       console.log('ProtectedRoute - Redirecting to login');
-      const returnUrl = encodeURIComponent(pathname);
+      const returnUrl = encodeURIComponent(pathname || '/');
       console.log('ProtectedRoute - Return URL:', returnUrl);
       router.replace(`/login?from=${returnUrl}`);
     }
   }, [user, loading, router, pathname]);
 
   // Show loading state while checking authentication
-  if (loading) {
-    console.log('ProtectedRoute - Showing loading state');
-    return (
-      <LoadingContainer>
-        <LoadingText>Loading...</LoadingText>
-      </LoadingContainer>
-    );
-  }
+  // if (loading) {
+  //   console.log('ProtectedRoute - Showing loading state');
+  //   return (
+  //     <LoadingContainer>
+  //       <LoadingText>Loading...</LoadingText>
+  //     </LoadingContainer>
+  //   );
+  // }
 
   // Show error state if there's an authentication error
   if (error) {

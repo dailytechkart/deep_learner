@@ -6,6 +6,7 @@ import { AuthProvider } from './context/AuthContext';
 import { SearchProvider } from './context/SearchContext';
 import Script from 'next/script';
 import StyledComponentsRegistry from '@/lib/registry';
+import { GoogleAnalyticsComponent } from '@/lib/analytics';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -61,6 +62,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             })();
           `}
         </Script>
+        <GoogleAnalyticsComponent />
       </head>
       <body className={inter.className} suppressHydrationWarning>
         <a href="#main-content" className="skip-link">

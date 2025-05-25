@@ -8,7 +8,6 @@ import { useTheme } from '@/hooks/useTheme';
 import { MainLayout } from '@/components/MainLayout';
 import { useSearch } from '@/hooks/useSearch';
 import { InterviewTabs } from '@/components/interview/InterviewTabs';
-import { InterviewSearch } from '@/components/interview/InterviewSearch';
 import { InterviewProblemsList } from '@/components/interview/InterviewProblemsList';
 import { InterviewLayout } from '@/components/interview/InterviewLayout';
 import { SystemDesignHero } from '@/components/shared/SystemDesignHero';
@@ -17,6 +16,10 @@ import { FaBook, FaClipboardList, FaUsers, FaCode } from 'react-icons/fa';
 import { FaFilter } from 'react-icons/fa';
 import styled from 'styled-components';
 import ProtectedRoute from '@/app/components/ProtectedRoute';
+import Loader from '../components/Loader';
+import Head from 'next/head';
+import { InterviewSchemas } from '@/components/interview/InterviewSchemas';
+import { SEO } from '@/components/shared/SEO';
 
 const FilterButton = styled.button`
   display: none;
@@ -46,6 +49,23 @@ const FilterButton = styled.button`
   }
 `;
 
+const PageTitle = styled.h1`
+  font-size: ${props => props.theme.typography.fontSize['3xl']};
+  font-weight: ${props => props.theme.typography.fontWeight.bold};
+  color: ${props => props.theme.colors.text};
+  margin-bottom: ${props => props.theme.spacing.md};
+  text-align: center;
+`;
+
+const PageDescription = styled.p`
+  font-size: ${props => props.theme.typography.fontSize.lg};
+  color: ${props => props.theme.colors.textSecondary};
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto ${props => props.theme.spacing.xl};
+  line-height: 1.6;
+`;
+
 type ProblemType = 'dsa' | 'machine-coding';
 type SortOption = 'most-asked' | 'difficulty' | 'recent' | 'alphabetical';
 
@@ -71,6 +91,79 @@ const systemDesignStats = [
   { icon: <FaClipboardList />, value: '30+', label: 'Machine Coding' },
   { icon: <FaUsers />, value: '10k+', label: 'Active Learners' },
 ];
+
+const courseSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Course',
+  name: 'Frontend Interview Mastery',
+  description:
+    'Prepare for top tech interviews with 150+ frontend DSA problems, machine coding challenges, and system design questions covering React, JavaScript, and TypeScript.',
+  provider: {
+    '@type': 'Organization',
+    name: 'Deep Learner',
+    sameAs: 'https://deeplearner.com',
+  },
+  educationalLevel: 'Advanced',
+  courseCode: 'FIM-2024',
+  numberOfCredits: '150+',
+  timeToComplete: 'P3M',
+  hasCourseInstance: {
+    '@type': 'CourseInstance',
+    courseMode: 'online',
+    offers: {
+      '@type': 'Offer',
+      category: 'Online Course',
+      availability: 'https://schema.org/InStock',
+    },
+  },
+  teaches: [
+    'Data Structures and Algorithms',
+    'Machine Coding',
+    'System Design',
+    'React',
+    'JavaScript',
+    'TypeScript',
+  ],
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What topics are covered in the Frontend Interview Mastery course?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The course covers Data Structures and Algorithms (DSA), Machine Coding challenges, and System Design questions specifically focused on frontend development. It includes comprehensive coverage of React, JavaScript, and TypeScript.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How many problems are included in the course?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The course includes over 150 frontend DSA problems, 30+ machine coding challenges, and various system design questions.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is this course suitable for beginners?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'While the course is primarily designed for intermediate to advanced developers preparing for frontend interviews, beginners with basic JavaScript knowledge can also benefit from the structured learning path.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How long does it take to complete the course?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The course is self-paced, but we recommend dedicating 2-3 months of consistent practice to complete all problems and challenges effectively.',
+      },
+    },
+  ],
+};
 
 const InterviewPage: React.FC = () => {
   const { user, loading } = useAuth();
@@ -236,9 +329,8 @@ const InterviewPage: React.FC = () => {
 
     return stats;
   };
-
   useEffect(() => {
-    const type = searchParams.get('type');
+    const type = searchParams?.get('type');
     if (type === 'machine-coding') {
       setProblemType('machine-coding');
     }
@@ -325,7 +417,9 @@ const InterviewPage: React.FC = () => {
   if (loading || !isAuthChecked) {
     return (
       <MainLayout>
-        <div style={{ textAlign: 'center', padding: '2rem' }}>Loading...</div>
+        <div style={{ textAlign: 'center', padding: '2rem' }}>
+          <Loader />
+        </div>
       </MainLayout>
     );
   }
@@ -343,6 +437,12 @@ const InterviewPage: React.FC = () => {
 
   return (
     <ProtectedRoute>
+      <SEO
+        title="Frontend Interview Mastery | Practice DSA & Machine Coding"
+        description="Master frontend interviews with 150+ DSA problems, machine coding challenges, and system design questions. Includes React, TypeScript, and real-world projects."
+        keywords="frontend interview, DSA, machine coding, React, JavaScript, TypeScript, system design"
+        includeSchemas={true}
+      />
       <MainLayout>
         <Breadcrumb
           items={[
@@ -350,6 +450,12 @@ const InterviewPage: React.FC = () => {
             { label: 'Interview Preparation', href: '/interview' },
           ]}
         />
+        {/* <PageTitle>Frontend Interview Mastery</PageTitle>
+        <PageDescription>
+          Prepare for top tech interviews with 150+ frontend DSA problems, machine coding
+          challenges, and system design questions covering React, JavaScript, and TypeScript.
+          Trusted by 10K+ engineers.
+        </PageDescription> */}
         <SystemDesignHero
           title={systemDesignTitle}
           description={systemDesignDescription}
@@ -364,13 +470,16 @@ const InterviewPage: React.FC = () => {
             machineCodingCount={machineCodingProblemData?.problems.length || 0}
           />
 
-          <InterviewLayout filterSections={filterSections} onClearAllFilters={clearAllFilters}>
-            <InterviewSearch
-              searchQuery={searchQuery}
-              onSearchChange={setSearchQuery}
-              sortBy={sortBy}
-              onSortChange={setSortBy}
-            />
+          <InterviewLayout
+            filterSections={filterSections}
+            onClearAllFilters={clearAllFilters}
+            isSidebarOpen={showFilters}
+            onCloseSidebar={() => setShowFilters(false)}
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+          >
             <InterviewProblemsList problems={filteredProblemsWithSearch} />
           </InterviewLayout>
 
