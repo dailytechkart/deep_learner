@@ -48,6 +48,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <head>
         <meta name="color-scheme" content="light dark" />
         <meta name="supported-color-schemes" content="light dark" />
+        <meta
+          name="google-site-verification"
+          content="Dolml-CXhdGnK-_V9nTQx7-3TIQiKIrjB0AjRXRyn84"
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <Script id="theme-script" strategy="beforeInteractive">
