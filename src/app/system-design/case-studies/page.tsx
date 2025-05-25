@@ -45,8 +45,8 @@ export default function SystemDesignCaseStudiesPage() {
             <Content>
               <h3>Global Content Delivery</h3>
               <p>
-                Netflix's content delivery system is a prime example of distributed systems design.
-                Key aspects include:
+                Netflix&apos;s content delivery system is a prime example of distributed systems
+                design. Key aspects include:
               </p>
               <ul>
                 <li>Content Delivery Network (CDN) architecture</li>
@@ -61,7 +61,9 @@ export default function SystemDesignCaseStudiesPage() {
             <SectionTitle>Uber</SectionTitle>
             <Content>
               <h3>Real-time Location Tracking</h3>
-              <p>Uber's system handles millions of real-time location updates. Key components:</p>
+              <p>
+                Uber&apos;s system handles millions of real-time location updates. Key components:
+              </p>
               <ul>
                 <li>Geospatial data processing</li>
                 <li>Real-time matching algorithms</li>
@@ -75,7 +77,7 @@ export default function SystemDesignCaseStudiesPage() {
             <SectionTitle>Twitter</SectionTitle>
             <Content>
               <h3>Social Media Feed System</h3>
-              <p>Twitter's feed system demonstrates handling high-volume data streams:</p>
+              <p>Twitter&apos;s feed system demonstrates handling high-volume data streams:</p>
               <ul>
                 <li>Timeline generation algorithms</li>
                 <li>Real-time data processing</li>
@@ -89,7 +91,7 @@ export default function SystemDesignCaseStudiesPage() {
             <SectionTitle>Amazon</SectionTitle>
             <Content>
               <h3>E-commerce Platform</h3>
-              <p>Amazon's e-commerce system showcases complex distributed architecture:</p>
+              <p>Amazon&apos;s e-commerce system showcases complex distributed architecture:</p>
               <ul>
                 <li>Product catalog management</li>
                 <li>Order processing pipeline</li>

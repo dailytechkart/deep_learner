@@ -1,46 +1,51 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createSessionCookie, revokeSessionCookie } from '@/app/lib/server-auth';
+import { AuthService } from '../../services/authService';
 
-export async function POST(request: NextRequest) {
+// POST /api/auth/google - Sign in with Google
+export async function POST(request: Request) {
   try {
-    const { idToken } = await request.json();
+    const { provider } = await request.json();
 
-    if (!idToken) {
-      return NextResponse.json({ error: 'ID token is required' }, { status: 400 });
+    let result;
+    switch (provider) {
+      case 'google':
+        result = await AuthService.signInWithGoogle();
+        break;
+      case 'github':
+        result = await AuthService.signInWithGithub();
+        break;
+      default:
+        return NextResponse.json({ error: 'Invalid provider' }, { status: 400 });
     }
 
-    const sessionCookie = await createSessionCookie(idToken);
-
-    return NextResponse.json(
-      { success: true },
-      {
-        status: 200,
-        headers: {
-          'Set-Cookie': `session=${sessionCookie}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${60 * 60 * 24 * 5}`,
-        },
-      }
-    );
-  } catch (error) {
-    console.error('Error in auth POST:', error);
-    return NextResponse.json({ error: 'Authentication failed' }, { status: 401 });
+    return NextResponse.json(result);
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
+// DELETE /api/auth - Sign out
 export async function DELETE() {
   try {
-    await revokeSessionCookie();
+    await AuthService.signOut();
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
 
-    return NextResponse.json(
-      { success: true },
-      {
-        status: 200,
-        headers: {
-          'Set-Cookie': 'session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0',
-        },
-      }
-    );
+// GET /api/auth/me - Get current user
+export async function GET() {
+  try {
+    const user = AuthService.getCurrentUser();
+
+    if (!user) {
+      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
+    }
+
+    return NextResponse.json({ user }, { status: 200 });
   } catch (error) {
-    console.error('Error in auth DELETE:', error);
-    return NextResponse.json({ error: 'Logout failed' }, { status: 500 });
+    console.error('Get user error:', error);
+    return NextResponse.json({ error: 'Failed to get user' }, { status: 500 });
   }
 }

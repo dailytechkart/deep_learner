@@ -16,9 +16,8 @@ import {
 
 export default function SignUpClient() {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { user, signInWithGoogle, signInWithGithub } = useAuth();
+  const { user, signUp } = useAuth();
   const [error, setError] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -31,6 +30,10 @@ export default function SignUpClient() {
         displayName: user.displayName,
         photoURL: user.photoURL,
         emailVerified: user.emailVerified,
+        metadata: {
+          creationTime: user.metadata.creationTime,
+          lastSignInTime: user.metadata.lastSignInTime,
+        },
       });
     }
   }, [user]);
@@ -38,7 +41,7 @@ export default function SignUpClient() {
   // Handle redirection when auth state changes
   useEffect(() => {
     const handleAuthStateChange = async () => {
-      if (user) {
+      if (user && searchParams) {
         try {
           const returnTo = searchParams.get('from') || '/dashboard';
           // Use replace to prevent back button from returning to signup
@@ -51,23 +54,6 @@ export default function SignUpClient() {
 
     handleAuthStateChange();
   }, [user, router, searchParams]);
-
-  const handleSocialSignUp = async (provider: 'google' | 'github') => {
-    try {
-      setError('');
-      setIsLoading(true);
-
-      if (provider === 'google') {
-        await signInWithGoogle();
-      } else {
-        await signInWithGithub();
-      }
-    } catch (err) {
-      console.error(`${provider} signup error:`, err);
-      setError(`Failed to sign up with ${provider}. Please try again.`);
-      setIsLoading(false);
-    }
-  };
 
   // If user is already logged in, show loading state
   if (user) {
@@ -90,7 +76,6 @@ export default function SignUpClient() {
           <SocialButtonGroup>
             <SocialButton
               type="button"
-              onClick={() => handleSocialSignUp('google')}
               disabled={isLoading}
               style={{
                 background: '#fff',
@@ -124,7 +109,6 @@ export default function SignUpClient() {
             </SocialButton>
             <SocialButton
               type="button"
-              onClick={() => handleSocialSignUp('github')}
               disabled={isLoading}
               style={{
                 background: '#333',

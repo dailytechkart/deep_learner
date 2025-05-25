@@ -1,15 +1,19 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import Header from '@/app/components/Header';
+import Header from '@/app/components/Header/Header';
 import { AppFooter } from './Footer';
 import { useTheme } from '@/app/context/ThemeContext';
+import OverlayScreen from './OverlayScreen';
 
 interface MainLayoutProps {
   children: React.ReactNode;
   className?: string;
   showBreadcrumb?: boolean;
+  fullWidth?: boolean;
+  showOverlay?: boolean;
+  onOverlayClick?: () => void;
 }
 
 const LayoutContainer = styled.div`
@@ -19,27 +23,27 @@ const LayoutContainer = styled.div`
   background: ${props => props.theme.colors.background};
   color: ${props => props.theme.colors.text};
   transition: all ${props => props.theme.transitions.default};
-  padding-top: 24px; // Push content below the fixed promo strip
+  /* padding-top: 24px; // Push content below the fixed promo strip */
 
   @media (max-width: 768px) {
     padding-top: 20px;
   }
 `;
 
-const ContentWrapper = styled.div`
+const ContentWrapper = styled.div<{ $fullWidth?: boolean }>`
   flex: 1;
   margin-top: 64px; // Height of the header
   transition: all ${props => props.theme.transitions.default};
   background: ${props => props.theme.colors.background};
-  padding: 0 2rem;
-  max-width: 1600px;
+  padding: 0 ${props => (props.$fullWidth ? '0' : '2rem')};
+  max-width: ${props => (props.$fullWidth ? '100%' : '1400px')};
   margin-left: auto;
   margin-right: auto;
   width: 100%;
 
   @media (max-width: 768px) {
     margin-top: 56px;
-    padding: 0 1rem;
+    padding: 0 ${props => (props.$fullWidth ? '0' : '1rem')};
   }
 `;
 
@@ -48,58 +52,19 @@ const Main = styled.main`
   width: 100%;
 `;
 
-const PromoStripText = styled.span`
-  width: 100%;
-  text-align: center;
-  font-size: 0.92rem;
-  font-weight: 700;
-  color: #7c4a00;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-shadow:
-    0 1px 2px #fff8,
-    0 0px 1px #ffd54f99;
-  padding: 0 1rem;
-
-  @media (max-width: 480px) {
-    font-size: 0.8rem;
-    padding: 0 0.5rem;
-  }
-`;
-
-const PromoStrip = styled.div`
-  width: 100vw;
-  height: 24px;
-  background: linear-gradient(90deg, #ffe082 0%, #ffd54f 100%);
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1200;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  @media (max-width: 480px) {
-    height: 20px;
-  }
-`;
-
-export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+export const MainLayout: React.FC<MainLayoutProps> = ({
+  children,
+  fullWidth,
+  showOverlay = true,
+  onOverlayClick,
+}) => {
   const { isDarkMode } = useTheme();
 
   return (
     <LayoutContainer>
-      <PromoStrip>
-        <PromoStripText>Get Premium Content Access at 90% OFF – Only ₹499!</PromoStripText>
-      </PromoStrip>
+      <OverlayScreen isVisible={showOverlay} onClick={onOverlayClick} zIndex={999} />
       <Header />
-      <ContentWrapper>
+      <ContentWrapper $fullWidth={fullWidth}>
         <Main>{children}</Main>
       </ContentWrapper>
       <AppFooter />

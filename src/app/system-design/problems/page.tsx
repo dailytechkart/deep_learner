@@ -134,7 +134,7 @@ export default function SystemDesignProblemsPage() {
   return (
     <>
       <SEO
-        title="System Design Problems | Deep Learner"
+        title="System Design Problems | Frontend School"
         description="Practice system design problems with detailed solutions. Learn how to design scalable and efficient systems."
         keywords={[
           'system design',

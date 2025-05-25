@@ -1,65 +1,100 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAuth } from '@/app/lib/server-auth';
-import { getFirestore } from 'firebase-admin/firestore';
+import { cookies } from 'next/headers';
+import { getAdminAuth } from '@/lib/firebase-admin';
+import { db } from '@/lib/firebase';
+import { doc, getDoc, updateDoc, Timestamp } from 'firebase/firestore';
 
-const db = getFirestore();
+interface SystemDesignPattern {
+  id: string;
+  title: string;
+  description: string;
+  content: string;
+  created_at: Timestamp;
+  updated_at: Timestamp;
+  created_by: string;
+  updated_by: string;
+  [key: string]: any;
+}
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+async function requireAuth(request: NextRequest) {
+  const cookieStore = cookies();
+  const token = cookieStore.get('auth_token')?.value;
+
+  if (!token) {
+    throw new Error('No token provided');
+  }
+
   try {
-    const session = await requireAuth(request);
-    const problemId = params.id;
-
-    const problemDoc = await db.collection('systemDesignProblems').doc(problemId).get();
-
-    if (!problemDoc.exists) {
-      return NextResponse.json({ message: 'Problem not found' }, { status: 404 });
-    }
-
-    const problemData = problemDoc.data();
-
-    // Get user's progress for this problem
-    const progressDoc = await db
-      .collection('users')
-      .doc(session.uid)
-      .collection('problemProgress')
-      .doc(problemId)
-      .get();
-
-    const progressData = progressDoc.exists ? progressDoc.data() : null;
-
-    return NextResponse.json({
-      ...problemData,
-      progress: progressData,
-    });
+    const adminAuth = getAdminAuth();
+    const decodedToken = await adminAuth.verifyIdToken(token);
+    return decodedToken;
   } catch (error) {
-    console.error('Error fetching system design problem:', error);
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+    if (error instanceof Error) {
+      throw new Error(`Authentication failed: ${error.message}`);
+    }
+    throw new Error('Authentication failed: Unknown error');
   }
 }
 
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+async function getPatternById(patternId: string): Promise<SystemDesignPattern> {
+  const patternDoc = await getDoc(doc(db, 'system_design_patterns', patternId));
+
+  if (!patternDoc.exists()) {
+    throw new Error('Pattern not found');
+  }
+
+  return {
+    id: patternDoc.id,
+    ...patternDoc.data(),
+  } as SystemDesignPattern;
+}
+
+async function handler(request: NextRequest) {
+  const patternId = request.url.split('/').pop();
+
+  if (!patternId) {
+    throw new Error('Pattern ID is required');
+  }
+
+  return getPatternById(patternId);
+}
+
+export async function GET(request: NextRequest) {
   try {
-    const session = await requireAuth(request);
-    const problemId = params.id;
+    await requireAuth(request);
+    const pattern = await handler(request);
+    return NextResponse.json(pattern);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unauthorized';
+    const status = error instanceof Error && error.message === 'Pattern not found' ? 404 : 401;
+    return NextResponse.json({ error: errorMessage }, { status });
+  }
+}
+
+export async function PUT(request: NextRequest) {
+  try {
+    const decodedToken = await requireAuth(request);
+    const patternId = request.url.split('/').pop();
     const body = await request.json();
 
-    // Update user's progress for this problem
-    await db
-      .collection('users')
-      .doc(session.uid)
-      .collection('problemProgress')
-      .doc(problemId)
-      .set(
-        {
-          ...body,
-          updatedAt: new Date(),
-        },
-        { merge: true }
-      );
+    if (!patternId) {
+      throw new Error('Pattern ID is required');
+    }
 
-    return NextResponse.json({ message: 'Progress updated successfully' });
+    const patternRef = doc(db, 'system_design_patterns', patternId);
+    const updateData = {
+      ...body,
+      updated_at: Timestamp.now(),
+      updated_by: decodedToken.uid,
+    };
+
+    await updateDoc(patternRef, updateData);
+    const updatedPattern = await getPatternById(patternId);
+
+    return NextResponse.json(updatedPattern);
   } catch (error) {
-    console.error('Error updating problem progress:', error);
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : 'Internal server error';
+    const status = error instanceof Error && error.message === 'Pattern not found' ? 404 : 500;
+    return NextResponse.json({ error: errorMessage }, { status });
   }
 }

@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { courseService } from '../services/courseService';
 import { Course, UserCourse, UserProgress } from '../types/course';
-import { useAuth } from './useAuth'; // Assuming you have an auth hook
+import { useAuth } from '../context/AuthContext';
 
 export const useCourses = () => {
   const [courses, setCourses] = useState<Course[]>([]);
@@ -28,7 +28,7 @@ export const useCourses = () => {
   };
 
   // Fetch user's enrolled courses
-  const fetchUserCourses = async () => {
+  const fetchUserCourses = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -42,7 +42,7 @@ export const useCourses = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   // Enroll in a course
   const enrollInCourse = async (courseId: string) => {
@@ -53,7 +53,7 @@ export const useCourses = () => {
 
     try {
       setLoading(true);
-      await courseService.enrollUserInCourse(user.uid, courseId);
+      await courseService.enrollInCourse(user.uid, courseId);
       await fetchUserCourses(); // Refresh user courses
       setError(null);
     } catch (err) {
@@ -73,7 +73,28 @@ export const useCourses = () => {
 
     try {
       setLoading(true);
-      await courseService.updateUserProgress(user.uid, courseId, lessonId, isCompleted);
+      // Get current progress
+      const currentProgress = await courseService.getCourseProgress(user.uid, courseId);
+      if (!currentProgress) {
+        throw new Error('Course progress not found');
+      }
+
+      // Update completed lessons
+      const completedLessons = isCompleted
+        ? [...currentProgress.completedLessons, lessonId]
+        : currentProgress.completedLessons.filter(id => id !== lessonId);
+
+      // Get course to calculate total lessons
+      const course = courses.find(c => c.id === courseId);
+      if (!course) {
+        throw new Error('Course not found');
+      }
+
+      // Calculate progress percentage
+      const progress = Math.round((completedLessons.length / course.lessons.length) * 100);
+      const completed = progress === 100;
+
+      await courseService.updateCourseProgress(user.uid, courseId, progress, completed);
       await fetchUserCourses(); // Refresh user courses
       setError(null);
     } catch (err) {
@@ -89,7 +110,7 @@ export const useCourses = () => {
     if (!user) return null;
 
     try {
-      return await courseService.getUserCourseProgress(user.uid, courseId);
+      return await courseService.getCourseProgress(user.uid, courseId);
     } catch (err) {
       console.error('Error getting course progress:', err);
       return null;
@@ -102,7 +123,7 @@ export const useCourses = () => {
     if (user) {
       fetchUserCourses();
     }
-  }, [user]);
+  }, [user, fetchUserCourses]);
 
   return {
     courses,

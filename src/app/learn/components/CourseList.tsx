@@ -63,7 +63,7 @@ const NoResultsTitle = styled.h2`
 `;
 
 const NoResultsText = styled.p`
-  font-size: ${props => props.theme.typography.fontSize.md};
+  font-size: ${props => props.theme.typography.fontSize.base};
   color: ${props => props.theme.colors.textSecondary};
   margin-bottom: ${props => props.theme.spacing.lg};
   max-width: 400px;
@@ -135,7 +135,7 @@ export const CourseList: React.FC<CourseListProps> = ({ topics, isLoading, onCle
       </NoResultsIllustration>
       <NoResultsTitle>No Courses Found</NoResultsTitle>
       <NoResultsText>
-        We couldn't find any courses matching your current filters. Try adjusting your search
+        We couldn&apos;t find any courses matching your current filters. Try adjusting your search
         criteria or clear all filters to see all available courses.
       </NoResultsText>
       <NoResultsAction onClick={onClearFilters}>Clear All Filters</NoResultsAction>

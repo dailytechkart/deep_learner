@@ -16,8 +16,8 @@ export async function POST(request: NextRequest, { params }: { params: { provide
     const mockToken = `mock_${provider}_token_${Date.now()}`;
 
     return NextResponse.json({ token: mockToken });
-  } catch (error) {
-    console.error(`Authentication error with ${provider}:`, error);
+  } catch (_error) {
+    console.error(`Authentication error with ${provider}:`, _error);
     return NextResponse.json({ error: `Failed to authenticate with ${provider}` }, { status: 500 });
   }
 }

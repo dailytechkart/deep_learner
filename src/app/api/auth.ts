@@ -1,29 +1,40 @@
+import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import { adminAuth } from '@/app/lib/firebase-admin';
+import { getAdminAuth } from '@/lib/firebase-admin';
+import { db } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
-export interface Session {
-  user: {
-    uid: string;
-    email: string;
-  };
-}
-
-export async function getServerSession(): Promise<Session | null> {
+export async function GET() {
   try {
-    const sessionCookie = cookies().get('session')?.value;
-    if (!sessionCookie) {
-      return null;
+    const cookieStore = cookies();
+    const token = cookieStore.get('auth_token')?.value;
+
+    if (!token) {
+      return NextResponse.json({ error: 'No token provided' }, { status: 401 });
     }
 
-    const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie);
-    return {
-      user: {
-        uid: decodedClaims.uid,
-        email: decodedClaims.email || '',
-      },
-    };
+    try {
+      const adminAuth = getAdminAuth();
+      const decodedToken = await adminAuth.verifyIdToken(token);
+      const userDoc = await getDoc(doc(db, 'users', decodedToken.uid));
+
+      if (!userDoc.exists()) {
+        return NextResponse.json({ error: 'User profile not found' }, { status: 404 });
+      }
+
+      return NextResponse.json({
+        user: {
+          id: decodedToken.uid,
+          email: decodedToken.email,
+          ...userDoc.data(),
+        },
+      });
+    } catch (error) {
+      console.error('Error verifying token:', error);
+      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+    }
   } catch (error) {
-    console.error('Error verifying session:', error);
-    return null;
+    console.error('Error in auth route:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

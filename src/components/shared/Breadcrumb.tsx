@@ -18,7 +18,6 @@ const BreadcrumbContainer = styled.nav`
   display: flex;
   align-items: center;
   padding: ${props => props.theme.spacing.md} 0;
-  /* margin-bottom: ${props => props.theme.spacing.lg}; */
 `;
 
 const BreadcrumbList = styled.ol`
@@ -49,7 +48,7 @@ const BreadcrumbLink = styled(Link)`
     color: ${props => props.theme.colors.primary};
   }
 
-  &[aria-current="page"] {
+  &[aria-current='page'] {
     color: ${props => props.theme.colors.text};
     font-weight: ${props => props.theme.typography.fontWeight.medium};
     pointer-events: none;
@@ -64,9 +63,9 @@ const Separator = styled(FaChevronRight)`
 
 export const Breadcrumb: React.FC<BreadcrumbProps> = ({ items = [], showHome = true }) => {
   const pathname = usePathname();
-  
+
   // Generate breadcrumb items from pathname if no items provided
-  const breadcrumbItems = items.length > 0 ? items : generateBreadcrumbs(pathname, showHome);
+  const breadcrumbItems = items.length > 0 ? items : generateBreadcrumbs(pathname || '/', showHome);
 
   // Generate structured data for SEO
   const structuredData = {
@@ -137,4 +136,4 @@ function formatBreadcrumbLabel(path: string): string {
     .split('-')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
-} 
+}

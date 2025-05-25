@@ -1,12 +1,11 @@
 'use client';
 
-import { SessionProvider } from 'next-auth/react';
-import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { ThemeProvider } from './context/ThemeContext';
-import { lightTheme, darkTheme } from './theme';
 import { useTheme } from './context/ThemeContext';
-import { createGlobalStyle } from 'styled-components';
+import { AuthProvider } from './context/AuthContext';
 import StyledComponentsRegistry from './registry';
+import { createGlobalStyle, ThemeProvider as StyledThemeProvider } from 'styled-components';
+import { lightTheme, darkTheme } from './theme';
 
 const GlobalStyle = createGlobalStyle`
   :root {
@@ -48,9 +47,9 @@ function ThemeWrapper({ children }: { children: React.ReactNode }) {
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <StyledComponentsRegistry>
-      <ThemeProvider>
+      <ThemeProvider initialPromoStripVisible={true} initialTheme="light">
         <ThemeWrapper>
-          <SessionProvider>{children}</SessionProvider>
+          <AuthProvider>{children}</AuthProvider>
         </ThemeWrapper>
       </ThemeProvider>
     </StyledComponentsRegistry>

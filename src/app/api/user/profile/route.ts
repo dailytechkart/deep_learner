@@ -1,63 +1,86 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/lib/next-auth';
-import { getFirestore } from 'firebase-admin/firestore';
+import { cookies } from 'next/headers';
+import { db } from '@/lib/firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { getAdminAuth } from '@/lib/firebase-admin';
 
 // Force dynamic route handling
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-const db = getFirestore();
-
 export async function GET() {
   try {
-    const session = await getServerSession(authOptions);
+    const cookieStore = cookies();
+    const token = cookieStore.get('auth_token')?.value;
 
-    if (!session?.user?.email) {
-      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    if (!token) {
+      return NextResponse.json({ error: 'No token provided' }, { status: 401 });
     }
 
-    const userDoc = await db.collection('users').doc(session.user.id).get();
-    const userData = userDoc.data();
+    try {
+      const adminAuth = getAdminAuth();
+      const decodedToken = await adminAuth.verifyIdToken(token);
+      const userId = decodedToken.uid;
 
-    if (!userData) {
-      return NextResponse.json({ message: 'User not found' }, { status: 404 });
+      const profileDoc = await getDoc(doc(db, 'profiles', userId));
+      if (!profileDoc.exists()) {
+        return NextResponse.json({ error: 'Profile not found' }, { status: 404 });
+      }
+
+      return NextResponse.json(profileDoc.data());
+    } catch (error) {
+      console.error('Token verification error:', error);
+      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     }
-
-    // Get achievements and activities from subcollections
-    const achievementsSnapshot = await db
-      .collection('users')
-      .doc(session.user.id)
-      .collection('achievements')
-      .orderBy('earnedAt', 'desc')
-      .limit(10)
-      .get();
-
-    const activitiesSnapshot = await db
-      .collection('users')
-      .doc(session.user.id)
-      .collection('activityLog')
-      .orderBy('timestamp', 'desc')
-      .limit(10)
-      .get();
-
-    const achievements = achievementsSnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-
-    const activities = activitiesSnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-
-    return NextResponse.json({
-      ...userData,
-      achievements,
-      activities,
-    });
   } catch (error) {
-    console.error('Error fetching user profile:', error);
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+    console.error('Profile fetch error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+export async function POST(request: Request) {
+  try {
+    const cookieStore = cookies();
+    const token = cookieStore.get('auth_token')?.value;
+
+    if (!token) {
+      return NextResponse.json({ error: 'No token provided' }, { status: 401 });
+    }
+
+    try {
+      const adminAuth = getAdminAuth();
+      const decodedToken = await adminAuth.verifyIdToken(token);
+      const userId = decodedToken.uid;
+      const data = await request.json();
+
+      const profileDoc = await getDoc(doc(db, 'profiles', userId));
+      if (!profileDoc.exists()) {
+        // Create new profile
+        await setDoc(doc(db, 'profiles', userId), {
+          ...data,
+          id: userId,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        });
+      } else {
+        // Update existing profile
+        await setDoc(
+          doc(db, 'profiles', userId),
+          {
+            ...data,
+            updated_at: new Date().toISOString(),
+          },
+          { merge: true }
+        );
+      }
+
+      return NextResponse.json({ success: true });
+    } catch (error) {
+      console.error('Token verification error:', error);
+      return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+    }
+  } catch (error) {
+    console.error('Profile update error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

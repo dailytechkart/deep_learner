@@ -82,7 +82,7 @@ const PointContent = styled.div`
 `;
 
 const PointTitle = styled.h4`
-  font-size: ${props => props.theme.typography.fontSize.md};
+  font-size: ${props => props.theme.typography.fontSize.base};
   font-weight: ${props => props.theme.typography.fontWeight.semibold};
   color: ${props => props.theme.colors.text};
   margin: 0 0 ${props => props.theme.spacing.xs};

@@ -41,8 +41,8 @@ const LogoContainer = styled.div`
 
 const LogoIcon = styled.div`
   position: relative;
-  width: 42px;
-  height: 42px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,9 +51,9 @@ const LogoIcon = styled.div`
     ${props => props.theme.colors.primary},
     ${props => props.theme.colors.primary}dd
   );
-  border-radius: 12px;
+  border-radius: 10px;
   color: white;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   transform: rotate(-10deg);
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px ${props => props.theme.colors.primary}33;
@@ -104,15 +104,15 @@ const SecondaryIcon = styled.div`
   position: absolute;
   bottom: -4px;
   right: -4px;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   background: ${props => props.theme.colors.background};
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: ${props => props.theme.colors.primary};
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   box-shadow: 0 2px 8px ${props => props.theme.colors.primary}33;
   border: 2px solid ${props => props.theme.colors.background};
   transition: all 0.3s ease;
@@ -125,7 +125,7 @@ const SecondaryIcon = styled.div`
 const LogoText = styled.div`
   display: flex;
   align-items: baseline;
-  gap: 0.5rem;
+  gap: 0.35rem;
   position: relative;
   padding: 0.25rem 0;
 `;

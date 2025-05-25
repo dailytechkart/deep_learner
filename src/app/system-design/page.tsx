@@ -9,6 +9,7 @@ import { TopicsGrid } from './components/TopicsGrid';
 import { TabNavigation, TabType } from './components/TabNavigation';
 import SEO from '@/components/SEO';
 import { FaReact, FaCode, FaMobile, FaShieldAlt, FaLaptopCode } from 'react-icons/fa';
+import ProtectedRoute from '@/app/components/ProtectedRoute';
 
 export const dynamic = 'force-dynamic';
 
@@ -173,24 +174,24 @@ const SystemDesignPage: React.FC = () => {
   const filteredTopics = getTopicsByCategory(activeTab);
 
   return (
-    <>
-      <SEO
-        title="System Design Mastery"
-        description="Master the art of designing scalable, reliable, and efficient systems. From distributed systems to cloud architecture, learn everything you need to excel in system design interviews and real-world applications."
-        keywords={[
-          'system design',
-          'scalability',
-          'reliability',
-          'performance',
-          'architecture',
-          'distributed systems',
-          'design patterns',
-          'frontend architecture',
-          'microservices',
-          'cloud architecture',
-        ]}
-      />
+    <ProtectedRoute>
       <MainLayout>
+        <SEO
+          title="System Design Mastery"
+          description="Master the art of designing scalable, reliable, and efficient systems. From distributed systems to cloud architecture, learn everything you need to excel in system design interviews and real-world applications."
+          keywords={[
+            'system design',
+            'scalability',
+            'reliability',
+            'performance',
+            'architecture',
+            'distributed systems',
+            'design patterns',
+            'frontend architecture',
+            'microservices',
+            'cloud architecture',
+          ]}
+        />
         <Breadcrumb
           items={[
             { label: 'Home', href: '/' },
@@ -207,7 +208,7 @@ const SystemDesignPage: React.FC = () => {
           <TopicsGrid topics={filteredTopics} />
         </ContentSection>
       </MainLayout>
-    </>
+    </ProtectedRoute>
   );
 };
 

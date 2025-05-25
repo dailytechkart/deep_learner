@@ -13,6 +13,7 @@ import { StatsBar } from './components/StatsBar';
 import { CourseList } from './components/CourseList';
 import { SEO } from './components/SEO';
 import { Breadcrumb } from '@/components/shared/Breadcrumb';
+import ProtectedRoute from '@/app/components/ProtectedRoute';
 
 type Difficulty = 'Beginner' | 'Intermediate' | 'Advanced';
 type Role =
@@ -127,11 +128,14 @@ const LearnPage: React.FC = () => {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
   // Memoize unique values
-  const { categories, difficulties, roles } = useMemo(() => ({
-    categories: Array.from(new Set(learningTopics.map(topic => topic.category))),
-    difficulties: Array.from(new Set(learningTopics.map(topic => topic.difficulty))),
-    roles: Array.from(new Set(learningTopics.map(topic => topic.role))),
-  }), []);
+  const { categories, difficulties, roles } = useMemo(
+    () => ({
+      categories: Array.from(new Set(learningTopics.map(topic => topic.category))),
+      difficulties: Array.from(new Set(learningTopics.map(topic => topic.difficulty))),
+      roles: Array.from(new Set(learningTopics.map(topic => topic.role))),
+    }),
+    []
+  );
 
   const handleFilterChange = useCallback((section: string, value: FilterValue) => {
     switch (section) {
@@ -160,38 +164,49 @@ const LearnPage: React.FC = () => {
     setSearchQuery('');
   }, []);
 
-  const filterSections = useMemo<FilterSectionType[]>(() => [
-    {
-      title: 'Categories',
-      options: categories.map(category => ({
-        id: category,
-        label: category,
-        count: learningTopics.filter(topic => topic.category === category).length,
-      })),
-      selected: selectedCategories,
-      onSelect: (value: FilterValue) => handleFilterChange('categories', value),
-    },
-    {
-      title: 'Difficulty',
-      options: difficulties.map(difficulty => ({
-        id: difficulty,
-        label: difficulty,
-        count: learningTopics.filter(topic => topic.difficulty === difficulty).length,
-      })),
-      selected: selectedDifficulties,
-      onSelect: (value: FilterValue) => handleFilterChange('difficulties', value),
-    },
-    {
-      title: 'Role',
-      options: roles.map(role => ({
-        id: role,
-        label: role,
-        count: learningTopics.filter(topic => topic.role === role).length,
-      })),
-      selected: selectedRoles,
-      onSelect: (value: FilterValue) => handleFilterChange('roles', value),
-    },
-  ], [categories, difficulties, roles, selectedCategories, selectedDifficulties, selectedRoles, handleFilterChange]);
+  const filterSections = useMemo<FilterSectionType[]>(
+    () => [
+      {
+        title: 'Categories',
+        options: categories.map(category => ({
+          id: category,
+          label: category,
+          count: learningTopics.filter(topic => topic.category === category).length,
+        })),
+        selected: selectedCategories,
+        onSelect: (value: FilterValue) => handleFilterChange('categories', value),
+      },
+      {
+        title: 'Difficulty',
+        options: difficulties.map(difficulty => ({
+          id: difficulty,
+          label: difficulty,
+          count: learningTopics.filter(topic => topic.difficulty === difficulty).length,
+        })),
+        selected: selectedDifficulties,
+        onSelect: (value: FilterValue) => handleFilterChange('difficulties', value),
+      },
+      {
+        title: 'Role',
+        options: roles.map(role => ({
+          id: role,
+          label: role,
+          count: learningTopics.filter(topic => topic.role === role).length,
+        })),
+        selected: selectedRoles,
+        onSelect: (value: FilterValue) => handleFilterChange('roles', value),
+      },
+    ],
+    [
+      categories,
+      difficulties,
+      roles,
+      selectedCategories,
+      selectedDifficulties,
+      selectedRoles,
+      handleFilterChange,
+    ]
+  );
 
   // Memoize filtered topics
   const filteredTopics = useMemo(
@@ -231,46 +246,39 @@ const LearnPage: React.FC = () => {
     setIsBottomSheetOpen(false);
   }, []);
 
-  return (
-    <MainLayout>
-      <Breadcrumb 
-        items={[
-          { label: 'Home', href: '/' },
-          { label: 'Learn', href: '/learn' }
-        ]} 
-      />
-      <SEO />
-      <MainContent>
-        <Suspense fallback={<FilterSidebarFallback>Loading filters...</FilterSidebarFallback>}>
-          <FilterSidebar sections={filterSections} onClearAll={clearAllFilters} />
-        </Suspense>
+  console.log('LearnPage - Component Mounted');
 
-        <CoursesSection>
-          <HeaderSection searchQuery={searchQuery} onSearchChange={setSearchQuery} />
-          <StatsBar />
+  return (
+    <ProtectedRoute>
+      <MainLayout>
+        <SEO
+          title="Learn Frontend Development"
+          description="Master frontend development with our comprehensive learning resources. From HTML to advanced React patterns, learn everything you need to become a frontend expert."
+        />
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Learn', href: '/learn' },
+          ]}
+        />
+        <HeaderSection searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+        <StatsBar />
+        <div style={{ display: 'flex', height: 'calc(100vh - 300px)' }}>
+          <Suspense fallback={<FilterSidebarFallback>Loading filters...</FilterSidebarFallback>}>
+            <FilterSidebar sections={filterSections} onClearAll={clearAllFilters} />
+          </Suspense>
           <CourseList
-            topics={filteredTopics}
+            topics={learningTopics}
             isLoading={isLoading}
             onClearFilters={clearAllFilters}
           />
-        </CoursesSection>
-      </MainContent>
-
-      <FilterButton onClick={handleBottomSheetToggle}>
-        <FaFilter />
-        Filters
-        <span>
-          ({selectedCategories.length + selectedDifficulties.length + selectedRoles.length})
-        </span>
-      </FilterButton>
-
-      <BottomSheet isOpen={isBottomSheetOpen}>
-        <Suspense fallback={<FilterSidebarFallback>Loading filters...</FilterSidebarFallback>}>
-          <FilterSidebar sections={filterSections} onClearAll={clearAllFilters} />
-        </Suspense>
-      </BottomSheet>
-      <Overlay isOpen={isBottomSheetOpen} onClick={handleOverlayClick} />
-    </MainLayout>
+        </div>
+        <FilterButton onClick={() => setIsBottomSheetOpen(true)}>
+          <FaFilter />
+          Filters
+        </FilterButton>
+      </MainLayout>
+    </ProtectedRoute>
   );
 };
 

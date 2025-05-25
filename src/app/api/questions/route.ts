@@ -1,83 +1,118 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from '../auth';
-import { practiceService } from '@/app/services/practiceService';
-import { QuestionCategory, QuestionDifficulty } from '@/app/types/practice';
+import { cookies } from 'next/headers';
+import { getAdminAuth } from '@/lib/firebase-admin';
+import { db } from '@/lib/firebase';
+import { collection, addDoc, getDocs, query, orderBy, Timestamp } from 'firebase/firestore';
+import type { NextRequest } from 'next/server';
 
-export async function POST(request: Request) {
+interface Question {
+  id: string;
+  title: string;
+  content: string;
+  tags: string[];
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  user_id: string;
+  created_at: Timestamp;
+  updated_at: Timestamp;
+  [key: string]: any;
+}
+
+interface CreateQuestionRequest {
+  title: string;
+  content: string;
+  tags: string[];
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+}
+
+async function requireAuth(request: NextRequest) {
+  const cookieStore = cookies();
+  const token = cookieStore.get('auth_token')?.value;
+
+  if (!token) {
+    throw new Error('No token provided');
+  }
+
   try {
-    // Check authentication
-    const session = await getServerSession();
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const adminAuth = getAdminAuth();
+    const decodedToken = await adminAuth.verifyIdToken(token);
+    return decodedToken;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(`Authentication failed: ${error.message}`);
     }
-
-    // Parse request body
-    const body = await request.json();
-    const { question, options, correctAnswer, explanation, category, difficulty, points } = body;
-
-    // Validate required fields
-    if (!question || !options || !correctAnswer || !category || !difficulty) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
-    }
-
-    // Validate category
-    if (!Object.values(QuestionCategory).includes(category)) {
-      return NextResponse.json({ error: 'Invalid category' }, { status: 400 });
-    }
-
-    // Validate difficulty
-    if (!Object.values(QuestionDifficulty).includes(difficulty)) {
-      return NextResponse.json({ error: 'Invalid difficulty' }, { status: 400 });
-    }
-
-    // Create question
-    const questionId = await practiceService.createQuestion({
-      question,
-      options,
-      correctAnswer,
-      explanation,
-      category,
-      difficulty,
-      points: points || 10, // Default points if not provided
-      createdBy: session.user.uid,
-    });
-
-    return NextResponse.json({
-      success: true,
-      questionId,
-    });
-  } catch (error: any) {
-    console.error('Error creating question:', error);
-    return NextResponse.json(
-      { error: error.message || 'Failed to create question' },
-      { status: 500 }
-    );
+    throw new Error('Authentication failed: Unknown error');
   }
 }
 
-export async function GET(request: Request) {
+function validateQuestionData(data: any): asserts data is CreateQuestionRequest {
+  if (!data.title || typeof data.title !== 'string') {
+    throw new Error('Title is required and must be a string');
+  }
+  if (!data.content || typeof data.content !== 'string') {
+    throw new Error('Content is required and must be a string');
+  }
+  if (!Array.isArray(data.tags)) {
+    throw new Error('Tags must be an array');
+  }
+  if (!['Easy', 'Medium', 'Hard'].includes(data.difficulty)) {
+    throw new Error('Difficulty must be one of: Easy, Medium, Hard');
+  }
+}
+
+export async function POST(request: NextRequest) {
   try {
-    // Check authentication
-    const session = await getServerSession();
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const decodedToken = await requireAuth(request);
+    const body = await request.json();
+
+    validateQuestionData(body);
+
+    const questionData = {
+      ...body,
+      user_id: decodedToken.uid,
+      created_at: Timestamp.now(),
+      updated_at: Timestamp.now(),
+    };
+
+    const docRef = await addDoc(collection(db, 'questions'), questionData);
+    const question: Question = {
+      id: docRef.id,
+      ...questionData,
+    };
+
+    return NextResponse.json({ question });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to create question';
+    const status =
+      error instanceof Error && error.message.includes('Authentication failed') ? 401 : 500;
+    return NextResponse.json({ error: errorMessage }, { status });
+  }
+}
+
+export async function GET(request: NextRequest) {
+  try {
+    const cookieStore = cookies();
+    const token = cookieStore.get('auth_token')?.value;
+
+    if (!token) {
+      return NextResponse.json({ error: 'No token provided' }, { status: 401 });
     }
 
-    // Get category from query params
-    const { searchParams } = new URL(request.url);
-    const category = searchParams.get('category') as QuestionCategory;
+    const adminAuth = getAdminAuth();
+    const decodedToken = await adminAuth.verifyIdToken(token);
 
-    // Fetch questions
-    const questions = category
-      ? await practiceService.getQuestionsByCategory(category)
-      : await practiceService.getAllQuestions();
+    const questionsQuery = query(collection(db, 'questions'), orderBy('created_at', 'desc'));
+    const questionsSnapshot = await getDocs(questionsQuery);
 
-    return NextResponse.json({ questions });
-  } catch (error: any) {
-    console.error('Error fetching questions:', error);
-    return NextResponse.json(
-      { error: error.message || 'Failed to fetch questions' },
-      { status: 500 }
+    const questions: Question[] = questionsSnapshot.docs.map(
+      doc =>
+        ({
+          id: doc.id,
+          ...doc.data(),
+        }) as Question
     );
+
+    return NextResponse.json({ questions, userId: decodedToken.uid });
+  } catch (error) {
+    return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
   }
 }

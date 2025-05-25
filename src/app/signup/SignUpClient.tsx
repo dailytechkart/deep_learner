@@ -18,7 +18,7 @@ export default function SignUpClient() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { user, signInWithGoogle, signInWithGithub } = useAuth();
+  const { user, signInWithGoogle, signInWithGithub, profile } = useAuth();
   const [error, setError] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -28,19 +28,18 @@ export default function SignUpClient() {
       console.log('User state:', {
         uid: user.uid,
         email: user.email,
-        displayName: user.displayName,
-        photoURL: user.photoURL,
-        emailVerified: user.emailVerified,
+        profile: profile,
+        role: profile?.premium ? 'premium' : 'free',
       });
     }
-  }, [user]);
+  }, [user, profile]);
 
   // Handle redirection when auth state changes
   useEffect(() => {
     const handleAuthStateChange = async () => {
       if (user) {
         try {
-          const returnTo = searchParams.get('from') || '/dashboard';
+          const returnTo = searchParams?.get('from') || '/dashboard';
           // Use replace to prevent back button from returning to signup
           await router.replace(returnTo);
         } catch (error) {

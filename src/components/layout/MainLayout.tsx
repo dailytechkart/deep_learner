@@ -1,58 +1,32 @@
+'use client';
+
 import React from 'react';
 import styled from 'styled-components';
-import { Sidebar } from './Sidebar';
-import { usePathname } from 'next/navigation';
+import Header from '@/app/components/Header/Header';
+import { useTheme } from '@/app/context/ThemeContext';
 
-const LayoutContainer = styled.div`
+const MainContainer = styled.main<{ promoStripVisible: boolean }>`
   min-height: 100vh;
-  display: flex;
-  background: ${props => props.theme.colors.background};
+  padding-top: ${({ promoStripVisible }) =>
+    promoStripVisible ? '92px' : '72px'}; // Height of header + promo strip (if visible)
+  background: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.text};
+  transition: padding-top ${({ theme }) => theme.transitions.default};
 `;
 
-const MainWrapper = styled.main`
-  flex: 1;
-  margin-left: 280px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+interface MainLayoutProps {
+  children: React.ReactNode;
+}
 
-  @media (max-width: 1024px) {
-    margin-left: 240px;
-  }
-
-  @media (max-width: 768px) {
-    margin-left: 0;
-  }
-`;
-
-const ContentWrapper = styled.div`
-  flex: 1;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  @media (max-width: 1024px) {
-    padding: 1.5rem;
-  }
-
-  @media (max-width: 768px) {
-    padding: 1rem;
-  }
-`;
-
-const excludedPaths = ['/', '/dashboard', '/login', '/signup'];
-
-export const MainLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const pathname = usePathname();
-  const showSidebar = !excludedPaths.includes(pathname);
+const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+  const { promoStripVisible } = useTheme();
 
   return (
-    <LayoutContainer>
-      {showSidebar && <Sidebar />}
-      <MainWrapper>
-        <ContentWrapper>{children}</ContentWrapper>
-      </MainWrapper>
-    </LayoutContainer>
+    <MainContainer promoStripVisible={promoStripVisible}>
+      <Header />
+      {children}
+    </MainContainer>
   );
 };
+
+export default MainLayout;

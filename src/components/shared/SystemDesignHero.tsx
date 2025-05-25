@@ -19,8 +19,8 @@ const Container = styled.section`
   border-radius: ${props => props.theme.borderRadius.lg};
   padding: 1.5rem 1.25rem;
   margin-bottom: 1rem;
-  border: 1px solid ${props => props.theme.colors.border};
-  box-shadow: ${props => props.theme.shadows.md};
+  /* border: 1px solid ${props => props.theme.colors.border}; */
+  /* box-shadow: ${props => props.theme.shadows.md}; */
 `;
 
 const Header = styled.div`
@@ -80,29 +80,29 @@ const Stat = styled.div`
   background: ${props => props.theme.colors.backgroundAlt};
   padding: 0.5rem 0.75rem;
   border-radius: ${props => props.theme.borderRadius.md};
-  border: 1px solid ${props => props.theme.colors.border};
+  /* border: 1px solid ${props => props.theme.colors.border}; */
   transition: all 0.2s ease;
   cursor: pointer;
 
   &:hover {
     background: ${props => props.theme.colors.primary};
     border-color: ${props => props.theme.colors.primary};
-    
+
     ${StatValue}, ${StatLabel} {
       color: white;
     }
-    
+
     ${StatIcon} {
       color: white;
     }
   }
 `;
 
-export const SystemDesignHero: React.FC<SystemDesignHeroProps> = ({ 
-  title, 
-  description, 
+export const SystemDesignHero: React.FC<SystemDesignHeroProps> = ({
+  title,
+  description,
   stats,
-  pageUrl 
+  pageUrl,
 }) => {
   // Generate structured data for the page
   const structuredData = {
@@ -115,7 +115,7 @@ export const SystemDesignHero: React.FC<SystemDesignHeroProps> = ({
       '@type': 'Article',
       name: title,
       description: description,
-    }
+    },
   };
 
   return (
@@ -145,4 +145,4 @@ export const SystemDesignHero: React.FC<SystemDesignHeroProps> = ({
       </Container>
     </>
   );
-}; 
+};

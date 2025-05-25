@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Header from '../../../components/Header';
+import Header, { HeaderProps } from '@/app/components/Header';
 import ProblemStatement from './components/ProblemStatement';
 import CodeEditor from './components/CodeEditor';
 

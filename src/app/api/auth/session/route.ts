@@ -1,36 +1,28 @@
-import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { adminAuth } from '@/lib/firebaseAdmin';
+import { cookies } from 'next/headers';
+import { getAdminAuth } from '@/lib/firebase-admin';
+import { db } from '@/lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import { SignJWT } from 'jose';
 
 export async function GET() {
   try {
     const cookieStore = cookies();
-    const sessionCookie = cookieStore.get('session')?.value;
+    const token = cookieStore.get('auth_token')?.value;
 
-    if (!sessionCookie) {
-      return NextResponse.json({ error: 'No active session' }, { status: 401 });
+    if (!token) {
+      return NextResponse.json({ error: 'No token provided' }, { status: 401 });
     }
 
-    try {
-      const decodedClaims = await adminAuth.verifySessionCookie(sessionCookie, true);
-      return NextResponse.json({
-        user: {
-          uid: decodedClaims.uid,
-          email: decodedClaims.email,
-          emailVerified: decodedClaims.email_verified,
-          role: decodedClaims.role,
-        },
-        message: 'Session is valid',
-      });
-    } catch (error: any) {
-      if (error.code === 'auth/session-cookie-expired') {
-        return NextResponse.json({ error: 'Session expired' }, { status: 401 });
-      }
-      throw error;
-    }
-  } catch (error: any) {
-    console.error('Error getting session:', error);
-    return NextResponse.json({ error: error.message || 'Failed to get session' }, { status: 500 });
+    const adminAuth = getAdminAuth();
+    const decodedToken = await adminAuth.verifyIdToken(token);
+
+    return NextResponse.json({
+      message: 'Session validated successfully',
+      user: decodedToken,
+    });
+  } catch (error) {
+    return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
   }
 }
 
@@ -39,44 +31,51 @@ export async function POST(request: Request) {
     const { idToken } = await request.json();
 
     if (!idToken) {
-      return NextResponse.json({ error: 'No token provided' }, { status: 400 });
+      return NextResponse.json({ error: 'No ID token provided' }, { status: 400 });
     }
 
-    // Create session cookie
-    const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
-    const sessionCookie = await adminAuth.createSessionCookie(idToken, { expiresIn });
+    // Verify the Firebase ID token using Firebase Admin
+    const decodedToken = await getAdminAuth().verifyIdToken(idToken);
+
+    // Create a JWT session token
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+    const sessionToken = await new SignJWT({
+      sub: decodedToken.uid,
+      email: decodedToken.email,
+      name: decodedToken.name,
+      picture: decodedToken.picture,
+    })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setIssuedAt()
+      .setExpirationTime('7d') // Session expires in 7 days
+      .sign(secret);
+
+    // Create the response with the session cookie
+    const response = NextResponse.json({ success: true });
 
     // Set the session cookie
-    cookies().set('session', sessionCookie, {
-      maxAge: expiresIn / 1000,
+    response.cookies.set('auth_token', sessionToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
+      maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
     });
 
-    return NextResponse.json({ success: true });
+    return response;
   } catch (error) {
-    console.error('Error setting session:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    console.error('Error creating session:', error);
+    return NextResponse.json({ error: 'Failed to create session' }, { status: 401 });
   }
 }
 
 export async function DELETE() {
   try {
-    const cookieStore = cookies();
-    const sessionCookie = cookieStore.get('session')?.value;
-
-    if (sessionCookie) {
-      await adminAuth.verifySessionCookie(sessionCookie);
-      await adminAuth.revokeRefreshTokens(sessionCookie);
-    }
-
-    // Clear the session cookie
-    cookieStore.delete('session');
-    return NextResponse.json({ success: true });
+    const response = NextResponse.json({ success: true });
+    response.cookies.delete('auth_token');
+    return response;
   } catch (error) {
-    console.error('Error clearing session:', error);
+    console.error('Error in session route:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

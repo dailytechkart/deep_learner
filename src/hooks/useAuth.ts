@@ -1,81 +1,105 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import {
+  getAuth,
+  onAuthStateChanged,
+  User,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut as firebaseSignOut,
+} from 'firebase/auth';
 import { app } from '@/lib/firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
-interface User {
-  uid: string;
-  email: string | null;
-  emailVerified: boolean;
-  role?: string;
+interface UserProfile {
+  id: string;
+  email: string;
+  full_name?: string;
+  avatar_url?: string;
+  created_at: string;
+  updated_at: string;
 }
 
-export function useAuth() {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
-  const auth = getAuth(app);
+interface AuthState {
+  user: User | null;
+  loading: boolean;
+  error: string | null;
+}
+
+export const useAuth = () => {
+  const [authState, setAuthState] = useState<AuthState>({
+    user: null,
+    loading: true,
+    error: null,
+  });
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async firebaseUser => {
-      try {
-        if (firebaseUser) {
-          // Get the ID token
-          const idToken = await firebaseUser.getIdToken();
-
-          // Create session cookie
-          const response = await fetch('/api/auth/session', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ idToken }),
-          });
-
-          if (!response.ok) {
-            throw new Error('Failed to create session');
-          }
-
-          // Get user session
-          const sessionResponse = await fetch('/api/auth/session');
-          if (!sessionResponse.ok) {
-            throw new Error('Failed to get session');
-          }
-
-          const sessionData = await sessionResponse.json();
-          setUser(sessionData.user);
-        } else {
-          setUser(null);
-        }
-      } catch (err) {
-        console.error('Auth state change error:', err);
-        setError(err instanceof Error ? err.message : 'Authentication error');
-        setUser(null);
-      } finally {
-        setLoading(false);
+    const auth = getAuth(app);
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      user => {
+        setAuthState({
+          user,
+          loading: false,
+          error: null,
+        });
+      },
+      error => {
+        setAuthState({
+          user: null,
+          loading: false,
+          error: error.message,
+        });
       }
-    });
+    );
 
     return () => unsubscribe();
-  }, [auth]);
+  }, []);
 
-  const logout = async () => {
+  const signIn = async (email: string, password: string) => {
     try {
-      await signOut(auth);
-      await fetch('/api/auth/session', { method: 'DELETE' });
-      setUser(null);
-      router.push('/');
-    } catch (err) {
-      console.error('Logout error:', err);
-      setError(err instanceof Error ? err.message : 'Logout failed');
+      const auth = getAuth(app);
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error: any) {
+      setAuthState(prev => ({
+        ...prev,
+        error: error.message,
+      }));
+      throw error;
+    }
+  };
+
+  const signUp = async (email: string, password: string) => {
+    try {
+      const auth = getAuth(app);
+      await createUserWithEmailAndPassword(auth, email, password);
+    } catch (error: any) {
+      setAuthState(prev => ({
+        ...prev,
+        error: error.message,
+      }));
+      throw error;
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      const auth = getAuth(app);
+      await firebaseSignOut(auth);
+    } catch (error: any) {
+      setAuthState(prev => ({
+        ...prev,
+        error: error.message,
+      }));
+      throw error;
     }
   };
 
   return {
-    user,
-    loading,
-    error,
-    logout,
+    user: authState.user,
+    loading: authState.loading,
+    error: authState.error,
+    signIn,
+    signUp,
+    signOut,
   };
-}
+};

@@ -12,27 +12,9 @@
       "Queue",
       "Binary Search"
     ],
-    "difficulty": [
-      "Easy",
-      "Medium",
-      "Hard"
-    ],
-    "companies": [
-      "Google",
-      "Amazon",
-      "Microsoft",
-      "Facebook",
-      "Apple",
-      "Netflix"
-    ],
-    "tags": [
-      "Two Pointers",
-      "Sliding Window",
-      "Recursion",
-      "Greedy",
-      "Backtracking",
-      "Hashing"
-    ]
+    "difficulty": ["Easy", "Medium", "Hard"],
+    "companies": ["Google", "Amazon", "Microsoft", "Facebook", "Apple", "Netflix"],
+    "tags": ["Two Pointers", "Sliding Window", "Recursion", "Greedy", "Backtracking", "Hashing"]
   },
   "problems": [
     {
@@ -41,14 +23,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "1",
       "url": "/problems/two-sum-1"
     },
@@ -58,13 +34,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "2",
       "url": "/problems/longest-substring-without-repeating-characters-2"
     },
@@ -74,13 +45,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "3",
       "url": "/problems/merge-intervals-3"
     },
@@ -90,13 +56,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "4",
       "url": "/problems/detect-cycle-in-a-linked-list-4"
     },
@@ -106,14 +67,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "5",
       "url": "/problems/two-sum-5"
     },
@@ -123,13 +78,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "6",
       "url": "/problems/longest-substring-without-repeating-characters-6"
     },
@@ -139,13 +89,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "7",
       "url": "/problems/merge-intervals-7"
     },
@@ -155,13 +100,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "8",
       "url": "/problems/detect-cycle-in-a-linked-list-8"
     },
@@ -171,14 +111,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "9",
       "url": "/problems/two-sum-9"
     },
@@ -188,13 +122,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "10",
       "url": "/problems/longest-substring-without-repeating-characters-10"
     },
@@ -204,13 +133,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "11",
       "url": "/problems/merge-intervals-11"
     },
@@ -220,13 +144,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "12",
       "url": "/problems/detect-cycle-in-a-linked-list-12"
     },
@@ -236,14 +155,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "13",
       "url": "/problems/two-sum-13"
     },
@@ -253,13 +166,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "14",
       "url": "/problems/longest-substring-without-repeating-characters-14"
     },
@@ -269,13 +177,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "15",
       "url": "/problems/merge-intervals-15"
     },
@@ -285,13 +188,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "16",
       "url": "/problems/detect-cycle-in-a-linked-list-16"
     },
@@ -301,14 +199,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "17",
       "url": "/problems/two-sum-17"
     },
@@ -318,13 +210,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "18",
       "url": "/problems/longest-substring-without-repeating-characters-18"
     },
@@ -334,13 +221,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "19",
       "url": "/problems/merge-intervals-19"
     },
@@ -350,13 +232,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "20",
       "url": "/problems/detect-cycle-in-a-linked-list-20"
     },
@@ -366,14 +243,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "21",
       "url": "/problems/two-sum-21"
     },
@@ -383,13 +254,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "22",
       "url": "/problems/longest-substring-without-repeating-characters-22"
     },
@@ -399,13 +265,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "23",
       "url": "/problems/merge-intervals-23"
     },
@@ -415,13 +276,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "24",
       "url": "/problems/detect-cycle-in-a-linked-list-24"
     },
@@ -431,14 +287,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "25",
       "url": "/problems/two-sum-25"
     },
@@ -448,13 +298,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "26",
       "url": "/problems/longest-substring-without-repeating-characters-26"
     },
@@ -464,13 +309,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "27",
       "url": "/problems/merge-intervals-27"
     },
@@ -480,13 +320,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "28",
       "url": "/problems/detect-cycle-in-a-linked-list-28"
     },
@@ -496,14 +331,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "29",
       "url": "/problems/two-sum-29"
     },
@@ -513,13 +342,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "30",
       "url": "/problems/longest-substring-without-repeating-characters-30"
     },
@@ -529,13 +353,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "31",
       "url": "/problems/merge-intervals-31"
     },
@@ -545,13 +364,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "32",
       "url": "/problems/detect-cycle-in-a-linked-list-32"
     },
@@ -561,14 +375,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "33",
       "url": "/problems/two-sum-33"
     },
@@ -578,13 +386,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "34",
       "url": "/problems/longest-substring-without-repeating-characters-34"
     },
@@ -594,13 +397,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "35",
       "url": "/problems/merge-intervals-35"
     },
@@ -610,13 +408,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "36",
       "url": "/problems/detect-cycle-in-a-linked-list-36"
     },
@@ -626,14 +419,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "37",
       "url": "/problems/two-sum-37"
     },
@@ -643,13 +430,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "38",
       "url": "/problems/longest-substring-without-repeating-characters-38"
     },
@@ -659,13 +441,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "39",
       "url": "/problems/merge-intervals-39"
     },
@@ -675,13 +452,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "40",
       "url": "/problems/detect-cycle-in-a-linked-list-40"
     },
@@ -691,14 +463,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "41",
       "url": "/problems/two-sum-41"
     },
@@ -708,13 +474,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "42",
       "url": "/problems/longest-substring-without-repeating-characters-42"
     },
@@ -724,13 +485,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "43",
       "url": "/problems/merge-intervals-43"
     },
@@ -740,13 +496,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "44",
       "url": "/problems/detect-cycle-in-a-linked-list-44"
     },
@@ -756,14 +507,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "45",
       "url": "/problems/two-sum-45"
     },
@@ -773,13 +518,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "46",
       "url": "/problems/longest-substring-without-repeating-characters-46"
     },
@@ -789,13 +529,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "47",
       "url": "/problems/merge-intervals-47"
     },
@@ -805,13 +540,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "48",
       "url": "/problems/detect-cycle-in-a-linked-list-48"
     },
@@ -821,14 +551,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "49",
       "url": "/problems/two-sum-49"
     },
@@ -838,13 +562,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "50",
       "url": "/problems/longest-substring-without-repeating-characters-50"
     },
@@ -854,13 +573,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "51",
       "url": "/problems/merge-intervals-51"
     },
@@ -870,13 +584,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "52",
       "url": "/problems/detect-cycle-in-a-linked-list-52"
     },
@@ -886,14 +595,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "53",
       "url": "/problems/two-sum-53"
     },
@@ -903,13 +606,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "54",
       "url": "/problems/longest-substring-without-repeating-characters-54"
     },
@@ -919,13 +617,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "55",
       "url": "/problems/merge-intervals-55"
     },
@@ -935,13 +628,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "56",
       "url": "/problems/detect-cycle-in-a-linked-list-56"
     },
@@ -951,14 +639,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "57",
       "url": "/problems/two-sum-57"
     },
@@ -968,13 +650,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "58",
       "url": "/problems/longest-substring-without-repeating-characters-58"
     },
@@ -984,13 +661,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "59",
       "url": "/problems/merge-intervals-59"
     },
@@ -1000,13 +672,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "60",
       "url": "/problems/detect-cycle-in-a-linked-list-60"
     },
@@ -1016,14 +683,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "61",
       "url": "/problems/two-sum-61"
     },
@@ -1033,13 +694,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "62",
       "url": "/problems/longest-substring-without-repeating-characters-62"
     },
@@ -1049,13 +705,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "63",
       "url": "/problems/merge-intervals-63"
     },
@@ -1065,13 +716,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "64",
       "url": "/problems/detect-cycle-in-a-linked-list-64"
     },
@@ -1081,14 +727,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "65",
       "url": "/problems/two-sum-65"
     },
@@ -1098,13 +738,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "66",
       "url": "/problems/longest-substring-without-repeating-characters-66"
     },
@@ -1114,13 +749,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "67",
       "url": "/problems/merge-intervals-67"
     },
@@ -1130,13 +760,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "68",
       "url": "/problems/detect-cycle-in-a-linked-list-68"
     },
@@ -1146,14 +771,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "69",
       "url": "/problems/two-sum-69"
     },
@@ -1163,13 +782,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "70",
       "url": "/problems/longest-substring-without-repeating-characters-70"
     },
@@ -1179,13 +793,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "71",
       "url": "/problems/merge-intervals-71"
     },
@@ -1195,13 +804,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "72",
       "url": "/problems/detect-cycle-in-a-linked-list-72"
     },
@@ -1211,14 +815,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "73",
       "url": "/problems/two-sum-73"
     },
@@ -1228,13 +826,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "74",
       "url": "/problems/longest-substring-without-repeating-characters-74"
     },
@@ -1244,13 +837,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "75",
       "url": "/problems/merge-intervals-75"
     },
@@ -1260,13 +848,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "76",
       "url": "/problems/detect-cycle-in-a-linked-list-76"
     },
@@ -1276,14 +859,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "77",
       "url": "/problems/two-sum-77"
     },
@@ -1293,13 +870,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "78",
       "url": "/problems/longest-substring-without-repeating-characters-78"
     },
@@ -1309,13 +881,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "79",
       "url": "/problems/merge-intervals-79"
     },
@@ -1325,13 +892,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "80",
       "url": "/problems/detect-cycle-in-a-linked-list-80"
     },
@@ -1341,14 +903,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "81",
       "url": "/problems/two-sum-81"
     },
@@ -1358,13 +914,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "82",
       "url": "/problems/longest-substring-without-repeating-characters-82"
     },
@@ -1374,13 +925,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "83",
       "url": "/problems/merge-intervals-83"
     },
@@ -1390,13 +936,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "84",
       "url": "/problems/detect-cycle-in-a-linked-list-84"
     },
@@ -1406,14 +947,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "85",
       "url": "/problems/two-sum-85"
     },
@@ -1423,13 +958,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "86",
       "url": "/problems/longest-substring-without-repeating-characters-86"
     },
@@ -1439,13 +969,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "87",
       "url": "/problems/merge-intervals-87"
     },
@@ -1455,13 +980,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "88",
       "url": "/problems/detect-cycle-in-a-linked-list-88"
     },
@@ -1471,14 +991,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "89",
       "url": "/problems/two-sum-89"
     },
@@ -1488,13 +1002,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "90",
       "url": "/problems/longest-substring-without-repeating-characters-90"
     },
@@ -1504,13 +1013,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "91",
       "url": "/problems/merge-intervals-91"
     },
@@ -1520,13 +1024,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "92",
       "url": "/problems/detect-cycle-in-a-linked-list-92"
     },
@@ -1536,14 +1035,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "93",
       "url": "/problems/two-sum-93"
     },
@@ -1553,13 +1046,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "94",
       "url": "/problems/longest-substring-without-repeating-characters-94"
     },
@@ -1569,13 +1057,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "95",
       "url": "/problems/merge-intervals-95"
     },
@@ -1585,13 +1068,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "96",
       "url": "/problems/detect-cycle-in-a-linked-list-96"
     },
@@ -1601,14 +1079,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "97",
       "url": "/problems/two-sum-97"
     },
@@ -1618,13 +1090,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "98",
       "url": "/problems/longest-substring-without-repeating-characters-98"
     },
@@ -1634,13 +1101,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "99",
       "url": "/problems/merge-intervals-99"
     },
@@ -1650,13 +1112,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "100",
       "url": "/problems/detect-cycle-in-a-linked-list-100"
     },
@@ -1666,14 +1123,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "101",
       "url": "/problems/two-sum-101"
     },
@@ -1683,13 +1134,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "102",
       "url": "/problems/longest-substring-without-repeating-characters-102"
     },
@@ -1699,13 +1145,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "103",
       "url": "/problems/merge-intervals-103"
     },
@@ -1715,13 +1156,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "104",
       "url": "/problems/detect-cycle-in-a-linked-list-104"
     },
@@ -1731,14 +1167,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "105",
       "url": "/problems/two-sum-105"
     },
@@ -1748,13 +1178,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "106",
       "url": "/problems/longest-substring-without-repeating-characters-106"
     },
@@ -1764,13 +1189,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "107",
       "url": "/problems/merge-intervals-107"
     },
@@ -1780,13 +1200,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "108",
       "url": "/problems/detect-cycle-in-a-linked-list-108"
     },
@@ -1796,14 +1211,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "109",
       "url": "/problems/two-sum-109"
     },
@@ -1813,13 +1222,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "110",
       "url": "/problems/longest-substring-without-repeating-characters-110"
     },
@@ -1829,13 +1233,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "111",
       "url": "/problems/merge-intervals-111"
     },
@@ -1845,13 +1244,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "112",
       "url": "/problems/detect-cycle-in-a-linked-list-112"
     },
@@ -1861,14 +1255,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "113",
       "url": "/problems/two-sum-113"
     },
@@ -1878,13 +1266,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "114",
       "url": "/problems/longest-substring-without-repeating-characters-114"
     },
@@ -1894,13 +1277,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "115",
       "url": "/problems/merge-intervals-115"
     },
@@ -1910,13 +1288,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "116",
       "url": "/problems/detect-cycle-in-a-linked-list-116"
     },
@@ -1926,14 +1299,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "117",
       "url": "/problems/two-sum-117"
     },
@@ -1943,13 +1310,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "118",
       "url": "/problems/longest-substring-without-repeating-characters-118"
     },
@@ -1959,13 +1321,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "119",
       "url": "/problems/merge-intervals-119"
     },
@@ -1975,13 +1332,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "120",
       "url": "/problems/detect-cycle-in-a-linked-list-120"
     },
@@ -1991,14 +1343,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "121",
       "url": "/problems/two-sum-121"
     },
@@ -2008,13 +1354,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "122",
       "url": "/problems/longest-substring-without-repeating-characters-122"
     },
@@ -2024,13 +1365,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "123",
       "url": "/problems/merge-intervals-123"
     },
@@ -2040,13 +1376,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "124",
       "url": "/problems/detect-cycle-in-a-linked-list-124"
     },
@@ -2056,14 +1387,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "125",
       "url": "/problems/two-sum-125"
     },
@@ -2073,13 +1398,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "126",
       "url": "/problems/longest-substring-without-repeating-characters-126"
     },
@@ -2089,13 +1409,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "127",
       "url": "/problems/merge-intervals-127"
     },
@@ -2105,13 +1420,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "128",
       "url": "/problems/detect-cycle-in-a-linked-list-128"
     },
@@ -2121,14 +1431,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "129",
       "url": "/problems/two-sum-129"
     },
@@ -2138,13 +1442,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "130",
       "url": "/problems/longest-substring-without-repeating-characters-130"
     },
@@ -2154,13 +1453,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "131",
       "url": "/problems/merge-intervals-131"
     },
@@ -2170,13 +1464,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "132",
       "url": "/problems/detect-cycle-in-a-linked-list-132"
     },
@@ -2186,14 +1475,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "133",
       "url": "/problems/two-sum-133"
     },
@@ -2203,13 +1486,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "134",
       "url": "/problems/longest-substring-without-repeating-characters-134"
     },
@@ -2219,13 +1497,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "135",
       "url": "/problems/merge-intervals-135"
     },
@@ -2235,13 +1508,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "136",
       "url": "/problems/detect-cycle-in-a-linked-list-136"
     },
@@ -2251,14 +1519,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "137",
       "url": "/problems/two-sum-137"
     },
@@ -2268,13 +1530,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "138",
       "url": "/problems/longest-substring-without-repeating-characters-138"
     },
@@ -2284,13 +1541,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "139",
       "url": "/problems/merge-intervals-139"
     },
@@ -2300,13 +1552,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "140",
       "url": "/problems/detect-cycle-in-a-linked-list-140"
     },
@@ -2316,14 +1563,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "141",
       "url": "/problems/two-sum-141"
     },
@@ -2333,13 +1574,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "142",
       "url": "/problems/longest-substring-without-repeating-characters-142"
     },
@@ -2349,13 +1585,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "143",
       "url": "/problems/merge-intervals-143"
     },
@@ -2365,13 +1596,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "144",
       "url": "/problems/detect-cycle-in-a-linked-list-144"
     },
@@ -2381,14 +1607,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "145",
       "url": "/problems/two-sum-145"
     },
@@ -2398,13 +1618,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "146",
       "url": "/problems/longest-substring-without-repeating-characters-146"
     },
@@ -2414,13 +1629,8 @@
       "description": "Given a collection of intervals, merge all overlapping intervals.",
       "difficulty": "Medium",
       "topic": "Array",
-      "companies": [
-        "Google",
-        "Facebook"
-      ],
-      "tags": [
-        "Sorting"
-      ],
+      "companies": ["Google", "Facebook"],
+      "tags": ["Sorting"],
       "id": "147",
       "url": "/problems/merge-intervals-147"
     },
@@ -2430,13 +1640,8 @@
       "description": "Given a linked list, return true if there is a cycle in the linked list.",
       "difficulty": "Easy",
       "topic": "Linked List",
-      "companies": [
-        "Amazon",
-        "Microsoft"
-      ],
-      "tags": [
-        "Two Pointers"
-      ],
+      "companies": ["Amazon", "Microsoft"],
+      "tags": ["Two Pointers"],
       "id": "148",
       "url": "/problems/detect-cycle-in-a-linked-list-148"
     },
@@ -2446,14 +1651,8 @@
       "description": "Given an array of integers, return indices of the two numbers such that they add up to a specific target.",
       "difficulty": "Easy",
       "topic": "Array",
-      "companies": [
-        "Amazon",
-        "Google",
-        "Microsoft"
-      ],
-      "tags": [
-        "Hashing"
-      ],
+      "companies": ["Amazon", "Google", "Microsoft"],
+      "tags": ["Hashing"],
       "id": "149",
       "url": "/problems/two-sum-149"
     },
@@ -2463,13 +1662,8 @@
       "description": "Given a string, find the length of the longest substring without repeating characters.",
       "difficulty": "Medium",
       "topic": "String",
-      "companies": [
-        "Amazon",
-        "Facebook"
-      ],
-      "tags": [
-        "Sliding Window"
-      ],
+      "companies": ["Amazon", "Facebook"],
+      "tags": ["Sliding Window"],
       "id": "150",
       "url": "/problems/longest-substring-without-repeating-characters-150"
     }
