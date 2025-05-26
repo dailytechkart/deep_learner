@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from 'next';
+import type { Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
@@ -9,6 +9,7 @@ import StyledComponentsRegistry from '@/lib/registry';
 import { GoogleAnalyticsComponent } from '@/lib/analytics';
 import { getCookie } from './utils/cookies';
 import { ThemeProvider } from './context/ThemeContext';
+import { defaultMetadata } from './metadata';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,25 +20,7 @@ export const viewport: Viewport = {
   themeColor: '#ffffff',
 };
 
-export const metadata: Metadata = {
-  title: 'Frontend School - Master Frontend Development with Interactive Projects',
-  description:
-    'Learn frontend development through hands-on projects, real-world applications, and expert guidance. Master HTML, CSS, JavaScript, React, and modern web development tools.',
-  keywords:
-    'frontend development, web development, HTML, CSS, JavaScript, React, TypeScript, web design, responsive design, UI/UX, frontend frameworks',
-  openGraph: {
-    title: 'Frontend School - Master Frontend Development',
-    description:
-      'Learn frontend development through hands-on projects and expert guidance. Start your journey to becoming a frontend expert today.',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Frontend School - Master Frontend Development',
-    description:
-      'Learn frontend development through hands-on projects and expert guidance. Start your journey to becoming a frontend expert today.',
-  },
-};
+export const metadata = defaultMetadata;
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const promoStripVisible = getCookie('promoStripVisible') !== 'false';
