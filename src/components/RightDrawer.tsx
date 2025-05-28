@@ -17,7 +17,7 @@ const DrawerContent = styled.div<{ $isOpen: boolean }>`
   width: 50%;
   background: ${props => props.theme.colors.cardBackground};
   box-shadow: -4px 0 15px rgba(0, 0, 0, 0.1);
-  z-index: 1002;
+  z-index: 10;
   transform: translateX(${props => (props.$isOpen ? '0' : '100%')});
   transition: transform 0.3s ease-in-out;
   overflow-y: auto;
@@ -67,6 +67,11 @@ const Title = styled.h2`
   font-size: 2rem;
   margin-bottom: 1.5rem;
   font-weight: 700;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    font-size: 1.5rem;
+  }
 `;
 
 const Description = styled.p`

@@ -14,7 +14,7 @@ const MobileHeaderContainer = styled.header`
   background: ${props => props.theme.colors.background}dd;
   backdrop-filter: blur(8px);
   border-bottom: 1px solid ${props => props.theme.colors.border};
-  z-index: 9999;
+  z-index: 15;
   display: none;
   padding-top: env(safe-area-inset-top);
 

@@ -124,7 +124,7 @@ const HighlightText = styled.span`
 
 const TimerWrapper = styled.div`
   margin: 1.5rem 0;
-  padding: 1.5rem;
+  padding: 1.5rem 0rem;
   background: ${props => props.theme.colors.backgroundAlt};
   border-radius: 12px;
   text-align: center;
@@ -147,6 +147,10 @@ const ButtonGroup = styled.div`
   justify-content: center;
   margin-top: 1.5rem;
   flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const Button = styled.button<{ $variant?: 'primary' | 'secondary' }>`
@@ -162,6 +166,10 @@ const Button = styled.button<{ $variant?: 'primary' | 'secondary' }>`
   cursor: pointer;
   transition: all 0.2s ease;
   min-width: 140px;
+  /* width: 100%; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     background: ${props =>
@@ -180,152 +188,6 @@ const Button = styled.button<{ $variant?: 'primary' | 'secondary' }>`
     cursor: not-allowed;
     transform: none;
   }
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  text-align: left;
-`;
-
-const FormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-`;
-
-const Label = styled.label`
-  color: ${props => props.theme.colors.text};
-  font-size: 0.9rem;
-  font-weight: 500;
-`;
-
-const Input = styled.input`
-  padding: 0.8rem;
-  border: 1px solid ${props => props.theme.colors.border};
-  border-radius: 6px;
-  font-size: 1rem;
-  background: ${props => props.theme.colors.background};
-  color: ${props => props.theme.colors.text};
-
-  &:focus {
-    outline: none;
-    border-color: ${props => props.theme.colors.primary};
-  }
-`;
-
-const Select = styled.select`
-  padding: 0.8rem;
-  border: 1px solid ${props => props.theme.colors.border};
-  border-radius: 6px;
-  font-size: 1rem;
-  background: ${props => props.theme.colors.background};
-  color: ${props => props.theme.colors.text};
-
-  &:focus {
-    outline: none;
-    border-color: ${props => props.theme.colors.primary};
-  }
-`;
-
-const CheckboxGroup = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-`;
-
-const CheckboxLabel = styled.label`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-`;
-
-const PricingCard = styled.div`
-  background: ${props => props.theme.colors.backgroundAlt};
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin: 1rem 0;
-  text-align: left;
-`;
-
-const PricingTitle = styled.h3`
-  color: ${props => props.theme.colors.primary};
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  font-weight: 600;
-`;
-
-const PricingFeature = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0.8rem 0;
-  color: ${props => props.theme.colors.textSecondary};
-  font-size: 0.95rem;
-`;
-
-const FeatureCount = styled.span`
-  color: ${props => props.theme.colors.primary};
-  font-weight: 600;
-  margin-right: 0.3rem;
-`;
-
-const FeatureCategory = styled.div`
-  margin: 1.2rem 0;
-`;
-
-const CategoryTitle = styled.h4`
-  color: ${props => props.theme.colors.text};
-  font-size: 1.1rem;
-  margin-bottom: 0.8rem;
-  font-weight: 600;
-`;
-
-const BackButton = styled.button`
-  background: none;
-  border: none;
-  color: ${props => props.theme.colors.primary};
-  cursor: pointer;
-  padding: 0.5rem;
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
-const SuccessMessage = styled.div`
-  background: ${props => props.theme.colors.backgroundAlt};
-  color: ${props => props.theme.colors.text};
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin: 1rem 0;
-  text-align: center;
-  font-size: 1.1rem;
-  line-height: 1.6;
-
-  strong {
-    color: ${props => props.theme.colors.primary};
-    font-weight: 600;
-  }
-`;
-
-const ErrorMessage = styled.div`
-  background: ${props => props.theme.colors.error};
-  color: white;
-  padding: 1rem;
-  border-radius: 6px;
-  margin: 1rem 0;
-  text-align: center;
-  font-size: 0.9rem;
-  line-height: 1.4;
 `;
 
 export const OverlayScreen: React.FC<OverlayScreenProps> = ({ isVisible, onClick, zIndex }) => {
@@ -376,7 +238,7 @@ export const OverlayScreen: React.FC<OverlayScreenProps> = ({ isVisible, onClick
 
         <TimerWrapper>
           <TimerTitle>Launching in</TimerTitle>
-          <CountdownTimer targetDate={targetDate} />
+          <CountdownTimer />
         </TimerWrapper>
 
         <ButtonGroup>
