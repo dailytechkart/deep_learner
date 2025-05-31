@@ -1,4 +1,5 @@
 import 'styled-components';
+import { TypographyTheme } from './theme/typography';
 
 declare module 'styled-components' {
   export interface DefaultTheme {
@@ -57,21 +58,7 @@ declare module 'styled-components' {
       medium: string;
       large: string;
     };
-    typography: {
-      fontFamily: string;
-      fontSize: {
-        small: string;
-        medium: string;
-        large: string;
-        xlarge: string;
-        xxlarge: string;
-      };
-      lineHeight: {
-        tight: number;
-        normal: number;
-        loose: number;
-      };
-    };
+    typography: TypographyTheme;
     spacing: {
       xs: string;
       sm: string;

@@ -13,6 +13,7 @@ import {
   HeaderContainer,
   HeaderContent,
   LeftSection,
+  MiddleSection,
   RightSection,
   NavLink,
   LogoLink,
@@ -142,8 +143,10 @@ const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange }) => {
             <LogoLink href="/" onClick={handleLogoClick}>
               <StyledLogo />
             </LogoLink>
-            <Nav>{renderNavLinks()}</Nav>
           </LeftSection>
+          <MiddleSection>
+            <Nav>{renderNavLinks()}</Nav>
+          </MiddleSection>
           <RightSection>
             {searchQuery !== undefined && onSearchChange && (
               <SearchInput

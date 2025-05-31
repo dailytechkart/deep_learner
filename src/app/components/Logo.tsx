@@ -41,8 +41,8 @@ const LogoContainer = styled.div`
 
 const LogoIcon = styled.div`
   position: relative;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,9 +51,9 @@ const LogoIcon = styled.div`
     ${props => props.theme.colors.primary},
     ${props => props.theme.colors.primary}dd
   );
-  border-radius: 10px;
+  border-radius: 8px;
   color: white;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   transform: rotate(-10deg);
   transition: all 0.3s ease;
   box-shadow: 0 4px 12px ${props => props.theme.colors.primary}33;
@@ -102,17 +102,17 @@ const IconWrapper = styled.div`
 
 const SecondaryIcon = styled.div`
   position: absolute;
-  bottom: -4px;
-  right: -4px;
-  width: 16px;
-  height: 16px;
+  bottom: -3px;
+  right: -3px;
+  width: 14px;
+  height: 14px;
   background: ${props => props.theme.colors.background};
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: ${props => props.theme.colors.primary};
-  font-size: 0.65rem;
+  font-size: 0.6rem;
   box-shadow: 0 2px 8px ${props => props.theme.colors.primary}33;
   border: 2px solid ${props => props.theme.colors.background};
   transition: all 0.3s ease;
@@ -125,13 +125,13 @@ const SecondaryIcon = styled.div`
 const LogoText = styled.div`
   display: flex;
   align-items: baseline;
-  gap: 0.35rem;
+  gap: 0.25rem;
   position: relative;
-  padding: 0.25rem 0;
+  padding: 0.2rem 0;
 `;
 
 const MainText = styled.span`
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 800;
   background: linear-gradient(
     135deg,
@@ -177,14 +177,14 @@ const MainText = styled.span`
 `;
 
 const SubText = styled.span`
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   color: ${props => props.theme.colors.textSecondary};
   font-weight: 600;
   letter-spacing: 1px;
   text-transform: uppercase;
   position: relative;
   display: inline-block;
-  padding-left: 0.5rem;
+  padding-left: 0.4rem;
   opacity: 0.9;
   transition: all 0.3s ease;
 

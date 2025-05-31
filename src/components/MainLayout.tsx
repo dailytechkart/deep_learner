@@ -14,6 +14,7 @@ interface MainLayoutProps {
   fullWidth?: boolean;
   showOverlay?: boolean;
   onOverlayClick?: () => void;
+  hideHeader?: boolean;
 }
 
 const LayoutContainer = styled.div`
@@ -30,33 +31,39 @@ const LayoutContainer = styled.div`
   }
 `;
 
-const ContentWrapper = styled.div<{ $fullWidth?: boolean }>`
+const ContentWrapper = styled.div<{ $fullWidth?: boolean; $hideHeader?: boolean }>`
   flex: 1;
-  margin-top: 64px; // Height of the header
+  margin-top: ${({ $hideHeader }) => ($hideHeader ? '0' : '64px')};
   transition: all ${props => props.theme.transitions.default};
   background: ${props => props.theme.colors.background};
-  padding: 0 ${props => (props.$fullWidth ? '0' : '2rem')};
-  max-width: ${props => (props.$fullWidth ? '100%' : '1400px')};
-  margin-left: auto;
-  margin-right: auto;
+  padding: 0;
   width: 100%;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; */
 
   @media (max-width: 768px) {
-    margin-top: 56px;
-    padding: 0 ${props => (props.$fullWidth ? '0' : '1rem')};
+    margin-top: ${({ $hideHeader }) => ($hideHeader ? '0' : '56px')};
+    padding: 0;
   }
 `;
 
 const Main = styled.main`
   flex: 1;
   width: 100%;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; */
 `;
 
 export const MainLayout: React.FC<MainLayoutProps> = ({
   children,
   fullWidth,
-  showOverlay = true,
+  showOverlay = false,
   onOverlayClick,
+  hideHeader = false,
 }) => {
   const { isPremium } = useAuth();
 
@@ -64,8 +71,8 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   return (
     <LayoutContainer>
       <OverlayScreen isVisible={showOverlay && !isPremium} onClick={onOverlayClick} zIndex={999} />
-      <Header />
-      <ContentWrapper $fullWidth={fullWidth}>
+      {!hideHeader && <Header />}
+      <ContentWrapper $fullWidth={fullWidth} $hideHeader={hideHeader}>
         <Main>{children}</Main>
       </ContentWrapper>
       <AppFooter />

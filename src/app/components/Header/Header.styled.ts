@@ -6,15 +6,14 @@ import { UserMenuProps } from './Header.types';
 
 export const HeaderContainer = styled.header<{ promoStripVisible: boolean }>`
   position: fixed;
-  /* top: ${({ promoStripVisible }) => (promoStripVisible ? '44px' : '0px')}; */
   left: 0;
   right: 0;
-  height: 72px;
+  height: 60px;
   background: ${({ theme }) => theme.colors.background};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
   align-items: center;
-  padding: 0 1.25rem;
+  padding: 0 1rem;
   z-index: 15;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -26,27 +25,33 @@ export const HeaderContainer = styled.header<{ promoStripVisible: boolean }>`
 `;
 
 export const HeaderContent = styled.div`
-  max-width: 1600px;
   width: 100%;
-  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: ${({ theme }) => theme.spacing.md};
+  gap: ${({ theme }) => theme.spacing.sm};
+  padding: 0 2rem;
 `;
 
 export const LeftSection = styled.div`
   display: flex;
   align-items: center;
-  gap: 3rem;
+  width: 200px;
+`;
+
+export const MiddleSection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex: 1;
 `;
 
 export const RightSection = styled.div`
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  margin-left: auto;
+  gap: 1rem;
+  width: 200px;
+  justify-content: flex-end;
 `;
 
 export const UserMenuContainer = styled.div`
@@ -59,21 +64,21 @@ export const UserMenuContainer = styled.div`
 export const NavLink = styled(Link)`
   color: ${({ theme }) => theme.colors.textSecondary};
   text-decoration: none;
-  padding: 0.5rem 1rem;
+  padding: 0.35rem 0.75rem;
   border-radius: ${({ theme }) => theme.borderRadius.md};
   transition: all 0.2s ease;
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   position: relative;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.35rem;
 
   .icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   &:hover {
@@ -117,7 +122,8 @@ export const LogoLink = styled(Link)`
 export const Nav = styled.nav`
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
+  justify-content: center;
 
   @media (max-width: 768px) {
     display: none;
@@ -208,14 +214,14 @@ export const ThemeToggle = styled.button`
   border: none;
   color: ${({ theme }) => theme.colors.textSecondary};
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0.35rem;
   border-radius: ${({ theme }) => theme.borderRadius.md};
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
 
   &:hover {
     color: ${({ theme }) => theme.colors.primary};
@@ -231,9 +237,10 @@ export const ThemeToggle = styled.button`
 export const SignInButton = styled(NavLink)`
   background: ${({ theme }) => theme.colors.primary};
   color: white;
-  padding: 0.5rem 1.25rem;
+  padding: 0.35rem 1rem;
   border-radius: ${({ theme }) => theme.borderRadius.full};
   font-weight: 500;
+  font-size: 0.9rem;
   transition: all 0.2s ease;
 
   &:hover {
