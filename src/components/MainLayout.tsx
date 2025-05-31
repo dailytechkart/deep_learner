@@ -55,7 +55,7 @@ const Main = styled.main`
 export const MainLayout: React.FC<MainLayoutProps> = ({
   children,
   fullWidth,
-  showOverlay = false,
+  showOverlay = true,
   onOverlayClick,
 }) => {
   const { isPremium } = useAuth();
@@ -63,7 +63,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
   console.log(isPremium, 'profile');
   return (
     <LayoutContainer>
-      <OverlayScreen isVisible={showOverlay} onClick={onOverlayClick} zIndex={999} />
+      <OverlayScreen isVisible={showOverlay && !isPremium} onClick={onOverlayClick} zIndex={999} />
       <Header />
       <ContentWrapper $fullWidth={fullWidth}>
         <Main>{children}</Main>
