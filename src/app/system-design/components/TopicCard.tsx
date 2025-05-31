@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { FaStar } from 'react-icons/fa';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const Card = styled.div`
   background: ${props => props.theme.colors.backgroundAlt};

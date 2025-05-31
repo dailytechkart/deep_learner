@@ -1,11 +1,17 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
-import SEO from '@/components/SEO';
+import styled from 'styled-components';
+import { MainLayout } from '@/components/MainLayout';
+import { Breadcrumb } from '@/components/shared/Breadcrumb';
+import { SystemDesignHero } from '@/components/shared/SystemDesignHero';
 import { problems } from './data/problems';
 import { ProblemCard } from './components/ProblemCard';
 import { SearchBar } from './components/SearchBar';
 import { Filters } from './components/Filters';
+import { FaCode, FaClipboardList, FaUsers } from 'react-icons/fa';
+import SEO from '@/components/SEO';
+import ProtectedRoute from '@/app/components/ProtectedRoute';
 import {
   PageContainer,
   PageHeader,
@@ -27,11 +33,22 @@ import {
 export const dynamic = 'force-dynamic';
 
 const ITEMS_PER_PAGE = 12;
-const SORT_OPTIONS = [
-  { value: 'popularity', label: 'Most Popular' },
-  { value: 'difficulty', label: 'Difficulty' },
+const sortOptions = [
   { value: 'newest', label: 'Newest First' },
   { value: 'oldest', label: 'Oldest First' },
+  { value: 'difficulty-asc', label: 'Difficulty: Easy to Hard' },
+  { value: 'difficulty-desc', label: 'Difficulty: Hard to Easy' },
+  { value: 'title-asc', label: 'Title: A to Z' },
+  { value: 'title-desc', label: 'Title: Z to A' },
+];
+
+const systemDesignTitle = 'System Design Mastery';
+const systemDesignDescription =
+  'Master system design interviews with our comprehensive collection of frontend system design problems. From chat applications to collaborative editors, learn how to design scalable and efficient frontend systems.';
+const systemDesignStats = [
+  { icon: <FaCode />, value: '50+', label: 'System Design Problems' },
+  { icon: <FaClipboardList />, value: '10+', label: 'Case Studies' },
+  { icon: <FaUsers />, value: '5k+', label: 'Active Learners' },
 ];
 
 export default function SystemDesignProblemsPage() {
@@ -132,7 +149,7 @@ export default function SystemDesignProblemsPage() {
   };
 
   return (
-    <>
+    <ProtectedRoute>
       <SEO
         title="System Design Problems | Frontend School"
         description="Practice system design problems with detailed solutions. Learn how to design scalable and efficient systems."
@@ -147,79 +164,82 @@ export default function SystemDesignProblemsPage() {
           'security',
         ]}
       />
-      <PageContainer>
-        <PageHeader>
-          <HeaderContent>
-            <PageTitle>System Design Problems</PageTitle>
-          </HeaderContent>
-        </PageHeader>
-        <MainContent>
-          <Filters
-            problems={problems}
-            selectedTopics={selectedTopics}
-            selectedCompanies={selectedCompanies}
-            selectedDifficulties={selectedDifficulties}
-            onTopicChange={handleTopicChange}
-            onCompanyChange={handleCompanyChange}
-            onDifficultyChange={handleDifficultyChange}
-          />
-          <ProblemsSection>
-            <SearchBar value={searchQuery} onChange={setSearchQuery} />
-            <SortContainer>
-              <ResultsCount>
-                {filteredProblems.length} {filteredProblems.length === 1 ? 'problem' : 'problems'}{' '}
-                found
-              </ResultsCount>
-              <SortSelect value={sortBy} onChange={handleSortChange}>
-                {SORT_OPTIONS.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </SortSelect>
-            </SortContainer>
-            {isLoading ? (
-              <LoaderContainer>
-                <Loader />
-              </LoaderContainer>
-            ) : paginatedProblems.length > 0 ? (
-              <>
-                <ProblemsGrid>
-                  {paginatedProblems.map(problem => (
-                    <ProblemCard key={problem.id} problem={problem} />
-                  ))}
-                </ProblemsGrid>
-                {totalPages > 1 && (
-                  <PaginationContainer>
-                    <PaginationButton
-                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                      disabled={currentPage === 1}
-                    >
-                      Previous
-                    </PaginationButton>
-                    <span>
-                      Page {currentPage} of {totalPages}
-                    </span>
-                    <PaginationButton
-                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                      disabled={currentPage === totalPages}
-                    >
-                      Next
-                    </PaginationButton>
-                  </PaginationContainer>
-                )}
-              </>
-            ) : (
-              <NoResults>
-                <h3>No Problems Found</h3>
-                <p>
-                  Try adjusting your search query or filters to find what you&apos;re looking for.
-                </p>
-              </NoResults>
-            )}
-          </ProblemsSection>
-        </MainContent>
-      </PageContainer>
-    </>
+      <MainLayout>
+        <Breadcrumb
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'System Design', href: '/system-design' },
+            { label: 'Problems', href: '/system-design/problems' },
+          ]}
+        />
+        <SystemDesignHero
+          title={systemDesignTitle}
+          description={systemDesignDescription}
+          stats={systemDesignStats}
+        />
+        <PageContainer>
+          <MainContent>
+            <Filters
+              problems={problems}
+              selectedTopics={selectedTopics}
+              selectedCompanies={selectedCompanies}
+              selectedDifficulties={selectedDifficulties}
+              onTopicChange={handleTopicChange}
+              onCompanyChange={handleCompanyChange}
+              onDifficultyChange={handleDifficultyChange}
+            />
+            <ProblemsSection>
+              <SearchBar
+                value={searchQuery}
+                onChange={setSearchQuery}
+                totalResults={filteredProblems.length}
+                sortBy={sortBy}
+                onSortChange={setSortBy}
+                sortOptions={sortOptions}
+              />
+              {isLoading ? (
+                <LoaderContainer>
+                  <Loader />
+                </LoaderContainer>
+              ) : paginatedProblems.length > 0 ? (
+                <>
+                  <ProblemsGrid>
+                    {paginatedProblems.map(problem => (
+                      <ProblemCard key={problem.id} problem={problem} />
+                    ))}
+                  </ProblemsGrid>
+                  {totalPages > 1 && (
+                    <PaginationContainer>
+                      <PaginationButton
+                        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                        disabled={currentPage === 1}
+                      >
+                        Previous
+                      </PaginationButton>
+                      <span>
+                        Page {currentPage} of {totalPages}
+                      </span>
+                      <PaginationButton
+                        onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                        disabled={currentPage === totalPages}
+                      >
+                        Next
+                      </PaginationButton>
+                    </PaginationContainer>
+                  )}
+                </>
+              ) : (
+                <NoResults>
+                  <h3>No Problems Found</h3>
+                  <p>
+                    Try adjusting your search query or filters to find what you&apos;re looking for.
+                  </p>
+                </NoResults>
+              )}
+            </ProblemsSection>
+          </MainContent>
+        </PageContainer>
+      </MainLayout>
+    </ProtectedRoute>
   );
 }

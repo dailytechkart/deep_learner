@@ -40,6 +40,7 @@ interface AuthContextType {
   resetPassword: (email: string) => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   signInWithGithub: () => Promise<void>;
+  isPremium: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -53,6 +54,7 @@ const AuthContext = createContext<AuthContextType>({
   resetPassword: async () => {},
   signInWithGoogle: async () => {},
   signInWithGithub: async () => {},
+  isPremium: false,
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -271,6 +273,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     resetPassword,
     signInWithGoogle,
     signInWithGithub,
+    isPremium: profile?.premium || false,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

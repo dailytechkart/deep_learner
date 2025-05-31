@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Header from '@/app/components/Header/Header';
 import { AppFooter } from './Footer';
-import { useTheme } from '@/app/context/ThemeContext';
+import { useAuth } from '@/app/context/AuthContext';
 import OverlayScreen from './OverlayScreen';
 
 interface MainLayoutProps {
@@ -55,11 +55,12 @@ const Main = styled.main`
 export const MainLayout: React.FC<MainLayoutProps> = ({
   children,
   fullWidth,
-  showOverlay = true,
+  showOverlay = false,
   onOverlayClick,
 }) => {
-  const { isDarkMode } = useTheme();
+  const { isPremium } = useAuth();
 
+  console.log(isPremium, 'profile');
   return (
     <LayoutContainer>
       <OverlayScreen isVisible={showOverlay} onClick={onOverlayClick} zIndex={999} />
