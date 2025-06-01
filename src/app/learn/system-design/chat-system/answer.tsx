@@ -1746,7 +1746,7 @@ const ChatSystemAnswer = () => {
         <SectionHeader>
           <RightPanelSectionTitle>On This Page</RightPanelSectionTitle>
         </SectionHeader>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
           <TableOfContentsLink
             href="#overview"
             className={activeSection === 'overview' ? 'active' : ''}

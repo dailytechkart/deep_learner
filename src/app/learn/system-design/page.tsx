@@ -16,6 +16,28 @@ export const dynamic = 'force-dynamic';
 const ContentSection = styled.div`
   flex: 1;
   min-width: 0;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+  height: 100vh;
+  padding: 2rem;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.colors.border};
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: ${({ theme }) => theme.colors.primary};
+  }
 `;
 
 const systemDesignTopics = [

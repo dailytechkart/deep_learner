@@ -112,22 +112,47 @@ declare module 'styled-components' {
       xl: string;
     };
     typography: {
+      fontFamily: {
+        primary: string;
+        secondary: string;
+      };
       fontSize: {
-        xs: string;
-        sm: string;
-        base: string;
-        md: string;
-        lg: string;
-        xl: string;
-        '2xl': string;
-        '3xl': string;
-        '4xl': string;
+        xs: [string, { lineHeight: string }];
+        sm: [string, { lineHeight: string }];
+        base: [string, { lineHeight: string }];
+        lg: [string, { lineHeight: string }];
+        xl: [string, { lineHeight: string }];
+        '2xl': [string, { lineHeight: string }];
+        '3xl': [string, { lineHeight: string }];
+        '4xl': [string, { lineHeight: string }];
+        '5xl': [string, { lineHeight: string }];
+        '6xl': [string, { lineHeight: string }];
       };
       fontWeight: {
-        normal: number;
-        medium: number;
-        semibold: number;
-        bold: number;
+        thin: string;
+        extralight: string;
+        light: string;
+        normal: string;
+        medium: string;
+        semibold: string;
+        bold: string;
+        extrabold: string;
+        black: string;
+      };
+      body1: {
+        fontSize: string;
+        fontWeight: number;
+        lineHeight: number;
+      };
+      body2: {
+        fontSize: string;
+        fontWeight: number;
+        lineHeight: number;
+      };
+      caption: {
+        fontSize: string;
+        fontWeight: number;
+        lineHeight: number;
       };
       h1: {
         fontSize: string;
@@ -155,21 +180,6 @@ declare module 'styled-components' {
         lineHeight: number;
       };
       h6: {
-        fontSize: string;
-        fontWeight: number;
-        lineHeight: number;
-      };
-      body1: {
-        fontSize: string;
-        fontWeight: number;
-        lineHeight: number;
-      };
-      body2: {
-        fontSize: string;
-        fontWeight: number;
-        lineHeight: number;
-      };
-      caption: {
         fontSize: string;
         fontWeight: number;
         lineHeight: number;
@@ -291,22 +301,47 @@ export const lightTheme: DefaultTheme = {
     xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
   },
   typography: {
+    fontFamily: {
+      primary: 'Inter, system-ui, -apple-system, sans-serif',
+      secondary: 'Poppins, system-ui, -apple-system, sans-serif',
+    },
     fontSize: {
-      xs: '0.75rem',
-      sm: '0.875rem',
-      base: '1rem',
-      md: '1rem',
-      lg: '1.125rem',
-      xl: '1.25rem',
-      '2xl': '1.5rem',
-      '3xl': '1.875rem',
-      '4xl': '2.25rem',
+      xs: ['0.75rem', { lineHeight: '1rem' }],
+      sm: ['0.875rem', { lineHeight: '1.25rem' }],
+      base: ['1rem', { lineHeight: '1.5rem' }],
+      lg: ['1.125rem', { lineHeight: '1.75rem' }],
+      xl: ['1.25rem', { lineHeight: '1.75rem' }],
+      '2xl': ['1.5rem', { lineHeight: '2rem' }],
+      '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
+      '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
+      '5xl': ['3rem', { lineHeight: '1' }],
+      '6xl': ['3.75rem', { lineHeight: '1' }],
     },
     fontWeight: {
-      normal: 400,
-      medium: 500,
-      semibold: 600,
-      bold: 700,
+      thin: '100',
+      extralight: '200',
+      light: '300',
+      normal: '400',
+      medium: '500',
+      semibold: '600',
+      bold: '700',
+      extrabold: '800',
+      black: '900',
+    },
+    body1: {
+      fontSize: '1rem',
+      fontWeight: 400,
+      lineHeight: 1.5,
+    },
+    body2: {
+      fontSize: '0.875rem',
+      fontWeight: 400,
+      lineHeight: 1.5,
+    },
+    caption: {
+      fontSize: '0.75rem',
+      fontWeight: 400,
+      lineHeight: 1.5,
     },
     h1: {
       fontSize: '2.5rem',
@@ -337,21 +372,6 @@ export const lightTheme: DefaultTheme = {
       fontSize: '1rem',
       fontWeight: 600,
       lineHeight: 1.4,
-    },
-    body1: {
-      fontSize: '1rem',
-      fontWeight: 400,
-      lineHeight: 1.5,
-    },
-    body2: {
-      fontSize: '0.875rem',
-      fontWeight: 400,
-      lineHeight: 1.5,
-    },
-    caption: {
-      fontSize: '0.75rem',
-      fontWeight: 400,
-      lineHeight: 1.5,
     },
   },
   transitions: {
@@ -469,22 +489,47 @@ export const darkTheme: DefaultTheme = {
     xl: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
   },
   typography: {
+    fontFamily: {
+      primary: 'Inter, system-ui, -apple-system, sans-serif',
+      secondary: 'Poppins, system-ui, -apple-system, sans-serif',
+    },
     fontSize: {
-      xs: '0.75rem',
-      sm: '0.875rem',
-      base: '1rem',
-      md: '1rem',
-      lg: '1.125rem',
-      xl: '1.25rem',
-      '2xl': '1.5rem',
-      '3xl': '1.875rem',
-      '4xl': '2.25rem',
+      xs: ['0.75rem', { lineHeight: '1rem' }],
+      sm: ['0.875rem', { lineHeight: '1.25rem' }],
+      base: ['1rem', { lineHeight: '1.5rem' }],
+      lg: ['1.125rem', { lineHeight: '1.75rem' }],
+      xl: ['1.25rem', { lineHeight: '1.75rem' }],
+      '2xl': ['1.5rem', { lineHeight: '2rem' }],
+      '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
+      '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
+      '5xl': ['3rem', { lineHeight: '1' }],
+      '6xl': ['3.75rem', { lineHeight: '1' }],
     },
     fontWeight: {
-      normal: 400,
-      medium: 500,
-      semibold: 600,
-      bold: 700,
+      thin: '100',
+      extralight: '200',
+      light: '300',
+      normal: '400',
+      medium: '500',
+      semibold: '600',
+      bold: '700',
+      extrabold: '800',
+      black: '900',
+    },
+    body1: {
+      fontSize: '1rem',
+      fontWeight: 400,
+      lineHeight: 1.5,
+    },
+    body2: {
+      fontSize: '0.875rem',
+      fontWeight: 400,
+      lineHeight: 1.5,
+    },
+    caption: {
+      fontSize: '0.75rem',
+      fontWeight: 400,
+      lineHeight: 1.5,
     },
     h1: {
       fontSize: '2.5rem',
@@ -515,21 +560,6 @@ export const darkTheme: DefaultTheme = {
       fontSize: '1rem',
       fontWeight: 600,
       lineHeight: 1.4,
-    },
-    body1: {
-      fontSize: '1rem',
-      fontWeight: 400,
-      lineHeight: 1.5,
-    },
-    body2: {
-      fontSize: '0.875rem',
-      fontWeight: 400,
-      lineHeight: 1.5,
-    },
-    caption: {
-      fontSize: '0.75rem',
-      fontWeight: 400,
-      lineHeight: 1.5,
     },
   },
   transitions: {
