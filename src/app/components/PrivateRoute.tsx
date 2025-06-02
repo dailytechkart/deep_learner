@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
-import { MainLayout } from './layout/MainLayout';
+import { MainLayout } from '@/components/MainLayout';
 
 interface PrivateRouteProps {
   children: React.ReactNode;
